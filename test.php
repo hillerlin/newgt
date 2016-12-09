@@ -1,17 +1,3 @@
-<!--/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2016/12/8
- * Time: 16:20
- */
-/*$a='/^http:\/\/www.okhqb.com\/([a-z]+)/i';
-//$a='http://www.okhqb.com/([a-z]+)/([\d]+).html';
-$b='http://www.okhqb.com/zixunxiangqing/88888888.html';
-preg_match($a,$b,$match);
-var_dump($match);*/--!>
-
-<html>
-<script>
-    
-</script>
-</html>
+<?php
+$a='{"\u5206\u914d\u8ddf\u8fdb\u4eba":{"pre":{"\/Admin\/Project\/exchange":"\u5206\u914d\u4eba\u5458","\/Admin\/Project\/edit":"\u7f16\u8f91","\/Admin\/Project\/file":"\u8d44\u6599\u5305"}},"\u53ec\u5f00\u7acb\u9879\u4f1a":{"pre":{"\/Admin\/Project\/detail":"\u67e5\u770b","\/Admin\/Project\/exchange":"\u4ea4\u63a5","\/Admin\/Project\/file":"\u8d44\u6599\u5305"}}}';
+var_dump(json_decode($a,true));

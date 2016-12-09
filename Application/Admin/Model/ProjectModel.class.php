@@ -255,18 +255,38 @@ class ProjectModel extends BaseModel {
     }
     
     //根据admin_id来判断审核人是否有审核的项目
-    public function isAudit($adminId=null,$roleId=null,$auditType)
+    public function isAudit($page = 1, $pageSize = 30, $order='t.addtime DESC',$adminId=null,$roleId=null,$auditType)
     {
-        $map['pro_state']=0;
+        $map['pro_state']=$auditType;
         $map['pro_author']=$adminId;
+        $idList=array();
         //isset($adminId)?$map['pro_author']=$adminId:$map['pro_role']=$roleId;
         $list=D('WorkflowLog')
-            ->union("select * from`gt_workflow_log` where `pro_role`='".$roleId."' and `pro_state`=0 ")
+            ->union("select `pj_id` from`gt_workflow_log` where `pro_role`='".$roleId."' and `pro_state`='".$auditType."' ")
             ->where($map)
-            ->select();
-        if($list)
+            ->field('pj_id')
+            ->select();//查出不同状态的项目id
+       if($list)
         {
-            return $list;
+          foreach($list as $k=>$v)
+          {
+              array_push($idList,$v['pj_id']);
+          }
+            $idList=implode(',',$idList);
+            $total = count($list);
+            $list = $this
+                ->table($this->trueTableName . ' AS t')
+                ->join('LEFT JOIN __ADMIN__ AS a1 ON a1.admin_id=t.admin_id')
+                ->join('LEFT JOIN __ADMIN__ AS a2 ON a2.admin_id=t.risk_admin_id')
+                ->join('LEFT JOIN __WORKFLOW_LOG__ as l ON t.pro_id=l.pj_id')
+                ->join('__COMPANY__ AS cp ON t.company_id=cp.company_id')
+                ->field('t.*,l.*,pro_title,pro_no,a1.real_name as pmd_name,a2.real_name as rcd_name,company_name')
+                ->where(array('pro_id'=>array('in',$idList)))
+                ->page($page, $pageSize)
+                ->order($order)
+                ->select();
+           return array('total' => $total, 'list' => $list);
+
         }
         else
         {

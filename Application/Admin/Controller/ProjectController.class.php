@@ -66,8 +66,11 @@ class ProjectController extends CommonController {
     {
         $admin = session('admin');
         $model=D('project');
-        $list= $model->isAudit($admin['admin_id'],$admin['role_id'],0);
-        $this->assign(array('name'=>$admin['real_name'],'list'=>$list));
+        $pageSize = I('post.pageSize', 30);
+        $page = I('post.pageCurrent', 1);
+        //$aa=C('proLevel');
+        $list= $model->isAudit($page,$pageSize,'t.addtime DESC',$admin['admin_id'],$admin['role_id'],0);
+        $this->assign(array('name'=>$admin['real_name'],'list'=>$list['list'],'total' => $list['total'], 'pageCurrent' => $page,));
         $this->display();
       // logic('xml')->index();
         

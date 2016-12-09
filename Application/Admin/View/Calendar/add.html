@@ -1,0 +1,84 @@
+<div class="bjui-pageContent">
+    <form action="<?php echo U('Calendar/save')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <!--<h4>第{$n_term}期</h4>-->
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x150">简介：</label>
+                        <input type="text" name="title" id="p_name" value="" size="15" data-rule="required">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x150">内容：</label>
+                        <textarea name="content" id="j_custom_note" data-toggle="autoheight" cols="10" rows="1"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="j_custom_indate" class="control-label x150">开始时间：</label>
+                        <input type="text" name="start" id="pay_time" value="<?php echo $date?>" data-toggle="datepicker" data-nobtn="true" data-rule="required:date" size="15">
+<!--                        <select name="start_hour" id="j_custom_sale" data-toggle="selectpicker" data-rule="required">
+                            <?php foreach($hour as $v) {?>
+                            <option value="<?php echo $v?>"><?php echo $v?></option>
+                            <?php }?>
+                        </select> : 
+                        <select name="start_minute" id="j_custom_sale" data-toggle="selectpicker" data-rule="required">
+                            <?php foreach($minute as $v) {?>
+                            <option value="<?php echo $v?>"><?php echo $v?></option>
+                            <?php }?>
+                        </select>-->
+                    </td>
+                </tr>
+                <tr style="display: none" id='end'>
+                    <td>
+                        <label for="j_custom_indate" class="control-label x150">结束时间：</label>
+                        <input type="text" name="end" id="pay_time" value="" data-toggle="datepicker" size="15">
+<!--                        <select name="end_hour" id="j_custom_sale" data-toggle="selectpicker" data-rule="required">
+                            <?php foreach($hour as $v) {?>
+                            <option value="<?php echo $v?>"><?php echo $v?></option>
+                            <?php }?>
+                        </select> : 
+                        <select name="end_minute" id="j_custom_sale" data-toggle="selectpicker" data-rule="required">
+                            <?php foreach($minute as $v) {?>
+                            <option value="<?php echo $v?>"><?php echo $v?></option>
+                            <?php }?>
+                        </select>-->
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="" class="control-label x150">结束时间：</label>
+                        <input type="checkbox" name="" id="j_check_end" data-toggle="icheck" value="true" data-label="不勾选默认为当天">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="j_custom_color" class="control-label x150">背景颜色：</label>
+                        <input type="text" name="color" id="j_custom_color" value="" data-toggle="colorpicker" data-bgcolor="true" size="15" readonly>
+                        <a href="javascript:;" title="清除颜色" data-toggle="clearcolor" data-target="#j_custom_color">清除颜色</a>
+                    </td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>
+<script>
+$('#j_check_end').on('ifChecked', function (event) {
+        $('#end').show();
+        $('input[name="end"]').attr('data-rule', 'required;date');
+    });
+    $('#j_check_end').on('ifUnchecked', function (event) {
+        $('#end').hide();
+        $('input[name="end"]').removeAttr('data-rule');
+    });
+    
+</script>  

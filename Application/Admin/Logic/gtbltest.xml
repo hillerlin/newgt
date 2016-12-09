@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                   xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                   xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                   id="BPMNProcessmaker" targetNamespace="http://bpmn.io/schema/bpmn">
+    <bpmn2:process id="pmui-21870646358451198b09bb5018483534">
+        <bpmn2:userTask id="el_381469726583fc0063e7d00094158340" name="项管部总监">
+            <bpmn2:incoming>flo_595916748583fc16e2dc931091716504</bpmn2:incoming>
+            <bpmn2:outgoing>flo_pmui-23644628158451712b10974010783474</bpmn2:outgoing>
+        </bpmn2:userTask>
+        <bpmn2:endEvent id="el_681671142583fc8767ba8f4017480645" name="结束">
+            <bpmn2:incoming>flo_pmui-8731027355847a76eb591b0037149164</bpmn2:incoming>
+        </bpmn2:endEvent>
+        <bpmn2:sequenceFlow id="flo_595916748583fc16e2dc931091716504" name="提交立项"
+                            sourceRef="el_308715820583f9d39322489074895638"
+                            targetRef="el_381469726583fc0063e7d00094158340"/>
+        <bpmn2:userTask id="el_308715820583f9d39322489074895638" name="项目经理立项">
+            <bpmn2:outgoing>flo_595916748583fc16e2dc931091716504</bpmn2:outgoing>
+        </bpmn2:userTask>
+        <bpmn2:sequenceFlow id="flo_pmui-23644628158451712b10974010783474" name="分配项目专员"
+                            sourceRef="el_381469726583fc0063e7d00094158340"
+                            targetRef="el_292541503583fc0a60758b7036469204"/>
+        <bpmn2:userTask id="el_292541503583fc0a60758b7036469204" name="项管专员">
+            <bpmn2:incoming>flo_pmui-23644628158451712b10974010783474</bpmn2:incoming>
+            <bpmn2:outgoing>flo_pmui-741671500584780b9b217f2062771874</bpmn2:outgoing>
+        </bpmn2:userTask>
+        <bpmn2:sequenceFlow id="flo_pmui-741671500584780b9b217f2062771874" name="项管专员通过"
+                            sourceRef="el_292541503583fc0a60758b7036469204"
+                            targetRef="el_pmui-32055454058476297b15c96047508243"/>
+        <bpmn2:userTask id="el_pmui-32055454058476297b15c96047508243" name="法务_风控初审">
+            <bpmn2:incoming>flo_pmui-741671500584780b9b217f2062771874</bpmn2:incoming>
+            <bpmn2:outgoing>flo_pmui-5424978665847848ab22a81030297751</bpmn2:outgoing>
+        </bpmn2:userTask>
+        <bpmn2:sequenceFlow id="flo_pmui-5424978665847848ab22a81030297751" name="风控初审通过"
+                            sourceRef="el_pmui-32055454058476297b15c96047508243"
+                            targetRef="el_pmui-196336185584780feb21f41077681082"/>
+        <bpmn2:sequenceFlow id="flo_pmui-98816452558478d37b23705092631516" name="立项会通过"
+                            sourceRef="el_pmui-196336185584780feb21f41077681082"
+                            targetRef="el_pmui-32264186858478c5eb22cb0046246431"/>
+        <bpmn2:task id="el_pmui-365398244584790c6b23806080233109" name="风控专员">
+            <bpmn2:incoming>flo_pmui-54465816958479104b24360045758591</bpmn2:incoming>
+            <bpmn2:outgoing>flo_pmui-8731027355847a76eb591b0037149164</bpmn2:outgoing>
+        </bpmn2:task>
+        <bpmn2:sequenceFlow id="flo_pmui-54465816958479104b24360045758591" name="通过"
+                            sourceRef="el_pmui-32264186858478c5eb22cb0046246431"
+                            targetRef="el_pmui-365398244584790c6b23806080233109"/>
+        <bpmn2:userTask id="el_pmui-196336185584780feb21f41077681082" name="项管专员_立项会">
+            <bpmn2:incoming>flo_pmui-5424978665847848ab22a81030297751</bpmn2:incoming>
+            <bpmn2:outgoing>flo_pmui-98816452558478d37b23705092631516</bpmn2:outgoing>
+        </bpmn2:userTask>
+        <bpmn2:userTask id="el_pmui-32264186858478c5eb22cb0046246431" name="风控总监_分配">
+            <bpmn2:incoming>flo_pmui-98816452558478d37b23705092631516</bpmn2:incoming>
+            <bpmn2:outgoing>flo_pmui-54465816958479104b24360045758591</bpmn2:outgoing>
+        </bpmn2:userTask>
+        <bpmn2:sequenceFlow id="flo_pmui-8731027355847a76eb591b0037149164" name="执行任务"
+                            sourceRef="el_pmui-365398244584790c6b23806080233109"
+                            targetRef="el_681671142583fc8767ba8f4017480645"/>
+    </bpmn2:process>
+    <bpmndi:BPMNDiagram id="dia_75894750458451198b09b82062268022">
+        <bpmndi:BPMNPlane id="plane_15209028858451198b09ba5072531208"
+                          bpmnElement="pmui-21870646358451198b09bb5018483534">
+            <bpmndi:BPMNShape id="di_el_381469726583fc0063e7d00094158340"
+                              bpmnElement="el_381469726583fc0063e7d00094158340">
+                <dc:Bounds x="1001" y="55" width="150" height="75"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="di_el_681671142583fc8767ba8f4017480645"
+                              bpmnElement="el_681671142583fc8767ba8f4017480645">
+                <dc:Bounds x="955" y="526" width="33" height="33"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="flo_595916748583fc16e2dc931091716504_di"
+                             bpmnElement="flo_595916748583fc16e2dc931091716504">
+                <di:waypoint x="750" y="93"/>
+                <di:waypoint x="1001" y="93"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="di_el_308715820583f9d39322489074895638"
+                              bpmnElement="el_308715820583f9d39322489074895638">
+                <dc:Bounds x="599" y="55" width="150" height="75"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="flo_pmui-23644628158451712b10974010783474_di"
+                             bpmnElement="flo_pmui-23644628158451712b10974010783474">
+                <di:waypoint x="1152" y="93"/>
+                <di:waypoint x="1438" y="93"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="di_el_292541503583fc0a60758b7036469204"
+                              bpmnElement="el_292541503583fc0a60758b7036469204">
+                <dc:Bounds x="1438" y="55" width="150" height="75"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="flo_pmui-741671500584780b9b217f2062771874_di"
+                             bpmnElement="flo_pmui-741671500584780b9b217f2062771874">
+                <di:waypoint x="1514" y="130"/>
+                <di:waypoint x="1514" y="287"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="di_el_968261718584762a9c9d8d3025718148"
+                              bpmnElement="el_pmui-32055454058476297b15c96047508243">
+                <dc:Bounds x="1438" y="287" width="150" height="75"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="flo_pmui-5424978665847848ab22a81030297751_di"
+                             bpmnElement="flo_pmui-5424978665847848ab22a81030297751">
+                <di:waypoint x="1438" y="325"/>
+                <di:waypoint x="1152" y="325"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="flo_pmui-98816452558478d37b23705092631516_di"
+                             bpmnElement="flo_pmui-98816452558478d37b23705092631516">
+                <di:waypoint x="1001" y="325"/>
+                <di:waypoint x="750" y="325"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="di_el_pmui-365398244584790c6b23806080233109"
+                              bpmnElement="el_pmui-365398244584790c6b23806080233109">
+                <dc:Bounds x="599" y="505" width="150" height="75"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="flo_pmui-54465816958479104b24360045758591_di"
+                             bpmnElement="flo_pmui-54465816958479104b24360045758591">
+                <di:waypoint x="675" y="362"/>
+                <di:waypoint x="675" y="505"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="di_el_56527709958478121eb15b3043097341"
+                              bpmnElement="el_pmui-196336185584780feb21f41077681082">
+                <dc:Bounds x="1001" y="287" width="150" height="75"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="di_el_84188842758478c620f4af3026650778"
+                              bpmnElement="el_pmui-32264186858478c5eb22cb0046246431">
+                <dc:Bounds x="599" y="287" width="150" height="75"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="flo_pmui-8731027355847a76eb591b0037149164_di"
+                             bpmnElement="flo_pmui-8731027355847a76eb591b0037149164">
+                <di:waypoint x="750" y="543"/>
+                <di:waypoint x="955" y="543"/>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</bpmn2:definitions>

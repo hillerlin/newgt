@@ -1,0 +1,346 @@
+<script type="text/javascript">
+    function do_OK(json, $form) {
+        console.log(json)
+        console.log($form)
+    }
+</script>
+<div class="bjui-pageContent">
+    <table class="table table-condensed table-striped" width="100%">
+        <tbody>
+            <tr>
+                <td>
+                    <label for="company_id" class="control-label x85">申请部门：</label>
+                    <input type="text" name="" id="p_company" value="项管部" size="15" data-width="600" data-height="300" readonly>
+                </td>
+                <td>
+                    <label for="company_id" class="control-label x85">申请人：</label>
+                    <input type="text" name="" id="p_company" value="{$pmd_name}" size="15" data-width="600" data-height="300" readonly>
+                </td>
+                <td>
+                    <label for="company_id" class="control-label x85">申请时间：</label>
+                    <input type="text" name="" id="p_company" value="<?php echo date('Y-m-d', $addtime)?>" size="15" data-width="600" data-height="300" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="company_id" class="control-label x85">合同编号：</label>
+                    <input type="hidden" name="contract_id" value=''>
+                    <input type="text" name="contract_no" id="p_company" value="<?php echo $contract_no?>" size="20"   data-url="<?php echo U('LoanManage/couldApplyList')?>" data-width="900" data-height="500" readonly>
+                </td>
+                <td>
+                    <label for="company_id" class="control-label x85">项目名称：</label>
+                    <input type="hidden" name="pro_id" value=''>
+                    <input type="text" name="pro_title" id="p_company" value="<?php echo $pro_title?>" size="20" data-width="600" data-height="300" readonly>
+                </td>
+                <td>
+                    <label for="company_id" class="control-label x85">项目编号：</label>
+                    <input type="text" name="pro_no" id="p_company" value="<?php echo $pro_no?>" size="15" data-width="600" data-height="300" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <label for="debt_no" class="control-label x85">融资额度：</label>
+                    <input type="text" name="real_money" value='<?php echo $pro_account?>' data-rule="required" size="15"  readonly>元
+                </td>
+                <td>
+                    <label for="debt_no" class="control-label x85">融资期限：</label>
+                    <input type="text" name="term" value='<?php echo $term?>' data-rule="required" size="15"  readonly>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <label for="assure_type" class="control-label x85">担保方式：</label>
+                    <?php foreach($assure_type_list as $key => $val):?>
+                    <input type="checkbox" name="assure_type[]" id="check" data-toggle="icheck" data-label="<?php echo $val;?>" value="<?php echo $key;?>" <?php echo in_array($key, $assure_type) ? 'checked' : '';?>>&nbsp;
+                           <?php endforeach;?>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <label for="pay_type" class="control-label x85">支付方式：</label>
+                    <?php foreach($contract_pay_type as $key => $val):?>
+                    <input type="radio" name="pay_type" id="check" data-toggle="icheck" value="<?php echo $key;?>"  data-label="<?php echo $val;?>" <?php echo $key==$pay_type ? 'checked' : ''?>>&nbsp;
+                           <?php endforeach;?>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <label for="debt_no" class="control-label x85">是否监管账户：</label>
+                    <input type="radio" name="is_supervision" id="check" data-toggle="icheck" data-label="是" value="1" <?php echo $is_supervision==1 ? 'checked':'';?>>&nbsp;<input type="radio" name="is_supervision" id="check" data-toggle="icheck" data-label="否" value="0" <?php echo $is_supervision==0 ? 'checked':'';?>>
+                </td>
+            </tr>
+            <tr>
+                <td >
+                    <label for="debt_no" class="control-label x85">收款户名：</label>
+                    <input type="text" name="receive_name" value='<?php echo $receive_name?>' data-rule="required" size="20" readonly>
+                </td>
+                <td >
+                    <label for="debt_no" class="control-label x85">开户行：</label>
+                    <input type="text" name="recevie_bank" value='<?php echo $recevie_bank?>' data-rule="required" size="20" readonly>
+                </td>
+                <td >
+                    <label for="debt_no" class="control-label x85">账号：</label>
+                    <input type="text" name="recevie_bank_no" value='<?php echo $recevie_bank_no?>' data-rule="required" size="20" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td >
+                    <label for="debt_no" class="control-label x85">人民币（小写）：</label>
+                    <input type="text" name="money" id="lower" value='<?php echo $money?>' data-rule="required" size="15" readonly>
+                </td>
+                <td colspan="2">
+                    <label for="debt_no" class="control-label x85">人民币（大写）：</label>
+                    <input type="text" name="uploanamount" id="uploanamount" value='' data-rule="required" size="20" readonly >
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <label for="debt_no" class="control-label x85">本次为该项目：</label>
+                    第<input type="text" name="loan_nums" value='<?php echo $loan_nums?>' data-rule="required" size="5" >次出款，属于<input type="radio" name="loan_type" id="check" data-toggle="icheck" data-label="融资本金" value="1" <?php echo $loan_type==1 ? 'checked':'';?>>&nbsp;<input type="radio" name="loan_type" id="check" data-toggle="icheck" data-label="换质" value="0" <?php echo $loan_type==0 ? 'checked':'';?>>
+                </td>
+            </tr>
+            <tr>
+                <td >
+                    <label for="debt_no" class="control-label x85">手续费：</label>
+                    <input type="text" name="calc_handling_charge" value='<?php echo $calc_handling_charge?>' data-rule="required" size="15" readonly>元
+                </td>
+                <td colspan="2">
+                    <label for="debt_no" class="control-label x85">费率：</label>
+                    <input type="text" name="handling_charge" value='<?php echo $handling_charge?>' data-rule="required" size="15" readonly>%
+                </td>
+            </tr>
+            <tr>
+                <td >
+                    <label for="debt_no" class="control-label x85">开户行：</label>
+
+                    <input type="text" name="handling_charge_bank_name" value='<?php echo $handling_charge_bank['bank_name']?>' data-rule="required" size="20" readonly   data-url="<?php echo U('bank/lookup',array('type'=>'handling_charge'))?>" data-width="900" data-height="500" >元
+                </td>
+                <td >
+                    <label for="debt_no" class="control-label x85">户名：</label>
+                    <input type="text" name="handling_charge_account_name" value='<?php echo $handling_charge_bank['account_name']?>' data-rule="required" size="20" readonly>
+                </td>
+                <td >
+                    <label for="debt_no" class="control-label x85">账号：</label>
+                    <input type="text" name="handling_charge_bank_no" value='<?php echo $handling_charge_bank['bank_no']?>' data-rule="required" size="20" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td >
+                    <label for="debt_no" class="control-label x85">溢价回购款：</label>
+                    <input type="text" name="calc_repurchase_rate" value='<?php echo $calc_repurchase_rate?>' data-rule="required" size="15" readonly>元
+                </td>
+                <td colspan="2">
+                    <label for="debt_no" class="control-label x85">费率：</label>
+                    <input type="text" name="repurchase_rate" value='<?php echo $repurchase_rate?>' data-rule="required" size="15" readonly>%
+                </td>
+            </tr>
+            <tr>
+                <td >
+                    <label for="debt_no" class="control-label x85">开户行：</label>
+                    <input type="text" name="repurchase_rate_bank_name" value='<?php echo $repurchase_rate_bank['bank_name']?>' data-rule="required" size="20" readonly   data-url="<?php echo U('bank/lookup',array('type'=>'repurchase_rate'))?>" data-width="900" data-height="500" >元
+                </td>
+                <td >
+                    <label for="debt_no" class="control-label x85">户名：</label>
+                    <input type="text" name="repurchase_rate_account_name" value='<?php echo $repurchase_rate_bank['account_name']?>' data-rule="required" size="20" readonly>
+                </td>
+                <td >
+                    <label for="debt_no" class="control-label x85">账号：</label>
+                    <input type="text" name="repurchase_rate_bank_no" value='<?php echo $repurchase_rate_bank['bank_no']?>' data-rule="required" size="20" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td >
+                    <label for="debt_no" class="control-label x85">咨询费：</label>
+                    <input type="text" name="calc_counseling_fee" value='<?php echo $calc_counseling_fee?>' data-rule="required" size="15" readonly >元
+                </td>
+                <td colspan="2">
+                    <label for="debt_no" class="control-label x85">费率：</label>
+                    <input type="text" name="counseling_fee" value='<?php echo $counseling_fee?>' data-rule="required" size="15" readonly>%
+                </td>
+            </tr>
+            <tr>
+                <td >
+                    <label for="debt_no" class="control-label x85">开户行：</label>
+                    <input type="text" name="counseling_fee_bank_name" value='<?php echo $counseling_fee_bank['bank_name']?>' data-rule="required" size="20" readonly   data-url="<?php echo U('bank/lookup',array('type'=>'counseling_fee'))?>" data-width="900" data-height="500" >元
+                </td>
+                <td >
+                    <label for="debt_no" class="control-label x85">户名：</label>
+                    <input type="text" name="counseling_fee_account_name" value='<?php echo $counseling_fee_bank['account_name']?>' data-rule="required" size="20" readonly>
+                </td>
+                <td >
+                    <label for="debt_no" class="control-label x85">账号：</label>
+                    <input type="text" name="counseling_fee_bank_no" value='<?php echo $counseling_fee_bank['bank_no']?>' data-rule="required" size="20" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td >
+                    <label for="debt_no" class="control-label x85">保证费：</label>
+                    <input type="text" name="calc_cash_deposit" value='<?php echo $calc_cash_deposit?>' data-rule="required" size="15" readonly>元
+                </td>
+                <td colspan="2">
+                    <label for="debt_no" class="control-label x85">费率：</label>
+                    <input type="text" name="cash_deposit" value='<?php echo $cash_deposit?>' data-rule="required" size="15" readonly>%
+                </td>
+            </tr>
+            <tr>
+                <td >
+                    <label for="debt_no" class="control-label x85">开户行：</label>
+                    <input type="text" name="cash_deposit_bank_name" value='<?php echo $cash_deposit_bank['bank_name']?>' data-rule="required" size="20" readonly   data-url="<?php echo U('bank/lookup',array('type'=>'cash_deposit'))?>" data-width="900" data-height="500" >元
+                </td>
+                <td >
+                    <label for="debt_no" class="control-label x85">户名：</label>
+                    <input type="text" name="cash_deposit_account_name" value='<?php echo $cash_deposit_bank['account_name']?>' data-rule="required" size="20" readonly>
+                </td>
+                <td >
+                    <label for="debt_no" class="control-label x85">账号：</label>
+                    <input type="text" name="cash_deposit_bank_no" value='<?php echo $cash_deposit_bank['bank_no']?>' data-rule="required" size="20" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <label for="debt_no" class="control-label x85">项目经理说明：</label>
+                    <textarea name="desciption" id="j_custom_note_1" data-toggle="autoheight" rows="3" cols="50" readonly><?php echo $desciption?></textarea>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <form action="<?php echo U('LoanManage/audit')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="loan_id" value="<?php echo $loan_id?>">
+        <input type="hidden" name="pro_step" value="<?php echo $current_node_index?>">
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td colspan="2">
+                        <label for="" class="control-label x85">审核结果：</label>
+                        <select name="status" data-toggle="selectpicker" data-rule="required" value="选择" >
+                            <option value="">--请选择--</option>
+                            <?php foreach($workflow[5][$current_node_index]['step_next'] as $key => $select_status) {?>
+                            <option value="<?php echo $key?>"><?php echo $select_status['desc']?></option>
+                            <?php } ?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="pro_desc" class="control-label x85">审核人意见：</label>
+                        <textarea name="opinion" id="j_custom_note_1" data-toggle="autoheight" cols="60" data-minheight="100"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="pro_desc" class="control-label x120">上传文件：</label>
+                        <div style="display: inline-block; vertical-align: middle;">
+                            <div id="j_custom_pic_up" data-toggle="upload" data-uploader="<?php echo U('Project/uploadToReview')?>?sessionid=?" 
+                                 data-file-size-limit="1024000000"
+                                 data-file-type-exts="<?php echo $exts?>"
+                                 data-multi="true"
+                                 data-on-upload-success="pic_upload_success"
+                                 data-icon="cloud-upload"
+                                 data-auto="true"
+                                 data-form-data='{"file_id":"<?php echo $file_id?>","pro_id":"<?php echo $pro_id?>"}'
+                                 data-file-obj-name='pro-<?php echo $pro_id?>'></div>
+                        </div>
+                        <!--<input type="hidden" name="filename" value="" id="file_up">-->
+                        <span id="j_custom_span_pic">
+                        </span>
+                        <!--<a href="<?php echo U('Project/file', array('pro_id'=>$pro_id))?>" class="btn btn-green" data-toggle="dialog" data-height="900" data-width="800" data-id="project-file" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="项目相关文件">上传文件</a>-->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table id='file-list' class="table table-condensed table-hover" width="100%">
+            <thead>
+                <tr>
+                    <th align="center" width="300">文件名</th>
+                    <th align="center" width="300">上传日期</th>
+                    <th width="300" align="center">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($list as $v){?>
+                <tr>
+                    <td align="center"><a target="_blank" href="<?php echo $v["path"]?>"><?php echo $v['doc_name']?></a></td>
+                    <td align="center"><?php echo date('Y-m-d H:s:i', $v['addtime'])?></td>
+                    <td align="center"><a href="<?php echo U('Project/remove_attachment')?>" data-data='{"file_path":"<?php echo $v["path"]?> ","pro_id":"<?php echo $v["pro_id"]?>","aid":"<?php echo $v["id"]?>","file_id":"<?php echo $v["id"]?>"}'  class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td>
+                </tr>
+                <?php }?>
+            </tbody>
+        </table>
+    </form>
+    <h4>审核流程</h4>
+    <table class="table table-bordered table-striped table-hover" width="100%">
+        <thead>
+            <tr>
+                <th align="center" width="300">操作人</th>
+                <th align="center" width="300">提交时间</th>
+                <th align="center" width="300">类型</th>
+                <th align="center" width="300">结果</th>
+                <th align="center" width="300">意见</th>
+                <th align="center" width="300">附件</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($process_list as $v){?>
+            <tr data-id="<?php echo $v['pro_id']?>">
+                <td align="center"><?php echo $v['real_name']?></td>
+                <td align="center"><?php echo date('Y-m-d H:i:s', $v['addtime'])?></td>
+                <td align="center"><?php echo $workflow[$v['step_pid']][$v['pro_step']]['step_desc']?></td>
+                <td align="center"><?php echo $workflow[$v['step_pid']][$v['pro_step']]['step_next'][$v['status']]['desc']?></td>
+                <td align="center"><?php echo $v['opinion']?></td>
+                <td align="center">
+                    <?php if($v['files'] > 0):?>
+                    <a href="<?php echo U('Project/fileReviewList', array('pro_id'=>$v['context_id'], 'step_id'=>$v['id']))?>" class="btn btn-green" data-toggle="dialog" >附件</a>
+                    <?php else:?>
+                    --
+                    <?php endif;?>
+                </td>
+            </tr>
+            <?php }?>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">提交审核</button></li>
+    </ul>
+</div>
+<script type="text/javascript">
+    function pic_upload_success(file, data) {
+        var json = $.parseJSON(data)
+        $(this).bjuiajax('ajaxDone', json)
+        if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+            add_uploadedfile(json.content);
+//        $('#j_custom_pic').val(json.filename).trigger('validate')
+//        $('#j_custom_span_pic').html('<img src="'+ json.filename +'" width="100" />')
+        }
+    }
+// 图片上传
+    function add_uploadedfile(data) {
+        var i = $('#file-list> tbody > tr').length + 1;
+        var newTr = '<tr><td align="center"><a href="' + data.file_path + '">' + data.file_name + '</a><input type="hidden" name="reviews[' + i + '][path]" value="' + data.file_path + '" /></a><input type="hidden" name="reviews[' + i + '][doc_name]" value="' + data.file_name + '" /></td><td align="center">' + data.addtime + '</td><td align="center"><a href="<?php echo U("Project/remove_review")?>" data-data=\'{"file_path":\"' + data.file_path + '\"}\' class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td></tr>';
+//        var newImg = '<li id="' + data.file_id + '"><input type="hidden" name="attachment['+ i +'][path]" value="' + data.file_path + '" /><div class="thumb-list-pics"><a href="javascript:void(0);"><img src="' + data.file_path + '" alt=""/></a></div><a href="javascript:del_file_upload(0,' + data.file_id + ',\'' + data.file_path + '\');" class="del" title="删除">X</a><a href="javascript:insert_editor(\'' + data.file_path + '\');" class="inset"><i class="fa fa-clipboard"></i>插入图片</a></li>';
+        $('#file-list > tbody').append(newTr);
+
+    }
+    function DX(n) {
+        if (!/^(0|[1-9]\d*)(\.\d+)?$/.test(n))
+            return "数据非法";
+        var unit = "千百拾亿千百拾万千百拾元角分", str = "";
+        n += "00";
+        var p = n.indexOf('.');
+        if (p >= 0)
+            n = n.substring(0, p) + n.substr(p + 1, 2);
+        unit = unit.substr(unit.length - n.length);
+        for (var i = 0; i < n.length; i++)
+            str += '零壹贰叁肆伍陆柒捌玖'.charAt(n.charAt(i)) + unit.charAt(i);
+        return str.replace(/零(千|百|拾|角)/g, "零").replace(/(零)+/g, "零").replace(/零(万|亿|元)/g, "$1").replace(/(亿)万|壹(拾)/g, "$1$2").replace(/^元零?|零分/g, "").replace(/元$/g, "元整");
+    }
+    $(function () {
+        var money = <?php echo $money?>;
+        var upper = DX(money);
+        $("#uploanamount").val(upper);
+    });
+
+
+</script>

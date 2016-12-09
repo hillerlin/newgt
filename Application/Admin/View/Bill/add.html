@@ -1,0 +1,226 @@
+<script type="text/javascript">
+    function pic_upload_success(file, data) {
+        var json = $.parseJSON(data)
+
+        $(this).bjuiajax('ajaxDone', json)
+        if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+            $('#j_custom_pic').val(json.filename).trigger('validate')
+            $('#j_custom_span_pic').html('<img src="' + json.filename + '" width="100" />')
+        }
+    }
+    function do_OK(json, $form) {
+        console.log(json)
+        console.log($form)
+    }
+</script>
+<div class="bjui-pageContent">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active"><a href="#auto" role="tab" data-toggle="tab">自付</a></li>
+        <li><a href="#man" role="tab" data-toggle="tab">代付</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade active in" id="auto">
+            <form action="<?php echo U('Bill/save')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+                <input type="hidden" name="capital_id" value='' size="15" data-rule="required">
+                <input type="hidden" name="bill_type_status" value='' size="15" data-rule="required">
+                <table class="table table-condensed table-hover" width="100%">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <label for="company_id" class="control-label x120">开票抬头：</label>
+                                <input type="text" name="tax_title" id="p_company" value="" size="15" data-toggle="lookup" data-url="<?php echo U('CapitalFlow/withBill')?>" data-width="710" data-height="300" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="money" class="control-label x120 red">税务识别号：</label>
+                                <input type="text" name="tax_no" id="p_account" value="" size="15" data-rule="required">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="money" class="control-label x120 red">金额：</label>
+                                <input type="text" name="money" id="p_account" value="" size="15" data-rule="required" readonly>元
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="debt_no" class="control-label x120">地址：</label>
+                                <input type="text" name="address" id="p_account" value="" size="15" data-rule="required" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="debt_no" class="control-label x120">电话：</label>
+                                <input type="text" name="tel" id="p_account" value="" size="15" data-rule="required" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="debt_no" class="control-label x120">收款账户：</label>
+                                <input type="text" name="bank_name" id="p_account" value="" size="15" data-rule="required" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="debt_no" class="control-label x120">账号：</label>
+                                <input type="text" name="bank_no" id="p_account" value="" size="15" data-rule="required" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="pay_time" class="control-label x120">打款时间：</label>
+                                <input type="text" name="pay_time" id="p_account" value="" size="15" data-rule="required" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="control-label x120">开票项目:</label>
+                                <input type="radio" name="bill_type" id="check1" data-toggle="icheck" data-label="金融服务费" value="1">&nbsp;
+                                <input type="radio" name="bill_type" id="check2" data-toggle="icheck" data-label="投资顾问费" value="2">&nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="control-label x120">票据类型:</label>
+                                <input type="radio" name="bill_kind" id="check1" data-toggle="icheck" data-label="专票" value="zp">&nbsp;
+                                <input type="radio" name="bill_kind" id="check2" data-toggle="icheck" data-label="普票" value="pp">&nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="control-label x120">是否开票:</label>
+                                <select name="status" data-toggle="selectpicker" id="select_status" data-rule="required">
+                                    <option value="">全部</option>
+                                    <?php //foreach($type_describe as $key => $val):?>
+                                    <option value="wk">未开</option>
+                                    <option value="yk">已开</option>
+                                    <option value="wxk">无需开</option>
+                                    <option value="wkj">未开(急)</option>
+                                    <?php //endforeach;?>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="remark" class="control-label x120">备注：</label>
+                                <textarea name="remark" id="j_custom_note_1" cols="30" rows="2"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button type="submit" class="btn-default" style="margin-left: 80%" data-icon="save">保存</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+        <div class="tab-pane fade" id="man">
+            <form action="<?php echo U('Bill/save')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+                <table class="table table-condensed table-hover" width="100%">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <label for="company_id" class="control-label x120">开票抬头：</label>
+                                <input type="text" name="tax_title" id="p_company" value="" size="15" data-url="<?php echo U('CapitalFlow/withBill')?>" data-width="710" data-height="300" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="money" class="control-label x120 red">税务识别号：</label>
+                                <input type="text" name="tax_no" id="p_account" value="" size="15" data-rule="required">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="money" class="control-label x120 red">金额：</label>
+                                <input type="text" name="money" id="p_account" value="" size="15" data-rule="required" >元
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="debt_no" class="control-label x120">地址：</label>
+                                <input type="text" name="address" id="p_account" value="" size="15" data-rule="required" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="debt_no" class="control-label x120">电话：</label>
+                                <input type="text" name="tel" id="p_account" value="" size="15" data-rule="required" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="debt_no" class="control-label x120">收款账户：</label>
+                                <input type="text" name="bank_name" id="p_account" value="" size="15" data-rule="required" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="debt_no" class="control-label x120">账号：</label>
+                                <input type="text" name="bank_no" id="p_account" value="" size="15" data-rule="required" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="pay_time" class="control-label x120">打款时间：</label>
+                                <input type="text" name="pay_time" id="p_account" value="" size="15" data-rule="required" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="control-label x120">开票项目:</label>
+                                <input type="radio" name="bill_type" id="check1" data-toggle="icheck" data-label="金融服务费" value="1">&nbsp;
+                                <input type="radio" name="bill_type" id="check2" data-toggle="icheck" data-label="投资顾问费" value="2">&nbsp;
+                                <!--                        <select name="type" data-toggle="selectpicker" id="select_status">
+                                                            <option value="">全部</option>
+                                                            <?php //foreach($type_describe as $key => $val):?>
+                                                            <option value="1">金融服务费</option>
+                                                            <option value="2">投资顾问费</option>
+                                                            <?php //endforeach;?>
+                                                        </select>-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="control-label x120">是否开票:</label>
+                                <select name="status" data-toggle="selectpicker" id="select_status" data-rule="required">
+                                    <option value="">全部</option>
+                                    <?php //foreach($type_describe as $key => $val):?>
+                                    <option value="wk">未开</option>
+                                    <option value="yk">已开</option>
+                                    <option value="wxk">无需开</option>
+                                    <option value="wkj">未开(急)</option>
+                                    <?php //endforeach;?>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="remark" class="control-label x120">备注：</label>
+                                <textarea name="remark" id="j_custom_note_1" cols="30" rows="2"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button type="submit" class="btn-default" style="margin-left: 80%" data-icon="save">保存</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("input[name='bill_type_status']").on('afterchange.bjui.lookup', function (e, data) {
+        var myvalue = data.value;
+        if (myvalue == 1) {
+            $('#check1').iCheck('check');
+        } else if (myvalue == 2) {
+            $('#check2').iCheck('check');
+        }
+    })
+</script>

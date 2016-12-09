@@ -1,0 +1,92 @@
+<div class="bjui-pageHeader">
+    <form id="pagerForm" data-toggle="ajaxsearch" action="<?php echo U('ProjectDone/applyList')?>" method="post">
+        <input type="hidden" name="pageSize" value="${model.pageSize}">
+        <input type="hidden" name="pageCurrent" value="${model.pageCurrent}">
+        <input type="hidden" name="orderField" value="${param.orderField}">
+        <input type="hidden" name="orderDirection" value="${param.orderDirection}">
+        <div class="bjui-searchBar">
+            <button data-url="<?php echo U('ProjectDone/add')?>" class="btn btn-blue" data-toggle="dialog" data-width='900' data-height="600" data-mask='true' data-icon="plus" data-id="loanmanage-loanapplytoadd" data-title="项目完结申请表">添加</button>
+            <label>提交状态:</label>
+            <select name="submit_type" data-toggle="selectpicker">
+                <option value="">全部</option>
+                <option value="0">草稿</option>
+                <option value="1">已提交</option>
+            </select>&nbsp;
+            <label>项目标题：</label><input type="text" id="pro_no" value="" name="pro_title" class="form-control" size="10">&nbsp;
+            <label>项管跟进人:</label>
+            <select name="pmd_admin" data-toggle="selectpicker">
+                <option value="">全部</option>
+                <?php foreach($pmd as $v): ?>
+                <option value="<?php echo $v['admin_id']?>"><?php echo $v['real_name']?></option>
+                <?php endforeach; ?>
+            </select>&nbsp;
+            <!--<button type="button" class="showMoreSearch" data-toggle="moresearch" data-name="custom"><i class="fa fa-angle-double-down"></i></button>-->
+            <button type="submit" class="btn-default" data-icon="search">查询</button>&nbsp;
+            <a class="btn btn-orange" href="javascript:;" data-toggle="reloadsearch" data-clear-query="true" data-icon="undo">清空查询</a>
+            
+        </div>
+<!--        <div class="bjui-moreSearch">
+            <label>职业：</label><input type="text" value="" name="profession" size="15" />
+            <label>&nbsp;性别:</label>
+            <select name="sex" data-toggle="selectpicker">
+                <option value="">全部</option>
+                <option value="true">男</option>
+                <option value="false">女</option>
+            </select>
+            <label>&nbsp;手机:</label>
+            <input type="text" value="" name="mobile" size="10">
+        </div>-->
+    </form>
+</div>
+<div class="bjui-pageContent tableContent">
+    <table class="table table-bordered table-hover table-striped table-top" data-selected-multi="true">
+        <thead>
+            <tr>
+                <th data-order-field="pro_title" align="center" width="300">项目标题</th>
+                <th data-order-direction="asc" data-order-field="addtime" align="center" width="300">添加时间</th>
+                <th data-order-field="company" align="center" width="300">公司</th>
+                <th data-order-field="company" align="center" width="300">项管跟进人</th>
+                <th data-order-field="pro_status"  align="center" width="100">提交状态</th>
+                <th data-order-field="pro_status"  align="center" width="100">审核状态</th>
+                <th width="300" align="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($list as $v){?>
+            <tr data-id="<?php echo $v['pro_id']?>">
+                <td align="center"><?php echo $v['pro_title']?></td>
+                <td align="center"><?php echo date('Y-m-d H:i:s', $v['addtime'])?></td>
+                <td align="center"><?php echo $v['company_name']?></td>
+                <td align="center"><?php echo $v['pmd_real_name']?></td>
+                <td align="center"><?php echo $v['submit_status']==1?'已提交':'草稿'?></td>
+                <td align="center"><?php echo $workflow[8][$v['current_node_index']]['step_desc']?></td>
+                <td align="center">
+                    <?php if($v['submit_status'] == 0){?>
+                    <a href="<?php echo U('ProjectDone/submit', array('finish_id'=>$v['finish_id']))?>" class="btn btn-green" data-toggle="doajax" data-id="project-submit" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="项目审核">提交</a>
+                    <a href="<?php echo U('ProjectDone/edit', array('finish_id'=>$v['finish_id']))?>" class="btn btn-green" data-toggle="dialog" data-mask="true" data-height="900" data-width="800" data-id="loanform-edit" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="编辑">编辑</a>
+                    <a href="<?php echo U('ProjectDone/del', array('finish_id'=>$v['finish_id']))?>" class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a>
+                    <?php }else{ ?>
+                    <a href="<?php echo U('ProjectDone/detail', array('finish_id'=>$v['finish_id']))?>" class="btn btn-green" data-toggle="dialog" data-mask="true" data-height="900" data-width="800" data-id="projectdone-detail" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="项目审核">审核详情</a>
+                    <?php }?>
+                </td>
+            </tr>
+            <?php }?>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+    <div class="pages">
+        <span>每页&nbsp;</span>
+        <div class="selectPagesize">
+            <select data-toggle="selectpicker" data-toggle-change="changepagesize">
+                <option value="30">30</option>
+                <option value="60">60</option>
+                <option value="120">120</option>
+                <option value="150">150</option>
+            </select>
+        </div>
+        <span>&nbsp;条，共 <?php echo $total?> 条</span>
+    </div>
+    <div class="pagination-box" data-toggle="pagination" data-total="<?php echo $total?>" data-page-size="30" data-page-current="1">
+    </div>
+</div>

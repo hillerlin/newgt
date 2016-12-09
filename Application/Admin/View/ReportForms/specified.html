@@ -1,0 +1,79 @@
+<div class="bjui-pageHeader">
+</div>
+<div class="bjui-pageContent tableContent">
+    <table class="table table-bordered table-hover table-striped table-top">
+        <thead>
+            <tr>
+                <th data-order-direction="asc" data-order-field="pay_time" align="center" width="100">放款时间</th>
+                <th data-order-direction="asc" data-order-field="pay_time" align="center" width="100">收款时间</th>
+                <th data-order-direction="asc" data-order-field="repay_time" align="center" width="100">放款金额(元)</th>
+                <th data-order-direction="asc" data-order-field="repay_time" align="center" width="100">实收利息(元)</th>
+                <th data-order-direction="asc" data-order-field="repay_time" align="center" width="100">实收手续费(元)</th>
+                <th data-order-direction="asc" data-order-field="repay_time" align="center" width="100">实收咨询费(元)</th>
+                <th data-order-direction="asc" data-order-field="repay_time" align="center" width="100">实收保证金(元)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php 
+                $sum_financing = 0;
+                $sum_interest = 0;
+                $sum_handling_charge = 0;
+                $sum_counseling_fee = 0;
+                $sum_cash_deposit = 0;
+                foreach($list as $v){
+                $sum_financing += $v['financing'];
+                $sum_interest += $v['interest'];
+                $sum_handling_charge += $v['handling_charge'];
+                $sum_counseling_fee += $v['counseling_fee'];
+                $sum_cash_deposit += $v['cash_deposit'];
+            ?>
+            <tr data-id="<?php echo $v['oid']?>">
+                <td align="center"><?php echo $v['is_income'] ? '' : date('Y-m-d',$v['pay_time'])?></td>
+                <td align="center"><?php echo $v['is_income'] ? date('Y-m-d',$v['pay_time']) : ''; ?></td>
+                <td align="center" <?php echo $v['money_in'] > 0 ? 'class="red"' : ''?>><?php echo number_format($v['financing'], 2)?></td>
+                <td align="center" <?php echo $v['money_out'] > 0 ? 'class="red"' : ''?>><?php echo $v['back_interest'] > 0 ? -number_format($v['back_interest'], 2) : number_format($v['interest'], 2)?></td>
+                <td align="center" <?php echo $v['money_out'] > 0 ? 'class="red"' : ''?>><?php echo $v['back_handing_charge'] > 0 ? -number_format($v['back_handing_charge'], 2) : number_format($v['handling_charge'], 2)?></td>
+                <td align="center" <?php echo $v['money_out'] > 0 ? 'class="red"' : ''?>><?php echo number_format($v['counseling_fee'], 2)?></td>
+                <td align="center" <?php echo $v['money_out'] > 0 ? 'class="red"' : ''?>><?php echo $v['back_cash_deposit'] > 0 ? -number_format($v['back_cash_deposit'], 2) :number_format($v['cash_deposit'], 2)?></td>
+            </tr>
+            <?php }?>
+            <tr data-id="<?php echo $v['oid']?>">
+                <td align="center">合计</td>
+                <td></td>
+                <td align="center" <?php echo $sum_money_in > 0 ? 'class="red"' : ''?>><?php echo number_format($sum_financing, 2)?></td>
+                <td align="center" <?php echo $sum_money_out > 0 ? 'class="red"' : ''?>><?php echo number_format($sum_interest, 2)?></td>
+                <td align="center" <?php echo $sum_money_out > 0 ? 'class="red"' : ''?>><?php echo number_format($sum_handling_charge, 2)?></td>
+                <td align="center" <?php echo $sum_money_out > 0 ? 'class="red"' : ''?>><?php echo number_format($sum_counseling_fee, 2)?></td>
+                <td align="center" <?php echo $sum_money_out > 0 ? 'class="red"' : ''?>><?php echo number_format($sum_cash_deposit, 2)?></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+<!--    <div class="pages">
+        <span>每页&nbsp;</span>
+        <div class="selectPagesize">
+            <select data-toggle="selectpicker" data-toggle-change="changepagesize">
+                <option value="30">30</option>
+                <option value="60">60</option>
+                <option value="120">120</option>
+                <option value="150">150</option>
+            </select>
+        </div>
+        <span>&nbsp;条，共 <?php echo $total?> 条</span>
+    </div>
+    <div class="pagination-box" data-toggle="pagination" data-total="<?php echo $total?>" data-page-size="30" data-page-current="1">
+    </div>-->
+</div>
+<script>
+    $(function () {
+        var selectObj = $("#select_status").get(0);
+        for (var i = 0; i < selectObj.length; i++) {
+            if (selectObj.options[i].value == '{$post.status}') {
+                selectObj.options[i].selected = true;
+                break;
+            }
+        }
+    })
+
+</script>  

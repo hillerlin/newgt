@@ -1,0 +1,284 @@
+<script type="text/javascript">
+    function pic_upload_success(file, data) {
+        var json = $.parseJSON(data)
+
+        $(this).bjuiajax('ajaxDone', json)
+        if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+            $('#j_custom_pic').val(json.filename).trigger('validate')
+            $('#j_custom_span_pic').html('<img src="' + json.filename + '" width="100" />')
+        }
+    }
+    function do_OK(json, $form) {
+        console.log(json)
+        console.log($form)
+    }
+</script>
+<div class="bjui-pageContent">
+    <form action="<?php echo U('LoanManage/loanApplyToAdd')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="handling_charge_bank_id" value="">
+        <input type="hidden" name="cash_deposit_bank_id" value="">
+        <input type="hidden" name="repurchase_rate_bank_id" value="">
+        <input type="hidden" name="counseling_fee_bank_id" value="">
+        <input type="hidden" name="contract_id" value="">
+        <input type="hidden" name="company_id" value="">
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="company_id" class="control-label x85">申请部门：</label>
+                        <input type="text" name="" id="p_company" value="项管部" size="15" data-width="600" data-height="300" readonly>
+                    </td>
+                    <td>
+                        <label for="company_id" class="control-label x85">申请人：</label>
+                        <input type="text" name="" id="p_company" value="{$admin.real_name}" size="15" data-width="600" data-height="300" readonly>
+                    </td>
+                    <td>
+                        <label for="company_id" class="control-label x85">申请时间：</label>
+                        <input type="text" name="apply_time" id="p_company" value="<?php echo date('Y-m-d', time())?>" size="15" data-toggle="datepicker" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="company_id" class="control-label x85">合同编号：</label>
+                        <input type="hidden" name="contract_id" value=''>
+                        <input type="text" name="contract_no" id="p_company" value="" size="20" data-toggle="lookup" data-url="<?php echo U('LoanManage/couldApplyList')?>" data-width="900" data-height="500" readonly>
+                    </td>
+                    <td>
+                        <label for="company_id" class="control-label x85">项目名称：</label>
+                        <input type="hidden" name="pro_id" value=''>
+                        <input type="text" name="pro_title" id="p_company" value="" size="20" data-width="600" data-height="300" readonly>
+                    </td>
+                    <td>
+                        <label for="company_id" class="control-label x85">项目编号：</label>
+                        <input type="text" name="pro_no" id="p_company" value="" size="15" data-width="600" data-height="300" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label for="debt_no" class="control-label x85">融资额度：</label>
+                        <input type="text" name="real_money" value='' data-rule="required" size="15"  readonly>元
+                    </td>
+                    <td>
+                        <label for="debt_no" class="control-label x85">融资期限：</label>
+                        <input type="text" name="term" value='' data-rule="required" size="15"  readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label for="assure_type" class="control-label x85">担保方式：</label>
+                        <?php foreach($assure_type as $key => $val):?>
+                        <input type="checkbox" name="assure_type[]" id="check" data-toggle="icheck" data-label="<?php echo $val;?>" value="<?php echo $key;?>">&nbsp;
+                        <?php endforeach;?>
+<!--                        <input type="checkbox" name="assure_type" id="check" data-toggle="icheck" data-label="企业担保">&nbsp;
+                        <input type="checkbox" name="assure_type" id="check" data-toggle="icheck" data-label="应收账款质押" value="1">&nbsp;<input type="checkbox" name="assure_type" id="check" data-toggle="icheck" data-label="房屋抵押">&nbsp;
+                        <input type="checkbox" name="assure_type" id="check" data-toggle="icheck" data-label="机械设备抵押" value="1">&nbsp;<input type="checkbox" name="assure_type" id="check" data-toggle="icheck" data-label="股权质押">&nbsp;
+                        <input type="checkbox" name="assure_type" id="check" data-toggle="icheck" data-label="货权凭证" value="1">&nbsp;<input type="checkbox" name="assure_type" id="check" data-toggle="icheck" data-label="其它">&nbsp;-->
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label for="pay_type" class="control-label x85">支付方式：</label>
+                        <?php foreach($contract_pay_type as $key => $val):?>
+                        <input type="radio" name="pay_type" id="check" data-toggle="icheck" value="<?php echo $key?>" data-label="<?php echo $val;?>" <?php echo $key==$pay_type ? 'checked' : ''?>>&nbsp;
+                           <?php endforeach;?>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label for="debt_no" class="control-label x85">是否监管账户：</label>
+                        <input type="radio" name="is_supervision" id="check" data-toggle="icheck" data-label="是" value="1">&nbsp;<input type="radio" name="is_supervision" id="check" data-toggle="icheck" data-label="否" value="0">
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <label for="debt_no" class="control-label x85">收款户名：</label>
+                        <input type="text" name="receive_name" value='' data-rule="required" size="20" >
+                    </td>
+                    <td >
+                        <label for="debt_no" class="control-label x85">开户行：</label>
+                        <input type="text" name="recevie_bank" value='' data-rule="required" size="20" >
+                    </td>
+                    <td >
+                        <label for="debt_no" class="control-label x85">账号：</label>
+                        <input type="text" name="recevie_bank_no" value='' data-rule="required" size="20" >
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <label for="debt_no" class="control-label x85">人民币（小写）：</label>
+                        <input type="text" name="money" id="lower" value='' data-rule="required" size="15" >
+                    </td>
+                    <td colspan="2">
+                        <label for="debt_no" class="control-label x85">人民币（大写）：</label>
+                        <input type="text" name="uploanamount" id="uploanamount" value='' data-rule="required" size="20" readonly >
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label for="debt_no" class="control-label x85">本次为该项目：</label>
+                        第<input type="text" name="loan_nums" value='' data-rule="required" size="5" >次出款，属于<input type="radio" name="loan_type" id="check" data-toggle="icheck" data-label="融资本金" value="1">&nbsp;<input type="radio" name="loan_type" id="check" data-toggle="icheck" data-label="换质" value="0">
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <label for="debt_no" class="control-label x85">手续费：</label>
+                        <input type="text" name="calc_handling_charge" value='' data-rule="required" size="15" readonly>元
+                    </td>
+                    <td colspan="2">
+                        <label for="debt_no" class="control-label x85">费率：</label>
+                        <input type="text" name="handling_charge" value='' data-rule="required" size="15" readonly>
+                    </td>
+<!--                    <td >
+                        <label for="debt_no" class="control-label x85">账号：</label>
+                        <input type="text" name="handling_charge_bank" value='' data-rule="required" size="15" data-toggle="lookup" data-url="<?php echo U('Bank/lookup',array('type'=>'handling_charge_bank'))?>" data-width="900" data-height="500" readonly>
+                    </td>-->
+                </tr>
+                <tr>
+                    <td >
+                        <label for="debt_no" class="control-label x85">开户行：</label>
+                        
+                        <input type="text" name="handling_charge_bank_name" value='' data-rule="required" size="20" readonly data-toggle="lookup" data-url="<?php echo U('Bank/lookup',array('type'=>'handling_charge'))?>" data-id="bank-lookup" data-width="900" data-height="500" >元
+                    </td>
+                    <td >
+                        <label for="debt_no" class="control-label x85">户名：</label>
+                        <input type="text" name="handling_charge_account_name" value='' data-rule="required" size="20" readonly>
+                    </td>
+                    <td >
+                        <label for="debt_no" class="control-label x85">账号：</label>
+                        <input type="text" name="handling_charge_bank_no" value='' data-rule="required" size="20" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <label for="debt_no" class="control-label x85">溢价回购款：</label>
+                        <input type="text" name="calc_repurchase_rate" value='' data-rule="required" size="15" readonly>元
+                    </td>
+                    <td colspan="2">
+                        <label for="debt_no" class="control-label x85">费率：</label>
+                        <input type="text" name="repurchase_rate" value='' data-rule="required" size="15" readonly>
+                    </td>
+<!--                    <td >
+                        <label for="debt_no" class="control-label x85">账号：</label>
+                        <input type="text" name="repurchase_rate_bank" value='' data-rule="required" size="15" readonly>
+                    </td>-->
+                </tr>
+                <tr>
+                    <td >
+                        <label for="debt_no" class="control-label x85">开户行：</label>
+                        <input type="text" name="repurchase_rate_bank_name" value='' data-rule="required" size="20" readonly data-toggle="lookup" data-url="<?php echo U('Bank/lookup',array('type'=>'repurchase_rate'))?>" data-id="bank-lookup" data-width="900" data-height="500" >元
+                    </td>
+                    <td >
+                        <label for="debt_no" class="control-label x85">户名：</label>
+                        <input type="text" name="repurchase_rate_account_name" value='' data-rule="required" size="20" readonly>
+                    </td>
+                    <td >
+                        <label for="debt_no" class="control-label x85">账号：</label>
+                        <input type="text" name="repurchase_rate_bank_no" value='' data-rule="required" size="20" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <label for="debt_no" class="control-label x85">咨询费：</label>
+                        <input type="text" name="calc_counseling_fee" value='' data-rule="required" size="15" readonly >元
+                    </td>
+                    <td colspan="2">
+                        <label for="debt_no" class="control-label x85">费率：</label>
+                        <input type="text" name="counseling_fee" value='' data-rule="required" size="15" readonly>
+                    </td>
+<!--                    <td >
+                        <label for="debt_no" class="control-label x85">账号：</label>
+                        <input type="text" name="counseling_fee_bank" value='' data-rule="required" size="15" readonly>
+                    </td>-->
+                </tr>
+                <tr>
+                    <td >
+                        <label for="debt_no" class="control-label x85">开户行：</label>
+                        <input type="text" name="counseling_fee_bank_name" value='' data-rule="required" size="20" readonly data-toggle="lookup" data-url="<?php echo U('Bank/lookup',array('type'=>'counseling_fee'))?>" data-id="bank-lookup" data-width="900" data-height="500" >元
+                    </td>
+                    <td >
+                        <label for="debt_no" class="control-label x85">户名：</label>
+                        <input type="text" name="counseling_fee_account_name" value='' data-rule="required" size="20" readonly>
+                    </td>
+                    <td >
+                        <label for="debt_no" class="control-label x85">账号：</label>
+                        <input type="text" name="counseling_fee_bank_no" value='' data-rule="required" size="20" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <label for="debt_no" class="control-label x85">保证费：</label>
+                        <input type="text" name="calc_cash_deposit" value='' data-rule="required" size="15" readonly>元
+                    </td>
+                    <td colspan="2">
+                        <label for="debt_no" class="control-label x85">费率：</label>
+                        <input type="text" name="cash_deposit" value='' data-rule="required" size="15" readonly>
+                    </td>
+<!--                    <td >
+                        <label for="debt_no" class="control-label x85">账号：</label>
+                        <input type="text" name="cash_deposit_bank" value='' data-rule="required" size="15" readonly>
+                    </td>-->
+                </tr>
+                <tr>
+                    <td >
+                        <label for="debt_no" class="control-label x85">开户行：</label>
+                        <input type="text" name="cash_deposit_bank_name" value='' data-rule="required" size="20" readonly data-toggle="lookup" data-url="<?php echo U('Bank/lookup',array('type'=>'cash_deposit'))?>" data-id="bank-lookup" data-width="900" data-height="500" >元
+                    </td>
+                    <td >
+                        <label for="debt_no" class="control-label x85">户名：</label>
+                        <input type="text" name="cash_deposit_account_name" value='' data-rule="required" size="20" readonly>
+                    </td>
+                    <td >
+                        <label for="debt_no" class="control-label x85">账号：</label>
+                        <input type="text" name="cash_deposit_bank_no" value='' data-rule="required" size="20" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label for="debt_no" class="control-label x85">项目经理说明：</label>
+                            <textarea name="desciption" id="j_custom_note_1" data-toggle="autoheight" rows="3" cols="50"></textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>
+<script>
+    
+
+    function DX(n) {
+        if (!/^(0|[1-9]\d*)(\.\d+)?$/.test(n))
+            return "数据非法";
+        var unit = "千百拾亿千百拾万千百拾元角分", str = "";
+        n += "00";
+        var p = n.indexOf('.');
+        if (p >= 0)
+            n = n.substring(0, p) + n.substr(p + 1, 2);
+        unit = unit.substr(unit.length - n.length);
+        for (var i = 0; i < n.length; i++)
+            str += '零壹贰叁肆伍陆柒捌玖'.charAt(n.charAt(i)) + unit.charAt(i);
+        return str.replace(/零(千|百|拾|角)/g, "零").replace(/(零)+/g, "零").replace(/零(万|亿|元)/g, "$1").replace(/(亿)万|壹(拾)/g, "$1$2").replace(/^元零?|零分/g, "").replace(/元$/g, "元整");
+    }
+    $("#lower").change(function () {
+        var money = $(this).val();
+        var upper = DX(money);
+        $("#uploanamount").val(upper);
+        var term = $("input[name='term']").val();
+        var calc_handling_charge = $("input[name='handling_charge']").val() * money / 100 * term / 12;
+        $("input[name='calc_handling_charge']").val(calc_handling_charge);
+        
+        var calc_repurchase_rate = $("input[name='repurchase_rate']").val() * money / 100 * term / 12;
+        $("input[name='calc_repurchase_rate']").val(calc_repurchase_rate);
+        
+        var calc_counseling_fee = $("input[name='counseling_fee']").val() * money / 100 * term / 12;
+        $("input[name='calc_counseling_fee']").val(calc_counseling_fee);
+        var calc_cash_deposit = $("input[name='cash_deposit']").val() * money / 100 * term / 12;
+        $("input[name='calc_cash_deposit']").val(calc_cash_deposit);
+        
+    });
+</script>

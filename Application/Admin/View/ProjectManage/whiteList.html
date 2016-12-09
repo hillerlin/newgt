@@ -1,0 +1,83 @@
+<script type="text/javascript">
+//选择事件
+function S_NodeCheck(e, treeId, treeNode) {
+    var zTree = $.fn.zTree.getZTreeObj(treeId),
+        nodes = zTree.getCheckedNodes(true)
+    var ids = '', names = ''
+    debugger;
+    for (var i = 0; i < nodes.length; i++) {
+        if (nodes[i].isParent == false) {
+            ids   += ','+ nodes[i].id
+            names += ','+ nodes[i].name
+        }
+    }
+    if (ids.length > 0) {
+        ids = ids.substr(1), names = names.substr(1)
+    }
+    
+    var $from = $('#'+ treeId).data('fromObj')
+    
+    if ($from && $from.length) {
+        $from.val(names);
+        $('input[name="admin_ids"]').val(ids);
+    }
+}
+//单击事件
+function S_NodeClick(event, treeId, treeNode) {
+    var zTree = $.fn.zTree.getZTreeObj(treeId)
+    
+    zTree.checkNode(treeNode, !treeNode.checked, true, true)
+    
+    event.preventDefault()
+}
+</script>
+<div class="bjui-pageContent">
+    <form action="<?php echo U('ProjectManage/addWhite')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="admin_ids" value="">
+        <input type="hidden" name="pro_id" value="{$pro_id}">
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+<!--                <tr style="" id="reversed">
+                    <td>
+                        <label for="company_id" class="control-label x120">供应商：</label>
+                        <input type="text" name="menus" id="j_ztree_menus1" data-toggle="selectztree" size="18" data-tree="#j_select_tree1" readonly>
+                            <ul id="j_select_tree1" class="ztree hide" data-toggle="ztree" data-expand-all="false" data-expand-all="true" data-check-enable="true" data-on-check="S_NodeCheck" data-on-click="S_NodeClick">
+                                <?php foreach($list as $v):?>
+                                <li data-id="<?php echo $v['dept_id']?>" data-pid="<?php echo $v['pid']?>" data-url="<?php echo U('Admin/index')?>" ><?php echo $v['department']?></li>
+                                <?php foreach($v['sub'] as $v1):?>
+                                <li data-id="<?php echo $v1['dept_id']?>" data-pid="<?php echo $v1['pid']?>" data-url="<?php echo U('Admin/index', array('dp_id' => $v1['dept_id']))?>" ><?php echo $v1['department']?></li>
+                                <?php foreach($admin_list[$v1['dept_id']] as $val): ?>
+                                <li data-id="<?php echo $val['admin_id']?>" data-pid="<?php echo $v1['dept_id']?>" data-url="<?php echo U('Admin/index', array('dp_id' => $v1['dept_id']))?>" ><?php echo $val['real_name']?></li>
+                                <?php endforeach;?>
+                                <?php endforeach;?>
+                                <?php endforeach;?>
+                            </ul>
+                    </td>
+                </tr>-->
+                <tr>
+                    <td>
+                        <label for="loan_remark" class="control-label x120">员工：</label>
+                        <textarea  name="menus" id="j_ztree_menus1" data-toggle="selectztree"  data-tree="#j_select_tree1" readonly id="j_custom_note_1" cols="30" rows="2">{$admin_names}</textarea>
+                        <ul id="j_select_tree1" class="ztree hide" data-toggle="ztree" data-expand-all="false" data-expand-all="true" data-check-enable="true" data-on-check="S_NodeCheck" data-on-click="S_NodeClick">
+                                <?php foreach($list as $v):?>
+                                <li data-id="<?php echo $v['dept_id']?>" data-pid="<?php echo $v['pid']?>" data-url="<?php echo U('Admin/index')?>" ><?php echo $v['department']?></li>
+                                <?php foreach($v['sub'] as $v1):?>
+                                <li data-id="<?php echo $v1['dept_id']?>" data-pid="<?php echo $v1['pid']?>" data-url="<?php echo U('Admin/index', array('dp_id' => $v1['dept_id']))?>" ><?php echo $v1['department']?></li>
+                                <?php foreach($admin_list[$v1['dept_id']] as $val): ?>
+                                <li data-id="<?php echo $val['admin_id']?>" data-pid="<?php echo $v1['dept_id']?>" data-url="<?php echo U('Admin/index', array('dp_id' => $v1['dept_id']))?>" data-checked="<?php echo $val['checked']?>"><?php echo $val['real_name']?></li>
+                                <?php endforeach;?>
+                                <?php endforeach;?>
+                                <?php endforeach;?>
+                            </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>

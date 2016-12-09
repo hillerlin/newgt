@@ -1,0 +1,47 @@
+<script type="text/javascript">
+    function pic_upload_success(file, data) {
+        var json = $.parseJSON(data)
+        $(this).bjuiajax('ajaxDone', json)
+        if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+            add_uploadedfile(json.content);
+//        $('#j_custom_pic').val(json.filename).trigger('validate')
+//        $('#j_custom_span_pic').html('<img src="'+ json.filename +'" width="100" />')
+        }
+    }
+    function add_uploadedfile(data) {
+        var i = $('#file-list> tbody > tr').length + 1;
+        var newTr = '<tr><td align="center"><a href="' + data.file_path + '">' + data.file_name + '</a><input type="hidden" name="files['+ i +'][path]" value="' + data.file_path + '" /></a><input type="hidden" name="files['+ i +'][file_name]" value="' + data.file_name + '" /></td><td align="center">' + data.addtime + '</td><td align="center"><a href="<?php echo U("AfterLoan/remove_report")?>" data-data=\'{"file_path":\"' + data.file_path + '\"}\' class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td></tr>';
+        $('#file-list > tbody').append(newTr);
+
+    }
+    function do_OK(json, $form) {
+        console.log(json)
+        console.log($form)
+    }
+</script>
+<div class="bjui-pageContent">
+    <form action="<?php echo U('AfterLoan/save_log')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <table id='file-list' class="table table-condensed table-hover" width="100%">
+            <thead>
+                <tr>
+                    <th align="center" width="300">凭证</th>
+                    <th align="center" width="100">上传日期</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($list as $v){?>
+                <tr>
+                    <td align="center"><a target="_blank" href="<?php echo $v["path"]?>"><img src="<?php echo $v['path']?>" style="max-width: 550px; max-height: 450px;"></a></td>
+                    <td align="center"><?php echo date('Y-m-d', $v['addtime']) ?></td>
+                </tr>
+                <?php }?>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>

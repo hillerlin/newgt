@@ -1,0 +1,86 @@
+<div class="bjui-pageContent">
+    <form action="<?php echo U('Company/save')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="company_id" value="{$company_id}"  />
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x150">公司名称：</label>
+                        <input type="text" name="company_name" id="p_name" value="{$company_name}" data-rule="required" size="15">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x150">公司行业：</label>
+                        <select name="industry" data-rule="required" data-toggle="selectpicker">
+                            <option value="">--请选择--</option>
+                            <?php foreach($industries as $key => $val):?>
+                            <option value="<?php echo $key?>" <?php echo $key==$industry ? 'selected' : '';?>><?php echo $val?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x150">联系人姓名：</label>
+                        <input type="text" name="company_linker" id="p_name" value="{$company_linker}" data-rule="required" size="15">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="start_time" class="control-label x150">联系人手机号：</label>
+                        <input type="text" name="company_mobile" id="p_title" value="{$company_mobile}" data-rule="required" size="15" >
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x150">联系人座机：</label>
+                        <input type="text" name="company_phone" id="p_name" value="{$company_phone}" size="15">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x150">联系人邮箱：</label>
+                        <input type="text" name="company_email" id="p_name" value="{$company_email}" size="15">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="company_address" class="control-label x150">公司地址：</label>
+                        <input type="text" name="company_address" id="company_address" value="{$company_address}" size="15">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="bank_name" class="control-label x150">开户行：</label>
+                        <input type="bank_name" name="bank_name" id="p_name" value="{$bank_name}" size="18">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="bank_no" class="control-label x150">开户卡号：</label>
+                        <input type="text" name="bank_no" id="p_name" value="{$bank_no}" size="18">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="tax_no" class="control-label x150">税务识别号：</label>
+                        <input type="text" name="tax_no" id="p_name" value="{$tax_no}" size="18">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="company_remark" class="control-label x150">公司备注：</label>
+                        <textarea name="company_remark" id="j_custom_note_1" data-toggle="autoheight" rows="2" >{$company_remark}</textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>

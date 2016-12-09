@@ -1,0 +1,38 @@
+<script type="text/javascript">
+function do_open_layout(event, treeId, treeNode) {
+//    if (treeNode.isParent) {
+//        var zTree = $.fn.zTree.getZTreeObj(treeId)
+//        
+//        zTree.expandNode(treeNode)
+//        return
+//    }
+    $(event.target).bjuiajax('doLoad', {url:treeNode.url, target:treeNode.divid})
+    
+    event.preventDefault()
+}
+</script>
+<div class="bjui-pageContent">
+    <div style="float:left; width:200px;">
+        <ul id="layout-tree-fund" class="ztree" data-toggle="ztree" data-expand-all="true" data-on-click="do_open_layout">
+            <?php foreach($list as $v):?>
+            <li data-id="<?php echo $v['branch_id']?>" data-pid="<?php echo $v['pid']?>" data-url="<?php echo U('FundManager/listByDepartment')?>" data-divid="#layout-fund"><?php echo $v['branch_name']?></li>
+            <?php foreach($v['sub'] as $v1):?>
+            <li data-id="<?php echo $v1['branch_id']?>" data-pid="<?php echo $v1['pid']?>" data-url="<?php echo U('FundManager/listByDepartment', array('branch_id' => $v1['branch_id'], 'branch_type' => 'branch_id'))?>" data-divid="#layout-fund"><?php echo $v1['branch_name']?></li>
+            <?php foreach($v1['sub'] as $v2):?>
+            <li data-id="<?php echo $v2['branch_id']?>" data-pid="<?php echo $v2['pid']?>" data-url="<?php echo U('FundManager/listByDepartment', array('branch_id' => $v2['branch_id'], 'branch_type' => 'branch_ch_id'))?>" data-divid="#layout-fund"><?php echo $v2['branch_name']?></li>
+            <?php endforeach;?>
+            <?php endforeach;?>
+            <?php endforeach;?>
+        </ul>
+    </div>
+    <div style="margin-left:210px; height:100%; overflow:hidden;">
+        <div style="height:100%; overflow:hidden;">
+            <fieldset style="height:100%;">
+                <!--<legend>第一/三业务区</legend>-->
+                <div id="layout-fund" style="height:100%; overflow:hidden;">
+                    
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>

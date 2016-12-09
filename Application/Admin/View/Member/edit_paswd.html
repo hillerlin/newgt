@@ -1,0 +1,49 @@
+<link href="__THEME__/css/index.css" rel="stylesheet">
+<div class="bjui-pageContent" style="top: 0px; bottom: 33px;">
+
+    <form action="{:U('member/save_member')}" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="mid" id="mid" value="{$mid}" />
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit" style="width:17%">
+                    <label for="member_name"><em>*</em>登录名</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="member_name" value="{$member_name}" class="input-txt"  data-rule="required" readonly>
+                    <span class="err"></span>
+                    <p class="notic">3-15位字符，可由中文、英文、数字及“_”、“-”组成。</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit" style="width:17%">
+                    <label for="member_password"><em>*</em>密码</label>
+                </dt>
+                <dd class="opt">
+                    <input type="password" id="member_password" name="member_password" value="" class="input-txt"  data-rule="required">
+                    <span class="err"></span>
+                    <p class="notic">6-20位字符，可由英文、数字及标点符号组成。留空表示不修改</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit" style="width:17%">
+                    <label for="member_password"><em>*</em>确认密码</label>
+                </dt>
+                <dd class="opt">
+                    <input type="password" id="member_rpassword" name="member_rpassword" value="" class="input-txt"  data-rule="required">
+                    <span class="err"></span>
+                    <p class="notic">请再次输入您的密码。</p>
+                </dd>
+            </dl>
+        </div>
+    </form>
+</div>
+<div class="bjui-pageFooter"><ul>    
+        <li class="pull-left"><button type="button" class="btn btn-orange prev disabled" data-icon="arrow-up"> 上一条</button></li>    
+        <li class="pull-left"><button type="button" class="btn btn-orange next" data-icon="arrow-down"> 下一条</button></li>    
+        <li><button type="button" class="btn-close" data-icon="remove"> 取消</button></li>    
+        <li><button type="submit" class="btn btn-default save" data-icon="save" data-ajax=""> 保存</button></li>
+    </ul>
+</div>
+<div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
+</body>
+</html>

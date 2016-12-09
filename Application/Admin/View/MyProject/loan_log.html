@@ -1,0 +1,45 @@
+<div class="bjui-pageHeader">
+</div>
+<div class="bjui-pageContent tableContent">
+    <table class="table table-bordered table-hover table-striped table-top" data-selected-multi="true">
+        <thead>
+            <tr>
+                <th data-order-field="pro_no" align="center" width="150">项目编号</th>
+                <th data-order-field="pro_title" align="center" width="150">项目标题</th>
+                <th data-order-field="company" align="center" width="300">公司</th>
+                <th data-order-direction="asc" data-order-field="addtime" align="center" width="100">放款时间</th>
+                <th data-order-direction="asc" data-order-field="deadline" align="center" width="100">到期时间</th>
+                <th data-order-field="debt_account"  align="center" width="150">放款金额(元)</th>
+                <th data-order-field="interest"  align="center" width="80">违约金(元)</th>
+                <th data-order-field="interest"  align="center" width="80">逾期利息(元)</th>
+                <th data-order-field="gt_uid" align="center" width="150">项管部跟进人</th>
+                <th data-order-field="remark"  align="center" width="150">备注</th>
+                <th data-order-field="submit_status"  align="center" width="100">状态</th>
+                <th width="300" align="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($list as $v){?>
+            <tr data-id="<?php echo $v['pro_id']?>">
+                <td align="center"><?php echo $v['pro_no']?></td>
+                <td align="center"><?php echo $v['pro_title']?></td>
+                <td align="center"><?php echo $v['company_name']?></td>
+                <td align="center"><?php echo date('Y-m-d',$v['real_time'])?></td>
+                <td align="center"><?php echo date('Y-m-d',$v['deadline'])?></td>
+                <td align="center"><?php echo number_format($v['debt_account'], 2)?></td>
+                <td align="center" class='red'><?php echo number_format($v['penalty'], 2)?></td>
+                <td align="center" class='red'><?php echo number_format($v['demurrage'], 2)?></td>
+                <td align="center"><?php echo $v['real_name']?></td>
+                <td align="center"><?php echo $v['remark']?></td>
+                <td align="center">
+                <?php echo $v['status']==1 ? '放款中' : '已还款' ?>
+                </td>
+                <td align="center">
+                    <a href="<?php echo U('MyProject/debt', array('debt_all_id'=>$v['debt_all_id']))?>" class="btn btn-green" data-toggle="dialog" data-width="900" data-height="500" data-mask="true" data-id="projectdebt-detail-specified" data-title="债权列表">债权列表</a>
+                    <a href="<?php echo U('MyProject/schedule', array('debt_all_id'=>$v['debt_all_id']))?>" class="btn btn-green" data-toggle="dialog" data-width="1300" data-height="750" data-mask="true" data-id="pro-repayment-schedule-specified" data-title="还款计划表">还款计划表</a>
+                </td>
+            </tr>
+            <?php }?>
+        </tbody>
+    </table>
+</div>

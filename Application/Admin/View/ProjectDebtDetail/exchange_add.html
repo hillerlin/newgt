@@ -1,0 +1,165 @@
+<script type="text/javascript">
+function pic_upload_success(file, data) {
+    var json = $.parseJSON(data)
+    
+    $(this).bjuiajax('ajaxDone', json)
+    if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+        $('#j_custom_pic').val(json.filename).trigger('validate')
+        $('#j_custom_span_pic').html('<img src="'+ json.filename +'" width="100" />')
+    }
+}
+function do_OK(json, $form) {
+    console.log(json)
+    console.log($form)
+}
+//护照有效日期  = 签发日期 + 10年
+$('#j_custom_issuedate').on('afterchange.bjui.datepicker', function(e, data) {
+    var pattern = 'yyyy-MM-dd'
+    var start   = end = data.value
+    
+    end.setFullYear(start.getFullYear() + 10)
+    end.setDate(start.getDate() - 1)
+    
+    $('#j_custom_indate').val(end.formatDate(pattern))
+})
+</script>
+<div class="bjui-pageContent">
+    <form action="<?php echo U('ProjectDebtDetail/exchange')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="pro_id" id="pro_id" value="{$pro_id}"  />
+        <input type="hidden" name="exchange_debt_ids" id="pro_id" value="{$exchange_debt_ids}"  />
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x120">项目：</label>
+                        <input type="text" name="pro_title" id="pro_title" value="{$pro_title}"  data-rule="required" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x120">放款金额：</label>
+                        <input type="text" name="pro_account" id="p_name" value="{$pro_real_money}" data-rule="required" size="15" readonly>元
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x120">债权金额：</label>
+                        <input type="text" name="debt_account" id="p_name" value="{$debt_money}" size="15" readonly>元
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x120">已添加债权金额：</label>
+                        <input type="text" name="add_debt_account" id="p_name" value="0" size="15" readonly>元
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x120">添加债权：</label>
+                        <button data-url="/Admin/ProjectDebtDetail/doExchangeAdd.html?pro_id={$pro_id}" class="btn btn-blue" data-toggle="dialog" data-warn="请先选择项目" data-on-close="getDebt" data-width='500' data-height="300" data-mask='true' data-icon="plus" data-id="project-doadd">添加债权</button>
+                    </td>
+                </tr>
+            </tbody>    
+        </table>
+    </form>
+    <table id="debt-list" class="table table-bordered table-hover table-top" data-selected-multi="true">
+        <thead>
+            <tr>
+                <!--<th align="center" width="300">项目名称</th>-->
+                <th align="center" width="300">债权编号</th>
+                <th align="center" width="300">债权金额</th>
+                <th data-order-field="start_time" align="center" width="300">起始时间</th>
+                <th align="center" width="300">结束时间</th>
+                <th width="300" align="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($list as $v){?>
+            <tr data-id="<?php echo $v['debt_id']?>" class="<?php echo debt_tr_class($v['status'], $v['end_time'])?>" >
+                <!--<td align="center"><?php echo $v['pro_title']?></td>-->
+                <td align="center"><?php echo $v['debt_no']?></td>
+                <td align="center"><?php echo number_format($v['debt_value'],2)?></td>
+                <td align="center"><?php echo date('Y-m-d',$v['start_time'])?></td>
+                <td align="center"><?php echo date('Y-m-d',$v['end_time'])?></td>
+                <td align="center">
+                    <a href="<?php echo U('ProjectDebtDetail/edit', array('debt_id'=>$v['debt_id'],'debt_all_id'=>$v['debt_all_id']))?>" class="btn btn-green" data-toggle="dialog" data-id="project-debt-edit" data-mask='true'>编辑</a>
+                    <a href="<?php echo U('ProjectDebtDetail/file', array('debt_id'=>$v['debt_id']))?>" class="btn btn-green" data-toggle="dialog" data-id="project-debt-exchange" data-mask='true'>附件</a>
+                </td>
+            </tr>
+            <?php }?>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">关闭</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">确定</button></li>
+    </ul>
+</div>
+<script>
+    
+function getDebt() {
+    var pro_id = $('#pro_id').val();
+    ajaxRequest(pro_id);
+}
+function add_tr(data) {
+        var i = $('#debt-list> tbody > tr').length + 1;
+        var newTr = '<tr><td align="center">' + data.debt_no + 
+                '</td><td align="center">' + parseFloat(data.debt_value).toFixed(2) + 
+                '</td><td align="center">' + formatDate(data.start_time) + 
+                '</td><td align="center">' + formatDate(data.end_time) + 
+                '</td><td align="center">\n\
+                <a href="/Admin/ProjectDebtDetail/edit/debt_id/'+ data.debt_id +'" class="btn btn-green" data-toggle="dialog" data-id="project-debt-edit" data-mask="true">编辑</a>\n\
+                <a href="/Admin/ProjectDebtDetail/file/debt_id/'+ data.debt_id +'" class="btn btn-green" data-toggle="dialog" data-id="projectdebtdetail-file" data-mask="true">附件</a></td></tr>';
+        $('#debt-list > tbody').append(newTr);
+
+    }
+   
+    $('#pro_id').on('afterchange.bjui.lookup', function(e, data) {
+        var pro_id = data.value;
+        ajaxRequest(pro_id);
+    });
+    
+    function ajaxRequest(pro_id) {
+        $.ajax({
+        type: 'POST',
+        url: '/Admin/ProjectDebtDetail/getExchangeAdd',
+        data: {pro_id:pro_id},
+        success: function(data) {
+            if (data.statusCode === 200) {
+                var content = data.content;
+                var debt_money = 0;
+                $('#debt-list > tbody').html('');
+                for (var i = 0; i < content.length; i++) {
+                    add_tr(content[i]);
+                    debt_money += parseFloat(content[i].debt_value);
+                }
+                $("input[name='add_debt_account']").val(debt_money);
+            } else {
+                 $(e).alertmsg('error', '错误的提示内容！');
+            }
+        }
+    });
+    }
+    
+    function formatDate(now)   { 
+        var   now = new Date(now * 1000);
+        var   year = now.getFullYear();     
+        var   month = now.getMonth() + 1;     
+        var   date = now.getDate();     
+        var   hour = now.getHours(); 
+        var   minute = now.getMinutes();     
+        var   second = now.getSeconds(); 
+        return   year + "-" + fixZero(month, 2) + "-" + fixZero(date, 2);// + fixZero(hour, 2) + ":" + fixZero(minute, 2) + ":" + fixZero(second, 2); 
+    }
+//时间如果为单位数补0 
+    function fixZero(num, length) {
+    var str = "" + num; 
+    var len = str.length;
+    var s = ""; 
+    for (var i = length; i-- > len; ) {
+         s += "0";
+     } 
+   return s + str;
+    }  
+</script>

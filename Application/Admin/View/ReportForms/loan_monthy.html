@@ -1,0 +1,118 @@
+<div class="bjui-pageHeader">
+    <form id="pagerForm" data-toggle="ajaxsearch" action="<?php echo U('ReportForms/loanStatistics')?>" method="post">
+        <input type="hidden" name="pageSize" value="${model.pageSize}">
+        <input type="hidden" name="pageCurrent" value="${model.pageCurrent}">
+        <input type="hidden" name="orderField" value="${param.orderField}">
+        <input type="hidden" name="orderDirection" value="${param.orderDirection}">
+        <div class="bjui-searchBar">
+            <label>月份选择:</label>
+            <select name="month" data-toggle="selectpicker">
+                <?php for($months=1;$months<=12;$months++):?>
+                <option value="<?php echo $months?>" <?php echo $month == $months ? 'selected': '';?>><?php echo $months?>月</option>
+                <?php endfor;?>
+            </select>&nbsp;
+            <!--<label>项目标题：</label><input type="text" id="pro_title" value="" name="pro_title" class="form-control" size="10">&nbsp;-->
+            <!--<label>公司名称：</label><input type="text" value="" name="company_name" class="form-control" size="8">&nbsp;-->
+            <!--<input type="checkbox" id="j_table_chk" value="true" data-toggle="icheck" data-label="我的客户">-->
+            <!--<button type="button" class="showMoreSearch" data-toggle="moresearch" data-name="custom"><i class="fa fa-angle-double-down"></i></button>-->
+            <button type="submit" class="btn-default" data-icon="search">查询</button>&nbsp;
+            <a class="btn btn-orange" href="javascript:;" data-toggle="reloadsearch" data-clear-query="true" data-icon="undo">清空查询</a>
+            <!--<div class="pull-right">-->
+                <!--<a href="/Admin/Project/add.html" class="btn btn-default" data-toggle="navtab" data-icon="add" data-id="project-add">新增项目</a>-->
+            <!--</div>-->
+        </div>
+    </form>
+</div>
+<div class="bjui-pageContent tableContent">
+    <table class="table table-bordered table-hover table-striped table-top" data-selected-multi="true">
+        <thead>
+            <tr>
+                <th data-order-field="pro_no" align="center" width="300">序号</th>
+                <th data-order-field="pro_title" align="center" width="300">项目标题</th>
+                <th data-order-direction="asc" data-order-field="addtime" align="center" width="300">放款时间</th>
+                <th data-order-field="company" align="center" width="300">付款时间</th>
+                <th data-order-field="pro_linker" align="center" width="100">放款金额</th>
+                <th data-order-field="admin_id" align="center" width="100">实收本金</th>
+                <th data-order-field="risk_admin_id" align="center" width="100">实收利息</th>
+                <th data-order-field="after_loan_admin" align="center" width="100">实收手续费</th>
+                <th data-order-field="pro_status"  align="center" width="100">实收咨询费</th>
+                <th data-order-field="pro_status"  align="center" width="100">实收保证金</th>
+                <th data-order-field="pro_status"  align="center" width="100">逾期还款</th>
+                <th data-order-field="submit_status"  align="center" width="100">备注</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php 
+                $i = 1;
+                $sum_financing = 0;
+                $sum_principal = 0;
+                $sum_interest = 0;
+                $sum_handling_charge = 0;
+                $sum_counseling_fee = 0;
+                $sum_cash_deposit = 0;
+                $sum_overdue_pay = 0;
+                foreach($list as $val){
+                $rowspan = count($val);
+                foreach($val as $v){
+                $sum_financing += $v['financing'];
+                $sum_principal += $v['principal'];
+                $sum_interest += $v['interest'];
+                $sum_handling_charge += $v['handling_charge'];
+                $sum_counseling_fee += $v['counseling_fee'];
+                $sum_cash_deposit += $v['cash_deposit'];
+                $sum_overdue_pay += $v['overdue_pay'];
+            ?>
+            <tr data-id="<?php echo $v['pro_id']?>">
+                <td align="center"><?php echo $i++;?></td>
+                <?php if($rowspan > 0): ?>
+                <td align="center" rowspan="<?php echo $rowspan ?>"><?php echo $v['pro_title']?></td>
+                <?php $rowspan = 0; endif;?>
+                <td align="center"><?php echo $v['real_time'] > 0 ? date('Y-m-d',$v['real_time']) : '--'?></td>
+                <td align="center"><?php echo $v['pay_time'] > 0 ? date('Y-m-d',$v['pay_time']) : '--'?></td>
+                <td align="center"><?php echo $v['financing']?></td>
+                <td align="center"><?php echo $v['principal']?></td>
+                <td align="center"><?php echo $v['interest']?></td>
+                <td align="center"><?php echo $v['handling_charge']?></td>
+                <td align="center"><?php echo $v['counseling_fee']?></td>
+                <td align="center"><?php echo $v['cash_deposit']?></td>
+                <td align="center"><?php echo $v['overdue_pay']?></td>
+                <td align="center">
+                </td>
+            </tr>
+            <?php 
+            }
+            }?>
+            <tr data-id="heji">
+                <td align="center">合计</td>
+                <td align="center" ></td>
+                <td align="center"></td>
+                <td align="center"></td>
+                <td align="center"><?php echo $sum_financing?></td>
+                <td align="center"><?php echo $sum_principal?></td>
+                <td align="center"><?php echo $sum_interest?></td>
+                <td align="center"><?php echo $sum_handling_charge?></td>
+                <td align="center"><?php echo $sum_counseling_fee?></td>
+                <td align="center"><?php echo $sum_cash_deposit?></td>
+                <td align="center"><?php echo $sum_overdue_pay?></td>
+                <td align="center">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+<!--    <div class="pages">
+        <span>每页&nbsp;</span>
+        <div class="selectPagesize">
+            <select data-toggle="selectpicker" data-toggle-change="changepagesize">
+                <option value="30">30</option>
+                <option value="60">60</option>
+                <option value="120">120</option>
+                <option value="150">150</option>
+            </select>
+        </div>
+        <span>&nbsp;条，共 <?php echo $total?> 条</span>
+    </div>
+    <div class="pagination-box" data-toggle="pagination" data-total="<?php echo $total?>" data-page-size="30" data-page-current="1">
+    </div>-->
+</div>

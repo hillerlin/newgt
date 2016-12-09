@@ -1,0 +1,158 @@
+<script src="__ADMIN__/BJUI/js/jquery.validation.min.js"></script>
+<link href="__THEME__/css/index.css" rel="stylesheet">
+
+<div class="bjui-pageContent">	
+    <form id="add_form" action="{:U('role/save_role')}" method="post" style="margin-bottom: 50px;" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="form_submit" value="ok" />
+        <input type="hidden" name="role_id" id="role_id" value="{$role_id}" />
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit"><label for="role_name"><em>*</em>权限组</label></dt>
+                <dd class="opt">
+                    <input type="text" id="role_name" maxlength="40" name="role_name" value="{$role_name}" class="input-txt" data-rule="required">
+                    <span class="err"></span>
+                    <p class="notic">为权限组设置特定名称，便于添加管理员时选择使用。</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="pid"><em>*</em>上级角色</label>
+                </dt>
+                <dd class="opt">
+                    <select name="pid" value="{$pid}">
+                        <option value="0">-请选择-</option>
+                        {$select_role}
+                    </select>
+                    <span class="err"></span>
+                    <p class="notic">请选择一个上级菜单，如果不设置，默认为顶级菜单。</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">设置权限</dt>
+                <dd class="opt">
+                    <input id="limitAll" value="1" type="checkbox" class="checkbox">
+                    全部操作
+                    <p class="notic">勾选后选中全部操作功能，可根据需要从设置详情中进行分组设置。</p>
+                </dd>
+            </dl>
+        </div>
+        <div class="ncap-form-all">
+            <div class="title"><h3>{$ftitle}</h3></div>
+            <volist name="menu" id="m1">
+                <dl class="row" style='margin-left:0px'>
+                    <dt class="tit">
+                        <span><input class="checkbox" type="checkbox" name="auth[]" value="{$m1.menu_id}" id="menu{$m1.menu_id}" nctype="modulesAll"><label for="menu{$m1.menu_id}">{$m1.menu_name}</label></span>
+                    </dt>
+                    <dd class="opt nobg nopd nobd nobs">
+                    <volist name="m1.sub" id="m2">
+                        <div class="ncap-account-container">
+                            <h4>
+                                <input class="checkbox" id="menu{$m2.menu_id}" name="auth[]" value="{$m2.menu_id}" type="checkbox" nctype="groupAll">
+                                <label for="menu{$m2.menu_id}">{$m2.menu_name}</label>
+                            </h4>
+                            <ul class="ncap-account-container-list">
+                                <volist name="m2.sub" id="m3">
+                                    <li>
+                                        <input class="checkbox" id="menu{$m3.menu_id}" name="auth[]" type="checkbox" value="{$m3.menu_id}">
+                                        <label for="menu{$m3.menu_id}">{$m3.menu_name}</label>
+                                        <neq name="m3.sub" value="">
+                                        【<span class="ncap-account-container-point">
+                                            <foreach name="m3.sub" item="m4">
+                                                <p>
+                                                    <input class="checkbox" id="menu{$m4.menu_id}" name="auth[]" type="checkbox" value="{$m4.menu_id}">
+                                                    <label for="menu{$m4.menu_id}">{$m4.menu_name}</label>
+                                                </p>
+                                            </foreach>
+                                        </span>】
+                                        </neq>
+                                    </li>
+                                </volist>
+                            </ul>
+                        </div>
+                    </volist>
+                    </dd>
+                </dl>
+            </volist>
+            <!--<div class="fix-bot"><a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>-->
+        </div>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save" id="submitBtn">保存</button></li>
+    </ul>
+</div>
+<!--<div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>-->
+
+<script>
+    function selectLimit(name) {
+        if ($('#' + name).attr('checked')) {
+            $('.' + name).attr('checked', true);
+        } else {
+            $('.' + name).attr('checked', false);
+        }
+    }
+    $(document).ready(function () {
+        //按钮先执行验证再提交表单
+//	$("#submitBtn").click(function(){
+//	    if($("#add_form").valid()){
+//	     $("#add_form").submit();
+//		}
+//	});
+
+        var select_menu_ids = {$select_menu_ids};
+        if (select_menu_ids) {
+            $.each(select_menu_ids, function (i, id) {
+                $('input[name="auth[]"][value="' + id + '"]').attr('checked', true);
+            });
+        }
+
+        // 全选
+        $('#limitAll').click(function () {
+            $('input[type="checkbox"]').attr('checked', $(this).attr('checked') == 'checked');
+        });
+        // 功能模块
+        $('input[nctype="modulesAll"]').click(function () {
+            $(this).parents('dt:first').next().find('input[type="checkbox"]').attr('checked', $(this).attr('checked') == 'checked');
+        });
+        // 功能组
+        $('input[nctype="groupAll"]').click(function () {
+            $(this).parents('h4:first').next().find('input[type="checkbox"]').attr('checked', $(this).attr('checked') == 'checked');
+        });
+
+//	$("#add_form").validate({
+//		errorPlacement: function(error, element){
+//			var error_td = element.parent('dd').children('span.err');
+//            error_td.append(error);
+//        },
+//        rules : {
+//            role_name : {
+//                required : true,
+//				remote	: {
+//                    url :'{:U("admin/check_role_exist")}',
+//                    type:'get',
+//                    data:{
+//                    	role_name : function(){
+//                            return $('#role_name').val();
+//                        },
+//						role_id : function(){
+//                            return $('#role_id').val();
+//                        }
+//                    }
+//                }
+//            }
+//        },
+//        messages : {
+//            role_name : {
+//                required : '<i class="fa fa-exclamation-circle"></i>请输入',
+//                remote   : '<i class="fa fa-exclamation-circle"></i>该名称已存在'
+//            }
+//        }
+//	});
+        function do_OK(json, $form) {
+            console.log(json)
+            console.log($form)
+        }
+    });
+</script>

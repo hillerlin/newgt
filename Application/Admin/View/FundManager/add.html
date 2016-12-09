@@ -1,0 +1,49 @@
+<div class="bjui-pageContent">
+    <form action="<?php echo U('FundManager/save')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="company_id" class="control-label x120">客户经理：</label>
+                        <input type="text" name="real_name" id="p_company" value="" size="15" >
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="company_id" class="control-label x120">入职时间：</label>
+                        <input type="text" name="join_time" value="" size="15" data-toggle='datepicker' data-rule="required">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x120">地区：</label>
+                        <select name="branch_id" data-toggle="selectpicker" data-nextselect="#j_form_city2" data-refurl="/Admin/FundManager/childBranch/branch_id/{value}.html">
+                            <option value="all">--地区--</option>
+                            <?php foreach($branch_list as $v){ ?>
+                            <option value="<?php echo $v['branch_id']?>"><?php echo $v['branch_name']?></option>
+                            <?php  }?>
+                        </select>
+                        <select name="branch_ch_id" id="j_form_city2" data-toggle="selectpicker" data-emptytxt="--分部--">
+                            <option value="">--分部--</option>
+                        </select>
+<!--                        <select name="area" id="j_form_area2" data-toggle="selectpicker" data-emptytxt="--区县--">
+                            <option value="all">--区县--</option>
+                        </select>-->
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="loan_remark" class="control-label x120">备注：</label>
+                        <textarea name="loan_remark" id="j_custom_note_1" cols="30" rows="2"></textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>

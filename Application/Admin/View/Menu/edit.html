@@ -1,0 +1,122 @@
+<link href="__THEME__/css/index.css" rel="stylesheet">
+
+<div class="bjui-pageContent">			
+    <form id="add_form" method="post" action="{:U('menu/save_menu')}" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="form_submit" value="ok" />
+        <input type="hidden" name="menu_id" value="{$menu_id}" />
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="pid"><em>*</em>上级菜单</label>
+                </dt>
+                <dd class="opt">
+                    <select name="pid" value="{$pid}">
+                        <option value="0">-请选择-</option>
+                        {$select_menu}
+                    </select>
+                    <span class="err"></span>
+                    <p class="notic">请选择一个上级菜单，如果不设置，默认为顶级菜单。</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="menu_name"><em>*</em>菜单名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="menu_name" name="menu_name" class="input-txt" value="{$menu_name}">
+                    <span class="err"></span>
+                    <p class="notic">要求中文。</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="menu_name"><em>*</em>状态</label>
+                </dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label class="cb-enable <eq name='status' value='1'>selected</eq>" for="status1">启用</label>
+                        <label class="cb-disable <eq name='status' value='0'>selected</eq>" for="status0">禁用</label>
+                        <input type="radio" value="1" name="status" id="status1">
+                        <input type="radio" value="0" name="status" id="status0">
+                    </div>
+                    <p class="notic">禁用时，菜单及其子菜单失效</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="sort"><em>*</em>排序</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="sort" value="{$sort}" name="sort" class="w60">
+                    <span class="err"></span>
+                    <p class="notic">数字范围为0~255，数字越小越靠前。</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="module_name">模块名</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="module_name" value="{$module_name}" name="module_name" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic">要求英文，最下级菜单添加，对应类名，首字母大写，例如Menu。</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="action_name">操作名</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="action_name" value="{$action_name}" name="action_name" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic">要求英文，最下级菜单添加，对应方法名，例如list。</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="data">参数</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="data" value="{$data}"  name="data" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic">链接的自定义参数，多个用&隔开，例如pid=0&id=3。</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="class_name">图标样式</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="class_name" name="class_name" value="{$class_name}" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic">附件显示的图标样式，二级菜单有效，例如 ico-shop-1</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="remark">备注</label>
+                </dt>
+                <dd class="opt">
+                    <textarea id="remark" class="tarea" rows="6" name="remark">{$remark}</textarea>
+                    <p class="notic">用于表示功能说明</p>						
+                </dd>
+            </dl>
+        </div>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save" id="submitBtn">保存</button></li>
+    </ul>
+</div>
+<div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
+</body>
+</html>

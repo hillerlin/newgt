@@ -1,0 +1,80 @@
+<script type="text/javascript">
+    function pic_upload_success(file, data) {
+        var json = $.parseJSON(data)
+
+        $(this).bjuiajax('ajaxDone', json)
+        if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+            $('#j_custom_pic').val(json.filename).trigger('validate')
+            $('#j_custom_span_pic').html('<img src="' + json.filename + '" width="100" />')
+        }
+    }
+    function do_OK(json, $form) {
+        console.log(json)
+        console.log($form)
+    }
+</script>
+<div class="bjui-pageContent">
+    <form action="<?php echo U('SignApplyManage/saveContractDone')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="company_id" class="control-label x120">项目：</label>
+                        <input type="hidden" name="pro_id" value='{$pro_info.pro_id}'>
+                        <input type="text" name="befor_pro_title" id="p_company" value="{$pro_info.pro_title}" size="15" data-width="600" data-height="300" readonly>
+                    </td>
+                </tr>
+<!--                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x120">公司：</label>
+                        <input type="text" name="company_name" value='{$pre_contract_company.company_name}' data-rule="required" size="15"  readonly>
+                    </td>
+                </tr>-->
+                <tr>
+                    <td>
+                        <label for="pro_desc" class="control-label x120">合同预签申请表：</label>
+                        <?php foreach($pre_contract_company as $company){ ?>
+                        <button data-url="/Admin/SignApplyManage/<?php echo $company['is_pre_contract'] ? 'editContract' : 'addContract'?>.html?pro_id={$pro_info.pro_id}&company_id=<?php echo $company['company_id']?>" class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $company['company_name']?></button>
+                        <!--<input type="hidden" name="contract_save_<?php echo $company['company_id']?>" value="" data-rule="required"/>-->
+                        <?php } ?>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>
+<script>
+    $('input[name="pro_type"]').on('ifChecked', function (event) {
+        $('#reversed').show();
+        $('input[name="supplier_name"]').attr('data-rule', 'required');
+    });
+    $('input[name="pro_type"]').on('ifUnchecked', function (event) {
+        $('#reversed').hide();
+        $('input[name="supplier_name"]').removeAttr('data-rule');
+    });
+    $('input[name="pro_term"]').on('ifChecked', function (event) {
+        $('#redo').show();
+        $('input[name="pro_title"]').attr('data-rule', 'required');
+    });
+    $('input[name="pro_term"]').on('ifUnchecked', function (event) {
+        $('#redo').hide();
+        $('input[name="pro_title"]').removeAttr('data-rule');
+    });
+    var $doc_div = $('<div class="doc-eventbox" style="display:inline-block; margin-left:10px;"><input type="text"></div>')
+
+    $doc_div.on('bjui.initUI', function () {
+        $(this).find('input').css('border-color', 'red')
+    })
+    $('#check').on('afterchange.bjui.lookup', function (e, data) {
+        var myvalue = data.value;
+        if (myvalue == 1) {
+            $(this).iCheck('check');
+        }
+    })
+</script>

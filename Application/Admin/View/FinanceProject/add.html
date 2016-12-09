@@ -1,0 +1,94 @@
+<script type="text/javascript">
+function pic_upload_success(file, data) {
+    var json = $.parseJSON(data)
+    
+    $(this).bjuiajax('ajaxDone', json)
+    if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+        $('#j_custom_pic').val(json.filename).trigger('validate')
+        $('#j_custom_span_pic').html('<img src="'+ json.filename +'" width="100" />')
+    }
+}
+function do_OK(json, $form) {
+    console.log(json)
+    console.log($form)
+}
+//护照有效日期  = 签发日期 + 10年
+$('#j_custom_issuedate').on('afterchange.bjui.datepicker', function(e, data) {
+    var pattern = 'yyyy-MM-dd'
+    var start   = end = data.value
+    
+    end.setFullYear(start.getFullYear() + 10)
+    end.setDate(start.getDate() - 1)
+    
+    $('#j_custom_indate').val(end.formatDate(pattern))
+})
+</script>
+<div class="bjui-pageContent">
+    <form action="<?php echo U('FinanceProject/save_finance')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="pro_id" value=""  />
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x150">关联项目编号：</label>
+                        <input type="text" name="pro_no" id="p_name" value=""  data-toggle="lookup" data-url="<?php echo U('Project/lookUp')?>?is_loan=1" data-rule="required" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x150">公司名称：</label>
+                        <input type="text" name="company_name" id="p_name" value="" data-rule="required" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x150">放款金额：</label>
+                        <input type="text" name="pro_real_money" id="pro_real_money" value="" data-rule="required" size="15" readonly>元
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x150">融资项目标题：</label>
+                        <input type="text" name="fp_title" id="p_name" value="" data-rule="required" size="15" data-tip='如:XX项目第一期融资'>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x150">总可认购总金额：</label>
+                        <input type="text" name="finance_money" id="finance_money" value="" size="15" data-rule="required;range[0~]">元
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x150">会员最大认购金额：</label>
+                        <input type="text" name="max_money" id="p_name" value="" size="15" data-rule="required">元
+                    </td>
+                </tr>
+                <td>
+                    <label for="j_custom_indate" class="control-label x150">有效日期：</label>
+                    <input type="text" name="end_time" id="j_custom_indate" value="" data-toggle="datepicker" data-rule="required;date" size="15">
+                </td>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x150">显示状态：</label>
+                        <input type="radio" name="status" id="j_custom_status1" data-toggle="icheck" value="1" data-rule="checked" data-label="显示&nbsp;&nbsp;">
+                        <input type="radio" name="status" id="j_custom_status2" data-toggle="icheck" value="0" data-label="不显示">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x150">可见会员：</label>
+                        <input type="text" data-toggle="lookup" name="company_name" class="doc_lookup" size="15" data-url="/Admin/FinanceProject/whiteAdd.html" data-title="选择可见会员" disabled>
+                        <input type="hidden" name="mid" value="">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>

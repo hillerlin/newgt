@@ -1,0 +1,6 @@
+[ 2016-11-01T09:46:28+08:00 ] 127.0.0.1 /Admin/Project/upload_attachment.html?sessionid=?
+INFO : add;1;系统管理员;{"file_path":"\/Uploads\/project\/attachment\/pro-90\/-5817f3f41de0e.jpg","file_id":"20161101094628","file_name":"11111.jpg","addtime":"2016-11-01 09:46:28","aid":"5658"}
+[ 2016-11-01T09:48:35+08:00 ] 127.0.0.1 /Admin/FundManage/upload_attachment.html?sessionid=?
+INFO : add;1;系统管理员;{"file_path":"\/Uploads\/fund\/attachment\/fund-1\/-5817f472e910d.jpg","file_id":"20161101094834","file_name":"33333.jpg","addtime":"2016-11-01 09:48:34","aid":"5654"}
+[ 2016-11-01T15:00:25+08:00 ] 127.0.0.1 /Admin/FundManage/remove_attachment.html
+INFO : del;1;系统管理员;删除附件：aid-5649,fund_id-1

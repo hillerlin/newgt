@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<head id="head">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Simple Folder Upload - Sapphion.com</title>
+    <!--<script src="__ADMIN__/js/main.js"></script>-->
+    <script src="__ADMIN__/BJUI/js/jquery-2.1.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="__ADMIN__/BJUI/js/style.css">
+    <style type='text/css'>
+        @import url(http://fonts.googleapis.com/css?family=Questrial);
+
+
+        #holder {
+            font-family: Arial;
+            width: 500px;
+            margin: 100px auto;
+            text-align:center;
+        }
+
+        #output {
+            padding-top: 20px;
+            font-size: 11px;
+        }
+    </style>
+
+
+    <link rel="shortcut icon" id="favicon" type="image/png" href="icon.gif">
+    <!--	<script src="http://labs.sapphion.com/chat/js/mootools-yui-compressed.js"></script>
+            <script src="js/mootools-more-1.4.0.1.js"></script> -->
+</head>
+<body>
+    <div id="holder">
+        <input type='file' webkitdirectory >  
+        <button id="upload-btn" type="button">upload</button>  
+        <!--    <input type="file" id="files" name="files[]" multiple="" webkitdirectory="">​
+            <div id="output"></div>-->
+        <fieldset id="progress" style="display: none">
+                <legend>Files Progress</legend>
+
+                <div class="progress-trough">
+                    <div id="progress-bar" class="progress-bar">0%</div>
+                </div>
+            </fieldset>
+    </div>
+    <script>
+        var files = [];
+        $(document).ready(function () {
+            $("input").change(function () {
+                files = this.files;
+            });
+        });
+        $("#upload-btn").click(function () {
+            var fd = new FormData();
+            paths = "";
+            for (var i = 0; i < files.length; i++) {
+    //    fd.append("file", files[i]);
+                paths += files[i].webkitRelativePath + "###";
+                // Append current file to our FormData with the index of i
+                fd.append(i, files[i]);
+            }
+            fd.append('paths', paths);
+            debugger;
+            $.ajax({
+                url: "/admin/help/upDocument?pro_id=<?php echo $pro_id?>",
+                method: "POST",
+                data: fd,
+                contentType: false,
+                processData: false,
+                cache: false,
+                success: function (data) {
+                    console.log(data);
+                }
+            });
+        });
+
+    </script>

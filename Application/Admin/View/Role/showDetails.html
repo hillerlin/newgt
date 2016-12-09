@@ -1,0 +1,18 @@
+<foreach name="list" item="v" key="k">
+<fieldset>
+    <input type="radio" name="action" value="{$k}">
+    <legend>
+        {$k}
+        <input type="checkbox" name="delaction" value="true" onclick="checkstatus(this)">
+    </legend>
+    <br/>
+    <php>unset($v['name']); foreach($v as $subk => $subv):</php>
+        <php> echo C('authpage')[$subk];</php>
+        <div class="{$subk}">
+        <foreach name="subv" item="prev" key="prek">
+            <span><input type="checkbox" value="{$prek}" name="{$subk}_method[]" onclick="checkstatus(this)"><a href="{$prek}" onclick="javascript:return false;">{$prev}</a></span>
+        </foreach>
+        </div>
+    <php>endforeach; </php>
+</fieldset>
+</foreach>

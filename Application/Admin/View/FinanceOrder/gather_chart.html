@@ -1,0 +1,120 @@
+<div class="bjui-pageHeader">
+    <form id="pagerForm" data-toggle="ajaxsearch" action="<?php echo U('FinanceOrder/index', array('fp_id' => $fp_id))?>" method="post">
+        <input type='hidden' name='isSearch' value='1'>
+        <input type="hidden" name="pageSize" value="${model.pageSize}">
+        <input type="hidden" name="pageCurrent" value="${model.pageCurrent}">
+        <input type="hidden" name="orderField" value="${param.orderField}">
+        <input type="hidden" name="orderDirection" value="${param.orderDirection}">
+        <div class="bjui-searchBar">
+            <label>确认状态:</label>
+            <select name="status" data-toggle="selectpicker">
+                <option value="">全部</option>
+                <option value="0">未确认</option>
+                <option value="1">已确认</option>
+            </select>&nbsp;
+            <label>公司名称：</label><input type="text" id="pro_no" value="{$post.company_name}" name="company_name" class="form-control" size="10">&nbsp;
+            <label>起始时间：</label><input type="text" value="{$post.begin_time}" data-toggle="datepicker" name="begin_time" class="form-control" size="12">&nbsp;
+            <label>结束时间：</label><input type="text" value="{$post.end_time}" data-toggle="datepicker" name="end_time" class="form-control" size="12">&nbsp;
+            <!--<input type="checkbox" id="j_table_chk" value="true" data-toggle="icheck" data-label="我的客户">-->
+            <!--<button type="button" class="showMoreSearch" data-toggle="moresearch" data-name="custom"><i class="fa fa-angle-double-down"></i></button>-->
+            <button type="submit" class="btn-default" data-icon="search">查询</button>&nbsp;
+            <a class="btn btn-orange" href="javascript:;" data-toggle="reloadsearch" data-clear-query="true" data-icon="undo">清空查询</a>
+            <!--<div class="pull-right">-->
+                <!--<a href="/Admin/Project/add.html" class="btn btn-default" data-toggle="navtab" data-icon="add" data-id="project-add">新增项目</a>-->
+            <!--</div>-->
+        </div>
+    </form>
+</div>
+<div class="bjui-pageContent tableContent">
+    <table class="table table-bordered table-hover table-striped table-top">
+        <thead>
+            <tr>
+                <th data-order-field="pro_no" align="center" width="200">融资项目标题</th>
+                <th data-order-field="company" align="center" width="200">会员公司</th>
+                <th data-order-field="pro_real_money"  align="center" width="150">认购金额(元)</th>
+                <th data-order-field="rate"  align="center" width="150">利率(%)</th>
+                <th data-order-field="service_rate"  align="center" width="150">服务费率(%)</th>
+                <th data-order-field="cash_deposit"  align="center" width="150">保证金(元)</th>
+                <th data-order-direction="asc" data-order-field="first_pay_time" align="center" width="180">首次募集时间</th>
+                <th data-order-direction="asc" data-order-field="first_principal_time" align="center" width="180">首次还本金时间</th>
+                <th data-order-field="status"  align="center" width="80">购买状态</th>
+                <th data-order-field="remark"  align="center" width="100">备注</th>
+                <th width="150" align="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($list as $v){?>
+            <tr data-id="<?php echo $v['pro_id']?>">
+                <td align="center"><a href="<?php echo U('FinanceProject/detail', array('fp_id' => $v['fp_id']))?>" data-toggle="dialog" data-height='400'><?php echo $v['fp_title']?></a></td>
+                <td align="center"><?php echo $v['company_name']?></td>
+                <td align="center"><?php echo number_format($v['money'], 2)?></td>
+                <td align="center"><?php echo $v['rate']?></td>
+                <td align="center"><a href="<?php echo U('FinanceOrder/service', array('oid'=>$v['oid']))?>" data-toggle="dialog" data-id="project-order-service" data-title='服务费' data-mask='true' <?php echo $v['service_rate_status'] == 0 ? 'class="orange"' : ''?>><?php echo $v['service_rate']?></a><?php echo $v['service_rate_status'] == 0 ? '(未付)' : '(已付)'?></td>
+                <td align="center">
+                    <?php if ($v['cash_deposit'] > 0) {?>
+                    <?php 
+                        switch($v['cash_deposit_status']) {
+                            case 0: $class = 'class="orange"'; $msg = '未付';
+                            break;
+                            case 1: $class = 'class="red"'; $msg = '已付';
+                            break;
+                            case 2: $class = ''; $msg = '已收';
+                            break;
+                        }
+                    ?>
+                    <a href="<?php echo U('FinanceOrder/deposit', array('oid'=>$v['oid']))?>" data-toggle="dialog" data-title='保证金' data-mask='true' <?php echo $class ?>>
+                       <?php echo number_format($v['cash_deposit'], 2)?>
+                    </a>(<?php echo $msg ?>)
+                    <?php } else {?>
+                    <?php echo number_format($v['cash_deposit'], 2)?>
+                    <?php }?>
+                </td>
+                <td align="center"><?php echo date('Y-m-d',$v['first_pay_time'])?></td>
+                <td align="center"><?php echo date('Y-m-d ',$v['first_principal_time'])?></td>
+                <td align="center"><?php echo $v['status']==1?'已确认':'未确认'?></td>
+                <td align="center"><?php echo $v['remark']?></td>
+                <td align="center">
+                    <?php if ($v['status'] == 0) {?>
+                    <a href="<?php echo U('FinanceOrder/edit', array('oid'=>$v['oid']))?>" class="btn btn-green" data-toggle="dialog" data-height='320' data-id="finance-order-edit" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="购买确认">购买确认</a>
+                    <!--<a href="<?php echo U('FinanceOrder/confirm', array('oid'=>$v['oid']))?>" class="btn btn-green" data-toggle="doajax" data-confirm-msg="确定要确认订单吗？">购买确认</a>-->
+                    <a href="<?php echo U('FinanceOrder/del', array('oid'=>$v['oid']))?>" class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a>
+                    <?php } else {?>
+                    <a href="<?php echo U('MpayRecord/index', array('oid'=>$v['oid']))?>" class="btn btn-green" data-toggle="dialog" data-id="mpay-record-index" data-width="800" data-height='500' data-title="打款记录">打款记录</a>
+                    <?php }?>
+                </td>
+            </tr>
+            <?php }?>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+    <div class="pages">
+        <span>每页&nbsp;</span>
+        <div class="selectPagesize">
+            <select data-toggle="selectpicker" data-toggle-change="changepagesize">
+                <option value="30">30</option>
+                <option value="60">60</option>
+                <option value="120">120</option>
+                <option value="150">150</option>
+            </select>
+        </div>
+        <span>&nbsp;条，共 <?php echo $total?> 条</span>
+    </div>
+    <div class="pagination-box" data-toggle="pagination" data-total="<?php echo $total?>" data-page-size="30" data-page-current="1">
+    </div>
+</div>
+<script>
+    $(function(){
+            for(var i=0;i<3;i++) {
+                if($("select").get(0).options[i].value == '{$post.status}')  {
+                    $("select").get(0).options[i].selected = true;  
+                    break;
+                }
+            }
+     });
+//    $(function(){
+//            switch($cash_deposit_status) {
+//                case 0 :;
+//            }
+//     });
+</script>  

@@ -1,0 +1,43 @@
+<div class="bjui-pageContent">
+    <form action="<?php echo U('MpayRecord/save')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="pay_id" value=""  />
+        <input type="hidden" name="oid" value="{$oid}"  />
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x150">金额：</label>
+                        <input type="text" name="money" id="p_name" value="" size="15" data-rule="required">元
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x150">还款方式：</label>
+                        <select name="repayment_type" id="j_custom_sale" data-toggle="selectpicker" data-rule="required">
+                            <option value="1">自然月</option>
+                            <option value="2">30天</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="j_custom_indate" class="control-label x150">期限：</label>
+                        <input type="text" name="term" id="term" value="" data-rule="required" size="15">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="j_custom_indate" class="control-label x150">打款时间：</label>
+                        <input type="text" name="pay_time" id="pay_time" value="" data-toggle="datepicker" data-rule="required:date" size="15">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>

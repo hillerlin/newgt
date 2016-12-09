@@ -1,0 +1,205 @@
+<style type="text/css">
+    td,th{
+        text-align: center;
+    }
+    .date{
+        width:107px;
+    }
+    .showbutton{
+        cursor: pointer;
+    }
+</style>
+<div class="bjui-pageContent tableContent">
+<form action="<?php echo U('Opinion/save')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+    <table class="table table-bordered table-hover table-striped table-top">
+    <thead>
+        <th colspan="2">融资方及应收款买方名单</th>
+        <th colspan="5">法院被执行</th>
+        <th colspan="2">网络新闻</th>
+    </thead>
+    <tbody>
+            <tr>
+                <td align="center" width="300" colspan="2">查询主体</td>
+                <td align="center" width="100">立案时间</td>
+                <td align="center" width="100">案号</td>
+                <td align="center" width="100">被执行标的（裁判/裁定结果)</td>
+                <td align="center" width="60">是否失信</td>
+                <td align="center" width="100">案件类型</td>
+                <td align="center" width="540">内容</td>
+            </tr>
+            <tr>
+                <td style="margin:15px;">项目名称</td>
+                <td colspan="8">
+                    <input type="text" name="pro_title" size="150" >
+                </td>
+            </tr>
+            <tr class_data="rzf" class="rzf">
+                <td rowspan="1">
+                    <button type="button" class="btn-green  showbutton" onClick="addline(this)"> 添加</button>
+                    <button type="button" class="btn-red  showbutton" onClick="delline(this)">  删除</button><br/> 融资方
+                </td>
+                <td><input type="text" value="" name="financing_financing[]" placeholder="融资方"/></td>
+                <td>
+                    <input type="text" value=""  placeholder="日期" name="financing_ftime[]" class="date" data-toggle="datepicker"/>
+                </td>
+                <td><input type="text" value="" name="financing_fileid[]" placeholder="案号"/></td>
+                <td><input type="text" value="" name="financing_result[]" placeholder="结果"/></td>
+                <td>
+                    <input type="text" name="financing_integrity[]" style="width:50px;">
+                </td>
+                <td><input type="text" value="" name="financing_fclass[]" placeholder="案件类型"/></td>
+                <td>
+                    <button type="button" class="btn-green  add" onClick="addtd(this)">添加</button>
+                    <button type="button" class="btn-red  showbutton" onClick="deltd(this)"> 删除</button><br/>
+                    <input type="hidden" value="1" count="countlink" name="financing_countlink[]"/>
+                    <div >
+                        <!--记录每条记录有多少条这样的日期链接-->
+                        <input type="text" name="financing_link[]" placeholder="链接" onchange="changelink(this)">
+                        <input type="text" name="financing_title[]" placeholder="标题">
+                        <input type="text" placeholder="日期" name="financing_addtime[]"  class="date" data-toggle="datepicker">
+                    </div>
+                </td>
+            </tr>
+            <tr class_data="gd" class="gd">
+                <td rowspan="1">
+                    <button type="button" class="btn-green  showbutton" onClick="addline(this)"> 添加</button>
+                    <button type="button" class="btn-red  showbutton" onClick="delline(this)">  删除</button><br/> 融资股东
+                </td>
+                <td><input type="text" value="" name="partner_financing[]" placeholder="融资股东"/></td>
+                <td>
+                    <input type="text" value=""  placeholder="日期" name="partner_ftime[]" class="date" data-toggle="datepicker"/>
+                </td>
+                <td><input type="text" value="" name="partner_fileid[]" placeholder="案号"/></td>
+                <td><input type="text" value="" name="partner_result[]" placeholder="结果"/></td>
+                <td>
+                    <input type="text" name="partner_integrity[]" style="width:50px;">
+                </td>
+                <td><input type="text" value="" name="partner_fclass[]" placeholder="案件类型"/></td>
+                <td>
+                    <button type="button" class="btn-green  add" onClick="addtd(this)">添加</button>
+                    <button type="button" class="btn-red  showbutton" onClick="deltd(this)"> 删除</button><br/>
+                    <input type="hidden" value="1" count="countlink" name="partner_countlink[]"/>
+                    <div >
+                        <!--记录每条记录有多少条这样的日期链接-->
+                        <input type="text" name="partner_link[]" placeholder="链接" onchange="changelink(this)">
+                        <input type="text" name="partner_title[]" placeholder="标题">
+                        <input type="text" placeholder="日期" name="partner_addtime[]"  class="date" data-toggle="datepicker">
+                    </div>
+                </td>
+            </tr>
+            <tr class_data="db" class="db">
+                <td rowspan="1">
+                    <button type="button" class="btn-green  showbutton" onClick="addline(this)"> 添加</button>
+                    <button type="button" class="btn-red  showbutton" onClick="delline(this)">  删除</button><br/> 担保人
+                </td>
+                <td><input type="text" value="" name="guarantor_financing[]" placeholder="担保人"/></td>
+                <td>
+                    <input type="text" value=""  placeholder="日期" name="guarantor_ftime[]" class="date" data-toggle="datepicker"/>
+                </td>
+                <td><input type="text" value="" name="guarantor_fileid[]" placeholder="案号"/></td>
+                <td><input type="text" value="" name="guarantor_result[]" placeholder="结果"/></td>
+                <td>
+                    <input type="text" name="guarantor_integrity[]" style="width:50px;">
+                </td>
+                <td><input type="text" value="" name="guarantor_fclass[]" placeholder="案件类型"/></td>
+                <td>
+                    <button type="button" class="btn-green  add" onClick="addtd(this)">添加</button>
+                    <button type="button" class="btn-red  showbutton" onClick="deltd(this)"> 删除</button><br/>
+                    <input type="hidden" value="1" count="countlink" name="guarantor_countlink[]"/>
+                    <div >
+                        <!--记录每条记录有多少条这样的日期链接-->
+                        <input type="text" name="guarantor_link[]" placeholder="链接" onchange="changelink(this)">
+                        <input type="text" name="guarantor_title[]" placeholder="标题">
+                        <input type="text" placeholder="日期" name="guarantor_addtime[]"  class="date" data-toggle="datepicker">
+                    </div>
+                </td>
+            </tr>
+            <tr class_data="cm" class="cm">
+                <td rowspan="1">
+                    <button type="button" class="btn-green  showbutton" onClick="addline(this)"> 添加</button>
+                    <button type="button" class="btn-red  showbutton" onClick="delline(this)">  删除</button><br/> 应收买方
+                </td>
+                <td><input type="text" value="" name="purchaser_financing[]" placeholder="应收买方"/></td>
+                <td>
+                    <input type="text" value=""  placeholder="日期" name="purchaser_ftime[]" class="date" data-toggle="datepicker"/>
+                </td>
+                <td><input type="text" value="" name="purchaser_fileid[]" placeholder="案号"/></td>
+                <td><input type="text" value="" name="purchaser_result[]" placeholder="结果"/></td>
+                <td>
+                    <input type="text" name="purchaser_integrity[]" style="width:50px;">
+                </td>
+                <td><input type="text" value="" name="purchaser_fclass[]" placeholder="案件类型"/></td>
+                <td>
+                    <button type="button" class="btn-green  add" onClick="addtd(this)">添加</button>
+                    <button type="button" class="btn-red  showbutton" onClick="deltd(this)"> 删除</button><br/>
+                    <input type="hidden" value="1" count="countlink" name="purchaser_countlink[]"/>
+                    <div >
+                        <!--记录每条记录有多少条这样的日期链接-->
+                        <input type="text" name="purchaser_link[]" placeholder="链接" onchange="changelink(this)">
+                        <input type="text" name="purchaser_title[]" placeholder="标题">
+                        <input type="text" placeholder="日期" name="purchaser_addtime[]"  class="date" data-toggle="datepicker">
+                    </div>
+                </td>
+            </tr>
+
+    </tbody>
+</table>
+</form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>
+
+<script type="text/javascript">
+    function addline(e){
+        var rows=parseInt($(e).parent('td').attr('rowspan'))+1;
+        $(e).parent('td').attr('rowspan',rows);
+        var newtr=$(e).parents('tr').clone();
+        newtr.find('td')[0].remove();
+        $(e).parents('tr').after(newtr); //添加要以对象来添加，不要以字符串来添加
+    }
+    function delline(e){
+        var deltr=$(e);
+        $(e).alertmsg('confirm', '去掉要删除此栏吗？',{okCall:function(){
+            var class_data=deltr.parents('tr').attr('class_data');
+            if($('.'+class_data).length>1){
+                var rows=parseInt(deltr.parent('td').attr('rowspan'))-1;
+                deltr.parent('td').attr('rowspan',rows);
+                $('.'+class_data).last().remove();
+                $(this).alertmsg('ok', '删除成功')
+            }else{
+               $(this).alertmsg('error', '必须存在至少一个此栏目')
+                return false; 
+            }
+        }});
+    }
+    function addtd(e){
+        var content=$(e).siblings('div:last').clone();
+        var countlink = parseInt($(e).siblings('input[count=countlink]').val())+1;
+        $(e).parent('td').append(content);
+        $(e).siblings('input[count=countlink]').val(countlink);
+    }
+    function deltd(e){
+        var deltd=$(e);
+        $(deltd).alertmsg('confirm','确定要删除此内容吗？',{okCall:function(){
+            if($(deltd).siblings('div').length>1){
+                $(deltd).siblings('div').last().remove();
+                var countlink = parseInt($(e).siblings('input[count=countlink]').val())-1;
+                $(e).siblings('input[count=countlink]').val(countlink);
+                $(this).alertmsg('ok','删除成功');
+            }else{
+                $(this).alertmsg('error', '必须存在至少一个此栏目')
+                return false;
+            }
+        }});
+    }
+    /**
+     * 将中文逗号和句号转换为英文的点号
+     */
+    function changelink(e){
+        alert($(e).val());
+    }
+</script>

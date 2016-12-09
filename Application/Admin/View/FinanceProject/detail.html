@@ -1,0 +1,90 @@
+<script type="text/javascript">
+    function pic_upload_success(file, data) {
+        var json = $.parseJSON(data)
+
+        $(this).bjuiajax('ajaxDone', json)
+        if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+            $('#j_custom_pic').val(json.filename).trigger('validate')
+            $('#j_custom_span_pic').html('<img src="' + json.filename + '" width="100" />')
+        }
+    }
+    function do_OK(json, $form) {
+        console.log(json)
+        console.log($form)
+    }
+//护照有效日期  = 签发日期 + 10年
+    $('#j_custom_issuedate').on('afterchange.bjui.datepicker', function (e, data) {
+        var pattern = 'yyyy-MM-dd'
+        var start = end = data.value
+
+        end.setFullYear(start.getFullYear() + 10)
+        end.setDate(start.getDate() - 1)
+
+        $('#j_custom_indate').val(end.formatDate(pattern))
+    })
+</script>
+<div class="bjui-pageContent">
+    <input type="hidden" name="fp_id" value="{$fp_id}"  />
+    <table class="table table-condensed table-hover" width="100%">
+        <tbody>
+            <tr>
+                <td>
+                    <label for="debt_no" class="control-label x150">关联项目编号：</label>
+                    <input type="text" name="pro_no" id="p_name" value="{$project.pro_no}"  data-toggle="lookup" data-url="<?php echo U('Project/lookUp')?>?is_loan=1" data-rule="required" size="15" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="debt_no" class="control-label x150">公司名称：</label>
+                    <input type="text" name="company_name" id="p_name" value="{$project.company.company_name}" data-rule="required" size="15" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="debt_account" class="control-label x150">放款金额：</label>
+                    <input type="text" name="pro_real_money" id="p_name" value="<?php echo number_format($project['pro_real_money'], 2)?>" data-rule="required" size="15" readonly>元
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="debt_no" class="control-label x150">融资项目标题：</label>
+                    <input type="text" name="fp_title" id="p_name" value="{$fp_title}" data-rule="required" size="15" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="debt_account" class="control-label x150">总可认购总金额：</label>
+                    <input type="text" name="finance_money" id="p_name" value="<?php echo number_format($finance_money, 2)?>" size="15" readonly>元
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="debt_account" class="control-label x150">会员最大认购金额：</label>
+                    <input type="text" name="max_money" id="p_name" value="<?php echo number_format($max_money, 2)?>" size="15" readonly>元
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="debt_account" class="control-label x150">年化利率：</label>
+                    <input type="text" name="rate" id="p_name" value="{$rate}" size="15" data-rule="required" readonly>%
+                </td>
+            </tr>
+        <td>
+            <label for="j_custom_indate" class="control-label x150">有效日期：</label>
+            <input type="text" name="end_time" id="j_custom_indate" value="<?php echo date('Y-m-d', $end_time)?>" data-rule="required;date" size="15" readonly>
+        </td>
+        <tr>
+            <td>
+                <label for="debt_account" class="control-label x150">显示状态：</label>
+                <input type="radio" name="status" id="j_custom_status1" data-toggle="icheck" value="1" <?php echo $status == 1 ? 'checked' : '' ?> data-rule="checked" data-label="显示&nbsp;&nbsp;">
+                <input type="radio" name="status" id="j_custom_status2" data-toggle="icheck" value="0" <?php echo $status == 0 ? 'checked' : '' ?> data-label="不显示" >
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+    </ul>
+</div>

@@ -1,0 +1,220 @@
+<script>
+//    function exchange(obj) {
+//        var select = $('#test-datagrid-array').data('selectedTrs');
+//        for (var i = 0; i < select.length; i++) {
+//            console.log(select[i]);
+//            var data = $('#test-datagrid-array').datagrid('getRows', select[i]);
+//        }
+//        debugger;
+//        $(obj).dialog({id:'mydialog', url:'/Admin/ProjectDebtDetail/exchangeAdd/debt_id' + select, title:'我的业务弹窗',width:800});
+//    }
+//$('#test-datagrid-array').datagrid({
+//    gridTitle : 'Test datagrid - Array 数据类型，dialog编辑，显示行号及复选框，表头快速筛选，显示页脚',
+//    showToolbar: true,
+//    toolbarItem: 'all',
+//    toolbarCustom:'<button data-url="/Admin/ProjectDebtDetail/add.html?debt_all_id=<?php echo $debt_all_id?>" class="btn btn-blue" data-toggle="dialog" data-width="500" data-height="300" data-mask="true" data-icon="plus" data-id="projectdebtdetail-add">添加债权</button>\n\
+//                    <button  class="btn btn-green"  onclick="exchange(this);" data-width="800"  data-id="project-debt-exchange" data-mask="true">换质</a>',
+//    addLocation: 'first',
+//    local: 'remote',
+//    dataUrl: '/Admin/ProjectDebtDetail/index',
+//    dataType: 'json',
+//    filterThead: false,
+//    sortAll: true,
+//    filterAll: true,
+//    columns: [
+//        {
+//            name: 'pro_title',
+//            label: '项目名称',
+//            align: 'center',
+//            width: 80,
+//        },
+//        {
+//            name: 'pro_no',
+//            label: '项目编号',
+//            align: 'center',
+//            width: 100,
+//            rule: 'required'
+//        },
+//        {
+//            name: 'debt_no',
+//            label: '债权编号',
+//            align: 'center',
+//            width: 40,
+//        },
+//        {
+//            name: 'pro_real_money',
+//            label: '放款额',
+//            align: 'center',
+//            width: 45,
+//            calc: 'avg',
+//            calcTit: '平均',
+//            calcDecimal: 2
+//        },
+//        {
+//            name: 'debt_value',
+//            label: '债权金额',
+//            width: 80
+//        },
+//        {
+//            name: 'real_name',
+//            label: '负责人',
+//            width: 80,
+//            hide : true
+//        },
+//        {
+//            name: 'debt_id',
+//            label: 'debt_id',
+//            width: 80,
+//            hide : true
+//        },
+//        {
+//            name: 'start_time',
+//            label: '起始时间',
+//            width: 100,
+//            type: 'date',
+//            pattern: 'yyyy-MM-dd'
+//        },
+//        {
+//            name: 'end_time',
+//            label: '结束时间',
+//            align: 'center',
+//            width: 50,
+//            type: 'date',
+//            pattern: 'yyyy-MM-dd HH:mm'
+//           
+//        },
+//        {
+//            name: 'state',
+//            label: '状态',
+//            type: 'select',
+//            align: 'center',
+//            width: 70
+//        },
+//        {
+//            name: 'issuedate',
+//            label: '商票背书',
+//            type: 'date',
+//            width: 150
+//        },
+//        {
+//            name: 'isdisable',
+//            label: '添加时间',
+//            type: 'boolean',
+//            align: 'center',
+//            width: 40,
+//            render: function(value) {
+//                return (value && String(value) == 'true') ? '<span style="color:red;">True</span>' : ''
+//            }
+//        },
+//        {
+//            name: 'createtime',
+//            label: '登记日期',
+//            type: 'date',
+//            pattern: 'yyyy-MM-dd HH:mm'
+//        }
+//    ],
+////    hiddenFields: ['id', 'debt_id'],
+//    editUrl: 'ajaxDone1.html',
+//    delUrl : 'ajaxDone1.html',
+//    paging: {total:30, pageSize:5},
+//    showTfoot: true,
+//    editMode: 'dialog',
+//    fullGrid: true,
+//    showLinenumber: true,
+//    showCheckboxcol: true,
+//    hiddenFields: [{name:'debt_id'}],
+//    showCheckboxCol: true,
+//    showEditBtnsCol: true,
+//    linenumberAll: true,
+//    delPK:'debt_id'
+//});
+//
+//</script>
+<div class="bjui-pageHeader">
+    <form id="pagerForm" data-toggle="ajaxsearch" action="<?php echo U('ProjectDebtDetail/index')?>" method="post">
+        <input type="hidden" name="isSearch" value="1">
+        <input type="hidden" name="pageSize" value="${model.pageSize}">
+        <input type="hidden" name="pageCurrent" value="${model.pageCurrent}">
+        <input type="hidden" name="orderField" value="${param.orderField}">
+        <input type="hidden" name="orderDirection" value="${param.orderDirection}">
+        <div class="bjui-searchBar">
+            <button data-url="/Admin/ProjectDebtDetail/add.html?debt_all_id=<?php echo $debt_all_id?>" class="btn btn-blue" data-toggle="dialog" data-width='500' data-height="300" data-mask='true' data-icon="plus" data-id="projectdebtdetail-add">添加债权</button>
+            <a href="/Admin/ProjectDebtDetail/exchangeAdd/debt_id/{#bjui-selected}" class="btn btn-green" data-toggle="dialog" data-width="800"  data-id="project-debt-exchange" data-mask='true'>换质</a>
+            <label>债权状态:</label>
+            <select name="status" data-toggle="selectpicker">
+                <option value="1" <?php echo $post['status'] === '1' ? 'selected' : '';?>>正常</option>
+                <option value="0" <?php echo $post['status'] === '0' ? 'selected' : '';?>>作废</option>
+                <option value="2" <?php echo $post['status'] === '2' ? 'selected' : '';?>>已还款</option>
+                <option value="">全部</option>
+            </select>&nbsp;
+            <label>项目名称：</label><input type="text" id="customNo" value="{$post.pro_title}" name="pro_title" class="form-control" size="10">&nbsp;
+            <label>债权编号：</label><input type="text" value="{$post.debt_no}" name="debt_no" class="form-control" size="8">&nbsp;
+            <!--<input type="checkbox" id="j_table_chk" value="true" data-toggle="icheck" data-label="我的客户">-->
+            <!--<button type="button" class="showMoreSearch" data-toggle="moresearch" data-name="custom"><i class="fa fa-angle-double-down"></i></button>-->
+            <button type="submit" class="btn-default" data-icon="search">查询</button>&nbsp;
+            <a class="btn btn-orange" href="javascript:;" data-toggle="reloadsearch" data-clear-query="true" data-icon="undo">清空查询</a>
+            
+        </div>
+    </form>
+</div>
+<div class="bjui-pageContent tableContent">
+    <table id="test-datagrid-array" data-width="100%" data-height="100%" class="table table-bordered">
+    </table>
+    <table class="table table-bordered table-hover table-top" data-show-checkboxcol="true" data-selected-multi="true">
+        <thead>
+            <tr>
+                <th width="26"><input type="checkbox" class="checkboxCtrl" data-group="ids" data-toggle="icheck"></th>
+                <th data-order-field="pro_title" align="center" width="300">项目名称</th>
+                <th data-order-field="pro_no" align="center" width="300">项目编号</th>
+                <th data-order-field="pro_title" align="center" width="300">债权编号</th>
+                <th data-order-field="debt_account" align="center" width="300">放款额</th>
+                <th data-order-field="debt_value" align="center" width="300">债权金额</th>
+                <th data-order-field="real_name" align="center" width="150">负责人</th>
+                <th data-order-direction="asc" data-order-field="start_time" align="center" width="300">起始时间</th>
+                <th data-order-direction="asc" data-order-field="end_time" align="center" width="300">结束时间</th>
+                <th data-order-field="status" align="center" width="100">状态</th>
+                <th data-order-field="status" align="center" width="100">商票背书</th>
+                <th data-order-direction="asc" data-order-field="addtime" align="center" width="300">添加时间</th>
+                <th width="300" align="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($list as $v){?>
+            <tr data-id="<?php echo $v['debt_id']?>" class="<?php echo debt_tr_class($v['status'], $v['end_time'])?>" >
+                <td class="datagrid-checkbox-td"><input type="checkbox" name="ids" data-toggle="icheck" value="<?php echo $v['fid']?>"></td>
+                <td align="center"><?php echo $v['pro_title']?></td>
+                <td align="center"><?php echo $v['pro_no']?></td>
+                <td align="center"><?php echo $v['debt_no']?></td>
+                <td align="center"><?php echo number_format($v['pro_real_money'],2)?></td>
+                <td align="center"><?php echo number_format($v['debt_value'],2)?></td>
+                <td align="center"><?php echo $v['real_name']?></td>
+                <td align="center"><?php echo date('Y-m-d',$v['start_time'])?></td>
+                <td align="center"><?php echo date('Y-m-d',$v['end_time'])?></td>
+                <td align="center"><?php echo debtStatusStr($v['status'])?></td>
+                <td align="center"><?php echo debtTypeStr($v['type'])?></td>
+                <td align="center"><?php echo date('Y-m-d H:i:s',$v['addtime'])?></td>
+                <td align="center">
+                    <?php if($v['status'] == 1 && $v['end_time'] >= time()) {?>
+                    <!--<a href="<?php echo U('ProjectDebtDetail/exchange', array('debt_id'=>$v['debt_id'],'debt_all_id'=>$v['debt_all_id']))?>" class="btn btn-green" data-toggle="dialog" data-id="project-debt-exchange" data-mask='true'>换质</a>-->
+                    <a href="<?php echo U('ProjectDebtDetail/edit', array('debt_id'=>$v['debt_id'],'debt_all_id'=>$v['debt_all_id']))?>" class="btn btn-green" data-toggle="dialog" data-id="project-debt-edit" data-mask='true'>编辑</a>
+                    <?php }?>
+                    <a href="<?php echo U('ProjectDebtDetail/file', array('debt_id'=>$v['debt_id']))?>" class="btn btn-green" data-toggle="dialog" data-id="project-debt-exchange" data-mask='true'>文件夹</a>
+                </td>
+            </tr>
+            <?php }?>
+        </tbody>
+    </table>
+</div>
+{//分页组件}
+{:W('Layout/PageFooter', array($total))}
+<script>
+    $(function(){
+            for(var i=0;i<3;i++) {
+                if($("select").get(0).options[i].value == '{$post.status}')  {
+                    $("select").get(0).options[i].selected = true;  
+                    break;
+                }
+            }
+     })
+    
+</script>    

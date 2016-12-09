@@ -1,0 +1,62 @@
+
+<div class="bjui-pageContent tableContent">
+    <table class="table table-bordered table-hover table-striped table-top" data-selected-multi="true">
+        <thead>
+            <tr>
+                <th data-order-field="pro_title" align="center" width="300">项目标题</th>
+                <th data-order-direction="asc" data-order-field="addtime" align="center" width="300">收支</th>
+                <th data-order-field="company" align="center" width="300">总金额(万元)</th>
+                <th data-order-field="pro_status"  align="center" width="100">金额(万元)</th>
+                <th data-order-field="gt_uid" align="center" width="300">时间</th>
+                <th data-order-field="submit_status"  align="center" width="100">类型</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php 
+            $num_out = count($list['out_list']);
+            $out_monye_arr = array_column($list['out_list'], 'money');
+            $out_money = array_sum($out_monye_arr);
+            $num_in = count($list['in_list']);
+            $in_monye_arr = array_column($list['in_list'], 'money');
+            $in_money = array_sum($in_monye_arr);
+            $num_list = $num_out + $num_in;
+            foreach($list as $key => $v){
+                $n = count($v);
+                foreach($v as $_v) {
+            ?>
+            <tr data-id="<?php echo $v['pro_id']?>">
+                <?php if($num_list > 0) {?>
+                <td rowspan="<?php echo $num_list?>" align="center"><?php echo $pro_title?></td>
+                <?php $num_list -= $num_list;}?>
+                <?php if($n == count($v)) {?>
+                <td rowspan='<?php echo count($v)?>' align="center"><?php echo $key == 'out_list' ? '出账':'入账'?></td>
+                <td rowspan='<?php echo count($v)?>' align="center"><?php echo $key == 'out_list' ? $out_money / 10000 : $in_money / 10000?></td>
+                <?php 
+                    } 
+                    $n--;
+                ?>
+                <td align="center"><?php echo $_v['money'] / 10000?></td>
+                <td align="center"><?php echo  date('Y-m-d',$_v['addtime'])?></td>
+                <td align="center"><?php echo $type[$_v['type']]?></td>
+            </tr>
+            <?php }?>
+            <?php }?>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+    <div class="pages">
+        <span>每页&nbsp;</span>
+        <div class="selectPagesize">
+            <select data-toggle="selectpicker" data-toggle-change="changepagesize">
+                <option value="30">30</option>
+                <option value="60">60</option>
+                <option value="120">120</option>
+                <option value="150">150</option>
+            </select>
+        </div>
+        <span>&nbsp;条，共 <?php echo $total?> 条</span>
+    </div>
+    <div class="pagination-box" data-toggle="pagination" data-total="<?php echo $total?>" data-page-size="30" data-page-current="1">
+    </div>
+</div>

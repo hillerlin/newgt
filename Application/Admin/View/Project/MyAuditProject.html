@@ -1,0 +1,34 @@
+<div class="bjui-pageContent">
+    <form action="<?php echo U('Project/saveMyAudit')?>" id="j_custom_form" method="get" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden"  name="plId" value="{$plId}">
+        <input type="hidden"  name="wfId" value="{$wfId}">
+        <input type="hidden"  name="xmlId" value="{$xmlId}">
+        <input type="hidden"  name="pjId" value="{$pjId}">
+        <input type="hidden"  name="proLevel" value="{$proLevel}">
+        <input type="hidden"  name="proTimes" value="{$proTimes}">
+        <table class="table table-condensed table-hover" width="100%" id="bjui-pageContent">
+            <tbody>
+          <tr>
+              <td>
+                  <label for='company_id' class='control-label x150'>请选择:</label>
+                  <select name="auditType" class="auditType" data-toggle="selectpicker">
+                      <option value="all">选择审核类型</option>
+                      <option value="2">通过</option>
+                      <option value="3">驳回</option>
+                  </select>
+              </td>
+          </tr>
+            </tbody>
+        </table>
+        </form>
+    </div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li>
+            <button type="button" class="btn-close" data-icon="close">取消</button>
+        </li>
+        <li>
+            <button type="submit" class="btn-default" data-icon="save">保存</button>
+        </li>
+    </ul>
+</div>

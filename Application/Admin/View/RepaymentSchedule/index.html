@@ -1,0 +1,95 @@
+<div class="bjui-pageHeader">
+    <form id="pagerForm" data-toggle="ajaxsearch" action="<?php echo U('RepaymentSchedule/index', array('mpay_id' => $mpay_id))?>" method="post">
+        <input type='hidden' name='isSearch' value='1'>
+        <input type="hidden" name="pageSize" value="${model.pageSize}">
+        <input type="hidden" name="pageCurrent" value="${model.pageCurrent}">
+        <input type="hidden" name="orderField" value="${param.orderField}">
+        <input type="hidden" name="orderDirection" value="${param.orderDirection}">
+        <div class="bjui-searchBar">
+            <!--<button data-url="{:U('MpayRecord/add')}" class="btn btn-blue" data-toggle="dialog" data-icon="plus" data-mask='true' data-id="mapy-record-add">新增记录</button>-->
+            <label>还款状态:</label>
+            <select name="status" data-toggle="selectpicker" id="select_status">
+                <option value="">全部</option>
+                <option value="0">未还款</option>
+                <option value="1">已还款</option>
+            </select>&nbsp;
+            <label>起始时间：</label><input type="text" value="{$post.begin_time}" data-toggle="datepicker" name="begin_time" class="form-control" size="12">&nbsp;
+            <label>结束时间：</label><input type="text" value="{$post.end_time}" data-toggle="datepicker" name="end_time" class="form-control" size="12">&nbsp;
+            <button type="submit" class="btn-default" data-icon="search">查询</button>&nbsp;
+            <a class="btn btn-orange" href="javascript:;" data-toggle="reloadsearch" data-clear-query="true" data-icon="undo">清空查询</a>
+        </div>
+    </form>
+</div>
+<div class="bjui-pageContent tableContent">
+    <table class="table table-bordered table-hover table-striped table-top">
+        <thead>
+            <tr>
+                <th align="center" width="100">会员单位</th>
+                <th data-order-field="pro_no" align="center" width="200">融资项目标题</th>
+                <th data-order-field="n_term" align="center" width="50">期数</th>
+                <th data-order-direction="asc" data-order-field="repay_time" align="center" width="100">还款日期</th>
+                <th data-order-field="principal" align="center" width="100">还款本金(元)</th>
+                <th data-order-field="interest"  align="center" width="80">还款利息(元)</th>
+                <th align="center" width="100">已还款金额(元)</th>
+                <th align="center" width="100">应还本息(元)</th>
+                <th data-order-field="term_rate"  align="center" width="50">利率(%)</th>
+                <th data-order-direction="asc" data-order-field="real_repay_time" align="center" width="150">最近一次还款时间</th>
+                <th data-order-field="status"  align="center" width="100">状态</th>
+                <th align="center" width="100">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($list as $v){?>
+            <tr data-id="<?php echo $v['oid']?>">
+                <td align="center"><?php echo $v['company_name']?></td>
+                <td align="center"><a href="<?php echo U('FinanceProject/detail', array('fp_id' => $v['fp_id']))?>" data-toggle="dialog" data-height='400'><?php echo $v['fp_title']?></a></td>
+                <td align="center"><?php echo $v['n_term']?></td>
+                <td align="center"><?php echo date('Y-m-d',$v['repay_time'])?></td>
+                <td align="center" <?php echo $v['principal'] > 0 ? 'class="red"' : ''?>><?php echo number_format($v['principal'], 2)?></td>
+                <td align="center" class='red'><?php echo number_format($v['interest'], 2)?></td>
+                <td align="center"><?php echo number_format($v['has_repay_money'], 2)?></td>
+                <td align="center" class='red'><?php echo number_format($v['interest'] + $v['principal'] - $v['has_repay_money'], 2)?></td>
+                <td align="center"><?php echo $v['term_rate']?></td>
+                <td align="center"><?php echo empty($v['last_repay_time']) ? '--' : date('Y-m-d',$v['last_repay_time'])?></td>
+                <td align="center"><?php echo $v['status']==1?'已还款':'未还款'?></td>
+                <td align="center">
+                    <?php if($v['status']==0) {?>
+                    <a href="<?php echo U('RepaymentSchedule/repay', array('rp_id'=>$v['rp_id']))?>" class="btn btn-green" data-toggle="dialog" data-mask='true' data-title="<?php echo $v['company_name']?>-还款">还款</a>
+                    <?php if ($v['has_repay_money'] > 0) {?>
+                    <a href="<?php echo U('RepaymentRecord/index', array('rp_id'=>$v['rp_id']))?>" class="btn btn-green" data-toggle="dialog" data-mask='true' data-title="<?php echo $v['company_name']?>-打款记录">打款记录</a>
+                    <?php }?>
+                    <?php }?>
+                </td>
+            </tr>
+            <?php }?>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+    <div class="pages">
+        <span>每页&nbsp;</span>
+        <div class="selectPagesize">
+            <select data-toggle="selectpicker" data-toggle-change="changepagesize">
+                <option value="30">30</option>
+                <option value="60">60</option>
+                <option value="120">120</option>
+                <option value="150">150</option>
+            </select>
+        </div>
+        <span>&nbsp;条，共 <?php echo $total?> 条</span>
+    </div>
+    <div class="pagination-box" data-toggle="pagination" data-total="<?php echo $total?>" data-page-size="30" data-page-current="1">
+    </div>
+</div>
+<script>
+    $(function () {
+        var selectObj = $("#select_status").get(0);
+        for (var i = 0; i < selectObj.length; i++) {
+            if (selectObj.options[i].value == '{$post.status}') {
+                selectObj.options[i].selected = true;
+                break;
+            }
+        }
+    })
+
+</script>  

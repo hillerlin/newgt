@@ -1,0 +1,62 @@
+<div class="bjui-pageHeader">
+    <form id="pagerForm" data-toggle="ajaxsearch" action="<?php echo U('AfterLoan/Logg')?>" method="post">
+        <input type="hidden" name="pageSize" value="${model.pageSize}">
+        <input type="hidden" name="pageCurrent" value="${model.pageCurrent}">
+        <input type="hidden" name="orderField" value="${param.orderField}">
+        <input type="hidden" name="orderDirection" value="${param.orderDirection}">
+        <input type="hidden" name="isSearch" value="1">
+        <div class="bjui-searchBar">
+            <button data-url="<?php echo U('AfterLoan/addLog', array('pro_id'=>$pro_id))?>" class="btn btn-blue" data-toggle="dialog" data-width='500' data-height='300' data-mask='true' data-icon="plus" data-id="project-add">新增贷后日志</button>
+            
+            
+            <!--<div class="pull-right">-->
+                <!--<a href="/Admin/Project/add.html" class="btn btn-default" data-toggle="navtab" data-icon="add" data-id="project-add">新增项目</a>-->
+            <!--</div>-->
+        </div>
+    </form>
+</div>
+<div class="bjui-pageContent tableContent">
+    <table class="table table-bordered table-hover table-striped table-top" data-selected-multi="true">
+        <thead>
+            <tr>
+                <th data-order-field="pro_title" align="center" width="300">项目标题</th>
+                <th data-order-field="company_name" align="center" width="300">尽调公司</th>
+                <th data-order-direction="asc" data-order-field="addtime" align="center" width="300">添加时间</th>
+                <th data-order-field="company" align="center" width="300">事项</th>
+                <th data-order-field="gt_uid" align="center" width="100">贷后次数</th>
+                <th width="300" align="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php $n = 1; foreach($list as $v){?>
+            <tr data-id="<?php echo $v['pro_id']?>">
+                <td align="center"><?php echo $v['pro_title']?></td>
+                <td align="center"><?php echo $v['company_name']?></td>
+                <td align="center"><?php echo date('Y-m-d',$v['addtime'])?></td>
+                <td align="center"><?php echo $v['content']?></td>
+                <td align="center"><?php echo $n++;?></td>
+                <td align="center">
+                    <a href="<?php echo U('AfterLoan/editLog', array('log_id'=>$v['log_id']))?>" class="btn btn-green" data-toggle="dialog" data-id="after-loan-editlog" >修改</a>
+                    <a href="<?php echo U('AfterLoan/files', array('log_id'=>$v['log_id']))?>" class="btn btn-green" data-toggle="dialog" data-id="after-loan-editlog" >附件</a>
+                </td>
+            </tr>
+            <?php }?>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+    <div class="pages">
+        <span>每页&nbsp;</span>
+        <div class="selectPagesize">
+            <select data-toggle="selectpicker" data-toggle-change="changepagesize">
+                <option value="30">30</option>
+                <option value="60">60</option>
+                <option value="120">120</option>
+                <option value="150">150</option>
+            </select>
+        </div>
+        <span>&nbsp;条，共 <?php echo $total?> 条</span>
+    </div>
+    <div class="pagination-box" data-toggle="pagination" data-total="<?php echo $total?>" data-page-size="30" data-page-current="1">
+    </div>
+</div>

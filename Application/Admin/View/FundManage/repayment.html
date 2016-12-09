@@ -1,0 +1,153 @@
+<style type="text/css">
+    .none{
+        display: none;
+    }
+    
+    .countshow{
+        cursor: pointer;
+    }
+    .countshow:hover{
+        color:red;
+        background:#d41537;
+    }
+    .content{
+        padding-left: 20px;
+    }
+    .fontalign > tr > td{
+      text-align: center;
+    }
+</style>
+<div class="bjui-pageHeader">
+    
+      <form id="pagerForm" data-toggle="ajaxsearch" action="<?php echo U('FundManage/repayment')?>" method="post">
+        <input type='hidden' name='isSearch' value='1'>
+        <input type="hidden" name="pageSize" value="${model.pageSize}">
+        <input type="hidden" name="pageCurrent" value="${model.pageCurrent}">
+        <input type="hidden" name="orderField" value="${param.orderField}">
+        <input type="hidden" name="orderDirection" value="${param.orderDirection}">
+
+        <div class="bjui-searchBar">
+            <label>起始时间：</label><input type="text" value="{$post.begin_time}" data-toggle="datepicker" name="begin_time" class="form-control" size="12">&nbsp;
+            <label>结束时间：</label><input type="text" value="{$post.end_time}" data-toggle="datepicker" name="end_time" class="form-control" size="12">&nbsp;
+            <button type="submit" class="btn-default" data-icon="search">查询</button>&nbsp;
+            <a class="btn btn-orange" href="javascript:;" data-toggle="reloadsearch" data-clear-query="true" data-icon="undo">清空查询</a>
+        </div>
+    </form>
+
+
+</div>
+<div class="bjui-pageContent tableContent">
+    <table class="table table-bordered table-hover table-striped table-top">
+        <thead>
+            <tr id='_time'>
+                <th  align="center" width="100">到期时间</th>
+                <th  align="center" width="100">项目</th>
+                <th  align="center" width="80">打款金额合计(万元)</th>
+                <th  align="center" width="50">到期本息合计(万元)</th>
+                <th align="center" width="50">合计人数</th>
+                <th align="center" width="50">兑付情况</th>
+            </tr>
+        </thead>
+        <tbody class="fontalign">
+          <foreach name="list" item="v">
+           <tr p_class="{$v['detime']}">
+              <th class="count countshow" onclick="count(this)" ajax_val="1">{$v['detime']}</th>
+              <td></td>
+              <td>{$v['summoney']}</td>
+              <td>{$v['suminterestdue']}</td>
+              <td>{$v['sumnum']}</td>
+              <td>{$v['repay']}</td>
+           </tr>
+          </foreach>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+    <div class="pages">
+        <span>每页&nbsp;</span>
+        <div class="selectPagesize">
+            <select data-toggle="selectpicker" data-toggle-change="changepagesize">
+                <option value="30">30</option>
+                <option value="60">60</option>
+                <option value="120">120</option>
+                <option value="150">150</option>
+            </select>
+        </div>
+        <span>&nbsp;条，共 <?php echo $total?> 条</span>
+    </div>
+    <div class="pagination-box" data-toggle="pagination" data-total="<?php echo $total?>" data-page-size="30" data-page-current="1">
+    </div>
+</div>
+<script type="text/javascript">
+    function count(e){
+        var detime=$(e).html();
+        if($(e).attr('ajax_val')==1){
+          $.ajax({
+            url: '/Admin/FundManage/ajaxcompayment',
+            type: 'post',
+            dataType: 'json',
+            data: {'detime':detime,'m':'showname'},
+          }).done(function(data) {
+              var htmlcontent='';
+              if(data.status==1){ 
+                  $.each(data.message,function(index, el) {
+                     htmlcontent+='<tr class="'+el.detime+'" style="display:table-tr">';
+                     htmlcontent+='<th ajax_class="'+el.detime+'-'+el.customer_name+'" class="countshow" onClick="details(this)" ajax_val="1" ajax_name="'+el.customer_name+'">|----'+el.customer_name+'</th>';
+                     htmlcontent+='<td></td>';
+                     htmlcontent+='<td>'+el.summoney+'</td>';
+                     htmlcontent+='<td>'+el.suminterestdue+'</td>';
+                     htmlcontent+='<td>'+1+'</td>';
+                     htmlcontent+='<td>'+el.repay+'</td>';
+                     htmlcontent+='</tr>';
+                });
+                $(e).parents('tr').after(htmlcontent);
+                $(e).attr('ajax_val',2);
+              }
+          }).fail(function() {
+            alert("error");
+          });
+        }else{
+           var ajax_class=$(e).parents('tr').attr('p_class');
+           
+            $('tr.'+ajax_class).each(function(){
+                var sub_ajax_class=$(this).children('th').attr('ajax_class');
+                if($('tr.'+sub_ajax_class).is(':visible')){
+                  $('.'+sub_ajax_class).toggle();
+                }
+
+            });
+           $('.'+ajax_class).toggle(); 
+        }
+    }
+    function details(e){
+        var detime=$(e).parents('tr').attr('class');
+        if($(e).attr('ajax_val')==1){
+        $.ajax({
+            url: '/Admin/FundManage/ajaxcompayment',
+            type: 'post',
+            dataType: 'json',
+            data: {'detime':detime,'customer_name':$(e).attr('ajax_name'),'m':'showdetails'},
+          }).done(function(data) {
+              var htmlcontent='';
+              if(data.status==1){ 
+                  $.each(data.message,function(index, el) {
+                     htmlcontent+='<tr class="'+el.detime+'-'+el.customer_name+'" style="display:table-tr">';
+                     htmlcontent+='<th>|********'+el.customer_name+'</th>';
+                     htmlcontent+='<td>'+el.fund_title+'</td>';
+                     htmlcontent+='<td>'+el.summoney+'</td>';
+                     htmlcontent+='<td>'+el.suminterestdue+'</td>';
+                     htmlcontent+='<td></td>';
+                     htmlcontent+='<td>'+el.repay+'</td>';
+                     htmlcontent+='</tr>';
+                });
+                $(e).parents('tr').after(htmlcontent);
+                $(e).attr('ajax_val',2);
+              }
+          }).fail(function() {
+            console.log("error");
+          });
+        }else{
+            $('.'+$(e).attr('ajax_class')).toggle();
+        }
+    }
+</script>

@@ -1,0 +1,28 @@
+[ 2016-10-31T11:20:45+08:00 ] 127.0.0.1 /Admin/LoanManage/audit.html
+INFO : mod;1;系统管理员;项目审核:loan_id-1,status-1,pro_step-3
+[ 2016-10-31T18:19:05+08:00 ] 127.0.0.1 /Admin/Project/remove_attachment.html
+INFO : del;1;系统管理员;删除附件：aid-5634,pro_id-105
+[ 2016-10-31T18:19:08+08:00 ] 127.0.0.1 /Admin/Project/remove_attachment.html
+INFO : del;1;系统管理员;删除附件：aid-5633,pro_id-105
+[ 2016-10-31T18:19:11+08:00 ] 127.0.0.1 /Admin/Project/remove_attachment.html
+INFO : del;1;系统管理员;删除附件：aid-5632,pro_id-105
+[ 2016-10-31T18:19:14+08:00 ] 127.0.0.1 /Admin/Project/remove_attachment.html
+INFO : del;1;系统管理员;删除附件：aid-5631,pro_id-105
+[ 2016-10-31T18:20:45+08:00 ] 127.0.0.1 /Admin/Project/remove_attachment.html
+INFO : del;1;系统管理员;删除附件：aid-5630,pro_id-105
+[ 2016-10-31T18:20:48+08:00 ] 127.0.0.1 /Admin/Project/remove_attachment.html
+INFO : del;1;系统管理员;删除附件：aid-5629,pro_id-105
+[ 2016-10-31T18:58:39+08:00 ] 127.0.0.1 /Admin/Project/upload_attachment.html?sessionid=?
+INFO : add;1;系统管理员;{"file_path":"\/Uploads\/project\/attachment\/pro-\/-581723df342df.png","file_id":"20161031185839","file_name":"secondarytile.png","addtime":"2016-10-31 18:58:39","aid":"5647"}
+[ 2016-10-31T19:51:48+08:00 ] 127.0.0.1 /Admin/FundManage/remove_attachment.html
+INFO : del;1;系统管理员;删除附件：aid-5652,fund_id-1
+[ 2016-10-31T20:12:29+08:00 ] 127.0.0.1 /Admin/Project/upload_attachment.html?sessionid=?
+INFO : add;1;系统管理员;{"file_path":"\/Uploads\/project\/attachment\/pro-88\/-5817352dbec7b.png","file_id":"20161031201229","file_name":"secondarytile.png","addtime":"2016-10-31 20:12:29","aid":"5648"}
+[ 2016-10-31T20:16:26+08:00 ] 127.0.0.1 /Admin/Project/upload_attachment.html?sessionid=?
+INFO : add;1;系统管理员;{"file_path":"\/Uploads\/project\/attachment\/pro-90\/-58173616346c9.png","file_id":"20161031201625","file_name":"secondarytile.png","addtime":"2016-10-31 20:16:24","aid":"5649"}
+[ 2016-10-31T20:22:35+08:00 ] 127.0.0.1 /Admin/FundManage/remove_attachment.html
+INFO : del;1;系统管理员;删除附件：aid-5651,fund_id-1
+[ 2016-10-31T20:46:26+08:00 ] 127.0.0.1 /Admin/FundManage/remove_attachment.html
+INFO : del;1;系统管理员;删除附件：aid-5650,fund_id-1
+[ 2016-10-31T20:47:35+08:00 ] 127.0.0.1 /Admin/Project/upload_attachment.html?sessionid=?
+INFO : add;1;系统管理员;{"file_path":"\/Uploads\/project\/attachment\/pro-99\/-58173d6700f07.png","file_id":"20161031204735","file_name":"secondarytile11111.png","addtime":"2016-10-31 20:47:35","aid":"5657"}

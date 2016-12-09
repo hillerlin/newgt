@@ -1,0 +1,234 @@
+<div class="bjui-pageContent">
+    <form action="<?php echo U('SignApplyManage/saveContract')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="pro_id" value="{$pro_id}">
+        <input type="hidden" name="company_id" value="{$company_info.company_id}">
+        <input type="hidden" name="pre_contract_id" value="{$pre_contract.pre_contract_id}">
+        <input type="hidden" name="pay_for_bank_id" value="{$pre_contract.pay_for_account}">
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td style="width: 100px">
+                    </td>
+                    <td >
+                        <label for="j_custom_name" class="control-label x85">业务部门：</label>
+                        <input type="text" id="p_name" value="<?php echo $pro_linker_info['department']?>" size="10" readonly>
+                    </td>
+                    <td>
+                        <label for="j_custom_name" class="control-label x85">项目经理：</label>
+                        <input type="text" id="p_name" value="<?php echo $pro_linker_info['real_name']?>" size="15" readonly>
+                    </td>
+                    <td>
+                        <label for="j_custom_name" class="control-label x85">拟签约日期：</label>
+                        <input type="text" name="pro_title" id="p_name" value="<?php echo $pro_title?>" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="base" rowspan="7" >
+                        <label for="j_custom_name" class="control-label x85">业务基本情况：</label>
+                    </td>
+                </tr>
+                <tr >
+                    <td colspan="3">
+                        <label for="company_id" class="control-label x85">客户名称：</label>
+                        <input type="text" name="company_name" id="p_name" value="<?php echo $company_info['company_name']?>" size="15" readonly>
+                        <input type="hidden" name="company_id" value="<?php echo $company_info['company_id']?>">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label for="pro_account" class="control-label x85">业务品种：</label>
+                        <input type="radio" name="pro_kind" id="check1" data-toggle="icheck" data-label="明保理" value="0" <?php echo $pre_contract['pro_kind'] == 0 ? 'checked' : '' ?> data-rule="checked" disabled>&nbsp;
+                        <input type="radio" name="pro_kind" id="check2" data-toggle="icheck" data-label="暗保理" value="1" <?php echo $pre_contract['pro_kind'] == 1 ? 'checked' : '' ?> disabled>&nbsp;
+                    </td>
+                </tr>
+                <tr style="display: none" id="reversed">
+                    <td colspan="3">
+                        <label for="pro_account" class="control-label x85">业务品种：</label>
+                        <?php foreach($contract_debt_type as $key => $v) {?>
+                        <input type="checkbox" name="debt_type[]" id="debt_type<?php echo $key?>" data-toggle="icheck" data-label="<?php echo $v?>" value="<?php echo $key?>" <?php echo in_array($key, $pre_contract['debt_type']) ? 'checked' : ''?> disabled>&nbsp;
+                        <?php }?>
+                        <input type="text" name="debt_another" id="another_debt_type" value="<?php echo $pre_contract['debt_another']?>" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label for="pro_type" class="control-label x85">保理期限：</label>
+                        <input type="text" name="term" value="<?php echo $pre_contract['term']?>" data-rule="required;money" size="5" readonly>个月，以实际放款日为准起算。
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <label for="pro_account" class="control-label x85">保理金额：</label>
+                        <input type="text" name="real_money" id="p_account" value="<?php echo $pre_contract['real_money']?>" data-rule="required;money" size="15" readonly>元
+                    </td>
+                    <td >
+                        <label for="pro_type" class="control-label x85">回购率：</label>
+                        <input type="text" name="repurchase_rate" value="<?php echo $pre_contract['repurchase_rate']?>" data-rule="required;money" size="15" readonly>%
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <label for="pro_type" class="control-label x85">保证金：</label>
+                        <input type="text" name="cash_deposit" value="<?php echo $pre_contract['cash_deposit']?>" data-rule="required;money" size="15" readonly>%
+                    </td>
+                    <td >
+                        <label for="pro_type" class="control-label x85">手续费：</label>
+                        <input type="text" name="handling_charge" value="<?php echo $pre_contract['handling_charge']?>" data-rule="required;money" size="15" readonly>%
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <label for="pro_account" class="control-label x85">资金用途：</label>
+                        <input type="text" name="purpose" id="p_account" value="<?php echo $pre_contract['purpose']?>" data-rule="required;money" size="15" readonly>
+                    </td>
+                    <td >
+                        <label for="pro_type" class="control-label x85">咨询费：</label>
+                        <input type="text" name="counseling_fee" value="<?php echo $pre_contract['counseling_fee']?>" data-rule="required;money" size="15" readonly>%
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="3" >
+                        <label for="j_custom_name" class="control-label x85">监管账户信息：</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label for="pro_account" class="control-label x85">银行账户：</label>
+                        <?php foreach($superviseType as $key => $v) {?>
+                        <input type="radio" class='supervise' name="supervise_type" data-toggle="icheck" data-label="<?php echo $v?>" value="<?php echo $key?>" <?php echo $key == $pre_contract['supervise_type'] ? 'checked' : ''?> disabled>&nbsp;
+                        <?php }?>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <label for="debt_no" class="control-label x85">收款户名：</label>
+                        <input type="text" name="supervise_account" value="<?php echo $pre_contract['supervise_account']?>" size="15" readonly>
+                    </td>
+                    <td >
+                        <label for="debt_no" class="control-label x85">开户行：</label>
+                        <input type="text" name="supervise_bank" value="<?php echo $pre_contract['supervise_bank']?>" size="15" readonly>
+                    </td>
+                    <td >
+                        <label for="debt_no" class="control-label x85">账号：</label>
+                        <input type="text" name="supervise_num" value="<?php echo $pre_contract['supervise_num']?>" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="3" >
+                        <label for="j_custom_name" class="control-label x85">担保方信息：</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label for="pro_account" class="control-label x85">担保方名称：</label>
+                        <input type="checkbox" name="assure_kind[]" data-toggle="icheck" data-label="个人" value="1" <?php echo in_array(1, $pre_contract['assure_kind']) ? 'checked' : ''?> disabled>&nbsp;
+                        <input type="checkbox" name="assure_kind[]" data-toggle="icheck" data-label="企业" value="2" <?php echo in_array(2, $pre_contract['assure_kind']) ? 'checked' : ''?> disabled>&nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label for="assure_detail" class="control-label x85">详细信息：</label>
+                        <textarea name="assure_detail" id="j_custom_note_1" data-toggle="autoheight" rows="3" cols="50" readonly><?php echo $pre_contract['assure_detail']?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="2" >
+                        <label for="j_custom_name" class="control-label x85">收款账户：</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <label for="debt_no" class="control-label x85">开户行：</label>
+                        <input type="text" name="pay_for_bank_name" value="<?php echo $pre_contract['company_bank']?>"  size="25"  data-url="<?php echo U('Bank/lookup',array('type'=>'pay_for'))?>" data-id="bank-lookup" data-width="900" data-height="500" readonly>
+                    </td>
+                    <td >
+                        <label for="debt_no" class="control-label x85">户名：</label>
+                        <input type="text" name="pay_for_account_name" value="<?php echo $pre_contract['company_account']?>"  size="25" readonly>
+                    </td>
+                    <td >
+                        <label for="debt_no" class="control-label x85">账号：</label>
+                        <input type="text" name="pay_for_bank_no" value="<?php echo $pre_contract['company_num']?>" size="25" readonly>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+<!--        <h5>违约条款</h5>
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="penalty_rate" class="control-label x120">违约金：</label>
+                        <input type="text" name="penalty_rate" value="<?php echo $pre_contract['penalty_rate']?>" data-rule="required;" size="15">%(每日)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="demurrage_rate" class="control-label x120">逾期利息：</label>
+                        <input type="checkbox" name="pro_term" id="check" data-toggle="icheck">
+                        <input type="checkbox" name="demurrage_rate_type1" id="demurrage_rate1" data-toggle="icheck" value="1" data-label="贷款基准利率4倍&nbsp;&nbsp;" <?php echo $pre_contract['demurrage_rate_type1']==1 ? 'checked' : ''?>>
+                        <input type="checkbox" name="demurrage_rate_type2" id="demurrage_rate2" data-toggle="icheck" value="1" data-label="每月利率" <?php echo $pre_contract['demurrage_rate_type2']==1 ? 'checked' : ''?>>
+                        <input type="text" name="demurrage_rate2" value="<?php echo $pre_contract['demurrage_rate2']?>" size="15" style="<?php echo $pre_contract['demurrage_rate_type2']==1 ? '':'display: none'?>">%
+                    </td>
+                </tr>
+            </tbody>
+        </table>-->
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+    </ul>
+</div>
+<script>
+    var pro_type = <?php echo $pre_contract['pro_kind']?>;
+    if (pro_type == 0) {
+        $('#reversed').show();
+        $('#base').attr('rowspan', 8);
+        $('input[name="supplier_name"]').attr('data-rule', 'required');
+    }
+    $('#check1').on('ifChecked', function (event) {
+        $('#reversed').show();
+        $('#base').attr('rowspan', 8);
+        $('input[name="supplier_name"]').attr('data-rule', 'required');
+    });
+    $('#check1').on('ifUnchecked', function (event) {
+        $('#reversed').hide();
+        $('#base').attr('rowspan', 7);
+        $('input[name="supplier_name"]').removeAttr('data-rule');
+    });
+    
+    $('#debt_type4').on('ifChecked', function (event) {
+        $('#another_debt_type').show();
+        $('#another_debt_type').attr('data-rule', 'required');
+    });
+    $('input[name="pro_term"]').on('ifUnchecked', function (event) {
+        $('#another_debt_type').hide();
+        $('#another_debt_type').removeAttr('data-rule');
+    });
+
+    $('#demurrage_rate2').on('ifChecked', function (event) {
+        $('input[name="demurrage_rate2"]').show();
+        $('input[name="demurrage_rate2"]').attr('data-rule', 'required');
+    });
+    $('#demurrage_rate2').on('ifUnchecked', function (event) {
+        $('input[name="demurrage_rate2"]').hide();
+        $('input[name="demurrage_rate2"]').removeAttr('data-rule');
+    });
+//     $('.supervise').on('ifChecked', function (event) {
+//        $('input[name="supervise_account"]').attr('data-rule', 'required');
+//        $('input[name="supervise_bank"]').attr('data-rule', 'required');
+//        $('input[name="supervise_num"]').attr('data-rule', 'required');
+//    });
+    function cancelCheck() {
+        $('.supervise').iCheck('uncheck');
+        $('input[name="supervise_account"]').removeAttr('data-rule');
+        $('input[name="supervise_bank"]').removeAttr('data-rule');
+        $('input[name="supervise_num"]').removeAttr('data-rule');
+    }
+</script>

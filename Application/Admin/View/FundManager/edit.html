@@ -1,0 +1,72 @@
+<div class="bjui-pageContent">
+    <form action="<?php echo U('FundManager/save')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="fmanager_id" id="p_company" value="{$fmanager_id}" size="15" >
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="company_id" class="control-label x120">客户经理：</label>
+                        <input type="text" name="real_name" id="p_company" value="{$real_name}" size="15" >
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="company_id" class="control-label x120">入职时间：</label>
+                        <input type="text" name="join_time" value="<?php echo date('Y-m-d', $join_time);?>" size="15" data-toggle='datepicker' data-rule="required">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x120">地区：</label>
+                        <select name="branch_id" data-toggle="selectpicker" data-nextselect="#j_form_city2" data-refurl="/Admin/FundManager/childBranch/branch_id/{value}.html">
+                            <option value="all">--地区--</option>
+                            <?php foreach($branch_list as $v){ ?>
+                            <option value="<?php echo $v['branch_id']?>" <?php echo $branch_id == $v['branch_id'] ? 'selected' : ''; ?>><?php echo $v['branch_name']?></option>
+                            <?php  }?>
+                        </select>
+                        <select name="branch_ch_id" id="j_form_city2" data-toggle="selectpicker" data-emptytxt="--分部--">
+                            <option value="">--分部--</option>
+                            <?php foreach($branch_ch_list as $v){ ?>
+                            <option value="<?php echo $v['branch_id']?>" <?php echo $branch_ch_id == $v['branch_id'] ? 'selected' : ''; ?>><?php echo $v['branch_name']?></option>
+                            <?php  }?>
+                        </select>
+<!--                        <select name="area" id="j_form_area2" data-toggle="selectpicker" data-emptytxt="--区县--">
+                            <option value="all">--区县--</option>
+                        </select>-->
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x120">任职状况：</label>
+                        <select name="status" data-toggle="selectpicker" data-emptytxt="--请选择--">
+                            <option value="0">离职</option>
+                            <option value="1">在职</option>
+                        </select>
+                        <input type="hidden" id="__status__" value="{$status}">
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <label for="remark" class="control-label x120">备注：</label>
+                        <textarea name="remark" id="j_custom_note_1" cols="30" rows="2"></textarea>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>
+<script>
+
+        var select=$("select[name='status']")
+        var defaultStatus=$('#__status__').val()
+        select.find("option[value='"+defaultStatus+"']").attr('selected',true)
+
+</script>

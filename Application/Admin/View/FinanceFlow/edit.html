@@ -1,0 +1,160 @@
+<script type="text/javascript">
+    function pic_upload_success(file, data) {
+        var json = $.parseJSON(data)
+
+        $(this).bjuiajax('ajaxDone', json)
+        if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+            $('#j_custom_pic').val(json.filename).trigger('validate')
+            $('#j_custom_span_pic').html('<img src="' + json.filename + '" width="100" />')
+        }
+    }
+    function do_OK(json, $form) {
+        console.log(json)
+        console.log($form)
+    }
+</script>
+<div class="bjui-pageContent">
+    <form action="<?php echo U('FinanceFlow/editSave')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="fid" value="{$flow.fid}" />
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="money" class="control-label x120 red">金额：</label>
+                        <input type="text" name="money" id="money" value="{$flow.money}" size="15" data-rule="required" readonly="true">元
+                        <label for="money" id="uploanamount" class="control-label x1000 red"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x120">流水类型：</label>
+                        <select name="type" data-rule="required" data-toggle="selectpicker" disabled="true">
+                            <option value="">--请选择--</option>
+                            <?php foreach($type_dsc as $key => $val):?>
+                            <option value="<?php echo $key;?>" <?php echo $flow['type'] == $key ?  'selected' : ''; ?>><?php echo $val?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x120">收/付款账户：</label>
+                        <select name="bank_id" data-rule="required" data-toggle="selectpicker">
+                            <option value="">--请选择--</option>
+                            <?php foreach($banks as $val):?>
+                            <option value="<?php echo $val['bank_id']?>" <?php echo $flow['bank_id'] == $val['bank_id'] ?  'selected' : ''; ?>><?php echo $val['account_name'].'—'.$val['bank_name']?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="money" class="control-label x120 red">交易对手：</label>
+                        <input type="text" name="counterparty" id="p_account" value="{$flow.counterparty}" size="15" data-rule="required" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="money" class="control-label x120 red">打款时间：</label>
+                        <input type="text" name="pay_time" id="p_company" value="<?php echo date('Y-m-d', $flow['pay_time'])?>" size="15" data-toggle="datepicker" readonly>
+                    </td>
+                </tr>
+<!--                <tr>
+                    <td>
+                        <label for="pro_desc" class="control-label x120">上传文件：</label>
+                        <div style="display: inline-block; vertical-align: middle;">
+                            <div id="j_custom_pic_up" data-toggle="upload" data-uploader="<?php echo U('FinanceFlow/upload')?>?sessionid=?" 
+                                 data-file-size-limit="1024000000"
+                                 data-file-type-exts="<?php echo $exts?>"
+                                 data-multi="true"
+                                 data-on-upload-success="pic_upload_success"
+                                 data-icon="cloud-upload"
+                                 data-auto="true"
+                                 data-form-data='{"file_id":"<?php echo $file_id?>","pro_id":"<?php echo $pro_id?>"}'
+                                 data-file-obj-name='<?php echo date('Y-m-d')?>'></div>
+                        </div>
+                        <span id="j_custom_span_pic">
+                        </span>
+                    </td>
+                </tr>-->
+                <tr>
+                    <td>
+                        <label for="loan_remark" class="control-label x120">备注：</label>
+                        <textarea name="remark" id="j_custom_note_1" cols="30" rows="2">{$flow.remark}</textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table id='file-list' class="table table-condensed table-hover" width="100%">
+            <thead>
+                <tr>
+                    <th align="center" width="300">文件名</th>
+                    <th align="center" width="300">上传日期</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($voucherList as $v){?>
+                <tr>
+                    <td align="center"><a target="_blank" href="<?php echo $v["path"]?>"><img src="<?php echo $v['path']?>" style="max-width: 550px; max-height: 450px;"></a></td>
+                    <td align="center"><?php echo date('Y-m-d H:s:i', $v['addtime'])?></td>
+                    <!--<td align="center"><a href="<?php echo U('FinanceFlow/remove')?>" data-data='{"file_path":"<?php echo $v["path"]?> ","aid":"<?php echo $v["id"]?>","file_id":"<?php echo $v["id"]?>"}'  class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td>-->
+                </tr>
+                <?php }?>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>
+<script type="text/javascript">
+    function pic_upload_success(file, data) {
+        var json = $.parseJSON(data)
+        $(this).bjuiajax('ajaxDone', json)
+        if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+            add_uploadedfile(json.content);
+//        $('#j_custom_pic').val(json.filename).trigger('validate')
+//        $('#j_custom_span_pic').html('<img src="'+ json.filename +'" width="100" />')
+        }
+    }
+// 图片上传
+    function add_uploadedfile(data) {
+        var i = $('#file-list> tbody > tr').length + 1;
+        var newTr = '<tr><td align="center"><a href="' + data.file_path + '">' + data.file_name + '</a><input type="hidden" name="voucher['+ i +'][path]" value="' + data.file_path + '" /></a><input type="hidden" name="voucher['+ i +'][filename]" value="' + data.file_name + '" /></td><td align="center">' + data.addtime + '</td><td align="center"><a href="<?php echo U("FinanceFlow/remove")?>" data-data=\'{"file_path":\"' + data.file_path + '\"}\' class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td></tr>';
+//        var newImg = '<li id="' + data.file_id + '"><input type="hidden" name="attachment['+ i +'][path]" value="' + data.file_path + '" /><div class="thumb-list-pics"><a href="javascript:void(0);"><img src="' + data.file_path + '" alt=""/></a></div><a href="javascript:del_file_upload(0,' + data.file_id + ',\'' + data.file_path + '\');" class="del" title="删除">X</a><a href="javascript:insert_editor(\'' + data.file_path + '\');" class="inset"><i class="fa fa-clipboard"></i>插入图片</a></li>';
+        $('#file-list > tbody').append(newTr);
+
+    }
+    
+    function DX(n) {
+        if (n === '') {
+            return '';
+        }
+        if (!/^(0|[1-9]\d*)(\.\d+)?$/.test(n))
+            return "数据非法";
+        var unit = "千百拾亿千百拾万千百拾元角分", str = "";
+        n += "00";
+        var p = n.indexOf('.');
+        if (p >= 0)
+            n = n.substring(0, p) + n.substr(p + 1, 2);
+        unit = unit.substr(unit.length - n.length);
+        for (var i = 0; i < n.length; i++)
+            str += '零壹贰叁肆伍陆柒捌玖'.charAt(n.charAt(i)) + unit.charAt(i);
+        return str.replace(/零(千|百|拾|角)/g, "零").replace(/(零)+/g, "零").replace(/零(万|亿|元)/g, "$1").replace(/(亿)万|壹(拾)/g, "$1$2").replace(/^元零?|零分/g, "").replace(/元$/g, "元整");
+    }
+//    $("#money").change(function () {
+//        var money = $(this).val();
+//        var upper = DX(money);
+//        $("#uploanamount").val(upper);
+//        
+//    });
+    $('#money').bind('input propertychange', function() {
+        var money = $(this).val();
+        var upper = DX(money);
+        $("#uploanamount").text(upper);
+    });
+
+</script>

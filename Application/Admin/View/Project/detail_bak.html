@@ -1,0 +1,103 @@
+<script type="text/javascript">
+function do_OK(json, $form) {
+    console.log(json)
+    console.log($form)
+}
+</script>
+<div class="bjui-pageContent">
+    <form action="<?php echo U('Project/audit')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="pro_id" value="<?php echo $pro_id?>">
+        <input type="hidden" name="pro_step" value="<?php echo $pro_step?>">
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="j_custom_name" class="control-label x120">项目名称：</label>
+                        <input type="text" name="" id="p_name" value="<?php echo $pro_title?>" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="j_custom_sale" class="control-label x120">项目编号：</label>
+                        <input type="text" name="" id="p_name" value="<?php echo $pro_no?>" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="pro_account" class="control-label x120">融资金额：</label>
+                        <input type="text" name="pro_account" id="p_account" value="<?php echo number_format($pro_account, 2)?>" size="15" readonly>元
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="gt_uid" class="control-label x120">项管部跟进人：</label>
+                        <input type="text" name="user_name" id="p_user" value="<?php echo $admin['real_name']?>" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="company_id" class="control-label x120">公司：</label>
+                        <input type="hidden" name="company_id" value='<?php echo $company_id?>'>
+                        <input type="text" name="company" id="p_company" value="<?php echo $company['company_name']?>" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <label for="pro_desc" class="control-label x120">项目简介：</label>
+                        <textarea name="pro_desc" id="j_custom_note_1" data-toggle="autoheight" cols="60" rows="1" readonly><?php echo $pro_desc?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="pro_desc" class="control-label x120">查看资料：</label>
+                        <a href="<?php echo U('Project/file', array('pro_id'=>$pro_id))?>" class="btn btn-green" data-toggle="dialog" data-height="900" data-width="800" data-id="project-file" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="项目相关文件">查看文件</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+    <h4>审核流程</h4>
+    <table class="table table-bordered table-striped table-hover" width="100%">
+        <thead>
+            <tr>
+                <th align="center" width="300">操作人</th>
+                <th align="center" width="300">提交时间</th>
+                <th align="center" width="300">类型</th>
+                <th align="center" width="300">结果</th>
+                <th align="center" width="300">意见</th>
+                <th align="center" width="300">附件</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($process_list as $v){?>
+            <tr data-id="<?php echo $v['pro_id']?>">
+                <td align="center"><?php echo $v['real_name']?></td>
+                <td align="center"><?php echo date('Y-m-d H:i:s', $v['addtime'])?></td>
+                <td align="center"><?php echo $workflow[$v['step_pid']][$v['pro_step']]['step_desc']?></td>
+                <td align="center"><?php echo $workflow[$v['step_pid']][$v['pro_step']]['step_next'][$v['status']]['desc']?></td>
+                <td align="center"><?php echo $v['opinion']?></td>
+                <td align="center">
+                    <?php if($v['files'] > 0):?>
+                    <?php if(($v['step_pid'] == 1 && $v['pro_step'] == 4) || ($v['step_pid'] == 2 && $v['pro_step'] == 2)): ?>
+                    <?php if(in_array($signin_admin['admin_id'], $review_file_autho)): ?>
+                    <a href="<?php echo U('Project/fileReviewList', array('pro_id'=>$v['context_id'], 'step_id'=>$v['id']))?>" class="btn btn-green" data-toggle="dialog" >附件</a>
+                    <?php else:?>
+                    --
+                    <?php endif;?>
+                    <?php else:?>
+                    <a href="<?php echo U('Project/fileReviewList', array('pro_id'=>$v['context_id'], 'step_id'=>$v['id']))?>" class="btn btn-green" data-toggle="dialog" >附件</a>
+                    <?php endif;?>
+                    <?php else:?>
+                    --
+                    <?php endif;?>
+                </td>
+            </tr>
+            <?php }?>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+    </ul>
+</div>

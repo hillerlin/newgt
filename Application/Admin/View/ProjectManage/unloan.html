@@ -1,0 +1,80 @@
+<div class="bjui-pageHeader">
+    <form id="pagerForm" data-toggle="ajaxsearch" action="<?php echo U('ProjectManage/unloan')?>" method="post">
+        <input type="hidden" name="pageSize" value="${model.pageSize}">
+        <input type="hidden" name="pageCurrent" value="${model.pageCurrent}">
+        <input type="hidden" name="orderField" value="${param.orderField}">
+        <input type="hidden" name="orderDirection" value="${param.orderDirection}">
+        <div class="bjui-searchBar">
+            <label>项目编号：</label><input type="text" id="pro_no" value="" name="pro_no" class="form-control" size="10">&nbsp;
+            <!--<label>公司名称：</label><input type="text" value="" name="company_name" class="form-control" size="8">&nbsp;-->
+            <!--<input type="checkbox" id="j_table_chk" value="true" data-toggle="icheck" data-label="我的客户">-->
+            <!--<button type="button" class="showMoreSearch" data-toggle="moresearch" data-name="custom"><i class="fa fa-angle-double-down"></i></button>-->
+            <button type="submit" class="btn-default" data-icon="search">查询</button>&nbsp;
+            <a class="btn btn-orange" href="javascript:;" data-toggle="reloadsearch" data-clear-query="true" data-icon="undo">清空查询</a>
+            <!--<div class="pull-right">-->
+                <!--<a href="/Admin/Project/add.html" class="btn btn-default" data-toggle="navtab" data-icon="add" data-id="project-add">新增项目</a>-->
+            <!--</div>-->
+        </div>
+        <div class="bjui-moreSearch">
+            <label>职业：</label><input type="text" value="" name="profession" size="15" />
+            <label>&nbsp;性别:</label>
+            <select name="sex" data-toggle="selectpicker">
+                <option value="">全部</option>
+                <option value="true">男</option>
+                <option value="false">女</option>
+            </select>
+            <label>&nbsp;手机:</label>
+            <input type="text" value="" name="mobile" size="10">
+        </div>
+    </form>
+</div>
+<div class="bjui-pageContent tableContent">
+    <table class="table table-bordered table-hover table-striped table-top" >
+        <thead>
+            <tr>
+                <th data-order-field="pro_no" align="center" width="300">项目编号</th>
+                <th data-order-field="pro_title" align="center" width="300">项目标题</th>
+                <th data-order-direction="asc" data-order-field="addtime" align="center" width="300">添加时间</th>
+                <th data-order-field="company" align="center" width="300">公司</th>
+                <th data-order-field="gt_uid" align="center" width="300">项管部跟进人</th>
+                <th data-order-field=""  align="center" width="100">请款金额</th>
+                <th data-order-field=""  align="center" width="100">已放款金额</th>
+                <th width="300" align="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($list as $v){?>
+            <tr data-id="<?php echo $v['pro_id']?>">
+                <td align="center"><?php echo $v['pro_no']?></td>
+                <td align="center"><?php echo $v['pro_title']?></td>
+                <td align="center"><?php echo date('Y-m-d H:i:s',$v['addtime'])?></td>
+                <td align="center"><?php echo $v['company_name']?></td>
+                <td align="center"><?php echo $v['pmd_name']?></td>
+                <td align="center"><?php echo $v['money']?></td>
+                <td align="center"><?php echo $v['has_loan_money']?></td>
+                <td align="center">
+                    <a href="javascript:;" data-toggle="lookupback" data-args="{loan_id:'<?php echo $v['loan_id']?>',loan_money:'<?php echo $v['money']?>',company_id:'<?php echo $v['company_id']?>',company_name:'<?php echo $v['company_name']?>',pro_id:'<?php echo $v['pro_id']?>',pro_title:'<?php echo $v['pro_title']?>', pro_no:'<?php echo $v['pro_no']?>', pro_account:'<?php echo number_format($v['pro_account'], 2)?>', pro_real_money:'<?php echo number_format($v['pro_real_money'], 2)?>', pro_type:'<?php echo $v['pro_type']?>'}" class="btn btn-blue" title="选择本项" data-icon="check">选择</a>
+                    <a href="<?php echo U('Project/detail', array('pro_id'=>$v['pro_id']))?>" class="btn btn-green" data-toggle="dialog" data-width="800" data-height="800" data-mask="true" data-id="project-detail" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="项目详情">查看</a>
+                    <!--<a href="<?php echo U('Project/file', array('pro_id'=>$v['pro_id']))?>" class="btn btn-green" data-toggle="dialog" data-width="800" data-height="800" data-mask="true" data-id="project-file" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="项目相关文件">相关文件</a>-->
+                </td>
+            </tr>
+            <?php }?>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+    <div class="pages">
+        <span>每页&nbsp;</span>
+        <div class="selectPagesize">
+            <select data-toggle="selectpicker" data-toggle-change="changepagesize">
+                <option value="30">30</option>
+                <option value="60">60</option>
+                <option value="120">120</option>
+                <option value="150">150</option>
+            </select>
+        </div>
+        <span>&nbsp;条，共 <?php echo $total?> 条</span>
+    </div>
+    <div class="pagination-box" data-toggle="pagination" data-total="<?php echo $total?>" data-page-size="30" data-page-current="1">
+    </div>
+</div>

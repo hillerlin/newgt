@@ -1,0 +1,319 @@
+<style type="text/css">
+    th{ text-align:center; }
+    .fontleft{ text-align:left; }
+    .table > tbody > tr> td >input{width:100%; }
+</style>
+<div class="bjui-pageContent tableContent">
+    <form action="<?php echo U('AfterLoan/audit') ?>" id="j_custom_form" data-toggle="validate" >
+        <input  readonly type="hidden" name="m" value="edit" id="edit"/>
+        <input  readonly type="hidden" name="pro_id" value="{$pro_id}">
+    <table class="table table-bordered table-hover table-striped table-top">
+    <tbody>
+    <tr>
+        <th rowspan="2" width="15%">一、基本信息</th>
+        <th width="20%">交易主体</th>
+        <th width="20%">应转让债权</th>
+        <th width="25%">目前实际债权</th>
+        <th width="10%">是否足额</th>
+        <th width="10%">备注</th>
+    </tr>
+
+    <tr>
+        <td><input  readonly type="text" name="basicinfo_tradeBody"  value="{$list['basicinfo'][0]}"/></td>
+        <td><input  readonly type="text" name="basicinfo_creditor" value="{$list['basicinfo'][1]}"/></td>
+        <td><input  readonly type="text" name="basicinfo_realCreditor" value="{$list['basicinfo'][2]}"/></td>
+        <td><input  readonly type="text" name="basicinfo_ifFull" value="{$list['basicinfo'][3]}"/></td>
+        <td><input  readonly type="text" name="basicinfo_markBase" value="{$list['basicinfo'][4]}"/></td>
+    </tr>
+
+    <tr>
+        <th rowspan="2" >二、商票信息</th>
+        <th>商票金额</th>
+        <th>开票日期</th>
+        <th>商票到期日</th>
+        <th>电子/纸质</th>
+        <th>备注</th>
+    </tr>
+    <tr>
+        <td><input  readonly type="text" name="ticket_billMoney" value="{$list['ticket'][0]}"/></td>
+        <td><input  readonly type="text" name="ticket_billDate" placeholder="开票日期" class="date" data-toggle="datepicker" value="{$list['ticket'][1]}"/></td>
+        <td><input  readonly type="text" name="ticket_billDated" placeholder="商票到期日" class="date" data-toggle="datepicker" value="{$list['ticket'][2]}"/></td>
+        <td><input  readonly type="text" name="ticket_billMake" value="{$list['ticket'][3]}"/></td>
+        <td><input  readonly type="text" name="ticket_markBill" value="{$list['ticket'][4]}"/></td>
+    </tr>
+
+    <tr>
+        <th rowspan="8">三、贸易资料</th>
+        <th >资料</th>
+        <th >是否齐全</th>
+        <th >复印件/原件</th>
+        <th >经办人</th>
+        <th >备注</th>
+    </tr>
+    <tr>
+        <td>
+          主合同/框架合同
+        </td>
+        <td><input  readonly type="text" name="trade_isAll[]" value="{$list['trade'][0][0]}"/></td>
+        <td><input  readonly type="text" name="trade_certificate[]" value="{$list['trade'][0][1]}"/></td>
+        <td><input  readonly type="text" name="trade_operator[]" value="{$list['trade'][0][2]}"/></td>
+        <td><input  readonly type="text" name="trade_tradeMark[]" value="{$list['trade'][0][3]}"/></td>
+    </tr>
+    <tr>
+        <td>订单</td>
+        <td><input  readonly type="text" name="trade_isAll[]" value="{$list['trade'][1][0]}"/></td>
+        <td><input  readonly type="text" name="trade_certificate[]" value="{$list['trade'][1][1]}"/></td>
+        <td><input  readonly type="text" name="trade_operator[]" value="{$list['trade'][1][2]}"/></td>
+        <td><input  readonly type="text" name="trade_tradeMark[]" value="{$list['trade'][1][3]}"/></td>
+    </tr>
+    <tr>
+        <td>出/入库单据</td>
+        <td><input  readonly type="text" name="trade_isAll[]" value="{$list['trade'][2][0]}"/></td>
+        <td><input  readonly type="text" name="trade_certificate[]" value="{$list['trade'][2][1]}"/></td>
+        <td><input  readonly type="text" name="trade_operator[]" value="{$list['trade'][2][2]}"/></td>
+        <td><input  readonly type="text" name="trade_tradeMark[]" value="{$list['trade'][2][3]}"/></td>
+    </tr>
+    <tr>
+        <td>物流单据</td>
+        <td><input  readonly type="text" name="trade_isAll[]" value="{$list['trade'][3][0]}"/></td>
+        <td><input  readonly type="text" name="trade_certificate[]" value="{$list['trade'][3][1]}"/></td>
+        <td><input  readonly type="text" name="trade_operator[]" value="{$list['trade'][3][2]}"/></td>
+        <td><input  readonly type="text" name="trade_tradeMark[]" value="{$list['trade'][3][3]}"/></td>
+    </tr>
+    <tr>
+        <td>验收单</td>
+        <td><input  readonly type="text" name="trade_isAll[]" value="{$list['trade'][4][0]}"/></td>
+        <td><input  readonly type="text" name="trade_certificate[]" value="{$list['trade'][4][1]}"/></td>
+        <td><input  readonly type="text" name="trade_operator[]" value="{$list['trade'][4][2]}"/></td>
+        <td><input  readonly type="text" name="trade_tradeMark[]" value="{$list['trade'][4][3]}"/></td>
+    </tr>
+    <tr>
+        <td>对账单/对账邮件</td>
+        <td><input  readonly type="text" name="trade_isAll[]" value="{$list['trade'][5][0]}"/></td>
+        <td><input  readonly type="text" name="trade_certificate[]" value="{$list['trade'][5][1]}"/></td>
+        <td><input  readonly type="text" name="trade_operator[]" value="{$list['trade'][5][2]}"/></td>
+        <td><input  readonly type="text" name="trade_tradeMark[]" value="{$list['trade'][5][3]}"/></td>
+    </tr>
+    <tr>
+        <td>发票</td>
+        <td><input  readonly type="text" name="trade_isAll[]" value="{$list['trade'][6][0]}"/></td>
+        <td><input  readonly type="text" name="trade_certificate[]" value="{$list['trade'][6][1]}"/></td>
+        <td><input  readonly type="text" name="trade_operator[]" value="{$list['trade'][6][2]}"/></td>
+        <td><input  readonly type="text" name="trade_tradeMark[]" value="{$list['trade'][6][3]}"/></td>
+    </tr>
+    <tr>
+        <th  rowspan= <php>if(count($list['warrenttype'])>=2){echo count($list['warrenttype'])+1;}else{echo 2;}</php> ajax_class="guarantee">
+            <span class="btn btn-green comedit" onclick="aaddtrs(this)">添加</span>&nbsp;&nbsp;<span class="btn btn-red  comedit" onclick="deltrs(this)">删除</span><br/>
+            <span>四、担保方式</span>
+        </th>
+        <th  colspan="2">描述</th>
+        <th >完成情况</th>
+        <th >经办人</th>
+        <th >备注</th>
+    </tr>
+    <foreach name="list['warrenttype']" item="v">
+    <tr class="guarantee">
+        <td colspan="2"><input  readonly type="text" name="warrenttype_describe[]" value="{$v[0]}"/></td>
+        <td><input  readonly type="text" name="warrenttype_completion[]" value="{$v[1]}"/></td>
+        <td><input  readonly type="text" name="warrenttype_operator[]" value="{$v[2]}"/></td>
+        <td><input  readonly type="text" name="warrenttype_requestMark[]" value="{$v[3]}"/></td>
+    </tr>
+    </foreach>
+    <php>if(empty(count($list['warrenttype']))):</php>
+    <tr class="guarantee">
+        <td colspan="2"><input  readonly type="text" name="warrenttype_describe[]" /></td>
+        <td><input  readonly type="text" name="warrenttype_completion[]" /></td>
+        <td><input  readonly type="text" name="warrenttype_operator[]" /></td>
+        <td><input  readonly type="text" name="warrenttype_requestMark[]" /></td>
+    </tr>
+    <php>endif;</php>
+    <tr>
+        <th  rowspan= <php>if(count($list['paydemand'])>=2){echo count($list['paydemand'])+1;}else{echo 2;}</php> ajax_class="ask">
+            <span class=" btn btn-green comedit" onclick="aaddtrs(this)">添加</span>&nbsp;&nbsp;<span class=" btn btn-red comedit" onclick="deltrs(this)">删除</span><br/>
+            <span>五、出款要求</span>
+        </th>
+        <th  colspan="2">描述</th>
+        <th >完成情况</th>
+        <th >经办人</th>
+        <th >备注</th>
+    </tr>
+    <foreach name="list['paydemand']" item="v">
+    <tr class="ask">
+        <td colspan="2"><input  readonly type="text" name="paydemand_describe[]" value="{$v[0]}"/></td>
+        <td><input  readonly type="text" name="paydemand_completion[]" value="{$v[1]}"/></td>
+        <td><input  readonly type="text" name="paydemand_operator[]" value="{$v[2]}"/></td>
+        <td><input  readonly type="text" name="paydemand_requestMark[]" value="{$v[3]}"/></td>
+    </tr>
+    </foreach>
+<php> if(empty(count($list['paydemand']))):</php>
+    <tr class="ask">
+        <td colspan="2"><input  readonly type="text" name="paydemand_describe[]" /></td>
+        <td><input  readonly type="text" name="paydemand_completion[]" /></td>
+        <td><input  readonly type="text" name="paydemand_operator[]" /></td>
+        <td><input  readonly type="text" name="paydemand_requestMark[]" /></td>
+    </tr>
+<php>endif;</php>
+    <tr>
+        <th rowspan="17">六、合同文本</th>
+        <th  colspan="2">描述</th>
+        <th >完成情况</th>
+        <th >经办人</th>
+        <th >备注</th>
+    </tr>
+    <tr>
+        <td colspan="2" class="fontleft">01、保理主合同</td>
+        <td><input  readonly type="text" name="contractinfo_completion[]" value="{$list['contractinfo'][0][0]}" /></td>
+        <td><input  readonly type="text" name="contractinfo_operator[]" value="{$list['contractinfo'][0][1]}"/></td>
+        <td><input  readonly type="text" name="contractinfo_pactMark[]" value="{$list['contractinfo'][0][2]}"/></td>
+    </tr>
+
+    <tr>
+        <td colspan="2" class="fontleft">02、投资咨询合同</td>
+        <td><input  readonly type="text" name="contractinfo_completion[]" value="{$list['contractinfo'][1][0]}" /></td>
+        <td><input  readonly type="text" name="contractinfo_operator[]" value="{$list['contractinfo'][1][1]}"/></td>
+        <td><input  readonly type="text" name="contractinfo_pactMark[]" value="{$list['contractinfo'][1][2]}"/></td>
+    </tr>
+    <tr>
+        <td colspan="2" class="fontleft">03、保证合同</td>
+        <td><input  readonly type="text" name="contractinfo_completion[]" value="{$list['contractinfo'][2][0]}" /></td>
+        <td><input  readonly type="text" name="contractinfo_operator[]" value="{$list['contractinfo'][2][1]}"/></td>
+        <td><input  readonly type="text" name="contractinfo_pactMark[]" value="{$list['contractinfo'][2][2]}"/></td>
+    </tr>
+    <tr>
+        <td colspan="2" class="fontleft">04、股东会决议</td>
+        <td><input  readonly type="text" name="contractinfo_completion[]" value="{$list['contractinfo'][3][0]}" /></td>
+        <td><input  readonly type="text" name="contractinfo_operator[]" value="{$list['contractinfo'][3][1]}"/></td>
+        <td><input  readonly type="text" name="contractinfo_pactMark[]" value="{$list['contractinfo'][3][2]}"/></td>
+    </tr>
+    <tr>
+        <td colspan="2" class="fontleft">05、董事会决议</td>
+        <td><input  readonly type="text" name="contractinfo_completion[]" value="{$list['contractinfo'][4][0]}" /></td>
+        <td><input  readonly type="text" name="contractinfo_operator[]" value="{$list['contractinfo'][4][1]}"/></td>
+        <td><input  readonly type="text" name="contractinfo_pactMark[]" value="{$list['contractinfo'][4][2]}"/></td>
+    </tr>
+    <tr>
+        <td colspan="2" class="fontleft">06、保证金补充协议</td>
+        <td><input  readonly type="text" name="contractinfo_completion[]" value="{$list['contractinfo'][5][0]}" /></td>
+        <td><input  readonly type="text" name="contractinfo_operator[]" value="{$list['contractinfo'][5][1]}"/></td>
+        <td><input  readonly type="text" name="contractinfo_pactMark[]" value="{$list['contractinfo'][5][2]}"/></td>
+    </tr>
+    <tr>
+        <td colspan="2" class="fontleft">07、不可抵消债权三方协议</td>
+        <td><input  readonly type="text" name="contractinfo_completion[]" value="{$list['contractinfo'][6][0]}" /></td>
+        <td><input  readonly type="text" name="contractinfo_operator[]" value="{$list['contractinfo'][6][1]}"/></td>
+        <td><input  readonly type="text" name="contractinfo_pactMark[]" value="{$list['contractinfo'][6][2]}"/></td>
+    </tr>
+    <tr>
+        <td colspan="2" class="fontleft">08、应收账款转让登记协议</td>
+        <td><input  readonly type="text" name="contractinfo_completion[]" value="{$list['contractinfo'][7][0]}" /></td>
+        <td><input  readonly type="text" name="contractinfo_operator[]" value="{$list['contractinfo'][7][1]}"/></td>
+        <td><input  readonly type="text" name="contractinfo_pactMark[]" value="{$list['contractinfo'][7][2]}"/></td>
+    </tr>
+    <tr>
+        <td colspan="2" class="fontleft">09、商业保理放款通知书</td>
+        <td><input  readonly type="text" name="contractinfo_completion[]" value="{$list['contractinfo'][8][0]}" /></td>
+        <td><input  readonly type="text" name="contractinfo_operator[]" value="{$list['contractinfo'][8][1]}"/></td>
+        <td><input  readonly type="text" name="contractinfo_pactMark[]" value="{$list['contractinfo'][8][2]}"/></td>
+    </tr>
+    <tr>
+        <td colspan="2" class="fontleft">10、应收账款债权转让通知书</td>
+        <td><input  readonly type="text" name="contractinfo_completion[]" value="{$list['contractinfo'][9][0]}" /></td>
+        <td><input  readonly type="text" name="contractinfo_operator[]" value="{$list['contractinfo'][9][1]}"/></td>
+        <td><input  readonly type="text" name="contractinfo_pactMark[]" value="{$list['contractinfo'][9][2]}"/></td>
+    </tr>
+    <tr>
+        <td colspan="2" class="fontleft">11、法定代表人身份证明书</td>
+        <td><input  readonly type="text" name="contractinfo_completion[]" value="{$list['contractinfo'][10][0]}" /></td>
+        <td><input  readonly type="text" name="contractinfo_operator[]" value="{$list['contractinfo'][10][1]}"/></td>
+        <td><input  readonly type="text" name="contractinfo_pactMark[]" value="{$list['contractinfo'][10][2]}"/></td>
+    </tr>
+    <tr>
+        <td colspan="2" class="fontleft">12、交易真实性的承诺书（三方协议）</td>
+        <td><input  readonly type="text" name="contractinfo_completion[]" value="{$list['contractinfo'][11][0]}" /></td>
+        <td><input  readonly type="text" name="contractinfo_operator[]" value="{$list['contractinfo'][11][1]}"/></td>
+        <td><input  readonly type="text" name="contractinfo_pactMark[]" value="{$list['contractinfo'][11][2]}"/></td>
+    </tr>
+    <tr>
+        <td colspan="2" class="fontleft">13、股权质押合同</td>
+        <td><input  readonly type="text" name="contractinfo_completion[]" value="{$list['contractinfo'][12][0]}" /></td>
+        <td><input  readonly type="text" name="contractinfo_operator[]" value="{$list['contractinfo'][12][1]}"/></td>
+        <td><input  readonly type="text" name="contractinfo_pactMark[]" value="{$list['contractinfo'][12][2]}"/></td>
+    </tr>
+    <tr>
+        <td colspan="2" class="fontleft">14、开户授权委托书</td>
+        <td><input  readonly type="text" name="contractinfo_completion[]" value="{$list['contractinfo'][13][0]}" /></td>
+        <td><input  readonly type="text" name="contractinfo_operator[]" value="{$list['contractinfo'][13][1]}"/></td>
+        <td><input  readonly type="text" name="contractinfo_pactMark[]" value="{$list['contractinfo'][13][2]}"/></td>
+    </tr>
+    <tr>
+        <td colspan="2" class="fontleft">15、财产抵质押合同</td>
+        <td><input  readonly type="text" name="contractinfo_completion[]" value="{$list['contractinfo'][14][0]}" /></td>
+        <td><input  readonly type="text" name="contractinfo_operator[]" value="{$list['contractinfo'][14][1]}"/></td>
+        <td><input  readonly type="text" name="contractinfo_pactMark[]" value="{$list['contractinfo'][14][2]}"/></td>
+    </tr>
+    <tr>
+        <td colspan="2" class="fontleft">16、签订过程拍照/录像情况</td>
+        <td><input  readonly type="text" name="contractinfo_completion[]" value="{$list['contractinfo'][15][0]}" /></td>
+        <td><input  readonly type="text" name="contractinfo_operator[]" value="{$list['contractinfo'][15][1]}"/></td>
+        <td><input  readonly type="text" name="contractinfo_pactMark[]" value="{$list['contractinfo'][15][2]}"/></td>
+    </tr>
+    <tr>
+        <th>说明</th>
+        <td  colspan="5"><input  readonly type="text" name="illustration" value="{$list['illustration']}"/></td>
+    </tr>
+    <tr>
+        <th>审核结果</th>
+        <td  colspan="5">
+            <select name="auditresult" class="auditresult" data-toggle="selectpicker" data-width="1200" >
+                <option value="0" <eq name="list['auditresult']" value="">selected</eq> >请选择</option>
+                <option value="1" <eq name="list['auditresult']" value="1">selected</eq> >通过</option>
+                <option value="2" <eq name="list['auditresult']" value="2">selected</eq> >不通过</option>
+            </select>
+        </td>
+    </tr>
+    </tbody>
+    </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="button" class="btn-orange" data-icon="edit" onclick="admin_edit()">修改</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>
+<script>
+    $(function(){
+        var list="<php>echo count($list);</php>";
+        if(list==0){
+            $('input').removeAttr('readonly');
+        }else{
+            $('.comedit').css('display','none');
+        }
+    });
+    function aaddtrs(e){
+        var rowsnum=parseInt($(e).parent('th').attr('rowspan'))+1;
+        var ajaxclass=$(e).parent('th').attr('ajax_class');
+        var newtr=$('.'+ajaxclass).first().clone();
+        $('.'+ajaxclass).last().after(newtr);
+        $(e).parent('th').attr('rowspan',rowsnum);
+    }
+    function deltrs(e){
+        var rowsnum=parseInt($(e).parent('th').attr('rowspan'));
+        var ajaxclass=$(e).parent('th').attr('ajax_class');
+        $(this).alertmsg('confirm', '去掉要删除此栏吗？',{okCall:function(){
+            if($('.'+ajaxclass).length > 1){
+                $(e).parent('th').attr('rowspan',rowsnum-1);
+                $('.'+ajaxclass).last().remove();
+                $(this).alertmsg('ok', '数据临时删除，点击此栏保存按钮确认修改数据');
+            }else{
+                $(this).alertmsg('error', '必须存在至少一个此栏目')
+            }
+        }});
+    }
+    function admin_edit(){
+        $('#edit').val('update');
+        $('input').removeAttr('readonly');
+        $('.comedit').css('display','inline');
+    }
+</script>

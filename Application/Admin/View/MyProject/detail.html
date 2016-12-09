@@ -1,0 +1,229 @@
+
+<div class="bjui-pageContent">
+    <form action="ajaxDone1.html" id="j_form_form" class="pageForm" data-toggle="validate">
+    <!--<div style="margin:15px auto 0; width:1000px;">-->
+    <!--<fieldset>-->
+    <!--<legend>选项卡</legend>-->
+    <!-- Tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active"><a href="#home" role="tab" data-toggle="tab">流程信息</a></li>
+        <li><a href="<?php echo U('MyProject/contract', array('pro_id' => $pro_id))?>" role="tab" data-toggle="ajaxtab" data-target="#profile" data-reload="false">合同信息</a></li>
+        <li><a href="<?php echo U('MyProject/loanLog', array('pro_id' => $pro_id))?>" role="tab" data-toggle="ajaxtab" data-target="#messages" data-reload="false">放款信息</a></li>
+        <li><a href="<?php echo U('MyProject/afterLoanLog', array('pro_id' => $pro_id))?>" role="tab" data-toggle="ajaxtab" data-target="#settings" data-reload="false">贷后信息</a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane fade active in" id="home">
+<!--            <canvas id="myCanvas" width="600" height="150">
+                您的浏览器不支持流程图插件。
+            </canvas>-->
+            <table class="table table-bordered table-striped table-hover" width="100%">
+                <thead>
+                    <tr>
+                        <th align="center" width="300">操作人</th>
+                        <th align="center" width="300">提交时间</th>
+                        <th align="center" width="300">类型</th>
+                        <th align="center" width="300">结果</th>
+                        <th align="center" width="300">意见</th>
+                        <th align="center" width="300">附件</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($process_list as $v){?>
+                    <tr data-id="<?php echo $v['pro_id']?>">
+                        <td align="center"><?php echo $v['real_name']?></td>
+                        <td align="center"><?php echo date('Y-m-d H:i:s', $v['addtime'])?></td>
+                        <td align="center"><?php echo $workflow[$v['step_pid']][$v['pro_step']]['step_desc']?></td>
+                        <td align="center"><?php echo $workflow[$v['step_pid']][$v['pro_step']]['step_next'][$v['status']]['desc']?></td>
+                        <td align="center"><?php echo $v['opinion']?></td>
+                        <td align="center">
+                            <?php if($v['files'] > 0):?>
+                            <?php if(($v['step_pid'] == 1 && $v['pro_step'] == 4) || ($v['step_pid'] == 2 && $v['pro_step'] == 2)): ?>
+                            <?php if(in_array($signin_admin['admin_id'], $review_file_autho)): ?>
+                            <a href="<?php echo U('Project/fileReviewList', array('pro_id'=>$v['context_id'], 'step_id'=>$v['id']))?>" class="btn btn-green" data-toggle="dialog" >附件</a>
+                            <?php else:?>
+                            --
+                            <?php endif;?>
+                            <?php else:?>
+                            <a href="<?php echo U('Project/fileReviewList', array('pro_id'=>$v['context_id'], 'step_id'=>$v['id']))?>" class="btn btn-green" data-toggle="dialog" >附件</a>
+                            <?php endif;?>
+                            <?php else:?>
+                            --
+                            <?php endif;?>
+                        </td>
+                    </tr>
+                    <?php }?>
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade" id="profile"><!-- Ajax加载 --></div>
+        <div class="tab-pane fade" id="messages"></div>
+        <div class="tab-pane fade" id="settings">No4. Settings</div>
+    </div>
+    <!--</fieldset>-->
+</div>
+</form>
+<!--</div>-->
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn btn-close" data-icon="close">关闭</button></li>
+    </ul>
+</div>
+<script>
+    var str = '{"jdList":[{"appdate":null,"clyj":null,"contractid":null,"contractno":null,"cpfname":null,"cpmc":null,"cpzname":null,"custid":null,"custname":null,"endNo":null,"enddate":null,"fkfname":null,"fkzname":null,"id":null,"issystemuser":null,"jd":"项目立项","khmc":null,"loancheckid":null,"managetype":null,"num":1.0,"projectid":null,"projectname":null,"projectno":null,"projectnosz":null,"rzfname":null,"rzzname":null,"startNo":null,"surveyreviewid":null,"time":"2016-04-13 15:10:16","userid":null,"username":null,"xmzt":null,"xmztname":null,"xmzttype":null,"ywfname":null,"ywzname":null,"zwr":null},{"appdate":null,"clyj":null,"contractid":null,"contractno":null,"cpfname":null,"cpmc":null,"cpzname":null,"custid":null,"custname":null,"endNo":null,"enddate":null,"fkfname":null,"fkzname":null,"id":null,"issystemuser":null,"jd":"尽职调查","khmc":null,"loancheckid":null,"managetype":null,"num":2.0,"projectid":null,"projectname":null,"projectno":null,"projectnosz":null,"rzfname":null,"rzzname":null,"startNo":null,"surveyreviewid":null,"time":"2016-04-13 15:15:47","userid":null,"username":null,"xmzt":null,"xmztname":null,"xmzttype":null,"ywfname":null,"ywzname":null,"zwr":null},{"appdate":null,"clyj":null,"contractid":null,"contractno":null,"cpfname":null,"cpmc":null,"cpzname":null,"custid":null,"custname":null,"endNo":null,"enddate":null,"fkfname":null,"fkzname":null,"id":null,"issystemuser":null,"jd":"业务评审","khmc":null,"loancheckid":null,"managetype":null,"num":3.0,"projectid":null,"projectname":null,"projectno":null,"projectnosz":null,"rzfname":null,"rzzname":null,"startNo":null,"surveyreviewid":null,"time":"2016-04-13 15:16:27","userid":null,"username":null,"xmzt":null,"xmztname":null,"xmzttype":null,"ywfname":null,"ywzname":null,"zwr":null},{"appdate":null,"clyj":null,"contractid":null,"contractno":null,"cpfname":null,"cpmc":null,"cpzname":null,"custid":null,"custname":null,"endNo":null,"enddate":null,"fkfname":null,"fkzname":null,"id":null,"issystemuser":null,"jd":"合同签约","khmc":null,"loancheckid":null,"managetype":null,"num":3.5,"projectid":null,"projectname":null,"projectno":null,"projectnosz":null,"rzfname":null,"rzzname":null,"startNo":null,"surveyreviewid":null,"time":"2016-04-13 15:23:02","userid":null,"username":null,"xmzt":null,"xmztname":null,"xmzttype":null,"ywfname":null,"ywzname":null,"zwr":null},{"appdate":null,"clyj":null,"contractid":null,"contractno":null,"cpfname":null,"cpmc":null,"cpzname":null,"custid":null,"custname":null,"endNo":null,"enddate":null,"fkfname":null,"fkzname":null,"id":null,"issystemuser":null,"jd":"签订合同","khmc":null,"loancheckid":null,"managetype":null,"num":4.0,"projectid":null,"projectname":null,"projectno":null,"projectnosz":null,"rzfname":null,"rzzname":null,"startNo":null,"surveyreviewid":null,"time":"2016-04-13 15:25:53","userid":null,"username":null,"xmzt":null,"xmztname":null,"xmzttype":null,"ywfname":null,"ywzname":null,"zwr":null},{"appdate":null,"clyj":null,"contractid":null,"contractno":null,"cpfname":null,"cpmc":null,"cpzname":null,"custid":null,"custname":null,"endNo":null,"enddate":null,"fkfname":null,"fkzname":null,"id":null,"issystemuser":null,"jd":"放款审批","khmc":null,"loancheckid":null,"managetype":null,"num":4.5,"projectid":null,"projectname":null,"projectno":null,"projectnosz":null,"rzfname":null,"rzzname":null,"startNo":null,"surveyreviewid":null,"time":"2016-04-13 15:30:48","userid":null,"username":null,"xmzt":null,"xmztname":null,"xmzttype":null,"ywfname":null,"ywzname":null,"zwr":null},{"appdate":null,"clyj":null,"contractid":null,"contractno":null,"cpfname":null,"cpmc":null,"cpzname":null,"custid":null,"custname":null,"endNo":null,"enddate":null,"fkfname":null,"fkzname":null,"id":null,"issystemuser":null,"jd":"融资款发放","khmc":null,"loancheckid":null,"managetype":null,"num":5.0,"projectid":null,"projectname":null,"projectno":null,"projectnosz":null,"rzfname":null,"rzzname":null,"startNo":null,"surveyreviewid":null,"time":"2016-04-13 15:32:04","userid":null,"username":null,"xmzt":null,"xmztname":null,"xmzttype":null,"ywfname":null,"ywzname":null,"zwr":null},{"appdate":null,"clyj":null,"contractid":null,"contractno":null,"cpfname":null,"cpmc":null,"cpzname":null,"custid":null,"custname":null,"endNo":null,"enddate":null,"fkfname":null,"fkzname":null,"id":null,"issystemuser":null,"jd":"贷后处理","khmc":null,"loancheckid":null,"managetype":null,"num":0.0,"projectid":null,"projectname":null,"projectno":null,"projectnosz":null,"rzfname":null,"rzzname":null,"startNo":null,"surveyreviewid":null,"time":"0","userid":null,"username":null,"xmzt":6.0,"xmztname":"贷后处理","xmzttype":null,"ywfname":null,"ywzname":null,"zwr":null},{"appdate":null,"clyj":null,"contractid":null,"contractno":null,"cpfname":null,"cpmc":null,"cpzname":null,"custid":null,"custname":null,"endNo":null,"enddate":null,"fkfname":null,"fkzname":null,"id":null,"issystemuser":null,"jd":"还款处理","khmc":null,"loancheckid":null,"managetype":null,"num":0.0,"projectid":null,"projectname":null,"projectno":null,"projectnosz":null,"rzfname":null,"rzzname":null,"startNo":null,"surveyreviewid":null,"time":"0","userid":null,"username":null,"xmzt":7.0,"xmztname":"还款处理","xmzttype":null,"ywfname":null,"ywzname":null,"zwr":null},{"appdate":null,"clyj":null,"contractid":null,"contractno":null,"cpfname":null,"cpmc":null,"cpzname":null,"custid":null,"custname":null,"endNo":null,"enddate":null,"fkfname":null,"fkzname":null,"id":null,"issystemuser":null,"jd":"项目完成","khmc":null,"loancheckid":null,"managetype":null,"num":0.0,"projectid":null,"projectname":null,"projectno":null,"projectnosz":null,"rzfname":null,"rzzname":null,"startNo":null,"surveyreviewid":null,"time":"0","userid":null,"username":null,"xmzt":8.0,"xmztname":"项目完成","xmzttype":null,"ywfname":null,"ywzname":null,"zwr":null}]}';
+    var str = '<?php echo $list?>';
+    var data = JSON.parse(str);
+    buildTable(data);
+    console.log(data);
+    function buildTable(data) {
+    //获取Canvas对象(画布)
+    var canvas = document.getElementById("myCanvas");
+    //简单地检测当前浏览器是否支持Canvas对象，以免在一些不支持html5的浏览器中提示语法错误
+    //time -1表示此项目离到期日在30天之内 红色显示   0 表示正常情况下未到此节点灰色显示  1表示有融资款发放和还款处理 缺失中间环节贷后处理   灰色显示
+    if (canvas.getContext) {
+    var x = 10;
+    var y = 45;
+    //圆形图标半径
+    var arcbj = 10;
+    //每个节点的跨度
+    var kd = 70;
+    //圆形相对于文字缩进跨度
+    var arckd = 25;
+    var first = 0;
+    //获取对应的CanvasRenderingContext2D对象(画笔)
+    var ctx = canvas.getContext("2d");
+    // if(data.jdList==null){
+
+    //}else{
+    for (var i = 0; i < data.jdList.length; i++) {
+    if (i > 0) {
+    x = x + kd;
+    }
+    //设置字体样式
+    ctx.font = "15px Courier New";
+    //设置字体填充颜色
+    if (data.jdList[i].time != 0 && data.jdList[i].time != - 1 && data.jdList[i].time != 1) {
+    ctx.fillStyle = "blue";
+    } else if (data.jdList[i].time == 1) {
+    ctx.fillStyle = "#DBDBDB";
+    } else {
+    if (first == 0) {
+    ctx.fillStyle = "red";
+    } else {
+    if (data.jdList[i].time == - 1) {
+    ctx.fillStyle = "red";
+    } else {
+    ctx.fillStyle = "#DBDBDB";
+    }
+    }
+    }
+    //从坐标点(x,y)开始绘制文字
+    var fnlength = data.jdList[i].jd.length
+            if (fnlength <= 5) {
+    ctx.fillText(data.jdList[i].jd, x, y);
+    } else {
+    ctx.fillText(data.jdList[i].jd.substr(0, 4), x, y - 20);
+    ctx.fillText(data.jdList[i].jd.substr(4, fnlength), x, y);
+    }
+
+
+
+    //开始一个新的绘制路径
+    ctx.beginPath();
+    //定义直线的起点坐标为(10,10)
+    if (data.jdList[i].time != 0 && data.jdList[i].time != - 1 && data.jdList[i].time != 1) {
+    ctx.fillStyle = "blue";
+    } else if (data.jdList[i].time == 1) {
+    ctx.fillStyle = "#DBDBDB";
+    } else {
+    if (first == 0) {
+    ctx.fillStyle = "red";
+    first++;
+    } else {
+    if (data.jdList[i].time == - 1) {
+    ctx.fillStyle = "red";
+    } else {
+    ctx.fillStyle = "#DBDBDB";
+    }
+    }
+    }
+    x = x + arckd;
+    ctx.arc(x, y + (arcbj * 2), arcbj, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.restore();
+    if (i < data.jdList.length - 1) {
+    ctx.beginPath();
+    ctx.moveTo(x + arcbj, y + (arcbj * 2));
+    //定义直线的终点坐标为(50,10)
+    ctx.lineTo(x + kd + (arcbj * 2), y + (arcbj * 2));
+    //支持css颜色值的各种表现形式，例如："blue"、"#0000ff"、"#00f"、"rgb(0,0,255)"、"rgba(0,0,255,1)"
+    //颜色等各种设置，必须在最终的绘制函数stroke()之前调用
+    if (data.jdList[i].time != 0 && data.jdList[i].time != - 1 && data.jdList[i].time != 1) {
+    ctx.strokeStyle = "blue";
+    } else if (data.jdList[i].time == 1) {
+    ctx.strokeStyle = "#DBDBDB";
+    } else {
+    if (data.jdList[i].time == - 1) {
+    ctx.strokeStyle = "red";
+    } else {
+    ctx.strokeStyle = "#DBDBDB";
+    }
+    }
+    //沿着坐标点顺序的路径绘制直线
+    ctx.stroke();
+    //关闭当前的绘制路径
+    ctx.closePath();
+    ctx.beginPath();
+    ctx.moveTo(x + kd + (arcbj * 1.5) - 10, y + (arcbj * 2) - 5);
+    ctx.lineTo(x + kd + (arcbj * 1.5), y + (arcbj * 2));
+    if (data.jdList[i].time != 0 && data.jdList[i].time != - 1 && data.jdList[i].time != 1) {
+    ctx.strokeStyle = "blue";
+    } else if (data.jdList[i].time == 1) {
+    ctx.strokeStyle = "#DBDBDB";
+    } else {
+    if (data.jdList[i].time == - 1) {
+    ctx.strokeStyle = "red";
+    } else {
+    ctx.strokeStyle = "#DBDBDB";
+    }
+    }
+    //沿着坐标点顺序的路径绘制直线
+    ctx.stroke();
+    //关闭当前的绘制路径
+    ctx.closePath();
+    ctx.beginPath();
+    ctx.moveTo(x + kd + (arcbj * 1.5) - 10, y + (arcbj * 2) + 5);
+    ctx.lineTo(x + kd + (arcbj * 1.5), y + (arcbj * 2));
+    if (data.jdList[i].time != 0 && data.jdList[i].time != - 1 && data.jdList[i].time != 1) {
+    ctx.strokeStyle = "blue";
+    } else if (data.jdList[i].time == 1) {
+    ctx.strokeStyle = "#DBDBDB";
+    } else {
+    if (data.jdList[i].time == - 1) {
+    ctx.strokeStyle = "red";
+    } else {
+    ctx.strokeStyle = "#DBDBDB";
+    }
+    }
+    //沿着坐标点顺序的路径绘制直线
+    ctx.stroke();
+    //关闭当前的绘制路径
+    ctx.closePath();
+    }
+    if (data.jdList[i].time != 0 && data.jdList[i].time != - 1 && data.jdList[i].time != 1) {
+    //设置字体样式
+    ctx.font = "15px Courier New";
+    ctx.fillStyle = "blue";
+    //设置字体填充颜色
+    // ctx.fillStyle = "blue";
+    //从坐标点(x,y)开始绘制文字
+    var str = (data.jdList[i].time.replace(/ +/g, "a")).split("a");
+    ctx.fillText(str[0], x - arckd - 5, y + (arcbj * 5));
+    ctx.fillText(str[1], x - arckd, y + (arcbj * 7));
+    }
+    }
+    //}
+    }
+
+    }
+</script>

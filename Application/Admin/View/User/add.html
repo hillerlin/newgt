@@ -1,0 +1,96 @@
+    <div class="dialogHeader" onselectstart="return false;" oncopy="return false;" onpaste="return false;" oncut="return false;">        
+        <a class="close" href="#close" title="关闭"><i class="fa fa-times-circle"></i></a>        
+        <a class="maximize" href="#maximize" title="最大化"><i class="fa fa-plus-circle"></i></a>        
+        <a class="restore" href="#restore" title="还原"><i class="fa fa-history"></i></a>        
+        <a class="minimize" href="#minimize" title="最小化" style="display: none;"><i class="fa fa-minus-circle"></i></a>        
+        <h1><span><i class="fa fa-th-large"></i></span> <span class="title">项目列表 - 添加</span></h1>    </div>    
+    <div class="dialogContent unitBox" style="height: 366px; opacity: 1;">
+        <div class="bjui-pageContent" style="top: 0px; bottom: 33px;">
+            <form class="datagrid-dialog-edit-form nice-validator n-red" novalidate="novalidate">
+                <p>
+                    <label class="control-label x120" for="datagrid-dialog-edit-column-1">项目名称：</label>
+                    <span class="datagrid-dialog-column-span">
+                        <input type="text" name="pro_title" size="30" value="" id="datagrid-dialog-edit-column-1" class="form-control" style="width: 300px;">
+                    </span>
+                </p>
+                <p>
+                    <label class="control-label x120" for="datagrid-dialog-edit-column-2">项目状态：</label>
+                    <span class="datagrid-dialog-column-span">
+                        <select name="pro_status" data-toggle="selectpicker" data-width="auto" value="" id="datagrid-dialog-edit-column-2" class="show-tick" style="display: none;">
+                            <option value="1">项目提交</option>
+                            <!--<option value="2">可用</option>-->
+                        </select>
+<!--                        <div class="btn-group bootstrap-select show-tick" style="width: 46px;">
+                            <button type="button" class="btn dropdown-toggle selectpicker btn-default" data-toggle="dropdown" data-id="datagrid-dialog-edit-column-2" title="禁用">
+                                <span class="filter-option pull-left">禁用</span>&nbsp;<span class="caret"></span>
+                            </button>
+                            <div class="dropdown-menu open" style="min-width: 0px;">
+                                <ul class="dropdown-menu inner selectpicker" role="menu">
+                                    <li data-original-index="0" class="selected">
+                                        <a tabindex="0" class="" data-normalized-text="<span class=&quot;text&quot;>禁用</span>">
+                                            <span class="text">禁用</span>
+                                            <span class="glyphicon glyphicon-ok check-mark">
+
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li data-original-index="1">
+                                        <a tabindex="0" class="" data-normalized-text="<span class=&quot;text&quot;>可用</span>">
+                                            <span class="text">可用</span><span class="glyphicon glyphicon-ok check-mark"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>-->
+                    </span>
+                </p>
+                <p>
+                    <label class="control-label x120" for="datagrid-dialog-edit-column-3">融资金额：</label>
+                    <span class="datagrid-dialog-column-span">
+                        <input type="text" name="pro_account" size="29" value="" id="datagrid-dialog-edit-column-3" class="form-control" style="width: 300px;">元
+                    </span>
+                </p>
+                <p>
+                    <label class="control-label x120" for="datagrid-dialog-edit-column-4">实际借款金额：</label>
+                    <span class="datagrid-dialog-column-span">
+                        <input type="text" name="pro_real_money" size="29" value="" id="datagrid-dialog-edit-column-4" class="form-control" style="width: 300px;">元
+                    </span>
+                </p>
+                <p><label class="control-label x120" for="datagrid-dialog-edit-column-5">跟进人：</label><span class="datagrid-dialog-column-span">
+                        <input type="text" name="gt_uid" data-toggle="lookup" data-custom-event='true' size="30" data-url='<?php echo U('User/list')?>' value="" id="datagrid-dialog-edit-column-5" class="form-control" style="width: 300px;">
+                        <a class="bjui-lookup" data-toggle="lookupbtn" href="javascript:;" style="height: 22px; line-height: 22px;">
+                            <i class="fa fa-search"></i>
+                        </a>
+                    </span>
+                </p>
+                <p>
+                    <label class="control-label x120" for="datagrid-dialog-edit-column-6">公司：</label><span class="datagrid-dialog-column-span">
+                        <input type="text" name="company_id" size="30" value="" id="datagrid-dialog-edit-column-6" class="form-control" style="width: 300px;">
+                    </span>
+                </p>
+                <p>
+                    <label class="control-label x120" for="datagrid-dialog-edit-column-7">提交人：</label>
+                    <span class="datagrid-dialog-column-span">
+                        <input type="text" name="pro_linker" size="30" value="" id="datagrid-dialog-edit-column-7" class="form-control" style="width: 300px;">
+                    </span>
+                </p>
+            </form>
+        </div>
+        <div class="bjui-pageFooter">
+            <ul>    
+                <li class="pull-left">
+                    <button type="button" class="btn btn-orange prev disabled" data-icon="arrow-up">
+                        <i class="fa fa-arrow-up"></i> 上一条</button></li>    
+                <li class="pull-left">
+                    <button type="button" class="btn btn-orange next" data-icon="arrow-down">
+                        <i class="fa fa-arrow-down"></i> 下一条</button></li>    
+                <li><button type="button" class="btn btn-red cancel" data-icon="remove">
+                        <i class="fa fa-remove"></i> 取消</button></li>    
+                <li>
+                    <button type="button" class="btn btn-default save" data-icon="save">
+                        <i class="fa fa-save"></i> 保存
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>    

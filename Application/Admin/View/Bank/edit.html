@@ -1,0 +1,39 @@
+<div class="bjui-pageContent">
+    <form action="<?php echo U('Bank/save')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="bank_id" value="<?php echo $bank_id?>"  />
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="bank_name" class="control-label x150">开户行：</label>
+                        <input type="text" name="bank_name" id="p_name" value="{$bank_name}" data-rule="required" size="15">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x150">户名：</label>
+                        <input type="text" name="account_name" id="p_name" value="{$account_name}" data-rule="required" size="15">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="bank_no" class="control-label x150">开户卡号：</label>
+                        <input type="text" name="bank_no" id="p_name" value="{$bank_no}" size="18">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="remark" class="control-label x150">备注：</label>
+                        <textarea name="remark" id="j_custom_note_1" data-toggle="autoheight" rows="2" >{$remark}</textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>

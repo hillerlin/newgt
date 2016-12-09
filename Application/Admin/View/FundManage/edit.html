@@ -1,0 +1,499 @@
+<script type="text/javascript">
+    function pic_upload_success(file, data) {
+        var json = $.parseJSON(data)
+
+        $(this).bjuiajax('ajaxDone', json)
+        if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+            $('#j_custom_pic').val(json.filename).trigger('validate')
+            $('#j_custom_span_pic').html('<img src="' + json.filename + '" width="100" />')
+        }
+    }
+    function do_OK(json, $form) {
+        console.log(json)
+        console.log($form)
+    }
+</script>
+<div class="bjui-pageContent">
+    <form action="<?php echo U('FundManage/save')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type='hidden' name='fund_id' value="{$fund_id}">
+        <table class="table table-condensed table-hover" width="100%" id="bjui-pageContent">
+            <tbody>
+            <?php if($roleId==32)
+             {
+              foreach($roleInfo as $vv)
+              {
+              if($vv['field']=='fmanager_id')
+              {
+                echo "
+               <tr>
+            <td>
+                <label for='company_id' class='control-label x150'>客户经理:</label>
+                <input type='hidden' name='fmanager_id' value=''>
+                <input type='text' name='fmanager_name' id='p_company' value='$fmanager_name' size='15' data-toggle='lookup'
+                       data-url='/Admin/FundManager/lookup.html' data-width='600' data-height='300'
+                       data-rule='required' readonly>
+            </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for='money' class='control-label x150 '>部门：</label>
+                    <input type='text' name='fmanager_area' id='p_account' value='$fmanager_area' size='15' >
+                </td>
+            </tr>
+
+            ";
+            }
+            else if($vv['field']=='pay_time' || $vv['field']=='begin_interest_time')
+            {
+             echo "<tr><td><label for='money' class='control-label x150 '>".$vv['name'].":"."</label><input type='text' name='".$vv['field']."' id='p_account' data-toggle='datepicker' value='".date('Y-m-d',$$vv['field'])."' size='15'></td></tr>";
+            }else if($vv['field']=='money')
+            {
+            echo "<tr><td><label for='money' class='control-label x150 '>".$vv['name'].":"."</label><input type='text' name='".$vv['field']."' id='p_account' value='".$$vv['field']."'  size='15' style='color:red'>(万元)</td></tr>";
+            }else if($vv['field']=='remark')
+            {
+            echo "<tr><td><label for='money' class='control-label x150 '>".$vv['name'].":"."</label><textarea type='text' name='".$vv['field']."' id='j_custom_note_1'  cols='30' rows='2'>".$$vv['field']."</textarea></td></tr>";
+            }
+            else
+            {
+            echo "<tr><td><label for='money' class='control-label x150 '>".$vv['name'].":"."</label><input type='text' name='".$vv['field']."' id='p_account' value='".$$vv['field']."'  size='15'></td></tr>";
+            }
+            }
+            }else
+            { ?>
+            <tr>
+                <td>
+                    <label for="money" class="control-label x150 ">客户姓名：</label>
+                    <input type="text" name="customer_name" id="p_account" value="{$customer_name}" size="15">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="money" class="control-label x150 ">客户身份证：</label>
+                    <input type="text" name="id_no" id="p_account" value="{$id_no}" size="15" data-rule="">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="money" class="control-label x150 ">客户银行卡号：</label>
+                    <input type="text" name="bank_no" id="p_account" value="{$bank_no}" size="15" data-rule="">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="money" class="control-label x150 ">联系方式：</label>
+                    <input type="text" name="link_type" id="p_account" value="{$link_type}" size="15" data-rule="">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="company_id" class="control-label x150">客户经理：</label>
+                    <input type="hidden" name="fmanager_id" value='{$fmanager_id}'>
+                    <input type="text" name="fmanager_name" id="p_company" value="{$fmanager_name}" size="15"
+                           data-toggle="lookup"
+                           data-url="<?php echo U('FundManager/lookup')?>" data-width="600" data-height="300"
+                           data-rule="required" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="money" class="control-label x150 ">部门：</label>
+                    <input type="text" name="fmanager_area" id="p_account" value="{$fmanager_area}" size="15" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="money" class="control-label x150 ">地区：</label>
+                    <input type="text" name="fmanager_branch" id="p_account" value="{$fmanager_branch}" size="15" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="money" class="control-label x150 ">金额：</label>
+                    <input type="text" name="money" id="money" value="{$money}" size="15" data-rule="required">万元
+                    <label for="money" id="uploanamount" class="control-label x1000 red"></label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="money" class="control-label x150 ">客户收益率：</label>
+                    <input type="text" name="fund_rate" id="p_account" value="{$fund_rate}" size="15" data-rule="">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="money" class="control-label x150 ">业绩提成率：</label>
+                    <input type="text" name="performance_rate" id="p_account" value="{$performance_rate}" size="15"
+                           data-rule="">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="money" class="control-label x150 ">管理津贴率：</label>
+                    <input type="text" name="manage_rate" id="p_account" value="{$manage_rate}" size="15" data-rule="">
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="money" class="control-label x150 ">合伙企业：</label>
+                    <input type="text" name="partnership" id="p_account" value="{$partnership}" size="15" data-rule="">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="money" class="control-label x150 ">认购项目：</label>
+                    <input type="text" name="fund_title" id="p_account" value="{$fund_title}" size="15" data-rule="">
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="money" class="control-label x150 ">合同编号：</label>
+                    <input type="text" name="contract_no" id="p_account" value="{$contract_no}" size="15" data-rule="">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="money" class="control-label x150 ">打款时间：</label>
+                    <input type="text" name="pay_time" id="p_account" value="{$pay_time|date='Y-m-d',###}" data-toggle='datepicker'
+                           size="15"
+                           data-rule="required">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="money" class="control-label x150 ">起息时间：</label>
+                    <input type="text" name="begin_interest_time" id="p_account" value="{$begin_interest_time|date='Y-m-d',###}"
+                           data-toggle='datepicker'
+                           size="15" data-rule="">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="money" class="control-label x150 ">成立时间：</label>
+                    <input type="text" name="done_time" id="p_account" value="{$done_time|date='Y-m-d',###}" data-toggle='datepicker'
+                           size="15">&nbsp;&nbsp;&nbsp;
+                    <input type="checkbox" id="isRemark" data-toggle="icheck" data-label="是否进入手动模式">
+                    <input type="hidden" name="is_Remark" value="0">
+                </td>
+            </tr>
+            <tr id="model_1">
+                <td>
+                    <label for="money" class="control-label x150 ">期限：</label>
+                    <input type="text" name="term" id="p_account" value="{$term}" size="15" data-rule="">
+                    <label for="money" class="control-label x100 ">付息类型：</label>
+                    <select name="accruaType" class="accruaType" data-toggle="selectpicker"
+                            onchange="accrua()">
+                        <option value="all">--付息类型--</option>
+                        <option value="1">季付</option>
+                        <option value="2">半年付</option>
+                        <option value="3">年付</option>
+                    </select>
+                    <input type="hidden" name="_select" value="{$accruatype}">
+                </td>
+            </tr>
+            <tr id="model_2">
+                <td>
+                    <label for="money" class="control-label x150 ">到期时间：</label>
+                    <input type="text" name="deadline" id="p_account" value="{$deadline|date='Y-m-d',###}" size="15" data-rule="" readonly>
+                    <label for="money" class="control-label x70 ">到期本息：</label>
+                    <input type="text" name="interestDue" id="interestDue" value="{$interestdue}" size="12" data-rule="" readonly>
+                </td>
+            </tr>
+            <tr id="model_3">
+                <td>
+                    <label for="loan_remark" class="control-label x150">备注：</label>
+                    <textarea name="remark" id="j_custom_note_1" cols="30" rows="2" >{$remark}</textarea>
+                    <input type="hidden" id="deleTimes" value="0">
+                    <input type="hidden" id="newDeleTimes" value="0">
+                 <input type="hidden" name="timeToRate" value='{$time_to_rate}'>
+
+                </td>
+            </tr>
+            <?php } ?>
+            <script>
+
+                var timeToRate=$("input[name='timeToRate']").val();
+                var isRark=$("input[name='_select']").val()
+                if(timeToRate!=='' && timeToRate!==undefined && timeToRate!=='null')
+                {
+                    var obj=jQuery.parseJSON(timeToRate)
+                    if(parseInt(obj.length)>0)
+                    {
+                        $("#deleTimes").val(parseInt(obj.length));
+                    }
+
+                    for(var k=0; k<obj.length;k++)
+                    {
+                        var rate=new Number(obj[k].rete)
+                        $("#bjui-pageContent").append(appendContent(k+1,rate,obj[k].time));
+                    }
+                }else
+                {
+                    $("#deleTimes").val(0);
+                }
+
+                var deleTimes = parseInt($("#deleTimes").val())==0?parseInt($("#newDeleTimes").val()):parseInt($("#deleTimes").val());//删除的次数
+               // debugger
+                //var deleTimes = $("#deleTimes").val();//删除的次数
+                //var newDeleTimes=$("#newDeleTimes").val();//记录js动态生成的利息次数
+                var _accrua = $("select[name='accruaType']")
+                var accruaType = $("input[name='_select']").val()
+                _accrua.find("option[value='" + accruaType + "']").attr('selected', true);
+                if(parseInt(isRark)==4)//判断是否是备注模式
+                {
+                   // debugger
+                    $('#isRemark').iCheck('check');
+                    $("input[name='is_Remark']").val(1)
+                    _accrua.attr('disabled','disabled')
+                    //hiddenWin(deleTimes)//隐藏部分窗体
+                    writeEnable(deleTimes)//去掉可读属性
+                }
+
+                //非正常算公式场景
+                $('#isRemark').on('ifChecked', function (event) {
+                    $(this).alertmsg('confirm', '确认内容的提示信息！', {cancelCall: 'output', okCall: 'manualModel'})
+                });
+                function manualModel() {
+                    $("input[name='is_Remark']").val(1)
+                    _accrua.attr('disabled','disabled')
+                    //hiddenWin(deleTimes)//隐藏部分窗体
+                    writeEnable(deleTimes)//去掉可读属性
+
+                }
+                function output() {
+                    $('#isRemark').iCheck('uncheck');
+                }
+
+                //正常算利息场景
+                function accrua() {
+                    var accrua = $("select[name='accruaType']")
+                    var accruaType = accrua.val();
+                    if (accruaType == 1) {  //季付的情况
+
+                        common(3, accrua)
+                    }
+                    if (accruaType == 2)//半年付
+                    {
+
+                        common(6, accrua)
+
+                    }
+                    if (accruaType == 3)//年付
+                    {
+
+                        common(12, accrua)
+                    }
+                }
+                //程序公用主体
+                function common(timeType, accrua) {
+                    var term = $("input[name='term']").val()//期限
+                    var beginInterestTime = $("input[name='begin_interest_time']").val();//起息时间
+                    var done_time = $("input[name='done_time']").val()//成立时间
+                    var totalMony = $("input[name='money']").val();//总金额
+                    var funderRate = parseInt($("input[name='fund_rate']").val()) / 100//客户利率
+
+                    if (term == '' || done_time == '') {
+                        $("#bjui-pageContent").alertmsg('warn', '【期限】或者【成立时间】不能为空')
+                        accrua.find("option[value='all']").attr('selected', true);
+                        return false
+                    }
+                    var terms = term / timeType;//计算有几次付息
+                    var deadline = $("input[name='deadline']")
+                    deadline.val(addDate(done_time, term));//到期时间框赋值
+
+                    deleMain(deleTimes)
+                    for (var i = 1; i <= terms; i++) {
+                        var startTime = '';
+                        var endTime = '';
+                        var diffDay = '';//相差天数
+                        var rate = '';//利息
+                        var type = ''; //判断是否是最后付息，算法有改变
+                        if (parseInt(terms) == 1) //一次性付清的到期本息
+                        {
+                            $("input[name='interestDue']").val(interestDue(totalMony, deadline.val(), done_time, funderRate, 2))
+                        }
+                        if (i == 1) {
+                            startTime = beginInterestTime;
+                            endTime = addDate(done_time, timeType);
+                            diffDay = getDays(startTime, endTime)
+                            type = 1
+                            if (parseInt(terms) == 2) //只有两次的情况
+                            {
+                                $("input[name='interestDue']").val(interestDue(totalMony, deadline.val(), endTime, funderRate, 1))
+                            }
+
+                        } else {
+                            endTime = addDate(done_time, parseInt(i * timeType))
+                            startTime = addDate(done_time, parseInt((i - 1) * timeType))
+                            diffDay = getDays(startTime, endTime);
+                            if (i == terms) {
+                                type = 2
+                            } else {
+                                type = 1
+                            }
+                            if (i == terms - 1 && terms > 1) {
+                                $("input[name='interestDue']").val(interestDue(totalMony, deadline.val(), endTime, funderRate, 1))
+                            }
+                        }
+                        $("#bjui-pageContent").append(appendContent(i, calaccrual(diffDay, totalMony, funderRate, type), endTime))
+                    }
+                   // $("#deleTimes").val(terms);//给删除按钮添加删除的次数
+                    deleTimes=terms
+                  //  debugger
+                }
+                //计算到期本息
+                function interestDue(totalMoney, toTime, lastTwotime, rate, type) //到期本息  总金额*(1+(到期日期-倒数第二个付息日)*利率/365) type=1是非一次性付清
+                {
+                    var diff = parseInt(getDays(lastTwotime, toTime) + 1);
+                    if (parseInt(type) == 1) {
+                        return (totalMoney * (1 + (diff * rate / 365))).toFixed(4)
+                    }
+                    else {
+
+                        return (totalMoney*(1+(diff*rate/365))).toFixed(4)
+                    }
+                }
+                 //隐藏部分窗体
+                function hiddenWin(deleTimes)
+                {
+                    deleMain(deleTimes)//删除重复数据
+                    $("#model_3").css('display', '')
+                    $("#model_1").css('display', 'none')
+                    $("#model_2").css('display', 'none')
+                }
+                //根据月计算到期时间
+                function addDate(date, moths) {
+                    moths = parseInt(moths)
+                    var d = new Date(date);
+                    /****判断是2月份开始的情况*****/
+                    if(parseInt(d.getMonth()+1)==2 && (parseInt(d.getDate())==28 || parseInt(d.getDate())==29))
+                    {
+                        //如果是相加12个月
+                        if(parseInt(moths)==12)
+                        {
+                            d.setMonth(d.getMonth() + moths);
+                            var month = d.getMonth() + 1;
+                            var day = d.getDate();
+                            var val = d.getFullYear() + "-" + month + "-" + day;
+                            return val;
+                        }else
+                        {
+                            //相加的月份不落在12月份
+                            d.setMonth(d.getMonth() + moths);
+                            var month = d.getMonth() + 1;
+                            var day=30;
+                            var val=d.getFullYear()+'-'+month+'-'+day;
+                            return val;
+
+                        }
+                    }else if(parseInt(d.getDate())==30 && (((moths==3 || moths==15) && parseInt(d.getMonth())+1==11) || ( (moths==6 || moths==18) && parseInt(d.getMonth())+1==8)))
+                    {
+                        d.setMonth(d.getMonth() + moths);
+                        //相加后落在2月份
+                        if(parseInt(d.getMonth())+1==3 && parseInt(d.getDate())==2)
+                        {
+                            var val = d.getFullYear() + "-" + 2 + "-" + 28;
+                            return val;
+                        }
+                    }
+                    else
+                    {
+                        d.setMonth(d.getMonth() + moths);
+                        var month = d.getMonth() + 1;
+                        var day = d.getDate();
+                        if (month < 10) {
+                            month = "0" + month;
+                        }
+                        if (day < 10) {
+                            day = "0" + day;
+                        }
+                        var val = d.getFullYear() + "-" + month + "-" + day;
+                        return val;
+                    }
+
+
+                }
+                //追加的内容
+                function appendContent(times, accrual, totime) {
+                    var append = '<tr id="id_' + times + '"> <td> <label for= "money" class = "control-label x150 " > 第' + times + '次付息时间：</label> <input type="text" name="totime[' + times + ']" id="totime" value="' + totime + '" size="15" class="form-control" data-rule="" readonly> <label for= "money" class = "control-label x50 " > 利息：</label> <input type="text" name="rateMoney[' + times + ']" id="p_account" value="' + accrual.toFixed(4) + '" size="12" class="form-control" data-rule="" readonly> </td> </tr>'
+                    return append
+                }
+
+                //放开输入框的只读状态
+                function writeEnable(times)
+                {
+                    for(var j=1;j<=times;j++)
+                    {
+                           $('#id_'+j +'> td > input').each(function (i,k) {
+                           $(this).removeAttr('readonly');
+                        })
+                    }
+                    $("input[name='deadline']").removeAttr('readonly');
+                    $("input[name='interestDue']").removeAttr('readonly');
+
+                }
+
+                //删除的重复数据主体
+                function deleMain(deleTimes)
+                {
+                    if(parseInt(deleTimes)>0)
+                    {
+                        //  debugger
+                        for(var j=1;j<=deleTimes;j++)
+                        {
+                            //debugger
+                            deleData(j);
+                        }
+                    }
+                }
+                //删除重复数据
+                function deleData(times) {
+                    $('#id_' + times).remove();
+                }
+                //计算利息
+                function calaccrual(days, totalMoney, rate, type) {
+                    if (type == 1) {
+                        return new Number((days * rate * totalMoney) / 365);
+                    } else {
+                        return new Number(((days + 1) * rate * totalMoney) / 365);
+                    }
+
+                }
+                //计算两个时间相差天数
+                function getDays(strDateStart, strDateEnd) {
+
+                    var strSeparator = "-"; //日期分隔符
+                    var oDate1;
+                    var oDate2;
+                    var iDays;
+                    oDate1 = strDateStart.split(strSeparator);
+                    oDate2 = strDateEnd.split(strSeparator);
+                    var strDateS = new Date(oDate1[0], oDate1[1] - 1, oDate1[2]);
+                    var strDateE = new Date(oDate2[0], oDate2[1] - 1, oDate2[2]);
+                    iDays = parseInt(Math.abs(strDateS - strDateE) / 1000 / 60 / 60 / 24)//把相差的毫秒数转换为天数
+                    return iDays;
+
+                }
+
+            </script>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li>
+            <button type="button" class="btn-close" data-icon="close">取消</button>
+        </li>
+        <li>
+            <button type="submit" class="btn-default" data-icon="save">保存</button>
+        </li>
+    </ul>
+</div>
+<script type="text/javascript" src="__ADMIN__/js/upper-zh_ch.js"></script>
+<script type="text/javascript">
+    $('#money').upper({
+        upperContainer: '#uploanamount'
+    });
+</script>

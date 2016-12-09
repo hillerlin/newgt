@@ -1,0 +1,62 @@
+<div class="bjui-pageContent">
+    <form action="<?php echo U('FinanceProject/save_finance')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="pro_id" value=""  />
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x150">项目编号：</label>
+                        <input type="text" name="pro_no" id="p_name" value=""  data-toggle="lookup" data-url="<?php echo U('Project/lookUp')?>?is_loan=1" data-rule="required" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x150">项目标题：</label>
+                        <input type="text" name="pro_title" id="p_name" value="" data-rule="required" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x150">公司名称：</label>
+                        <input type="text" name="company_name" id="p_name" value="" data-rule="required" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x150">放款金额：</label>
+                        <input type="text" name="pro_real_money" id="p_name" value="" data-rule="required" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x150">总可认购总金额：</label>
+                        <input type="text" name="finance_money" id="p_name" value="" size="15" data-rule="required">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x150">会员最大认购金额：</label>
+                        <input type="text" name="max_money" id="p_name" value="" size="15" data-rule="required">
+                    </td>
+                </tr>
+                <td>
+                    <label for="j_custom_indate" class="control-label x150">有效日期：</label>
+                    <input type="text" name="endtime" id="j_custom_indate" value="" data-toggle="datepicker" data-rule="required;date" size="15">
+                </td>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x150">显示状态：</label>
+                        <input type="radio" name="status" id="j_custom_status1" data-toggle="icheck" value="1" data-rule="checked" data-label="显示&nbsp;&nbsp;">
+                        <input type="radio" name="status" id="j_custom_status2" data-toggle="icheck" value="0" data-label="不显示">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>

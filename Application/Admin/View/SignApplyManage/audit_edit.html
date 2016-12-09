@@ -1,0 +1,205 @@
+<script type="text/javascript">
+    function do_OK(json, $form) {
+        console.log(json)
+        console.log($form)
+    }
+</script>
+<div class="bjui-pageContent">
+    <form action="<?php echo U('SignApplyManage/audit')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="pro_id" value="<?php echo $pro_id?>">
+        <input type="hidden" name="pro_step" value="<?php echo $pro_step?>">
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="j_custom_name" class="control-label x120">项目名称：</label>
+                        <input type="text" name="" id="p_name" value="<?php echo $pro_title?>" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="j_custom_sale" class="control-label x120">项目编号：</label>
+                        <input type="text" name="" id="p_name" value="<?php echo $pro_no?>" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="pro_account" class="control-label x120">融资金额：</label>
+                        <input type="text" name="pro_account" id="p_account" value="<?php echo sprintf("%0.2f", $pro_account)?>" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="gt_uid" class="control-label x120">项管部跟进人：</label>
+                        <input type="hidden" name="gt_uid" value="<?php echo $admin_id?>">
+                        <input type="text" name="user_name" id="p_user" value="<?php echo $admin['real_name']?>" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="company_id" class="control-label x120">公司：</label>
+                        <input type="hidden" name="company_id" value='<?php echo $company_id?>'>
+                        <input type="text" name="company" id="p_company" value="<?php echo $company['company_name']?>" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label for="pro_desc" class="control-label x120">项目简介：</label>
+                        <textarea name="pro_desc" id="j_custom_note_1" data-toggle="autoheight" cols="60" rows="1" readonly><?php echo $pro_desc?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label for="" class="control-label x120">审核结果：</label>
+                        <select name="status" data-toggle="selectpicker" data-rule="required" value="选择" >
+                            <option value="">--请选择--</option>
+                            <?php foreach($workflow[$step_pid][$pro_step]['step_next'] as $key => $select_status) {?>
+                            <option value="<?php echo $key?>"><?php echo $select_status['desc']?></option>
+                            <?php } ?>
+                        </select>
+                        <!--                        <input type="radio" name="status" id="j_custom_status1" data-toggle="icheck" value="1" data-rule="checked" data-label="审核通过&nbsp;&nbsp;">
+                                                <input type="radio" name="status" id="j_custom_status2" data-toggle="icheck" value="0" data-label="审核不通过">-->
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="pro_desc" class="control-label x120">审核人意见：</label>
+                        <textarea name="opinion" id="j_custom_note_1" data-toggle="autoheight" cols="60" data-minheight="100"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="pro_desc" class="control-label x120">合同预签申请表：</label>
+                        <!--<button data-url="/Admin/Contract/projectAdd.html?pro_id={$pro_id}" class="btn btn-blue" data-toggle="dialog" data-width='800' data-height="420" data-mask='true' data-icon="plus" data-id="project-add">合同预签申请表</button>-->
+                        <?php foreach($company_list as $company){ ?>
+                        <button data-url="/Admin/SignApplyManage/detailContract.html?pro_id={$pro_id}&company_id=<?php echo $company['company_id']?>" class="btn btn-blue" data-toggle="lookupbtn" data-width='1200' data-height="630" data-mask='true' data-icon="plus" data-id="project-add"><?php echo $company['company_name']?></button>
+                        <?php } ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="pro_desc" class="control-label x120">上传文件：</label>
+                        <div style="display: inline-block; vertical-align: middle;">
+                            <div id="j_custom_pic_up" data-toggle="upload" data-uploader="<?php echo U('Project/uploadToReview')?>?sessionid=?" 
+                                 data-file-size-limit="1024000000"
+                                 data-file-type-exts="<?php echo $exts?>"
+                                 data-multi="true"
+                                 data-on-upload-success="pic_upload_success"
+                                 data-icon="cloud-upload"
+                                 data-auto="true"
+                                 data-form-data='{"file_id":"<?php echo $file_id?>","pro_id":"<?php echo $pro_id?>"}'
+                                 data-file-obj-name='pro-<?php echo $pro_id?>'></div>
+                        </div>
+                        <!--<input type="hidden" name="filename" value="" id="file_up">-->
+                        <span id="j_custom_span_pic">
+                        </span>
+                        <!--<a href="<?php echo U('Project/file', array('pro_id'=>$pro_id))?>" class="btn btn-green" data-toggle="dialog" data-height="900" data-width="800" data-id="project-file" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="项目相关文件">上传文件</a>-->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table id='file-list' class="table table-condensed table-hover" width="100%">
+            <thead>
+                <tr>
+                    <th align="center" width="300">文件名</th>
+                    <th align="center" width="300">上传日期</th>
+                    <th width="300" align="center">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($list as $v){?>
+                <tr>
+                    <td align="center"><a target="_blank" href="<?php echo $v["path"]?>"><?php echo $v['doc_name']?></a></td>
+                    <td align="center"><?php echo date('Y-m-d H:s:i', $v['addtime'])?></td>
+                    <td align="center"><a href="<?php echo U('Project/remove_attachment')?>" data-data='{"file_path":"<?php echo $v["path"]?> ","pro_id":"<?php echo $v["pro_id"]?>","aid":"<?php echo $v["id"]?>","file_id":"<?php echo $v["id"]?>"}'  class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td>
+                </tr>
+                <?php }?>
+            </tbody>
+        </table>
+    </form>
+    <h4>审核流程</h4>
+    <table class="table table-bordered table-striped table-hover" width="100%">
+        <thead>
+            <tr>
+                <th align="center" width="300">操作人</th>
+                <th align="center" width="300">提交时间</th>
+                <th align="center" width="300">类型</th>
+                <th align="center" width="300">结果</th>
+                <th align="center" width="300">意见</th>
+                <th align="center" width="300">附件</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($process_list as $v){?>
+            <tr data-id="<?php echo $v['pro_id']?>">
+                <td align="center"><?php echo $v['real_name']?></td>
+                <td align="center"><?php echo date('Y-m-d H:i:s', $v['addtime'])?></td>
+                <td align="center"><?php echo $workflow[$v['step_pid']][$v['pro_step']]['step_desc']?></td>
+                <td align="center"><?php echo $workflow[$v['step_pid']][$v['pro_step']]['step_next'][$v['status']]['desc']?></td>
+                <td align="center"><?php echo $v['opinion']?></td>
+                <td align="center">
+                    <?php if($v['files'] > 0):?>
+                    <?php if($v['step_pid'] == 1 && $v['pro_step'] == 4): ?>
+                    <?php if(in_array($signin_admin['admin_id'], $review_file_autho)): ?>
+                    <a href="<?php echo U('Project/fileReviewList', array('pro_id'=>$v['context_id'], 'step_id'=>$v['id']))?>" class="btn btn-green" data-toggle="dialog" >附件</a>
+                    <?php else:?>
+                    --
+                    <?php endif;?>
+                    <?php else:?>
+                    <a href="<?php echo U('Project/fileReviewList', array('pro_id'=>$v['context_id'], 'step_id'=>$v['id']))?>" class="btn btn-green" data-toggle="dialog" >附件</a>
+                    <?php endif;?>
+                    <?php else:?>
+                    --
+                    <?php endif;?>
+                </td>
+            </tr>
+            <?php }?>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">提交审核</button></li>
+    </ul>
+</div>
+<script type="text/javascript">
+    function pic_upload_success(file, data) {
+        var json = $.parseJSON(data)
+        $(this).bjuiajax('ajaxDone', json)
+        if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+            add_uploadedfile(json.content);
+//        $('#j_custom_pic').val(json.filename).trigger('validate')
+//        $('#j_custom_span_pic').html('<img src="'+ json.filename +'" width="100" />')
+        }
+    }
+    function do_OK(json, $form) {
+        console.log(json)
+        console.log($form)
+    }
+// 图片上传
+
+    function add_uploadedfile(data) {
+        var i = $('#file-list> tbody > tr').length + 1;
+        var newTr = '<tr><td align="center"><a href="' + data.file_path + '">' + data.file_name + '</a><input type="hidden" name="reviews['+ i +'][path]" value="' + data.file_path + '" /></a><input type="hidden" name="reviews['+ i +'][doc_name]" value="' + data.file_name + '" /></td><td align="center">' + data.addtime + '</td><td align="center"><a href="<?php echo U("Project/remove_review")?>" data-data=\'{"file_path":\"' + data.file_path + '\"}\' class="btn btn-red" data-toggle="doajax" data-callback="del_uploadedfile" data-confirm-msg="确定要删除该行信息吗？">删</a></td></tr>';
+//        var newImg = '<li id="' + data.file_id + '"><input type="hidden" name="attachment['+ i +'][path]" value="' + data.file_path + '" /><div class="thumb-list-pics"><a href="javascript:void(0);"><img src="' + data.file_path + '" alt=""/></a></div><a href="javascript:del_file_upload(0,' + data.file_id + ',\'' + data.file_path + '\');" class="del" title="删除">X</a><a href="javascript:insert_editor(\'' + data.file_path + '\');" class="inset"><i class="fa fa-clipboard"></i>插入图片</a></li>';
+        $('#file-list > tbody').append(newTr);
+
+    }
+    
+    function del_uploadedfile(data) {
+        console.log(data);
+        var json = data;
+//        var statusCode = 
+        if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+            var file_path = data.message;
+            var li = $('input[value="'+file_path+'"]');
+            li.parent().parent().remove();
+            $("#file-list").alertmsg('ok', '删除成功！') ;
+        } else {
+            $("#file-list").alertmsg('error', '删除失败！');
+        }
+    }
+
+
+</script>

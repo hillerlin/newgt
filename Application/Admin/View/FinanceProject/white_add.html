@@ -1,0 +1,73 @@
+<div class="bjui-pageHeader">
+    <!--    <form id="pagerForm" data-toggle="ajaxsearch" action="<?php echo U('Project/index')?>" method="post">
+            <input type="hidden" name="pageSize" value="${model.pageSize}">
+            <input type="hidden" name="pageCurrent" value="${model.pageCurrent}">
+            <input type="hidden" name="orderField" value="${param.orderField}">
+            <input type="hidden" name="orderDirection" value="${param.orderDirection}">
+            <div class="bjui-searchBar">
+                <label>提交状态:</label>
+                <select name="submit_status" data-toggle="selectpicker">
+                    <option value="">全部</option>
+                    <option value="0">草稿</option>
+                    <option value="1">已提交</option>
+                </select>&nbsp;
+                <label>项目编号：</label><input type="text" id="pro_no" value="" name="pro_no" class="form-control" size="10">&nbsp;
+                <label>公司名称：</label><input type="text" value="" name="company_name" class="form-control" size="8">&nbsp;
+                <input type="checkbox" id="j_table_chk" value="true" data-toggle="icheck" data-label="我的客户">
+                <button type="button" class="showMoreSearch" data-toggle="moresearch" data-name="custom"><i class="fa fa-angle-double-down"></i></button>
+                <button type="submit" class="btn-default" data-icon="search">查询</button>&nbsp;
+                <a class="btn btn-orange" href="javascript:;" data-toggle="reloadsearch" data-clear-query="true" data-icon="undo">清空查询</a>
+            </div>
+            <div class="bjui-moreSearch">
+                <label>职业：</label><input type="text" value="" name="profession" size="15" />
+                <label>&nbsp;性别:</label>
+                <select name="sex" data-toggle="selectpicker">
+                    <option value="">全部</option>
+                    <option value="true">男</option>
+                    <option value="false">女</option>
+                </select>
+                <label>&nbsp;手机:</label>
+                <input type="text" value="" name="mobile" size="10">
+            </div>
+        </form>-->
+</div>
+<div class="bjui-pageContent tableContent">
+    <input type="checkbox" name="member_list[]" id="check_all" data-toggle="icheck" data-label="全选">
+    <!--<form action="<?php echo U('FinanceProject/save_finance')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">-->
+        <table class="table table-bordered table-hover table-striped table-top" data-selected-multi="true">
+            <tbody>
+                <?php
+                $i =0;
+                $n = count($member_list);
+                foreach($member_list as $v) {
+                ?>
+                <?php if($i % 4 === 0) {?> 
+                <tr>
+                    <?php }?>    
+                    <td align="center"><input type="checkbox" name="mids" data-toggle="icheck" 
+                                              data-label="<?php echo $v['company_name']?>" 
+                                              <?php echo in_array($v['mid'], $white_list) ? 'checked' : ''?>
+                                              value="{mid:'{$v.mid}', company_name:'{$v.company_name}'}"></td>
+                    <?php if (($i % 4 === 3) || ($i === $n -1)) {?>
+                </tr>
+                <?php }?>
+                <?php $i++; }?>
+            </tbody>
+        </table>
+    <!--</form>-->
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save" data-toggle="lookupback" data-lookupid="mids" data-warn="请至少选择一项职业" >选择选中</button></li>
+    </ul>
+</div>
+<script>
+    $('#check_all').on('ifChecked', function (event) {
+        $('input[name="mids"]').iCheck('check');
+    });
+    $('#check_all').on('ifUnchecked', function (event) {
+        $('input[name="mids"]').iCheck('uncheck');
+    });
+    
+</script>

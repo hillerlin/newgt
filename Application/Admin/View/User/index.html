@@ -1,0 +1,159 @@
+<script type="text/javascript">
+$('#project-datagrid').datagrid({
+    gridTitle : '项目列表',
+    showToolbar: true,
+    toolbarItem: 'add',
+    toolbarCustom: '',
+    local: 'remote',
+    dataUrl: "<?php echo U('Project/index')?>",
+    dataType: 'json',
+//    sortAll: true,
+    filterAll: false,
+    columns: [
+        {
+            name: 'pro_title',
+            label: '项目名称',
+            align: 'center',
+            width: 150,
+        },
+        {
+            name: 'pro_status',
+            label: '项目状态',
+            align: 'center',
+            width: 85,
+            type: 'select',
+            items: [{'0':'禁用'},{'1':'可用'}],
+            render: function(value) {
+                return parseInt(value) === 0 ? '禁用' : '可用';
+            },
+        },
+        {
+            name: 'pro_account',
+            label: '融资金额',
+            align: 'center',
+            width: 150,
+        },
+        {
+            name: 'pro_real_money',
+            label: '实际借款金额',
+            align: 'center',
+            width: 150,
+        },
+        {
+            name: 'gt_uid',
+            label: '跟进人',
+            align: 'center',
+            width: 300,
+        },
+        {
+            name: 'company_id',
+            label: '公司',
+            align: 'center',
+            width: 150,
+            edit: false
+        },
+        {
+            name: 'pro_linker',
+            label: '提交人',
+            align: 'center',
+            width: 300,
+        },
+        {
+            name: 'pro_id',
+            edit: false,
+            label: '编辑',
+            align: 'center',
+            width: 300,
+            render: function(value) {
+                return  '<a href="<?php echo U("Project/edit")?>?admin_id='+value+'" class="btn btn-green" data-toggle="dialog" data-height="400" data-id="admin-edit" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="编辑管理员}">编辑</a>\n\
+                <a href="<?php echo U('menu/del')?>?admin_id='+value+'" class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a>';
+            }
+        },
+    ],
+    hiddenFields: [{name:'deptcode'}],
+    editUrl: '<?php echo U("Project/save_project")?>',
+    delUrl:  '<?php echo U("Project/del_project")?>',
+    delPK:'admin_id',
+    paging: {pageSize:10, pageCurrent:1},
+    showCheckboxCol: true,
+    showEditBtnsCol: true,
+    linenumberAll: true,
+    showTfoot: true,
+    contextMenuB: true,
+    columnMenu:true,
+    editMode: 'dialog',
+    editDialogOp: {'url': "<?php echo U('Project/add')?>",'target':null}
+//    fullGrid:true
+})
+</script>
+<div class="bjui-pageContent">
+<script type="text/javascript">
+var $datagrid = $('#project-datagrid')
+
+function displayLinenumberCol(flag) {
+    $datagrid.datagrid('showLinenumber', flag)
+}
+function unLockLinenumberCol() {
+    $datagrid.datagrid('colLock', 0, false)
+}
+function displayCheckboxCol(flag) {
+    $datagrid.datagrid('showCheckboxcol', flag)
+}
+function displayEditCol(flag) {
+    $datagrid.datagrid('showEditCol', flag)
+}
+function displayCol(flag, index) {
+    $datagrid.datagrid('showhideColumn', index, flag)
+}
+function lockCol(flag, index) {
+    $datagrid.datagrid('colLock', index, flag)
+}
+function doEditTr(index) {
+    $datagrid.datagrid('doEditRow', index)
+}
+function doCancelEditTr(index) {
+    $datagrid.datagrid('doCancelEditRow', index)
+}
+function doSaveEditTr(index) {
+    $datagrid.datagrid('doSaveEditRow', index)
+}
+function doDelTr(index) {
+    $datagrid.datagrid('doDelRow', index)
+}
+$(document).on('bjui.beforeCloseDialog', function(e) {
+    var $dialog = $(e.target);
+//    debugger;
+    $dialog.data = "{'admin_id':'1'}";
+//    var $select = $('#test-datagrid').data('selectedTrs');
+//    $(this).navtab('reloadFlag', '1');
+
+ });
+ $(document).on('bjui.beforeLoadDialog', function(e) {
+    var $dialog = $(e.target);
+//    debugger;
+//    $dialog.prototype.getCurrent;
+//    var $select = $('#test-datagrid').data('selectedTrs')
+//    $dialog.loadUrl("<?=U('admin/edit')?>","admin_id:"+$select);
+//    var $select = $('#test-datagrid').data('selectedTrs');
+//    $(this).navtab('reloadFlag', 'bjui-hnav-tree1_2');
+//    $(this).loadUrl({'url': '<?=U('admin/edit')?>','data':{'admin_id':'11'},'target':null});
+
+ })
+</script>
+    <div style="margin:15px;">
+        <button type="button" class="btn-default" onclick="displayLinenumberCol(true);">显示行号列</button>
+        <button type="button" class="btn-default" onclick="displayLinenumberCol(false);">隐藏行号列</button>
+        <button type="button" class="btn-default" onclick="displayLinenumberCol('lock');">锁定行号列</button>
+        <button type="button" class="btn-default" onclick="displayLinenumberCol('unlock');">解锁行号列</button>
+        <button type="button" class="btn-default" onclick="displayCheckboxCol(true);">显示复选框列</button>
+        <button type="button" class="btn-default" onclick="displayCheckboxCol(false);">隐藏复选框列</button>
+        <button type="button" class="btn-default" onclick="displayCheckboxCol('lock');">锁定复选框列</button>
+        <button type="button" class="btn-default" onclick="displayCheckboxCol('unlock');">解锁复选框列</button>
+        <button type="button" class="btn-default" onclick="displayEditCol(true);">显示编辑按钮列</button>
+        <button type="button" class="btn-default" onclick="displayEditCol(false);">隐藏编辑按钮列</button>
+        <hr style="margin: 5px 0">
+        <table id="project-datagrid" data-width="100%" data-height="500" class="table table-bordered">
+        </table>
+    </div>
+    <a id="doc-alertmsg-demo"></a >
+</div>

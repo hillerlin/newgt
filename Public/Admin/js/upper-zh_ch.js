@@ -1,0 +1,46 @@
+(function ($) {
+
+    $.fn.upper = function (options) {
+        var me = this;
+
+        if (typeof options == 'string') {
+            var method = $.fn.screenshotPaste.methods[options];
+
+            if (method) {
+                return method();
+            } else {
+                return;
+            }
+        }
+
+        var defaults = {
+            upperContainer: ''
+        };
+
+        options = $.extend(defaults, options);
+
+        var do_upper = function (n) {
+            if (n === '') {
+                return '';
+            }
+            if (!/^(0|[1-9]\d*)(\.\d+)?$/.test(n))
+                return "数据非法";
+            var unit = "千百拾亿千百拾万千百拾元角分", str = "";
+            n += "00";
+            var p = n.indexOf('.');
+            if (p >= 0)
+                n = n.substring(0, p) + n.substr(p + 1, 2);
+            unit = unit.substr(unit.length - n.length);
+            for (var i = 0; i < n.length; i++)
+                str += '零壹贰叁肆伍陆柒捌玖'.charAt(n.charAt(i)) + unit.charAt(i);
+            return str.replace(/零(千|百|拾|角)/g, "零").replace(/(零)+/g, "零").replace(/零(万|亿|元)/g, "$1").replace(/(亿)万|壹(拾)/g, "$1$2").replace(/^元零?|零分/g, "").replace(/元$/g, "元整");
+        };
+        //事件注册
+        $(me).on('input', function (e) {
+            var money = $(me).val();
+            var upper = do_upper(money);
+            $(options.upperContainer).text(upper);
+
+        });
+    };
+})(jQuery);

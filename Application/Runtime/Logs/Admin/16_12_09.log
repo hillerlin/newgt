@@ -1,0 +1,3426 @@
+[ 2016-12-09T12:21:40+08:00 ] 127.0.0.1 /
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.012001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.012001s ]
+
+[ 2016-12-09T12:21:41+08:00 ] 127.0.0.1 /Admin/index/login.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.003001s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.004001s ]
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.046003s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.046003s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-12-09T12:21:41+08:00 ] 127.0.0.1 /Admin/index/makecode/nchash/28041d11.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+NOTIC: [8] Undefined offset: 0 D:\wamp\www\newgt\ThinkPHP\Library\Think\Verify.class.php 第 168 行.
+NOTIC: [2] Cannot use a scalar value as an array D:\wamp\www\newgt\ThinkPHP\Library\Think\Verify.class.php 第 176 行.
+NOTIC: [2] Cannot use a scalar value as an array D:\wamp\www\newgt\ThinkPHP\Library\Think\Verify.class.php 第 176 行.
+NOTIC: [2] Cannot use a scalar value as an array D:\wamp\www\newgt\ThinkPHP\Library\Think\Verify.class.php 第 176 行.
+NOTIC: [2] Cannot use a scalar value as an array D:\wamp\www\newgt\ThinkPHP\Library\Think\Verify.class.php 第 176 行.
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-12-09T12:21:49+08:00 ] 127.0.0.1 /Admin/index/login.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_admin` [ RunTime:0.0020s ]
+SQL: SELECT * FROM `gt_admin` WHERE `admin_name` = 'songbo' AND `admin_password` = 'fdde3d0f97c31c0d751455a098aeb020' AND `status` = 1 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:21:50+08:00 ] 127.0.0.1 /Admin/index/makecode/nchash/28041d11.html&1481257310658
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+NOTIC: [8] Undefined offset: 0 D:\wamp\www\newgt\ThinkPHP\Library\Think\Verify.class.php 第 168 行.
+NOTIC: [2] Cannot use a scalar value as an array D:\wamp\www\newgt\ThinkPHP\Library\Think\Verify.class.php 第 176 行.
+NOTIC: [2] Cannot use a scalar value as an array D:\wamp\www\newgt\ThinkPHP\Library\Think\Verify.class.php 第 176 行.
+NOTIC: [2] Cannot use a scalar value as an array D:\wamp\www\newgt\ThinkPHP\Library\Think\Verify.class.php 第 176 行.
+NOTIC: [2] Cannot use a scalar value as an array D:\wamp\www\newgt\ThinkPHP\Library\Think\Verify.class.php 第 176 行.
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-12-09T12:21:54+08:00 ] 127.0.0.1 /Admin/index/login.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_admin` [ RunTime:0.0020s ]
+SQL: SELECT * FROM `gt_admin` WHERE `admin_name` = 'songbo' AND `admin_password` = '21232f297a57a5a743894a0e4a801fc3' AND `status` = 1 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:21:56+08:00 ] 127.0.0.1 /Admin/index/makecode/nchash/28041d11.html&1481257315898
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+NOTIC: [2] Cannot use a scalar value as an array D:\wamp\www\newgt\ThinkPHP\Library\Think\Verify.class.php 第 176 行.
+NOTIC: [2] Cannot use a scalar value as an array D:\wamp\www\newgt\ThinkPHP\Library\Think\Verify.class.php 第 176 行.
+NOTIC: [2] Cannot use a scalar value as an array D:\wamp\www\newgt\ThinkPHP\Library\Think\Verify.class.php 第 176 行.
+NOTIC: [2] Cannot use a scalar value as an array D:\wamp\www\newgt\ThinkPHP\Library\Think\Verify.class.php 第 176 行.
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-12-09T12:22:01+08:00 ] 127.0.0.1 /Admin/index/login.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_admin` [ RunTime:0.0010s ]
+SQL: SELECT * FROM `gt_admin` WHERE `admin_name` = 'songbo' AND `admin_password` = '7fef6171469e80d32c0559f88b377245' AND `status` = 1 LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `gt_role` [ RunTime:0.0010s ]
+SQL: SELECT * FROM `gt_role` WHERE ( 1=1 AND role_id='14' ) LIMIT 1   [ RunTime:0.0010s ]
+SQL: UPDATE `gt_admin` SET `last_login_time`='1481257321',`last_login_ip`='127.0.0.1' WHERE `admin_id` = 28 [ RunTime:0.0340s ]
+SQL: UPDATE `gt_admin` SET `login_times`=login_times+1 WHERE `admin_id` = 28 [ RunTime:0.0240s ]
+
+[ 2016-12-09T12:22:01+08:00 ] 127.0.0.1 /Admin/index/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_role` [ RunTime:0.0010s ]
+SQL: SELECT b.menu_id,menu_name,pid,type,module_name,action_name,class_name,data,remark,sort,status  FROM gt_auth AS a,gt_menu as b WHERE  a.menu_id = b.menu_id AND status=1 AND role_id in(14) and type= 1  ORDER BY sort ASC [ RunTime:0.2020s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000000s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.002000s ]
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.056003s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.056003s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.003000s ]
+
+[ 2016-12-09T12:22:02+08:00 ] 127.0.0.1 /Admin/Index/index_layout.html?_=1481257322158
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+SQL: SELECT * FROM `gt_message` WHERE `admin_id` = 28 ORDER BY status ASC,addtime DESC LIMIT 0,3   [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `gt_backlog` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_backlog` WHERE `admin_id` = 28 AND `status` = 0 LIMIT 1   [ RunTime:0.0010s ]
+SQL: SELECT * FROM `gt_backlog` WHERE `admin_id` = 28 AND `status` = 0 ORDER BY addtime DESC LIMIT 0,3   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `gt_announcement` [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `gt_announcement` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM gt_announcement AS t WHERE t.status = 1 LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `gt_announcement` [ RunTime:0.0010s ]
+SQL: SELECT t.*,`real_name` FROM gt_announcement AS t LEFT JOIN gt_admin AS a ON a.admin_id=t.admin_id  WHERE t.status = 1 ORDER BY t.addtime ASC LIMIT 0,3   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `gt_research_report` [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `gt_research_report` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM gt_research_report AS t LEFT JOIN gt_admin AS a ON a.admin_id=t.admin_id LEFT JOIN gt_department AS d ON d.dept_id=t.dept_id  WHERE t.status = 1 LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `gt_research_report` [ RunTime:0.0010s ]
+SQL: SELECT t.*,`real_name`,`department` FROM gt_research_report AS t LEFT JOIN gt_admin AS a ON a.admin_id=t.admin_id LEFT JOIN gt_department AS d ON d.dept_id=t.dept_id  WHERE t.status = 1 ORDER BY t.add_time DESC LIMIT 0,3   [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000000s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000000s ]
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.021002s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.021002s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-12-09T12:22:02+08:00 ] 127.0.0.1 /Admin/Calendar/myCalendar.html?start=1480262400&end=1483891200&_=1481257322159
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_calendar` [ RunTime:0.0020s ]
+SQL: SELECT * FROM gt_calendar  where admin_id = 28 AND ((start > 1480262400 AND start < 1483891200) or (end > 1480262400))  [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:22:05+08:00 ] 127.0.0.1 /Admin/Role/showPage.html?&_=1481257322160
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000000s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.001000s ]
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.056003s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.056003s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001001s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-12-09T12:22:06+08:00 ] 127.0.0.1 /Admin/Role/index.html?&_=1481257322161
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_role` [ RunTime:0.0020s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_role` WHERE `pid` = 14 LIMIT 1   [ RunTime:0.2010s ]
+SQL: SELECT * FROM `gt_role` WHERE `pid` = 14 ORDER BY add_time desc LIMIT 0,30   [ RunTime:0.0020s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000000s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000000s ]
+NOTIC: [8] Undefined index: role_desc D:\wamp\www\newgt\Application\Runtime\Cache\Admin\b35d77029c5f30642b30c7a996208f53.php 第 65 行.
+NOTIC: [8] Undefined index: role_desc D:\wamp\www\newgt\Application\Runtime\Cache\Admin\b35d77029c5f30642b30c7a996208f53.php 第 65 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.029001s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.029001s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-12-09T12:22:17+08:00 ] 127.0.0.1 /Admin/Project/MyAudit.html?&_=1481257322162
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_project` [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `gt_workflow_log` [ RunTime:0.0010s ]
+SQL: SELECT * FROM `gt_workflow_log` WHERE `pro_state` = 0 AND `pro_author` = 28 UNION select * from`gt_workflow_log` where `pro_role`='14' and `pro_state`=0  [ RunTime:0.0010s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.001000s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.001000s ]
+NOTIC: [2] Invalid argument supplied for foreach() D:\wamp\www\newgt\Application\Runtime\Cache\Admin\2f90b3b1a6912e92aa130562b296b3de.php 第 12 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.014001s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.014001s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-12-09T12:22:20+08:00 ] 127.0.0.1 /Admin/Project/MyAudit.html?&_=1481257322163
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001001s ]
+SQL: SHOW COLUMNS FROM `gt_project` [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `gt_workflow_log` [ RunTime:0.0010s ]
+SQL: SELECT * FROM `gt_workflow_log` WHERE `pro_state` = 0 AND `pro_author` = 28 UNION select * from`gt_workflow_log` where `pro_role`='14' and `pro_state`=0  [ RunTime:0.0010s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000000s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000000s ]
+NOTIC: [2] Invalid argument supplied for foreach() D:\wamp\www\newgt\Application\Runtime\Cache\Admin\2f90b3b1a6912e92aa130562b296b3de.php 第 12 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.010000s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.011001s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-12-09T12:22:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0550s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0560s ]
+
+[ 2016-12-09T12:22:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:23:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:23:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:23:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:24:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:24:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2016-12-09T12:24:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:25:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:25:19+08:00 ] 127.0.0.1 /Admin/Project/MyAudit.html?&_=1481257322164
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_project` [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `gt_workflow_log` [ RunTime:0.0010s ]
+SQL: SELECT * FROM `gt_workflow_log` WHERE `pro_state` = 0 AND `pro_author` = 28 UNION select * from`gt_workflow_log` where `pro_role`='14' and `pro_state`=0  [ RunTime:0.0010s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.001000s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.001000s ]
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.008000s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.008000s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-12-09T12:25:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:25:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:26:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:26:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:26:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:27:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2016-12-09T12:27:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:27:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:28:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:28:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:28:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0020s ]
+
+[ 2016-12-09T12:29:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:29:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:29:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:30:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:30:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:30:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:31:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:31:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:31:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0020s ]
+
+[ 2016-12-09T12:32:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:32:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2016-12-09T12:32:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:33:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:33:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2016-12-09T12:33:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:34:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:34:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:34:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:35:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:35:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:35:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:36:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:36:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:36:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:37:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:37:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:37:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:38:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:38:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:38:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:39:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:39:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:39:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:40:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:40:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0020s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:40:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:41:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:41:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:41:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:42:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:42:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:42:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:43:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:43:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:43:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:44:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:44:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:44:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:45:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:45:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:45:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:46:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:46:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:46:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:47:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:47:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:47:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:48:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:48:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:48:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:49:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:49:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:49:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:50:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:50:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:50:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:51:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:51:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2016-12-09T12:51:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:52:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:52:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:52:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:53:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:53:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:53:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:54:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2016-12-09T12:54:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:54:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0020s ]
+
+[ 2016-12-09T12:55:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:55:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:55:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:56:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2016-12-09T12:56:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:56:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:57:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:57:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:57:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:58:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:58:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:58:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:59:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:59:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T12:59:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:00:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:00:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:00:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:01:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:01:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:01:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2016-12-09T13:02:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:02:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:02:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2016-12-09T13:03:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:03:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:03:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:04:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:04:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:04:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:05:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:05:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0020s ]
+
+[ 2016-12-09T13:05:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:06:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:06:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0020s ]
+
+[ 2016-12-09T13:06:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:07:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:07:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:07:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:08:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:08:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:08:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:09:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:09:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:09:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:10:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:10:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:10:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2016-12-09T13:11:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:11:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:11:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:12:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:12:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2016-12-09T13:12:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:13:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:13:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:13:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:14:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:14:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:14:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:15:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:15:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:15:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:16:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:16:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:16:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:17:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:17:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:17:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:18:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0020s ]
+
+[ 2016-12-09T13:18:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:18:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:19:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:19:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:19:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:20:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:20:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:20:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:21:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:21:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:21:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:22:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:22:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2016-12-09T13:22:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:23:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:23:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:23:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:24:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:24:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:24:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:25:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:25:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:25:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:26:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2016-12-09T13:26:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:26:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0020s ]
+
+[ 2016-12-09T13:27:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:27:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:27:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:28:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:28:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:28:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:29:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:29:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:29:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:30:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0020s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0020s ]
+
+[ 2016-12-09T13:30:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0020s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0020s ]
+
+[ 2016-12-09T13:30:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:31:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:31:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:31:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2016-12-09T13:32:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:32:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0020s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:32:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:33:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:33:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:33:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:34:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0020s ]
+
+[ 2016-12-09T13:34:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:34:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:35:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:35:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:35:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:36:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:36:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:36:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:37:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:37:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:37:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:38:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:38:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:38:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:39:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:39:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0020s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:39:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:40:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:40:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:40:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:41:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2016-12-09T13:41:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2016-12-09T13:41:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:42:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:42:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:42:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:43:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:43:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:43:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:44:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:44:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:44:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:45:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:45:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:45:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2016-12-09T13:46:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:46:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:46:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:47:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:47:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:47:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:48:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2016-12-09T13:48:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:48:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:49:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:49:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:49:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:50:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:50:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:50:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:51:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:51:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:51:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:52:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:52:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:52:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:53:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:53:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:53:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:54:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:54:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:54:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:55:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:55:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:55:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:56:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:56:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:56:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:57:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2016-12-09T13:57:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:57:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:58:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:58:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:58:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:59:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:59:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T13:59:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T14:00:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T14:00:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T14:00:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T14:01:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T14:01:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001001s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T14:01:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T14:02:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2016-12-09T14:02:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0020s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T14:02:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0020s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T14:03:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T14:03:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T14:03:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T14:04:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T14:04:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T14:04:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T14:05:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T14:05:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T14:05:42+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002001s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0020s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T14:06:02+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-12-09T14:06:22+08:00 ] 127.0.0.1 /Admin/Message/getNewMessage.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `gt_message` [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `gt_message` WHERE `status` = 0 AND `admin_id` = 28 LIMIT 1   [ RunTime:0.0010s ]
+

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Flask Multiple Upload</title>
+        <link rel="stylesheet" type="text/css" href="__ADMIN__/css/style.css">
+        <style type='text/css'>
+    /*@import url(http://fonts.googleapis.com/css?family=Questrial);*/
+
+
+    #holder {
+        font-family: Arial;
+        width: 500px;
+        margin: 100px auto;
+        text-align:center;
+    }
+
+    #output {
+        padding-top: 20px;
+        font-size: 11px;
+    }
+</style>
+    </head>
+    <body id="holder">
+
+        <h1>资料包上传</h1>
+
+        <hr><p>
+            <div id="alter" style="color:red;">由于网络原因，在上传大文件夹时会出现超时，发送失败的情况，请尽量一次性上传文件控制在200M以内，文件夹较大时，可选择分多次上传。</div>
+        <form id="upload-form" action="/admin/help/<?php if($k=='pro_id'){echo 'upDocument';}elseif($k=='fund_id'){echo 'upFundDocument';}?>?{$k}={$v}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" id="{$k}" value="{$v}">
+            <input type="hidden" name="{$k}" value="{$v}">
+            <!--<strong>Normal Text Box:</strong><br>-->
+            <!--<input type="text" size="20" name="input1" value="uploads"><p>-->
+
+                <strong>Files:</strong><br>
+                Select files OR drag them into the box below.
+            <input id="file-picker" type="file" name="file" accept="image/*" multiple webkitdirectory><p>
+
+<!--            <div id="dropbox">
+                Drag and Drop Files Here
+            </div><p>-->
+
+            <fieldset id="progress" style="display: none">
+                <legend>Files Progress</legend>
+
+                <div class="progress-trough">
+                    <div id="progress-bar" class="progress-bar">0%</div>
+                </div>
+            </fieldset><p>
+
+                <input type="submit" value="Upload!" id="upload-button">
+        </form>
+
+        <script type="text/javascript" src="__ADMIN__/js/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="__ADMIN__/js/uploadr.js"></script>
+    </body>
+</html>
+<script type="text/javascript">
+    var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+    if (!isChrome) {
+        $("#alter").append('此浏览器非Chrome浏览器，将不支持文件夹上传，请知悉。');
+//        alert("不是Chrome浏览器");
+    }
+</script>

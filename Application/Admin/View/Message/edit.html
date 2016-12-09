@@ -1,0 +1,74 @@
+<script type="text/javascript">
+    function pic_upload_success(file, data) {
+        var json = $.parseJSON(data)
+
+        $(this).bjuiajax('ajaxDone', json)
+        if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+            $('#j_custom_pic').val(json.filename).trigger('validate')
+            $('#j_custom_span_pic').html('<img src="' + json.filename + '" width="100" />')
+        }
+    }
+    function do_OK(json, $form) {
+        console.log(json)
+        console.log($form)
+    }
+</script>
+<div class="bjui-pageContent">
+    <form action="<?php echo U('Message/save')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="flow_id" value="{$flow_id}">
+        <input type="hidden" name="msg_id" value="{$msg_id}">
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="money" class="control-label x120 red">标题：</label>
+                        <input type="text" name="title" id="p_account" value="{$title}" size="15" data-rule="required">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="money" class="control-label x120 red">消息模板：</label>
+                        <textarea name="description" id="j_custom_note_1" cols="30" rows="2">{$description}</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="company_id" class="control-label x120">部门：</label>
+                        <input type="hidden" name="dp_id" value="<?php echo $dp['dept_id']?>" id="select_1">
+                        <input type="text" name="department" id="p_company" value="<?php echo isset($dp) ? $dp['deparment'] : ''?>" size="20" data-toggle="lookup" data-url="<?php echo U('Department/lookUp')?>" data-width="600" data-height="300" readonly>
+                        <a href="javascript:;" class="btn btn-orange" onclick="removeForm(this);" data-icon="undo">清空</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="company_id" class="control-label x120">角色：</label>
+                        <input type="hidden" name="role_id" value="<?php echo $role['role_id']?>" id="select_2">
+                        <input type="text" name="role_name" id="p_company" value="<?php echo isset($role) ? $role['role_name'] : ''?>" size="20" data-toggle="lookup" data-url="<?php echo U('Role/lookUp')?>" data-width="600" data-height="300" readonly>
+                        <a href="javascript:;" class="btn btn-orange" onclick="removeForm(this);" data-icon="undo">清空</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="company_id" class="control-label x120">指定人员：</label>
+                        <input type="hidden" name="admin_id" value="<?php echo $admin['admin_id']?>" id="select_3">
+                        <input type="text" name="real_name" id="p_company" value="<?php echo isset($admin) ? $admin['real_name'] : ''?>" size="20" data-toggle="lookup" data-url="<?php echo U('Admin/lookUp')?>" data-width="600" data-height="300" readonly>
+                        <a href="javascript:;" class="btn btn-orange" onclick="removeForm(this);" data-icon="undo">清空</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>
+<script>
+    function removeForm(obj, id) {
+        $(obj).siblings('input').each(function(){
+            this.value='';
+        });
+    }
+</script>

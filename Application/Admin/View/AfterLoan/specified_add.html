@@ -1,0 +1,50 @@
+<div class="bjui-pageContent">
+    <form action="<?php echo U('CapitalFlow/save')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="pro_id" value="<?php echo $debt_info['pro_id']?>">
+        <input type="hidden" name="debt_all_id" value="<?php echo $debt_info['debt_all_id']?>">
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="money" class="control-label x120 red">金额：</label>
+                        <input type="text" name="money" id="p_account" value="" size="15" data-rule="required">元
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x120">打款银行：</label>
+                        <select name="bank_id" data-rule="required" data-toggle="selectpicker">
+                            <option value="">--请选择--</option>
+                            <?php foreach($banks as $val):?>
+                            <option value="<?php echo $val['bank_id']?>"><?php echo $val['bank_name']?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="control-label x120">流水类型:</label>
+                        <select name="type" data-toggle="selectpicker" id="select_status">
+                            <option value="">全部</option>
+                            <?php foreach($type_describe as $key => $val):?>
+                            <option value="<?php echo $key?>"><?php echo $val?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="loan_remark" class="control-label x120">备注：</label>
+                        <textarea name="remark" id="j_custom_note_1" cols="30" rows="2"></textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>

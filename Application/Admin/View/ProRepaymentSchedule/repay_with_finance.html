@@ -1,0 +1,213 @@
+<div class="bjui-pageContent">
+    <form action="<?php echo U('ProRepaymentSchedule/repay')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="rp_id" value="{$rp_id}"  />
+        <input type="hidden" name="fid" id="fid" value=""  />
+        <input type="hidden" name="bank_id" id="bank_id" value=""  />
+        <h4>第{$n_term}期</h4>
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x150">实际还款金额：</label>
+                        <input type="text" name="repay_money" id="repay_money" value="<?php echo round($interest + $principal - $has_repay_money, 2)?>" size="15" data-rule="required">元
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="j_custom_indate" class="control-label x150">打款时间：</label>
+                        <input type="text" name="real_repay_time" id="real_repay_time" value=""  data-rule="required:date" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x150">还款状态：</label>
+                        <input type="radio" name="status" id="j_custom_status1" data-toggle="icheck" value="1" data-rule="checked" data-label="已还完&nbsp;&nbsp;">
+                        <input type="radio" name="status" id="j_custom_status2" data-toggle="icheck" value="0" data-label="未还完">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x150">选择凭证：</label>
+                        <a href="<?php echo U('FinanceFlow/lookUpNew')?>" data-toggle="lookupbtn" data-width="900" >打开财务流水表</a>
+                    </td>
+                </tr>
+                <!--                <tr>
+                                    <td>
+                                        <label for="debt_account" class="control-label x150">生成流水记录：</label>
+                                        <input type="checkbox" name="generate_flow" id="j_custom_status1" data-toggle="icheck" value="1" data-label="">
+                                    </td>
+                                </tr>
+                                <tr style="display: none" class="flow">
+                                    <td>
+                                        <label for="debt_no" class="control-label x150">打款银行：</label>
+                                        <select name="bank_id" data-toggle="selectpicker">
+                                            <option value="">--请选择--</option>
+                                            <?php foreach($banks as $val):?>
+                                            <option value="<?php echo $val['bank_id']?>"><?php echo $val['account_name'].'—'.$val['bank_name']?></option>
+                                            <?php endforeach;?>
+                                        </select>
+                                    </td>
+                                </tr>-->
+                <tr  class="flow">
+                    <td>
+                        <label for="loan_remark" class="control-label x150">备注：</label>
+                        <textarea name="remark" id="j_custom_note_1" cols="30" rows="2"></textarea>
+                    </td>
+                </tr>
+                <!--                <tr>
+                                    <td>
+                                    <label for="pro_desc" class="control-label x150">打款凭证：</label>
+                                    <div style="display: inline-block; vertical-align: middle;">
+                                        <div id="j_custom_pic_up" data-toggle="upload" data-uploader="<?php echo U('RepaymentRecord/upload_attachment')?>?sessionid=?" 
+                                             data-file-size-limit="1024000000"
+                                             data-file-type-exts="*.jpg;*.png;*.gif;*.mpg"
+                                             data-multi="true"
+                                             data-on-upload-success="pic_upload_success"
+                                             data-icon="cloud-upload"
+                                             data-form-data='{"mpay_id":"<?php echo $mpay_id?>","mid":"<?php echo $mid?>"}'
+                                             data-file-obj-name='mpay-<?php echo $mpay_id?>'></div>
+                                    </div>
+                                        <input type="hidden" name="repay_pic" value="" id="j_custom_pic">
+                                        <span id="j_custom_span_pic">
+                                    </span>
+                                    </td>
+                                </tr>-->
+            </tbody>
+        </table>
+        <table id='file-list' class="table table-condensed table-hover" width="100%">
+            <thead>
+                <tr>
+                    <th align="center" width="300">文件名</th>
+                    <th align="center" width="300">上传日期</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td align="center"><a target="_blank" href=""></a></td>
+                    <td align="center"></td>
+                    <!--<td align="center"><a href="<?php echo U('FinanceFlow/remove')?>" data-data='{"file_path":"<?php echo $v["path"]?> ","aid":"<?php echo $v["id"]?>","file_id":"<?php echo $v["id"]?>"}'  class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td>-->
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>
+<script>
+    function pic_upload_success(file, data) {
+        var json = $.parseJSON(data)
+
+        $(this).bjuiajax('ajaxDone', json)
+        if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+            $('#j_custom_pic').val(json.content.file_path).trigger('validate')
+            $('#j_custom_span_pic').html('<img src="' + json.content.file_path + '" width="100" />')
+        }
+    }
+    $('input[name="generate_flow"]').on('ifChecked', function (event) {
+        $('.flow').show();
+        $('select[name="bank_id"]').attr('data-rule', 'required');
+//        $('select[name="remark"]').attr('data-rule', 'required');
+    });
+    $('input[name="generate_flow"]').on('ifUnchecked', function (event) {
+        $('.flow').hide();
+        $('select[name="bank_id"]').removeAttr('data-rule');
+//        $('input[name="remark"]').removeAttr('data-rule');
+    });
+    $('#bank_id').on('afterchange.bjui.lookup', function (e, data) {
+//        debugger;
+        var bank_id = 0;
+        var myvalue = data.value;
+        var bank_id_arr = myvalue.split(',');
+        for (i = 0; i < bank_id_arr.length - 1; i++) {
+            if (bank_id_arr[i] !== bank_id_arr[i + 1]) {
+                $(this).val('');
+                $(this).alertmsg('error', '选择的流水银行信息不同，请分开生成流水');
+                return false;
+            }
+        }
+        $(this).val(bank_id_arr[0]);
+    });
+
+    $('#real_repay_time').on('afterchange.bjui.lookup', function (e, data) {
+        var myvalue = data.value;
+        var repay_time_arr = myvalue.split(',');
+        if (repay_time_arr.length > 1) {
+            for (i = 0; i < repay_time_arr.length - 1; i++) {
+                if (repay_time_arr[i] !== repay_time_arr[i + 1]) {
+                    $(this).val('');
+                    $(this).alertmsg('error', '选择日期不同，请分开生成流水');
+                    return false;
+                }
+            }
+        }
+        $(this).val(repay_time_arr[0]);
+    });
+    $('#repay_money').on('afterchange.bjui.lookup', function (e, data) {
+//        debugger;
+        var repay_money = 0;
+        var myvalue = data.value;
+        var repay_money_arr = myvalue.split(',');
+        for (i = 0; i < repay_money_arr.length; i++) {
+            repay_money += parseFloat(repay_money_arr[i]);
+        }
+        $(this).val(repay_money);
+    });
+
+    $('#fid').on('afterchange.bjui.lookup', function (e, data) {
+//        debugger;
+        var repay_money = 0;
+        var myvalue = data.value;
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: "/Admin/FinanceFlow/getVouchers",
+            data: {fids: myvalue},
+            success: function (list) {
+                if (list.statusCode == 200) {
+                    var content = list.content;
+                    $('#file-list > tbody').html('');
+                    for (i = 0; i < content.length; i++) {
+                        add_uploadedfile(content[i]);
+                    }
+                } else {
+                    alert('非法数据');
+                }
+            }
+        });
+    });
+
+    function add_uploadedfile(data) {
+        var time = formatDate(data.addtime);
+        var i = $('#file-list> tbody > tr').length + 1;
+        var newTr = '<tr><td align="center"><a href="' + data.path + '"><img src=' + data.path + ' style="max-width: 150px; max-height: 150px;"></a></td><td align="center">' + time + '</td></tr>';
+//        var newImg = '<li id="' + data.file_id + '"><input type="hidden" name="attachment['+ i +'][path]" value="' + data.file_path + '" /><div class="thumb-list-pics"><a href="javascript:void(0);"><img src="' + data.file_path + '" alt=""/></a></div><a href="javascript:del_file_upload(0,' + data.file_id + ',\'' + data.file_path + '\');" class="del" title="删除">X</a><a href="javascript:insert_editor(\'' + data.file_path + '\');" class="inset"><i class="fa fa-clipboard"></i>插入图片</a></li>';
+        $('#file-list > tbody').append(newTr);
+
+    }
+
+    function formatDate(now)   { 
+        var   now = new Date(now * 1000);
+        var   year = now.getFullYear();     
+        var   month = now.getMonth() + 1;     
+        var   date = now.getDate();     
+        var   hour = now.getHours(); 
+        var   minute = now.getMinutes();     
+        var   second = now.getSeconds(); 
+        return   year + "年" + fixZero(month, 2) + "月" + fixZero(date, 2) + "日";// + fixZero(hour, 2) + ":" + fixZero(minute, 2) + ":" + fixZero(second, 2); 
+    }
+//时间如果为单位数补0 
+    function fixZero(num, length) {
+    var str = "" + num; 
+    var len = str.length;
+    var s = ""; 
+    for (var i = length; i-- > len; ) {
+         s += "0";
+     } 
+   return s + str;
+    }  
+
+</script>  

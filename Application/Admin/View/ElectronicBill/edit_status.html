@@ -1,0 +1,100 @@
+<script type="text/javascript" src="__ADMIN__/js/screenshot-paste.js"></script>
+<script type="text/javascript">
+$('#hove'+'rtreedemo').screenshotPaste({
+imgContainer: '#imgPreviewHoverTree',
+uploadUrl: '/Admin/ElectronicBill/uploadBase64',
+delUrl: '/Admin/ElectronicBill/remove'
+});
+</script>
+<div class="bjui-pageContent">
+    <form action="<?php echo U('ElectronicBill/save')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="out_company_id" value="{$bill_info.out_company_id}" >
+        <input type="hidden" name="recevier_company_id" value="{$bill_info.recevier_company_id}" >
+        <input type="hidden" name="before_company_id" value="{$bill_info.before_company_id}" >
+        <input type="hidden" name="eb_id" value="{$bill_info.eb_id}" >
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="money" class="control-label x120">收票日期：</label>
+                        <input type="text" name="receive_time" id="p_company" value="<?php echo date('Y-m-d', $bill_info['receive_time'])?>" size="15" data-toggle="" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="money" class="control-label x120">出票日期：</label>
+                        <input type="text" name="out_time" id="p_company" value="<?php echo date('Y-m-d', $bill_info['out_time'])?>" size="15" data-toggle="" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="money" class="control-label x120">汇票到期日：</label>
+                        <input type="text" name="due_time" id="p_company" value="<?php echo date('Y-m-d', $bill_info['due_time'])?>" size="15" data-toggle="" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="money" class="control-label x120">票据号码：</label>
+                        <input type="text" name="num" id="p_account" value="{$bill_info.num}" size="30" data-rule="required" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="money" class="control-label x120">出票人：</label>
+                        <input type="text" name="out_company_name" id="p_account" value="{$bill_info.out_company}" size="15" data-rule="required" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="money" class="control-label x120">收款人：</label>
+                        <input type="text" name="recevier_company_name" id="p_account" value="{$bill_info.recevier_company}" size="15" data-rule="required" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="money" class="control-label x120">前手：</label>
+                        <input type="text" name="before_company_name" id="p_account" value="{$bill_info.before_company}" size="15" data-rule="required" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="money" class="control-label x120">票据金额：</label>
+                        <input type="text" name="money" id="money" value="{$bill_info.money}" size="15" data-rule="required" readonly>元
+                        <label for="money" id="uploanamount" class="control-label x1000 red"></label>
+                        <!--<input type="text" name="uploanamount" id="uploanamount" value='' data-rule="required" size="20" readonly >-->
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x120">状态：</label>
+                        <select name="status" data-rule="required" data-toggle="selectpicker">
+                            <option value="">--请选择--</option>
+                            <?php foreach($type_dsc as $key => $val):?>
+                            <option value="<?php echo $key;?>" <?php echo $key == $bill_info['status'] ? 'selected' : '';?>><?php echo $val?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="aaa">
+<!--                        <div style="width:375px;height:100px;border-style: solid" class="form-control ncap-thumb-list" >
+                            截屏，然后点击这里，ctrl+v 粘帖，图片将在下方显示
+                            <ul></ul>
+                        </div>-->
+                    <label for="remark" class="control-label x120">凭证：</label>
+                    <textarea id="hovertreedemo"  placeholder="截屏，然后点击这里，ctrl+v 粘帖，图片将在下方显示" style="width:275px;height:100px;"></textarea>
+                    <div>
+                    <div id="imgPreviewHoverTree" class=" ncap-thumb-list" ></div>
+                    </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>

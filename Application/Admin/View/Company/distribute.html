@@ -1,0 +1,44 @@
+<script type="text/javascript">
+function pic_upload_success(file, data) {
+    var json = $.parseJSON(data)
+    
+    $(this).bjuiajax('ajaxDone', json)
+    if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+        $('#j_custom_pic').val(json.filename).trigger('validate')
+        $('#j_custom_span_pic').html('<img src="'+ json.filename +'" width="100" />')
+    }
+}
+function do_OK(json, $form) {
+    console.log(json)
+    console.log($form)
+}
+//护照有效日期  = 签发日期 + 10年
+$('#j_custom_issuedate').on('afterchange.bjui.datepicker', function(e, data) {
+    var pattern = 'yyyy-MM-dd'
+    var start   = end = data.value
+    
+    end.setFullYear(start.getFullYear() + 10)
+    end.setDate(start.getDate() - 1)
+    
+    $('#j_custom_indate').val(end.formatDate(pattern))
+})
+</script>
+<div class="bjui-pageContent">
+    <form action="<?php echo U('Company/save')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="company_id" value="{$company_id}"  />
+        <input type="hidden" name="type" value="0"  />
+        <div style="margin-top:50px;">
+            <label for="money" class="control-label x150">项目经理：</label>
+            <input type="hidden" name="admin_id" value="" />
+            <input type="text" name="real_name" id="p_company" value="{$admin.real_name}" size="15" readonly
+                   data-toggle="lookup" data-url="<?php echo U('Company/findProjectManager')?>" data-width="600" data-height="300"
+                   >
+        </div>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">确认</button></li>
+    </ul>
+</div>

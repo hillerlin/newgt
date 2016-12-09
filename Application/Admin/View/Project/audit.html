@@ -1,0 +1,86 @@
+<script type="text/javascript">
+function do_OK(json, $form) {
+    console.log(json)
+    console.log($form)
+}
+</script>
+<div class="bjui-pageContent">
+    <form action="<?php echo U('Project/save_project')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="custom.id" value="edce142bc2ed4ec6b623aacaf602a4de">
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="j_custom_name" class="control-label x85">项目名称：</label>
+                        <input type="text" name="pro_title" id="p_name" value="<?php echo $pro_title?>" data-rule="required" size="15">
+                    </td>
+                    <td>
+                        <label for="j_custom_sale" class="control-label x85">项目编号：</label>
+                        <input type="text" name="pro_no" id="p_name" value="<?php echo $pro_no?>" data-rule="required" size="15">
+<!--                        <select name="pro_status" id="p_status" data-toggle="selectpicker" data-rule="required">
+                            <option value="1">项目提交</option>
+                        </select>-->
+                    </td>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="pro_account" class="control-label x85">融资金额：</label>
+                        <input type="text" name="pro_account" id="p_account" value="<?php echo $pro_account?>" data-rule="required;money" size="15">
+                    </td>
+                    <td>
+                        </td>
+                    <td>
+                        
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="gt_uid" class="control-label x85">跟进人：</label>
+                        <input type="hidden" name="gt_uid" value="<?php echo $gt_uid?>">
+                        <input type="text" name="user_name" id="p_user" value="<?php echo $user['user_name']?>" size="15" data-toggle="lookup" data-url="<?php echo U('User/followUpUser')?>" data-width="600" data-height="300" data-rule="required" readonly>
+                    </td>
+                    <td>
+                        <label for="company_id" class="control-label x85">公司：</label>
+                        <input type="hidden" name="company_id" value='<?php echo $company_id?>'>
+                        <input type="text" name="company" id="p_company" value="<?php echo $company['company_name']?>" size="15" data-toggle="lookup" data-url="<?php echo U('User/followUpUser')?>" data-width="600" data-height="300" data-rule="required" readonly>
+                    </td>
+                    <td>
+                        
+                    </td>
+                    <td>
+                       
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <label for="pro_desc" class="control-label x85">项目简介：</label>
+                        <textarea name="pro_desc" id="j_custom_note_1" data-toggle="autoheight" cols="60" rows="1" ><?php echo $pro_desc?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <label for="j_custom_content" class="control-label x85">内容编辑：</label>
+                        <div style="display: inline-block; vertical-align: middle;">
+                            <textarea name="pro_content" id="j_form_content" class="j-content" style="width: 700px;" data-toggle="kindeditor" data-minheight="200">
+                                <<?php echo $pro_content?>
+                            </textarea>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>

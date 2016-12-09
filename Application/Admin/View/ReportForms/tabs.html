@@ -1,0 +1,133 @@
+<div class="bjui-pageContent">
+    <div style="margin:15px auto 0; width:100%;">
+        <fieldset>
+            <legend>放款报表</legend>
+            <!-- Tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="active"><a href="#home" role="tab" data-toggle="tab">总额度报表</a></li>
+                <li><a href="<?php echo U('ReportForms/abc')?>" role="tab"  data-toggle="ajaxtab" data-target="#day" data-reload="false">天</a></li>
+                <li><a href="#month" role="tab" data-toggle="tab">月</a></li>
+                <li><a href="#quarter" role="tab" data-toggle="tab">季度</a></li>
+                <li><a href="#year" role="tab" data-toggle="tab">年</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane fade active in" id="home">
+                    <div class="bjui-pageContent">
+                        <div style="margin:15px auto 0; width:96%;">
+                            <div class="row" style="padding: 0 8px;">
+                                <div class="col-md-12">
+                                    <div class="panel panel-default">
+                                        <table class="table table-bordered table-hover table-striped table-top" data-selected-multi="true">
+                                            <thead>
+                                                <tr>
+                                                    <th data-order-field="pro_no" align="center" width="300">项目</th>
+                                                    <th data-order-field="pro_title" align="center" width="300">数量</th>
+                                                    <th data-order-direction="asc" data-order-field="addtime" align="center" width="300">融资额(万元)</th>
+                                                    <th data-order-field="company" align="center" width="300">平均融资额(万元)</th>
+                                                    <th data-order-field="gt_uid" align="center" width="300">占比</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach($list as $key => $v){?>
+                                                <tr data-id="">
+                                                    <td align="center"><?php echo $describe[$key]?></td>
+                                                    <td align="center"><?php echo $v['num']?></td>
+                                                    <td align="center"><?php echo sprintf ('%.2f', $v['money'] / 10000)?></td>
+                                                    <td align="center"><?php echo sprintf ('%.2f', $v['money'] / $v['num'] / 10000)?></td>
+                                                    <td align="center"><?php echo sprintf ('%.2f', $v['money'] / $sum_money * 100)?>%</td>
+                                                </tr>
+                                                <?php }?>
+                                                <tr data-id="">
+                                                    <td align="center">合计</td>
+                                                    <td align="center"><?php echo $total?></td>
+                                                    <td align="center"><?php echo sprintf ('%.2f', $sum_money / 10000)?></td>
+                                                    <td align="center"><?php echo sprintf ('%.2f', $sum_money / $total / 10000)?></td>
+                                                    <td align="center">100%</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i>饼/漏斗图</h3></div>
+                                    <div class="panel-body">
+                                        <div style="mini-width:400px;height:350px" data-toggle="echarts" data-type="pie,funnel" data-url="/Admin/ReportForms/generalLoan.html"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="day">
+<!--                    <div style="margin:15px auto 0; width:96%;">
+                        <div class="row" style="padding: 0 8px;">
+                            <div class="col-md-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i>柱状/拆线图</h3></div>
+                                    <div class="panel-body">
+                                        <div style="mini-width:400px;height:350px" data-toggle="echarts" data-type="bar,line" data-url="echarts-barData.html"></div>
+                                        <div style="mini-width:400px;height:350px" data-toggle="echarts" data-type="bar,line" data-url="/Admin/ReportForms/dayLoan.html"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+                </div>
+                <div class="tab-pane fade" id="month">
+                    <div style="margin:15px auto 0; width:96%;">
+                        <div class="row" style="padding: 0 8px;">
+                            <div class="col-md-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i>柱状/拆线图</h3></div>
+                                    <div class="panel-body">
+                                        <!--<div style="mini-width:400px;height:350px" data-toggle="echarts" data-type="bar,line" data-url="echarts-barData.html"></div>-->
+                                        <div style="mini-width:400px;height:350px" data-toggle="echarts" data-type="bar,line" data-url="/Admin/ReportForms/dayLoan.html"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="quarter">
+                    <div style="margin:15px auto 0; width:96%;">
+                        <div class="row" style="padding: 0 8px;">
+                            <div class="col-md-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i>柱状/拆线图</h3></div>
+                                    <div class="panel-body">
+                                        <!--<div style="mini-width:400px;height:350px" data-toggle="echarts" data-type="bar,line" data-url="echarts-barData.html"></div>-->
+                                        <div style="mini-width:400px;height:350px" data-toggle="echarts" data-type="bar,line" data-url="/Admin/ReportForms/dayLoan.html"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="year">
+                    <div style="margin:15px auto 0; width:96%;">
+                        <div class="row" style="padding: 0 8px;">
+                            <div class="col-md-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i>柱状/拆线图</h3></div>
+                                    <div class="panel-body">
+                                        <!--<div style="mini-width:400px;height:350px" data-toggle="echarts" data-type="bar,line" data-url="echarts-barData.html"></div>-->
+                                        <div style="mini-width:400px;height:350px" data-toggle="echarts" data-type="bar,line" data-url="/Admin/ReportForms/dayLoan.html"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <!--</form>-->
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">关闭</button></li>
+    </ul>
+</div>

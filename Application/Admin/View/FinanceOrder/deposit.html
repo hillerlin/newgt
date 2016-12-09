@@ -1,0 +1,45 @@
+<div class="bjui-pageHeader">
+        <div class="bjui-searchBar">
+            <button data-url="<?php echo U('FinanceOrder/depositAdd', array('oid' => $oid))?>" class="btn btn-blue" data-toggle="dialog"  data-icon="plus" data-id="eposite-add">新增记录</button>
+        </div>
+</div>
+<div class="bjui-pageContent">
+    <table class="table table-bordered table-hover table-top">
+        <thead>
+            <tr>
+                <th align="center" width="100">类型</th>
+                <th align="center" width="150">金额(元)</th>
+                <th data-order-direction="asc" data-order-field="real_repay_time" align="center" width="150">打款款日期</th>
+                <th align="center" width="100">还款凭证</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($list as $v){?>
+            <tr>
+                <td align="center"><?php echo $v['type'] == 'expend' ? '支付' : '收入'?></td>
+                <td align="center"><?php echo number_format($v['money'], 2)?></td>
+                <td align="center"><?php echo date('Y-m-d',$v['pay_time'])?></td>
+                <td align="center"><a href="<?php echo $v['pay_pic']?>" target="_blank"><img src="<?php echo $v['pay_pic']?>" width="50" /></a></td>
+            </tr>
+            <?php }?>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>
+<script>
+    function pic_upload_success(file, data) {
+    var json = $.parseJSON(data)
+    
+    $(this).bjuiajax('ajaxDone', json)
+    if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+        $('#j_custom_pic').val(json.content.file_path).trigger('validate')
+        $('#j_custom_span_pic').html('<img src="'+ json.content.file_path +'" width="100" />')
+    }
+}
+    
+</script>  

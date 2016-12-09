@@ -1,0 +1,59 @@
+<?php 
+echo '{
+  "tooltip": {
+    "trigger": "axis"
+  },
+  "legend": {
+    "data": [
+      "金额(元)"
+    ]
+  },
+  "toolbox": {
+    "show": true,
+    "feature": {
+      "mark": {
+        "show": true
+      },
+      "dataView": {
+        "show": true,
+        "readOnly": false
+      },
+      "magicType": {
+        "show": true,
+        "type": [
+          "line",
+          "bar"
+        ]
+      },
+      "restore": {
+        "show": true
+      },
+      "saveAsImage": {
+        "show": true
+      }
+    }
+  },
+  "calculable": true,
+  "xAxis": [
+    {
+      "type": "category",
+      "data": '.$xaxis.'
+    }
+  ],
+  "yAxis": [
+    {
+      "type": "value",
+      "splitArea": {
+        "show": true
+      }
+    }
+  ],
+  "series": [
+    {
+      "name": "金额(元)",
+      "type": "bar",
+      "data": '.$yaxis.'
+    }
+  ]
+}';
+?>

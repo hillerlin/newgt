@@ -1,0 +1,212 @@
+<script type="text/javascript">
+    function do_OK(json, $form) {
+        console.log(json)
+        console.log($form)
+    }
+</script>
+<div class="bjui-pageContent">
+    <form action="<?php echo U('FundManage/audit')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="timeToRate" value='{$time_to_rate}'>
+        <input type="hidden" name="fundId" value="{$fund_id}">
+        <input type="hidden" name="_select" value="{$isaudit}">
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody id="appendTo">
+            <?php
+            if(intval($roleId)!==23)
+            {
+               foreach($showInfo as $k=>$v)
+               {
+                   if($v['field']=='remark')
+                {
+                  echo "<tr id='Opinion'><td>
+                    <label for='loan_remark' class='control-label x150'>备注：</label>
+                    <textarea name='remark' id='j_custom_note_1' cols='30' rows='2' readonly>".$$v['field']."</textarea>
+                    <input type='hidden' id='deleTimes' value='0'>
+                </td>
+            </tr>";
+                }else if($v['field']=='upload')
+                  {
+                 $pro_id='funder';
+                 $formdate='{"file_id":"'.$file_id.'","pro_id":"'.$pro_id.'"}';
+                      echo "<tr id='upload'hidden>
+                <td><label for='pro_desc' class='control-label x150'>上传文件：</label><div style='display: inline-block; vertical-align: middle;' >
+                        <div id='j_custom_pic_up' data-toggle='upload' data-uploader='".U('Project/uploadToReview')."?sessionid=?'
+                             data-file-size-limit='1024000000'
+                             data-multi='true'
+                             data-file-type-exts='*.jpg;*.png;*.gif;*.mpg'
+                             data-on-upload-success='pic_upload_success'
+                             data-icon='cloud-upload'
+                             data-auto='true'
+                             data-form-data='".$formdate."'
+                             data-file-obj-name='pro-funder'></div>
+                    </div>
+                        <span id='j_custom_span_pic'>
+                        </span>
+                </td>
+            </tr>";
+                  }
+               else
+                {
+                  echo "<tr><td><label for='money' class='control-label x150 '>".$v['name']."：</label><input type='text' name='".$v['field']."' id='".$v['field']."' value='".$$v['field']."' size='15' data-rule='' readonly></td></tr>";
+                 }
+               }
+            }else
+            {  ?>
+
+            <tr>
+                <td>
+                    <label for="money" class="control-label x150 ">到期本息：</label>
+                    <input type="text" name="interestDue" id="interestDue" value="{$interestdue}" size="15" data-rule="" readonly>
+                </td>
+            </tr>
+
+            <tr id="Opinion">
+                <td>
+                    <label for="loan_remark" class="control-label x150">备注：</label>
+                    <textarea name="remark" id="j_custom_note_1" cols="30" rows="2" >{$remark}</textarea>
+                    <input type="hidden" id="deleTimes" value="0">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <label for="" class="control-label x150">审核结果：</label>
+                    <select name="isaudit" data-toggle="selectpicker" data-rule="required" >
+                        <option value="0">--请选择--</option>
+                        <?php $times=0; foreach($flowDes as $key => $select_status) { $times++ ?>
+                        <option value="<?php echo $times?>"><?php echo $key; ?></option>
+                        <?php } ?>
+                    </select>
+                </td>
+            </tr>
+            <tr id="upload" hidden>
+                <td>
+                    <label for="pro_desc" class="control-label x150">上传文件：</label>
+                    <div style="display: inline-block; vertical-align: middle;">
+                        <div id="j_custom_pic_up" data-toggle="upload" data-uploader="<?php echo U('Project/uploadToReview')?>?sessionid=?"
+                             data-file-size-limit="1024000000"
+                             data-multi="true"
+                             data-file-type-exts="*.jpg;*.png;*.gif;*.mpg"
+                             data-on-upload-success="pic_upload_success"
+                             data-icon="cloud-upload"
+                             data-auto="true"
+                             data-form-data='{"file_id":"<?php echo $file_id?>","pro_id":"funder"}'
+                             data-file-obj-name='pro-funder'></div>
+                    </div>
+                        <span id="j_custom_span_pic">
+                        </span>
+                </td>
+            </tr>
+            <?php } ?>
+
+            </tbody>
+        </table>
+        <table id='file-list' class="table table-condensed table-hover" width="100%" hidden>
+            <thead>
+            <tr>
+                <th align="center" width="300">文件名</th>
+                <th align="center" width="300">上传日期</th>
+                <th width="300" align="center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach($imgList as $kk=>$vv){?>
+            <tr>
+                <td align="center"><a target="_blank" href="<?php echo $vv["path"]?>"><?php echo $vv['doc_name']?></a></td>
+                <td align="center"><?php echo $vv['addtime']; ?></td>
+                <td align="center"><a href="<?php echo U('FundManage/deleImg')?>" data-data='{"file_path":"<?php echo $vv["path"]?> ","fund_id":"<?php echo $fund_id?>","sort":"<?php echo $kk;?>" }'  class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删除</a></td>
+            </tr>
+            <?php }?>
+            </tbody>
+        </table>
+    </form>
+    <h4>操作历史记录</h4>
+    <table class="table table-bordered table-striped table-hover" width="100%">
+        <thead>
+        <tr>
+            <th align="center" width="300">操作人</th>
+            <th align="center" width="300">更改时间</th>
+            <th align="center" width="300">更改详情</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach($fundLogInfo as $v){?>
+        <tr data-id="<?php echo $v['pro_id']?>">
+            <td align="center"><?php echo $v['real_name']?></td>
+            <td align="center"><?php echo date('Y-m-d H:i:s', $v['addtime'])?></td>
+            <td align="center"> <a href="<?php echo U('FundManage/modify', array('fund_id'=>$v['log_id']))?>" class="btn btn-green"
+               data-toggle="dialog" data-mask="true" data-height="1000" data-width="800" data-id="modify">修改详情</a></td>
+
+        </tr>
+        <?php }?>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">提交审核</button></li>
+    </ul>
+</div>
+<script type="text/javascript">
+    var timeToRate=$("input[name='timeToRate']").val();
+    if(timeToRate!=='' && timeToRate!==undefined && timeToRate!=='null') {
+        var obj = jQuery.parseJSON(timeToRate)
+        for (var k = 0; k < obj.length; k++) {
+            var rate = new Number(obj[k].rete)
+            $("#Opinion").before(appendContent(k + 1, rate, obj[k].time));
+        }
+    }
+    var select=$("select[name='isaudit']")
+    var auditVal=parseInt($("input[name='_select']").val())==0?0:parseInt($("input[name='_select']").val());
+    select.find("option[value='"+auditVal+"']").attr('selected',true)
+    //追加的内容
+    function appendContent(times, accrual, totime) {
+        var append = '<tr id="id_' + times + '"> <td> <label for= "money" class = "control-label x150 " > 第' + times + '次付息时间：</label> <input type="text" name="totime[' + times + ']" id="totime" value="' + totime + '" size="15" class="form-control" data-rule="" readonly> <label for= "money" class = "control-label x50 " > 利息：</label> <input type="text" name="rateMoney[' + times + ']" id="p_account" value="' + accrual.toFixed(4) + '" size="12" class="form-control" data-rule="" readonly> </td> </tr>'
+        return append
+    }
+
+/*******************处理图片上传数据*****************************/
+    function pic_upload_success(file, data) {
+        var json = jQuery.parseJSON(data)
+       // debugger
+        $(this).bjuiajax('ajaxDone', json)
+        if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+            add_uploadedfile(json.content);
+//        $('#j_custom_pic').val(json.filename).trigger('validate')
+//        $('#j_custom_span_pic').html('<img src="'+ json.filename +'" width="100" />')
+        }
+    }
+    function do_OK(json, $form) {
+        console.log(json)
+        console.log($form)
+    }
+    // 图片上传
+
+    function add_uploadedfile(data) {
+        var i = $('#file-list> tbody > tr').length + 1;
+        //debugger
+        var newTr = '<tr><td align="center"><a href="' + data.file_path + '">' + data.file_name + '</a>' +
+                '<input type="hidden" name="reviews['+ i +'][path]" value="' + data.file_path + '" /></a>' +
+                '<input type="hidden" name="reviews['+ i +'][doc_name]" value="' + data.file_name + '" />' +
+                '<input type="hidden" name="reviews['+ i +'][add_time]" value="' + data.addtime + '" /></td><td align="center">' + data.addtime + '</td><td align="center"><a href="<?php echo U("Project/remove_review")?>" data-data=\'{"file_path":\"' + data.file_path + '\"}\' class="btn btn-red" data-toggle="doajax" data-callback="del_uploadedfile" data-confirm-msg="确定要删除该行信息吗？">删</a></td></tr>';
+//        var newImg = '<li id="' + data.file_id + '"><input type="hidden" name="attachment['+ i +'][path]" value="' + data.file_path + '" /><div class="thumb-list-pics"><a href="javascript:void(0);"><img src="' + data.file_path + '" alt=""/></a></div><a href="javascript:del_file_upload(0,' + data.file_id + ',\'' + data.file_path + '\');" class="del" title="删除">X</a><a href="javascript:insert_editor(\'' + data.file_path + '\');" class="inset"><i class="fa fa-clipboard"></i>插入图片</a></li>';
+        $('#file-list > tbody').append(newTr);
+
+    }
+
+    function del_uploadedfile(data) {
+        console.log(data);
+        var json = data;
+//        var statusCode =
+        if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+            var file_path = data.message;
+            var li = $('input[value="'+file_path+'"]');
+            li.parent().parent().remove();
+            $("#file-list").alertmsg('ok', '删除成功！') ;
+        } else {
+            $("#file-list").alertmsg('error', '删除失败！');
+        }
+    }
+
+
+</script>

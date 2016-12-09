@@ -1,0 +1,63 @@
+<div class="bjui-pageContent">
+    <!--<div id="layout-01" style="height:94%; overflow:hidden;">-->
+    <input id="pro_id" type="hidden" name="debt_id" value="<?php echo $debt_id?>">
+    <table id='file-list' class="table table-condensed table-hover" width="100%">
+        <thead>
+            <tr>
+                <th align="center" width="300">文件名</th>
+                <th align="center" width="300">上传日期</th>
+                <th width="300" align="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($list as $v){?>
+            <tr>
+                <td align="center"><a target="_blank" href="<?php echo $v["path"]?>"><?php echo $v['doc_name']?></a></td>
+                <td align="center"><?php echo date('Y-m-d H:s:i', $v['addtime'])?></td>
+                <td align="center"><a href="<?php echo U('ProjectDebtDetail/remove_attachment')?>" data-data='{"file_path":"<?php echo $v["path"]?> ","debt_id":"<?php echo $v["debt_id"]?>","aid":"<?php echo $v["id"]?>"}'  class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td>
+            </tr>
+            <?php }?>
+        </tbody>
+    </table>
+    <form action="<?php echo U('ProjectDebtDetail/save')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <label for="pro_desc" class="control-label x85">上传文件：</label>
+        <div style="display: inline-block; vertical-align: middle;">
+            <div id="j_custom_pic_up" data-toggle="upload" data-uploader="<?php echo U('ProjectDebtDetail/upload_attachment')?>?sessionid=?" 
+                 data-file-size-limit="1024000000"
+                 data-file-type-exts="*.doc;*.docx;*.pdf;*.jpg;*.ppt;*.pptx"
+                 data-multi="true"
+                 data-on-upload-success="pic_upload_success"
+                 data-icon="cloud-upload"
+                 data-form-data='{"debt_id":"<?php echo $debt_id?>"}'
+                 data-file-obj-name='debt-<?php echo $debt_id?>'></div>
+        </div>
+        <input type="hidden" name="filename" value="" id="j_custom_pic">
+        <span id="j_custom_span_pic">
+        </span>
+    </form>
+</div>
+<script type="text/javascript">
+    function pic_upload_success(file, data) {
+        var json = $.parseJSON(data)
+        $(this).bjuiajax('ajaxDone', json)
+        if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+            add_uploadedfile(json.content);
+//        $('#j_custom_pic').val(json.filename).trigger('validate')
+//        $('#j_custom_span_pic').html('<img src="'+ json.filename +'" width="100" />')
+        }
+    }
+    function do_OK(json, $form) {
+        console.log(json)
+        console.log($form)
+    }
+// 图片上传
+
+    function add_uploadedfile(data) {
+        var i = $('#file-list> tbody > tr').length + 1;
+        var newTr = '<tr><td align="center"><a href="'+data.file_path+'">' + data.file_name + '</a></td><td align="center">' + data.addtime + '</td><td align="center"><a href="<?php echo U("ProjectDebtDetail/remove_attachment")?>" data-data=\'{"file_path":\"'+data.file_path+'\","debt_id":"'+data.debt_id+'","aid":"'+data.aid+'\"}\' class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td></tr>';
+//        var newImg = '<li id="' + data.file_id + '"><input type="hidden" name="attachment['+ i +'][path]" value="' + data.file_path + '" /><div class="thumb-list-pics"><a href="javascript:void(0);"><img src="' + data.file_path + '" alt=""/></a></div><a href="javascript:del_file_upload(0,' + data.file_id + ',\'' + data.file_path + '\');" class="del" title="删除">X</a><a href="javascript:insert_editor(\'' + data.file_path + '\');" class="inset"><i class="fa fa-clipboard"></i>插入图片</a></li>';
+        $('#file-list > tbody').prepend(newTr);
+    }
+    
+    
+</script>

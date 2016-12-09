@@ -1,0 +1,94 @@
+<div class="bjui-pageHeader">
+    <form id="pagerForm" data-toggle="ajaxsearch" action="<?php echo U('FinanceFlow/lookUpNew')?>" method="post">
+        <input type='hidden' name='isSearch' value='1'>
+        <input type="hidden" name="pageSize" value="${model.pageSize}">
+        <input type="hidden" name="pageCurrent" value="${model.pageCurrent}">
+        <input type="hidden" name="orderField" value="${param.orderField}">
+        <input type="hidden" name="orderDirection" value="${param.orderDirection}">
+        <div class="bjui-searchBar">
+            <!--<button data-url="{:U('FinanceFlow/add')}" class="btn btn-blue" data-toggle="dialog" data-icon="plus" data-mask='true' data-height='500' data-id="finance-flow-add">新增流水</button>&nbsp;-->
+            <label>流水类型:</label>
+            <select name="type" data-toggle="selectpicker" id="select_status">
+                <option value="">全部</option>
+                <?php foreach($type_describe as $key => $val):?>
+                <option value="<?php echo $key?>"><?php echo $val?></option>
+                <?php endforeach;?>
+            </select>&nbsp;
+            <label>起始时间：</label><input type="text" value="{$post.begin_time}" data-toggle="datepicker" name="begin_time" class="form-control" size="12">&nbsp;
+            <label>结束时间：</label><input type="text" value="{$post.end_time}" data-toggle="datepicker" name="end_time" class="form-control" size="12">&nbsp;
+            <button type="submit" class="btn-default" data-icon="search">查询</button>&nbsp;
+            <a class="btn btn-orange" href="javascript:;" data-toggle="reloadsearch" data-clear-query="true" data-icon="undo">清空查询</a>
+<!--            <div class="pull-right">
+                <div class="btn-group">
+                    <button type="button" class="btn-default dropdown-toggle" data-toggle="dropdown" data-icon="copy">复选框-批量操作<span class="caret"></span></button>
+                    <ul class="dropdown-menu right" role="menu">
+                        <li><a href="<?php echo U('FinanceFlow/export')?>" data-toggle="doexport" data-confirm-msg="确定要导出信息吗？">导出<span style="color: green;">全部</span></a></li>
+                        <li><a href="<?php echo U('FinanceFlow/exportChecked')?>" data-toggle="doexportchecked" data-confirm-msg="确定要导出选中项吗？" data-idname="expfids" data-group="ids">导出<span style="color: red;">选中</span></a></li>
+                        <li class="divider"></li>
+                        <li><a href="ajaxDone2.html" data-toggle="doajaxchecked" data-confirm-msg="确定要删除选中项吗？" data-idname="delids" data-group="ids">删除选中</a></li>
+                    </ul>
+                </div>
+            </div>-->
+        </div>
+    </form>
+</div>
+<div class="bjui-pageContent tableContent">
+    <table class="table table-bordered table-hover table-striped table-top">
+        <thead>
+            <tr>
+                <th data-order-field="pro_no" align="center" width="200">公司名称</th>
+                <th data-order-field="principal" align="center" width="100">开户行账户</th>
+                <th data-order-field="principal" align="center" width="100">交易对手</th>
+                <th data-order-field="repay_time" align="center" width="100">进款金额(元)</th>
+                <th data-order-field="repay_time" align="center" width="100">出款金额(元)</th>
+                <th data-order-field="repay_time" align="center" width="100">已分配金额(元)</th>
+                <th data-order-field="pay_time" align="center" width="150">日期</th>
+                <th data-order-field="interest"  align="center" width="80">备注</th>
+                <th width="26"><input type="checkbox" class="checkboxCtrl" data-group="fids" data-toggle="icheck"></th>
+                <th align="center" width="80">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($list as $v){?>
+            <tr data-id="<?php echo $v['fid']?>">
+                <td align="center"><?php echo $v['account_name']?></td>
+                <td align="center"><?php echo $v['bank_name']?></td>
+                <td align="center"><?php echo $v['counterparty']?></td>
+                <td align="center" <?php echo $v['in_money'] > 0 ? 'class="red"' : ''?>><?php echo number_format($v['in_money'], 2)?></td>
+                <td align="center" <?php echo $v['out_money'] > 0 ? 'class="red"' : ''?>><?php echo number_format($v['out_money'], 2)?></td>
+                <td align="center" class="red"><?php echo number_format($v['has_distribute'], 2)?></td>
+                <td align="center"><?php echo date('Y-m-d',$v['pay_time'])?></td>
+                <td align="center"><?php echo $v['remark']?></td>
+                <td><input type="checkbox" name="fids" data-toggle="icheck" value="{
+                           fid:'<?php echo $v['fid']?>',
+                       repay_money: '<?php echo $v['money']-$v['has_distribute']?>',
+                       money: '<?php echo $v['money']-$v['has_distribute']?>',
+                       bank_id:'<?php echo $v['bank_id']?>',
+                       real_repay_time:'<?php echo date('Y-m-d',$v['pay_time'])?>'
+                       }"></td>
+                <td align="center">
+                    <a href="<?php echo U('FinanceFlow/voucher', array('fid'=>$v['fid']))?>" class="btn btn-green" data-toggle="dialog" data-mask="true" data-height="900" data-width="600" data-id="finance-flow-edit" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="编辑">附件</a>
+                    <a href="javascript:;" data-toggle="lookupback" data-args="{
+                       fid:'<?php echo $v['fid']?>',
+                       repay_money: '<?php echo $v['money']-$v['has_distribute']?>',
+                       money: '<?php echo $v['money']-$v['has_distribute']?>',
+                       bank_id:'<?php echo $v['bank_id']?>',
+                       real_repay_time:'<?php echo date('Y-m-d',$v['pay_time'])?>',
+                       pay_time:'<?php echo date('Y-m-d',$v['pay_time'])?>'
+                       }" class="btn btn-blue" title="选择本项" data-icon="check">选择</a>
+                </td>
+            </tr>
+            <?php }?>
+        </tbody>
+    </table>
+</div>
+<!--<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save" data-toggle="lookupback" data-lookupid="fids" data-warn="请至少选择一项" >选择选中</button></li>
+    </ul>
+</div>-->
+<script>
+
+
+</script>  

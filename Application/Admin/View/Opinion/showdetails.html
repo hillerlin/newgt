@@ -1,0 +1,73 @@
+<style type="text/css">
+	td,th{
+		text-align: center;
+	}
+</style>
+<div class="bjui-pageContent tableContent">
+    <table class="table table-bordered table-hover table-striped table-top">
+    <thead>
+        <th colspan="2">融资方及应收款买方名单</th>
+        <th colspan="5">法院被执行</th>
+        <th colspan="2">网络新闻</th>
+    </thead>
+    <tbody>
+    		<tr>
+    			<td align="center" width="200" colspan="2">查询主体</td>
+    			<td align="center" width="100">立案时间</td>
+    			<td align="center" width="100">案号</td>
+    			<td align="center" width="100">被执行标的（裁判/裁定结果)</td>
+    			<td align="center" width="50">是否失信</td>
+    			<td align="center" width="100">案件类型</td>
+    			<td align="center" width="300">内容</td>
+    		</tr>
+
+			<foreach name="list" item="v">
+				<php> if(in_array($key,array('addtime','pro_title'))) continue; </php>
+    		<tr>
+
+    			<td rowspan="{:count($v)}">
+
+					<php>  if($key=='financing'){echo '融资方';}elseif($key=='partner'){echo '融资方股东';}elseif($key=='guarantor'){echo '担保人';}elseif($key=='purchaser'){echo '应收买方';} </php>
+				</td>
+				<foreach name="v" item="vv">
+    			<td>{$vv['name']}</td>
+    			<td>{$vv['ftime']}</td>
+    			<td>{$vv['fileid']}</td>
+    			<td>{$vv['result']}</td>
+    			<td>{$vv['integrity']}</td>
+    			<td>{$vv['fclass']}</td>
+    			<td class="addtd">
+					<foreach name="vv['content']" item="content">
+						<php>if($content->title):</php>
+							<a href="{$content->link}" target="_blank">{$content->title}&nbsp;【{$content->addtime}】</a><br/>
+						<php>endif;</php>
+					</foreach>
+				</td>
+			</tr>
+				</foreach>
+			</foreach>
+			<tr style="color:green;">
+				<td style="margin:15px;">项目名称</td>
+				<td colspan="8">
+					{$list['pro_title']}
+				</td>
+			</tr>
+    </tbody>
+</table>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$('.addline').click(function(){
+			var rows=parseInt($(this).parent('td').attr('rowspan'))+1;
+			$(this).parent('td').attr('rowspan',rows);
+			$newtr=$(this).parents('tr').clone(true);
+			$newtr.find('td')[0].remove();
+			$(this).parents('tr').after('<tr>'+$newtr.html()+'</tr>');
+			
+			
+		});
+	});
+	function show($content){
+		console.log($content);return false;
+	}
+</script>

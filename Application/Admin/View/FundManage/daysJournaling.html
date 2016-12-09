@@ -1,0 +1,65 @@
+<div class="bjui-pageHeader">
+    <form id="pagerForm" data-toggle="ajaxsearch" action="{:U('/Admin/FundManage/daysJournaling')}" method="post">
+        <input type='hidden' name='isSearch' value='1'>
+        <input type="hidden" name="pageSize" value="${model.pageSize}">
+        <input type="hidden" name="pageCurrent" value="${model.pageCurrent}">
+        <input type="hidden" name="orderField" value="${param.orderField}">
+        <input type="hidden" name="orderDirection" value="${param.orderDirection}">
+        <div class="bjui-searchBar">
+            <label>起始时间：</label><input type="text" value="{$post.begin_time}" data-toggle="datepicker" name="begin_time" class="form-control" size="12">&nbsp;
+            <label>结束时间：</label><input type="text" value="{$post.end_time}" data-toggle="datepicker" name="end_time" class="form-control" size="12">&nbsp;
+            <button type="submit" class="btn-default" data-icon="search">查询</button>&nbsp;
+            <a class="btn btn-orange" href="javascript:;" data-toggle="reloadsearch" data-clear-query="true" data-icon="undo">清空查询</a>
+        </div>
+    </form>
+</div>
+<div class="bjui-pageContent tableContent">
+    <table class="table table-bordered table-hover table-striped table-top">
+        <thead>
+            <tr>
+                <th  align="center" width="100">日期</th>
+                <th  align="center" width="100">深圳</th>
+                <th  align="center" width="80">南京</th>
+                <th  align="center" width="50">青岛</th>
+                <th  align="center" width="100">青岛二部</th>
+                <th data-order-direction="asc" data-order-field="pay_time" align="center" width="100">合计【万元】</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($list as $v){?>
+            <tr data-id="">
+                <td align="center"><?php echo $v['dayss']?></td>
+                <td align="center">
+                    <a href="/Admin/FundManage/showDay/branch_id/2/pay_time/<?php echo $v['pay_time']; ?>" class="btn btn-green" data-toggle="dialog" data-width="500" data-height="500" data-mask="true" data-id="pro-repayment-schedule-specified" data-title="点击">点击</a>
+                </td>
+               <td align="center">
+                    <a href="/Admin/FundManage/showDay/branch_id/5/pay_time/<?php echo $v['pay_time']; ?>" class="btn btn-green" data-toggle="dialog" data-width="500" data-height="500" data-mask="true" data-id="pro-repayment-schedule-specified" data-title="点击">点击</a>
+                </td>
+                <td align="center">
+                    <a href="/Admin/FundManage/showDay/branch_id/6/pay_time/<?php echo $v['pay_time']; ?>" class="btn btn-green" data-toggle="dialog" data-width="500" data-height="500" data-mask="true" data-id="pro-repayment-schedule-specified" data-title="点击">点击</a>
+                </td>
+                <td align="center">
+                    <a href="/Admin/FundManage/showDay/branch_id/7/pay_time/<?php echo $v['pay_time']; ?>" class="btn btn-green" data-toggle="dialog" data-width="500" data-height="500" data-mask="true" data-id="pro-repayment-schedule-specified" data-title="点击">点击</a>
+                </td>
+                <td align="center"><?php echo $v['count_money'];?></td>
+            </tr>
+            <?php }?>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+    <div class="pages">
+        <span>每页&nbsp;</span>
+        <div class="selectPagesize">
+            <select data-toggle="selectpicker" data-toggle-change="changepagesize">
+                <option value="30">30</option>
+                <option value="60">60</option>
+                <option value="120">120</option>
+                <option value="150">150</option>
+            </select>
+        </div>
+        <span>&nbsp;条，共 <?php echo $total?> 条</span>
+    </div>
+    <div class="pagination-box" data-toggle="pagination" data-total="<?php echo $total?>" data-page-size="30" data-page-current="1">
+    </div>
+</div>

@@ -1,0 +1,75 @@
+<script type="text/javascript">
+function do_OK(json, $form) {
+    console.log(json)
+    console.log($form)
+}
+</script>
+<div class="bjui-pageContent">
+    <form action="<?php echo U('Project/save_project')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="pro_id" value="<?php echo $pro_id?>">
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="j_custom_name" class="control-label x85">项目名称：</label>
+                        <input type="text" name="" id="p_name" value="<?php echo $pro_title?>" size="15" readonly>
+                    </td>
+                    <td>
+                        <label for="j_custom_sale" class="control-label x85">项目编号：</label>
+                        <input type="text" name="" id="p_name" value="<?php echo $pro_no?>" size="15" readonly>
+<!--                        <select name="pro_status" id="p_status" data-toggle="selectpicker" data-rule="required">
+                            <option value="1">项目提交</option>
+                        </select>-->
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="pro_account" class="control-label x85">融资金额：</label>
+                        <input type="text" name="pro_account" id="p_account" value="<?php echo $pro_account?>" size="15" readonly>
+                    </td>
+                    <td>
+                        <label for="pro_real_money" class="control-label x85 red">放款金额：</label>
+                        <input type="text" name="pro_real_money" id="p_account" value="" size="15" data-rule="required">
+                    </td>
+                    <td>
+                        
+                    </td>
+                    <td></td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </form>
+    <h4>债权列表</h4>
+    <div class="">
+                <a href="/Admin/ProjectDebt/add.html?pro_id=<?php echo $pro_id?>" class="btn btn-default" data-toggle="dialog" data-icon="add" data-mask="true" data-id="projectDebt-add">添加债权</a>
+            </div>
+    <table class="table table-bordered table-striped table-hover" width="100%">
+        <thead>
+            <tr>
+                <th align="center" width="300">债权的编号</th>
+                <th align="center" width="300">债权金额</th>
+                <th align="center" width="300">开始时间</th>
+                <th align="center" width="300">结束时间</th>
+                <th align="center" width="300">添加时间</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($debt_list as $v){?>
+            <tr data-id="<?php echo $v['pro_id']?>">
+                <td align="center"><?php echo $v['debt_no']?></td>
+                <td align="center"><?php echo $v['debt_account']?></td>
+                <td align="center"><?php echo date('Y-m-d H:i:s', $v['start_time'])?></td>
+                <td align="center"><?php echo date('Y-m-d H:i:s', $v['end_time'])?></td>
+                <td align="center"><?php echo date('Y-m-d H:i:s', $v['addtime'])?></td>
+             </tr>
+            <?php }?>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>

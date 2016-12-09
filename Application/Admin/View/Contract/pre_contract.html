@@ -1,0 +1,95 @@
+<div class="bjui-pageContent">
+    <form action="<?php echo U('Contract/projectAdd')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="pro_id" value="{$pro_id}">
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="j_custom_name" class="control-label x120">项目名称：</label>
+                        <input type="text" name="pro_title" id="p_name" value="<?php echo $pro_title?>" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="company_id" class="control-label x120">公司：</label>
+                        <input type="text" name="company_name" id="p_name" value="<?php echo $company_info['company_name']?>" size="15" readonly>
+                        <input type="hidden" name="company_id" value="<?php echo $company_info['company_id']?>">
+                        <!--<input type="text" name="company_name" id="p_company" value="<?php echo $pro_type == 0 ? $company_id : ''?>" size="15" <?php echo $pro_type == 1 ? 'data-toggle="lookup"' : ''?> data-url="<?php echo U('Company/lookupByProId', array('pro_id' => $pro_id))?>" data-width="600" data-height="300" data-rule="required" readonly>-->
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="pro_account" class="control-label x120">保理金额：</label>
+                        <input type="text" name="real_money" id="p_account" value="<?php echo $pre_contract['real_money']?>" data-rule="required;money" size="15">元
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="pro_type" class="control-label x120">保理期限：</label>
+                        <input type="text" name="term" value="<?php echo $pre_contract['term']?>" data-rule="required;money" size="15">月
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="pro_type" class="control-label x120">保证金：</label>
+                        <input type="text" name="cash_deposit" value="<?php echo $pre_contract['cash_deposit']?>" data-rule="required;money" size="15">%
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="pro_type" class="control-label x120">回购率：</label>
+                        <input type="text" name="repurchase_rate" value="<?php echo $pre_contract['repurchase_rate']?>" data-rule="required;money" size="15">%
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="pro_type" class="control-label x120">手续费：</label>
+                        <input type="text" name="handling_charge" value="<?php echo $pre_contract['handling_charge']?>" data-rule="required;money" size="15">%
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="pro_type" class="control-label x120">咨询费：</label>
+                        <input type="text" name="counseling_fee" value="<?php echo $pre_contract['counseling_fee']?>" data-rule="required;money" size="15">%
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <h5>违约条款</h5>
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="penalty_rate" class="control-label x120">违约金：</label>
+                        <input type="text" name="penalty_rate" value="<?php echo $pre_contract['penalty_rate']?>" data-rule="required;" size="15">%(每日)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="demurrage_rate" class="control-label x120">逾期利息：</label>
+                        <!--<input type="checkbox" name="pro_term" id="check" data-toggle="icheck">-->
+                        <input type="checkbox" name="demurrage_rate_type1" id="demurrage_rate1" data-toggle="icheck" value="1" data-label="贷款基准利率4倍&nbsp;&nbsp;" <?php echo $pre_contract['demurrage_rate_type1']==1 ? 'checked' : ''?>>
+                        <input type="checkbox" name="demurrage_rate_type2" id="demurrage_rate2" data-toggle="icheck" value="1" data-label="每月利率" <?php echo $pre_contract['demurrage_rate_type2']==1 ? 'checked' : ''?>>
+                        <input type="text" name="demurrage_rate2" value="<?php echo $pre_contract['demurrage_rate2']?>" size="15" style="<?php echo $pre_contract['demurrage_rate_type2']==1 ? '':'display: none'?>">%
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-toggle="lookupback" data-lookupid="contract_save_<?php echo $company_info['company_id']?>" data-args="{contract_save_<?php echo $company_info['company_id']?>:'<?php echo $company_info['company_id']?>'}" data-icon="save" data-warn="请至少选择一项职业">保存</button></li>
+    </ul>
+</div>
+<script>
+    $('#demurrage_rate2').on('ifChecked', function (event) {
+        $('input[name="demurrage_rate2"]').show();
+        $('input[name="demurrage_rate2"]').attr('data-rule', 'required');
+    });
+    $('#demurrage_rate2').on('ifUnchecked', function (event) {
+        $('input[name="demurrage_rate2"]').hide();
+        $('input[name="demurrage_rate2"]').removeAttr('data-rule');
+    });
+</script>

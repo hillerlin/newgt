@@ -1,0 +1,73 @@
+<div class="bjui-pageHeader">
+    <form id="pagerForm" data-toggle="ajaxsearch" action="<?php echo U('FinanceProject/blacklist')?>" method="post">
+        <input type="hidden" name="isSearch" value="1">
+        <input type="hidden" name="pageSize" value="${model.pageSize}">
+        <input type="hidden" name="pageCurrent" value="${model.pageCurrent}">
+        <input type="hidden" name="orderField" value="${param.orderField}">
+        <input type="hidden" name="orderDirection" value="${param.orderDirection}">
+        <div class="bjui-searchBar">
+            <button data-url="{:U('FinanceProject/blacklistAdd', array('fp_id' => $fp_id))}" class="btn btn-blue" data-toggle="dialog" data-mask='true' data-height='350' data-icon="plus" data-id="member-add">新增单位</button>
+            <label>公司名称：</label><input type="text" id="customNo" value="{$post.company_name}" name="company_name" class="form-control" size="12">&nbsp;
+            <label>账号：</label><input type="text" value="{$post.member_name}" name="member_name" class="form-control" size="12">&nbsp;
+            <label>手机号：</label><input type="text" value="{$post.member_mobile}" name="member_mobile" class="form-control" size="11">&nbsp;
+            <!--<input type="checkbox" id="j_table_chk" value="true" data-toggle="icheck" data-label="我的客户">-->
+            <!--<button type="button" class="showMoreSearch" data-toggle="moresearch" data-name="custom"><i class="fa fa-angle-double-down"></i></button>-->
+            <button type="submit" class="btn-default" data-icon="search">查询</button>&nbsp;
+            <a class="btn btn-orange" href="javascript:;" data-toggle="reloadsearch" data-clear-query="true" data-icon="undo">清空查询</a>
+            
+        </div>
+    </form>
+</div>
+<div class="bjui-pageContent tableContent">
+    <table class="table table-bordered table-hover table-top">
+        <thead>
+            <tr>
+                <th data-order-field="company_name" align="center" width="300">公司名称</th>
+                <th data-order-field="member_name" align="center" width="150">账号</th>
+                <th data-order-field="linkman_name" align="center" width="150">联系人姓名</th>
+                <th data-order-field="credit_line" align="center" width="250">最大认购金额(元)</th>
+                <th data-order-field="rate" align="center" width="100">额定利率(%)</th>
+                <th data-order-field="member_mobile" align="center" width="250">联系人手机号</th>
+                <th data-order-field="member_phone" align="center" width="250">联系人座机</th>
+                <th data-order-field="member_email" align="center" width="300">联系邮箱</th>
+                <th data-order-direction="asc" data-order-field="addtime" align="center" width="300">添加时间</th>
+                <th data-order-field="status" align="center" width="100">状态</th>
+                <th width="300" align="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($list as $v){?>
+            <tr data-id="<?php echo $v['mid']?>" >
+                <td align="center"><?php echo $v['company_name']?></td>
+                <td align="center"><?php echo $v['member_name']?></td>
+                <td align="center"><?php echo $v['linkman_name']?></td>
+                <td align="center"><?php echo number_format($v['credit_line'], 2)?></td>
+                <td align="center"><?php echo $v['rate']?></td>
+                <td align="center"><?php echo $v['member_mobile']?></td>
+                <td align="center"><?php echo $v['member_phone']?></td>
+                <td align="center"><?php echo $v['member_email']?></td>
+                <td align="center"><?php echo date('Y-m-d H:i:s',$v['addtime'])?></td>
+                <td align="center"><?php echo $v['status'] == 1 ? '可用' : '不可用'?></td>
+                <td align="center">
+                    <a href="<?php echo U('Member/edit', array('mid'=>$v['mid']))?>" class="btn btn-green" data-toggle="dialog" data-height="400" data-id="member-edit" data-title="编辑">编辑</a>
+                    <a href="<?php echo U('Member/editPaswd', array('mid'=>$v['mid']))?>" class="btn btn-green" data-toggle="dialog" data-height="400" data-id="member-editpaswd" data-title="修改密码">修改密码</a>
+                    <a href="<?php echo U('Member/del', array('mid'=>$v['mid']))?>" class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a>
+                </td>
+            </tr>
+            <?php }?>
+        </tbody>
+    </table>
+</div>
+{//分页组件}
+{:W('Layout/PageFooter', array($total))}
+<script>
+    $(function(){
+            for(var i=0;i<3;i++) {
+                if($("select").get(0).options[i].value == '{$post.status}')  {
+                    $("select").get(0).options[i].selected = true;  
+                    break;
+                }
+            }
+     })
+    
+</script>    

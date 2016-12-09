@@ -1,0 +1,58 @@
+<div class="bjui-pageContent">
+    <form action="<?php echo U('FinanceOrder/save')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="oid" value="{$oid}"  />
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="company_name" class="control-label x150">公司名称：</label>
+                        <input type="text" name="company_name" id="p_name" value="{$company_name}" data-rule="required" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="money" class="control-label x150">认购金额：</label>
+                        <input type="text" name="money" id="p_name" value="<?php echo round($money, 2)?>" data-rule="required" size="15">元
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="rate" class="control-label x150">认购利率：</label>
+                        <input type="text" name="rate" id="p_name" value="<?php echo $rate?>" size="15" data-rule="required">%
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="service_rate" class="control-label x150">机构服务费：</label>
+                        <input type="text" name="service_rate" id="p_name" value="<?php echo $service_rate?>" size="15" data-rule="required">%
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x150">保证金：</label>
+                        <input type="text" name="cash_deposit" id="p_name" value="<?php echo $cash_deposit?>" size="15" data-rule="required">元
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="remark" class="control-label x150">备注：</label>
+                       <textarea name="remark" id="j_custom_note_1" data-toggle="autoheight" cols="20" rows="2"><?php echo $remark?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="status" class="control-label x150">认购状态：</label>
+                        <input type="radio" name="status" id="j_custom_status1" data-toggle="icheck" value="1" <?php echo $status == 1 ? 'checked' : '' ?> data-rule="checked" data-label="确认&nbsp;&nbsp;">
+                        <input type="radio" name="status" id="j_custom_status2" data-toggle="icheck" value="0" <?php echo $status == 0 ? 'checked' : '' ?> data-label="待确认">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>

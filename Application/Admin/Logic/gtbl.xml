@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                   xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                   xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                   id="BPMNProcessmaker" targetNamespace="http://bpmn.io/schema/bpmn">
+    <bpmn2:process id="pmui-21870646358451198b09bb5018483534">
+        <bpmn2:userTask id="el_292541503583fc0a60758b7036469204" name="项管专员">
+            <bpmn2:incoming>flo_pmui-23644628158451712b10974010783474</bpmn2:incoming>
+            <bpmn2:outgoing>flo_162719726583fc8768bc632056689757</bpmn2:outgoing>
+        </bpmn2:userTask>
+        <bpmn2:userTask id="el_381469726583fc0063e7d00094158340" name="项管部总监">
+            <bpmn2:incoming>flo_595916748583fc16e2dc931091716504</bpmn2:incoming>
+            <bpmn2:outgoing>flo_pmui-23644628158451712b10974010783474</bpmn2:outgoing>
+        </bpmn2:userTask>
+        <bpmn2:endEvent id="el_681671142583fc8767ba8f4017480645" name="结束">
+            <bpmn2:incoming>flo_162719726583fc8768bc632056689757</bpmn2:incoming>
+        </bpmn2:endEvent>
+        <bpmn2:sequenceFlow id="flo_162719726583fc8768bc632056689757" name="执行任务"
+                            sourceRef="el_292541503583fc0a60758b7036469204"
+                            targetRef="el_681671142583fc8767ba8f4017480645"/>
+        <bpmn2:sequenceFlow id="flo_595916748583fc16e2dc931091716504" name="提交立项"
+                            sourceRef="el_308715820583f9d39322489074895638"
+                            targetRef="el_381469726583fc0063e7d00094158340"/>
+        <bpmn2:userTask id="el_308715820583f9d39322489074895638" name="项目经理"/>
+        <bpmn2:sequenceFlow id="flo_pmui-23644628158451712b10974010783474" name="分配项目专员"
+                            sourceRef="el_381469726583fc0063e7d00094158340"
+                            targetRef="el_292541503583fc0a60758b7036469204"/>
+    </bpmn2:process>
+    <bpmndi:BPMNDiagram id="dia_75894750458451198b09b82062268022">
+        <bpmndi:BPMNPlane id="plane_15209028858451198b09ba5072531208"
+                          bpmnElement="pmui-21870646358451198b09bb5018483534">
+            <bpmndi:BPMNShape id="di_el_292541503583fc0a60758b7036469204"
+                              bpmnElement="el_292541503583fc0a60758b7036469204">
+                <dc:Bounds x="599" y="575" width="150" height="75"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="di_el_381469726583fc0063e7d00094158340"
+                              bpmnElement="el_381469726583fc0063e7d00094158340">
+                <dc:Bounds x="599" y="302" width="150" height="75"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="di_el_681671142583fc8767ba8f4017480645"
+                              bpmnElement="el_681671142583fc8767ba8f4017480645">
+                <dc:Bounds x="658" y="1028" width="33" height="33"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="flo_162719726583fc8768bc632056689757_di"
+                             bpmnElement="flo_162719726583fc8768bc632056689757">
+                <di:waypoint x="675" y="650"/>
+                <di:waypoint x="675" y="1028"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="flo_595916748583fc16e2dc931091716504_di"
+                             bpmnElement="flo_595916748583fc16e2dc931091716504">
+                <di:waypoint x="675" y="130"/>
+                <di:waypoint x="675" y="302"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="di_el_308715820583f9d39322489074895638"
+                              bpmnElement="el_308715820583f9d39322489074895638">
+                <dc:Bounds x="599" y="55" width="150" height="75"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="flo_pmui-23644628158451712b10974010783474_di"
+                             bpmnElement="flo_pmui-23644628158451712b10974010783474">
+                <di:waypoint x="675" y="377"/>
+                <di:waypoint x="675" y="575"/>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</bpmn2:definitions>

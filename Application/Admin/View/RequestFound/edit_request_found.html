@@ -1,0 +1,259 @@
+<style type="text/css">
+    .conth{
+        width:80px;
+        text-align: center;
+        font-weight: bolder;
+    }
+</style>
+<div class="bjui-pageContent">
+    <form action="<?php echo U('RequestFound/saveRequestFound')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false" method="post">
+        <table class="table table-bordered" data-selected-multi="true">
+            <input type="hidden" name="method" value="edit">
+            <input type="hidden" name="pro_id" value="{$data['project_id']}">
+            <input type="hidden" name="id" value="{$data['id']}">
+            <tbody>
+                <tr data-id="1">
+                    <td class="conth" style="display: inline-block;width:110px;">申请部门:</td>
+                    <td>项目部</td>
+                    <td class="conth">申请人:</td>
+                    <td>
+                        <input name='' type="text"  value="{$data['userinfo']['real_name']}" readonly>
+                    </td>
+                    <td class="conth">申请时间:</td>
+                    <td> <input name='' type="text" value="{$data['addtime']}"  data-toggle="datepicker" data-nobtn="true" readonly></td>
+                </tr>
+                <tr data-id="2">
+                    <td class="conth">项目名称:</td>
+                    <td colspan="2">
+                         <input name='' type="text" value="{$data['pro_title']}"  data-toggle="datepicker" data-nobtn="true"   readonly>
+                    </td>
+                    <td class="conth">项目编号:</td>
+                    <td colspan="2"><input name='' type="text"  value="{$data['project_con']}" readonly></td>
+                </tr>
+                <tr data-id="3">
+                    <td class="conth">融资期限:</td>
+                    <td colspan="5">
+                         <input name='' type="text" value="{$data['starttime']|date="Y-m-d",###}"  data-toggle="datepicker" data-nobtn="true" readonly>
+                         <span>至</span>
+                         <input name='' type="text" value="{$data['endtime']|date="Y-m-d",###}"  data-toggle="datepicker" data-nobtn="true" readonly >
+                    </td>
+                </tr>
+                <tr data-id="4">
+                    <td class="conth">担保方式:</td>
+                    <td colspan="5">
+                        <php>
+                            foreach(C('assure_type') as $k => $v){
+                        </php>
+                        <input name='' type="checkbox"  data-rule="checked" id="j_form_checkbox1" value="<php>echo $k;</php>" data-toggle="icheck" data-label="<php>echo $v;</php>"  <?php if(strstr($data['guarantee_way'],trim($k))) echo 'checked';?> readonly >
+                        <php> }</php>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="conth">支付方式:</td>
+                    <td colspan="5">
+                        <php>
+                            foreach(C('contract_pay_type') as $k => $v){
+                        </php>
+                            <input name='' type="radio"  data-rule="checked" id="j_form_radio1"  value="<php>echo $k;</php>" data-toggle="icheck" data-label="<php>echo $v;</php>" <php> if($data['pay_way']==$k)echo 'checked';</php> >
+                        <php> }</php>
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="5" class="conth">
+                        收款明细:
+                    </td>
+                    <td rowspan="2">
+                        是否监管账户:<br/>
+                        <input name='' type="radio"  id="j_form_radio1" data-rule="checked" value="1" data-toggle="icheck" data-label="是" <php> if($data['sdetail']->status==1)echo 'checked';</php>>
+                        <input name='' type="radio"  id="j_form_radio1" data-rule="checked" value="2" data-toggle="icheck" data-label="否" <php> if($data['sdetail']->status==2)echo 'checked';</php>>
+                    </td>
+                    <td class="conth">收款金额:</td>
+                    <td>
+                        <input name='' type="text" value="{$data['sdetail']->money}" size="20"  class="conmoney" ajax_name="s_cmoney" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="conth">
+                        人民币大写:
+                    </td>
+                    <td colspan="2">
+                        <input name='' type="text"  value="{$data['sdetail']->cmoney}" size="30"  readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="conth">
+                        户名:
+                    </td>
+                    <td colspan="5">
+                        <input name='' type="text" value="{$data['sdetail']->cname}"  size="50" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="conth">开户行:</td>
+                    <td colspan="5">
+                        <input name='' type="text" value="{$data['sdetail']->bname}"   size="50" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="conth">账户:</td>
+                    <td colspan="5">
+                        <input name='' type="text" value="{$data['sdetail']->account}"  size="50" readonly>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td rowspan="5" class="conth">
+                        请款明细:
+                    </td>
+                    <td rowspan="2">
+                        是否监管账户:<br/>
+                        <input name='' type="radio"  data-rule="checked" id="j_form_radio1" value="1" data-toggle="icheck" data-label="是" <php> if($data['qdetail']->status==1)echo 'checked';</php>>
+                        <input name='' type="radio"  data-rule="checked" id="j_form_radio1" value="2" data-toggle="icheck" data-label="否" <php> if($data['qdetail']->status==2)echo 'checked';</php>>
+                    </td>
+                    <td class="conth">融资金额:</td>
+                    <td>
+                        <input name='' type="text" value="{$data['qdetail']->rmoney}" size="20"  class="conmoney"  ajax_name="q_crmoney" readonly>
+                    </td>
+                    <td class="conth">退款金额:</td>
+                    <td>
+                        <input name='' type="text" value="{$data['qdetail']->tmoney}" size="20" class="conmoney" ajax_name="q_ctmoney" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="conth">
+                        人民币大写:
+                    </td>
+                    <td colspan="2">
+                        <input name='' type="text"  readonly value="{$data['qdetail']->crmoney}" size="22" readonly>
+                    </td>
+                   
+                    <td>
+                        <input name='' type="text"  readonly value="{$data['qdetail']->ctmoney}" size="22" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="conth">
+                        户名:
+                    </td>
+                    <td colspan="5">
+                        <input name='' type="text" value="{$data['qdetail']->cname}" size="50"  readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="conth">开户行:</td>
+                    <td colspan="5">
+                        <input name='' type="text" value="{$data['qdetail']->bname}" size="50"  readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="conth">账户:</td>
+                    <td colspan="5">
+                        <input name='' type="text" value="{$data['qdetail']->account}" size="50"  readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="3" class="conth">换质情况:</td>
+                    <td class="conth">
+                        到期债权
+                    </td>
+                    <td colspan="4">
+                        金额:<input name='' type="text" value="{$data['zdetail']->ebondmoney}" size="30"  readonly>
+                         有效期: <input name='' type="text" value="{$data['zdetail']->ebondtime|date='Y-m-d',###}"  data-toggle="datepicker" data-nobtn="true" readonly >
+                    </td>
+                </tr>
+                 <tr>
+                   <td class="conth">
+                       换质债权    
+                   </td>
+                   <td colspan="4">
+                       金额:<input name='' type="text" value="{$data['zdetail']->cbondmoney}" size="30"  readonly>
+                         有效期: <input name='' type="text" value="{$data['zdetail']->cbondtime|date='Y-m-d',###}"  data-toggle="datepicker" data-nobtn="true" readonly >
+
+                       
+                   </td>
+               </tr>
+               <tr>
+                   <td  class="conth">
+                       其它情况说明:
+                   </td>
+                   <td  colspan="5">
+                      <textarea name='' cols="40" rows="4" size='40' readonly>{$data['othersinfo']}</textarea>
+                   </td>
+               </tr>
+               <tr>
+                   <td class="conth">审核结果:</td>
+                   <td colspan="6">
+                        <select data-toggle="selectpicker" name="chresult" data-width="400"  data-rule="required">
+                            <option value="">请选择</option>
+                            <option value="2">通过</option>
+                            <option value="3">驳回</option>
+                        </select>
+                   </td>
+               </tr>
+            <if condition="$data['step'] eq 1">
+              <tr>
+                    <td class="conth">法务负责人意见：</td>
+                    <td colspan="5">
+                      <textarea name="checkinfo" cols="50" rows="4" data-rule="required"></textarea>
+                    </td>
+               </tr>
+            <elseif condition="$data['step'] eq 2"/>
+               <tr>
+                    <td class="conth">贷后风险控制人（换质）意见：</td>
+                    <td colspan="5">
+                      <textarea name="checkinfo" cols="50" rows="4" ></textarea>
+                    </td>
+               </tr>
+            <elseif condition="$data['step'] eq 3"/>
+               <tr>
+                    <td class="conth">贷中审核人意见：</td>
+                    <td colspan="5">
+                      <textarea name="checkinfo" cols="50" rows="4" ></textarea>
+                    </td>
+               </tr>
+            <elseif condition="$data['step'] eq 4"/>
+               <tr>
+                    <td class="conth">风控总监意见</td>
+                    <td colspan="5">
+                      <textarea name="checkinfo" cols="50" rows="4" ></textarea>
+                    </td>
+               </tr>
+            <elseif condition="$data['step'] eq 5"/>
+               <tr>
+                    <td class="conth">副总裁意见：</td>
+                    <td colspan="5">
+                      <textarea name="checkinfo" cols="50" rows="4" ></textarea>
+                    </td>
+               </tr>
+            <elseif condition="$data['step'] eq 6"/>
+               <tr>
+                    <td class="conth">总裁意见：</td>
+                    <td colspan="5">
+                      <textarea name="checkinfo" cols="50" rows="4" ></textarea>
+                    </td>
+               </tr>
+            <elseif condition="$data['step'] eq 7"/>
+               <tr>
+                    <td class="conth">出纳签名：</td>
+                    <td colspan="5">
+                      <textarea name="checkinfo" cols="50" rows="4" ></textarea>
+                    </td>
+               </tr>
+            <elseif condition="$data['step'] eq 8"/>
+                <tr>
+                    <td class="conth">财务负责人签名：</td>
+                    <td colspan="5">
+                      <textarea name="checkinfo" cols="50" rows="4" ></textarea>
+                    </td>
+               </tr>
+            </if>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">签名并保存</button></li>
+    </ul>
+</div>

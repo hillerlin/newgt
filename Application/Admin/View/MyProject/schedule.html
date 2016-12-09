@@ -1,0 +1,155 @@
+<div class="bjui-pageHeader">
+    
+</div>
+<div class="bjui-pageContent tableContent">
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th align="center" width="120">项目标题</th>
+                <th align="center" width="100">放款日期</th>
+                <th align="center" width="100">前端费用</th>
+                <th align="center" width="50">利率(%)</th>
+                <th align="center" width="100">金额(元)</th>
+                <th align="center" width="80">实际还款(元)</th>
+                <th align="center" width="100">最近一次还款时间</th>
+                <th align="center" width="50">状态</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-id="<?php echo $v['oid']?>">
+                <td rowspan="5" align="center"><a href="<?php echo U('Project/detail', array('pro_id' => $list[0]['pro_id']))?>" data-toggle="dialog" data-height='800' data-width="800"><?php echo $list[0]['pro_title']?></a></td>
+                <td rowspan="5" align="center"><?php echo date('Y-m-d',$debt_info['real_time'])?></td>
+            </tr>
+            <tr data-id="<?php echo $v['oid']?>">
+                <td align="center" >保证金</td>
+                <td align="center" class='red'><?php echo $debt_info['cash_deposit']?></td>
+                <td align="center"><?php echo number_format($cash_deposit_need_repay, 2);?></td>
+                <td align="center"><?php echo number_format($cash_deposit_has_repay, 2)?></td>
+                <td align="center">
+                    <?php 
+                    if($pro_fee['cash_deposit']['status'] < 2) {
+                        echo $cash_deposit_last_repay > 0 ? date('Y-m-d',$cash_deposit_last_repay) : '--';
+                    } else {
+                        echo date('Y-m-d',$back_cash_deposit_last_repay) ;
+                    }
+                    ?></td>
+                <td align="center"><?php echo (isset($pro_fee['cash_deposit']['status']) && $pro_fee['cash_deposit']['status'])==1?'已还款':'未还款'?></td>
+            </tr>
+            <tr data-id="<?php echo $v['oid']?>">
+                <td align="center" >咨询费</td>
+                <td align="center" class='red'><?php echo $debt_info['counseling_fee']?></td>
+                <td align="center" ><?php echo number_format($counseling_fee_need_repay, 2);?></td>
+                <td align="center"><?php echo number_format($counseling_fee_has_repay, 2)?></td>
+                <td align="center"><?php echo $counseling_fee_last_repay > 0 ? date('Y-m-d',$counseling_fee_last_repay) : '--'?></td>
+                <td align="center"><?php echo (isset($pro_fee['counseling_fee']['status']) && $pro_fee['counseling_fee']['status'])== 1?'已还款':'未还款'?></td>
+                
+            </tr>
+            <tr data-id="<?php echo $v['oid']?>">
+                <td align="center" >手续费</td>
+                <td align="center" class='red'><?php echo $debt_info['handling_charge']?></td>
+                <td align="center" ><?php echo number_format($handling_charge_need_repay, 2);?></td>
+                <td align="center"><?php echo number_format($handling_charge_has_repay, 2)?></td>
+                <td align="center"><?php echo $handling_charge_last_repay > 0 ? date('Y-m-d',$handling_charge_last_repay) : '--'?></td>
+                <td align="center"><?php echo (isset($pro_fee['handling_charge']['status']) && $pro_fee['handling_charge']['status'])==1?'已还款':'未还款'?></td>
+            </tr>
+            <tr data-id="<?php echo $v['oid']?>">
+                <td align="center" >利息</td>
+                <td align="center" class='red'><?php echo $debt_info['repurchase_rate']?></td>
+                <td align="center" ><?php echo number_format($interest_need_repay, 2);?></td>
+                <td align="center"><?php echo number_format($interest_has_repay, 2)?></td>
+                <td align="center"><?php echo $handling_charge_last_repay > 0 ? date('Y-m-d',$handling_charge_last_repay) : '--'?></td>
+                <td align="center"><?php echo (isset($pro_fee['handling_charge']['status']) && $pro_fee['handling_charge']['status'])==1?'已还款':'未还款'?></td>
+            </tr>
+        </tbody>
+    </table>
+    <hr>
+    <table class="table table-bordered table-hover table-striped">
+        <thead>
+            <tr>
+                <!--<th align="center" width="100">会员单位</th>-->
+                <th rowspan="2" align="center" width="120">项目标题</th>
+                <th rowspan="2" align="center" width="30">期数</th>
+                <th rowspan="2" align="center" width="100">还款日期</th>
+                <!--<th data-order-field="demurrage_days" align="center" width="50">逾期天数</th>-->
+                <th colspan="2" align="center" width="100">计划还款</th>
+                <!--<th align="center" width="80">还款利息(元)</th>-->
+                <th rowspan="2" align="center" width="100">剩余本金(元)</th>
+                <th rowspan="2" align="center" width="50">溢价率(年化%)</th>
+                <th colspan="2" align="center" width="80">实际应还</th>
+<!--                <th data-order-field="interest"  align="center" width="80">违约金(元)</th>
+                <th data-order-field="interest"  align="center" width="80">逾期利息(元)</th>-->
+<!--                <th align="center" width="100">应还金额(元)</th>
+                --><th rowspan="2" align="center" width="100">实还款金额(元)</th>
+                
+                <th rowspan="2" align="center" width="100">最近一次还款时间</th>
+                <th rowspan="2" align="center" width="50">状态</th>
+            </tr>
+                <!--<th align="center" width="30">期数</th>-->
+                <!--<th data-order-direction="asc" data-order-field="repay_time" align="center" width="100">还款日期</th>-->
+                <!--<th data-order-field="demurrage_days" align="center" width="50">逾期天数</th>-->
+                
+<!--                <th data-order-field="interest"  align="center" width="80">违约金(元)</th>
+                <th data-order-field="interest"  align="center" width="80">逾期利息(元)</th>-->
+<!--                <th align="center" width="100">应还金额(元)</th>
+                <th align="center" width="100">实还款金额(元)</th>
+                <th data-order-field="term_rate"  align="center" width="50">利率(%)</th>
+                <th data-order-direction="asc" data-order-field="real_repay_time" align="center" width="100">最近一次还款时间</th>
+                <th data-order-field="status"  align="center" width="50">状态</th>
+                <th align="center" width="100">操作</th>-->
+            <tr>
+                <th align="center" width="100">本金(元)</th>
+                <th align="center" width="80">利息(元)</th>
+                <th align="center" width="100">本金(元)</th>
+                <th align="center" width="80">利息(元)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($list as $v){?>
+            <tr data-id="<?php echo $v['oid']?>">
+                <!--<td align="center"><?php echo $v['company_name']?></td>-->
+                <td align="center"><a href="<?php echo U('Project/detail', array('pro_id' => $v['pro_id']))?>" data-toggle="dialog" data-height='800' data-width="800"><?php echo $v['pro_title']?></a></td>
+                <td align="center"><?php echo $v['n_term'] > 0 ? $v['n_term'] : '--'?></td>
+                <td align="center"><?php echo date('Y-m-d',$v['repay_time'])?></td>
+                <td align="center" <?php echo $v['principal'] > 0 ? 'class="red"' : ''?>><?php echo number_format($v['principal'], 2)?></td>
+                <td align="center" class='red'><?php echo number_format($v['interest'], 2)?></td>
+                <td align="center" <?php echo $v['surplus_principal'] > 0 ? 'class="red"' : ''?>><?php echo $v['surplus_principal'] > 0 ? number_format($v['surplus_principal'], 2) : '--'?></td>
+                <td align="center"><?php echo $v['term_rate']?></td>
+                <td align="center" <?php echo ($v['principal'] > 0 && $v['surplus_principal'] > 0) ? 'class="red"' : ''?>><?php echo $v['principal'] > 0 ? number_format($v['surplus_principal'], 2) : number_format(0,2) ?></td>
+                <td align="center" class='red'><?php echo number_format($v['real_interest'], 2)?></td>
+                <td align="center"><?php echo number_format($v['has_repay_money'], 2)?></td>
+                
+                <td align="center"><?php echo empty($v['last_repay_time']) ? '--' : date('Y-m-d',$v['last_repay_time'])?></td>
+                <td align="center"><?php echo $v['status']==1?'已还款':'未还款'?></td>
+            </tr>
+            <?php }?>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+    <div class="pages">
+        <span>每页&nbsp;</span>
+        <div class="selectPagesize">
+            <select data-toggle="selectpicker" data-toggle-change="changepagesize">
+                <option value="30">30</option>
+                <option value="60">60</option>
+                <option value="120">120</option>
+                <option value="150">150</option>
+            </select>
+        </div>
+        <span>&nbsp;条，共 <?php echo $total?> 条</span>
+    </div>
+    <div class="pagination-box" data-toggle="pagination" data-total="<?php echo $total?>" data-page-size="30" data-page-current="1">
+    </div>
+</div>
+<script>
+    $(function () {
+        var selectObj = $("#select_status").get(0);
+        for (var i = 0; i < selectObj.length; i++) {
+            if (selectObj.options[i].value == '{$post.status}') {
+                selectObj.options[i].selected = true;
+                break;
+            }
+        }
+    })
+
+</script>  

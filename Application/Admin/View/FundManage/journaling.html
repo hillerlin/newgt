@@ -1,0 +1,98 @@
+<div class="bjui-pageHeader">
+    <form id="pagerForm" data-toggle="ajaxsearch" action="<?php echo U('FundManage/journaling')?>" method="post">
+        <input type='hidden' name='isSearch' value='1'>
+        <input type="hidden" name="pageSize" value="${model.pageSize}">
+        <input type="hidden" name="pageCurrent" value="${model.pageCurrent}">
+        <input type="hidden" name="orderField" value="${param.orderField}">
+        <input type="hidden" name="orderDirection" value="${param.orderDirection}">
+        <div class="bjui-searchBar">
+            <label>客户经理：</label><input type="text" id="real_name" value="{$post.pro_title}" name="real_name" class="form-control" size="10">&nbsp;
+            <label>地区:</label>
+            <select name="branch_id" data-toggle="selectpicker" data-nextselect="#j_form_city" data-refurl="/Admin/FundManager/childBranch/branch_id/{value}.html">
+                <option value="all">--地区--</option>
+                <?php foreach($branch_list as $v){ ?>
+                <option value="<?php echo $v['branch_id']?>"><?php echo $v['branch_name']?></option>
+                <?php  }?>
+            </select>
+            <select name="branch_ch_id" id="j_form_city" data-toggle="selectpicker" data-emptytxt="--分部--">
+                <option value="">--分部--</option>
+            </select>
+            <label>起始时间：</label><input type="text" value="{$post.begin_time}" data-toggle="datepicker" name="begin_time" class="form-control" size="12">&nbsp;
+            <label>结束时间：</label><input type="text" value="{$post.end_time}" data-toggle="datepicker" name="end_time" class="form-control" size="12">&nbsp;
+            <button type="submit" class="btn-default" data-icon="search">查询</button>&nbsp;
+            <a class="btn btn-orange" href="javascript:;" data-toggle="reloadsearch" data-clear-query="true" data-icon="undo">清空查询</a>
+        </div>
+    </form>
+</div>
+<div class="bjui-pageContent tableContent">
+    <table class="table table-bordered table-hover table-striped table-top">
+        <thead>
+            <tr>
+                <th data-order-field="partnership" align="center" width="100">合伙企业</th>
+                <th data-order-direction="asc" data-order-field="pay_time" align="center" width="100">打款时间</th>
+                <th data-order-direction="asc" data-order-field="begin_interest_time" align="center" width="100">起息时间</th>
+                <th data-order-direction="asc" data-order-field="done_time" align="center" width="100">成立时间</th>
+                <th data-order-field="customer_name" align="center" width="100">客户姓名</th>
+                <th data-order-field="fund_title" align="center" width="100">认购项目</th>
+                <th data-order-field="money" align="center" width="100">金额(万元)</th>
+                <th align="center" width="80">客户收益率（%）</th>
+                <th data-order-field="term" align="center" width="50">期限</th>
+                <th data-order-direction="asc" data-order-field="deadline" align="center" width="100">到期时间</th>
+                <th data-order-field="real_name"  align="center" width="80">客户经理</th>
+                <th data-order-field="branch_name"  align="center" width="80">地区</th>
+                <th data-order-field="branch_name"  align="center" width="80">分部</th>
+                <th data-order-field="contract_no" align="center" width="100">合同编号</th>
+                <th data-order-field="id_no" align="center" width="100">客户身份证</th>
+                <th data-order-field="bank_no" align="center" width="100">客户银行卡号</th>
+                <th data-order-field="link_type" align="center" width="100">联系方式</th>
+                <th align="center" width="80">备注</th>
+                <th align="center" width="80">业绩提成率（%）</th>
+                <th align="center" width="80">管理津贴率（%）</th>
+              
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($list as $v){?>
+
+            <tr data-id="<?php echo $v['oid']?>">
+                <td align="center"><?php echo $v['partnership']?></td>
+                <td align="center"><?php echo date('Y-m-d',$v['pay_time'])?></td>
+                <td align="center"><?php echo date('Y-m-d',$v['begin_interest_time'])?></td>
+                <td align="center"><?php echo date('Y-m-d',$v['done_time'])?></td>
+                <td align="center"><?php echo $v['customer_name']?></td>
+                <td align="center"><?php echo $v['fund_title']?></td>
+                <td align="center" <?php echo $v['money'] > 0 ? 'class="red"' : ''?>><?php echo number_format($v['money'] , 2)?></td>
+                <td align="center"><?php echo $v['fund_rate']?></td>
+                <td align="center"><?php echo $v['term']?></td>
+                <td align="center"><?php echo date('Y-m-d',$v['deadline'])?></td>
+                <td align="center"><?php echo $v['real_name']?></td>
+                <td align="center"><?php echo $v['branch_name']?></td>
+                <td align="center"><?php echo $v['branch_ch_name']?></td>
+                <td align="center"><?php echo $v['contract_no']?></td>
+                <td align="center"><?php echo $v['id_no']?></td>
+                <td align="center"><?php echo $v['bank_no']?></td>
+                <td align="center"><?php echo $v['link_type']?></td>
+                <td align="center"><?php echo $v['remark']?></td>
+                <td align="center"><?php echo $v['performance_rate']?></td>
+                <td align="center"><?php echo $v['manage_rate']?></td>
+            </tr>
+            <?php }?>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+    <div class="pages">
+        <span>每页&nbsp;</span>
+        <div class="selectPagesize">
+            <select data-toggle="selectpicker" data-toggle-change="changepagesize">
+                <option value="30">30</option>
+                <option value="60">60</option>
+                <option value="120">120</option>
+                <option value="150">150</option>
+            </select>
+        </div>
+        <span>&nbsp;条，共 <?php echo $total?> 条</span>
+    </div>
+    <div class="pagination-box" data-toggle="pagination" data-total="<?php echo $total?>" data-page-size="30" data-page-current="1">
+    </div>
+</div>

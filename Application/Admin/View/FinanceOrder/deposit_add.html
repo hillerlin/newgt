@@ -1,0 +1,64 @@
+<div class="bjui-pageContent">
+    <form action="<?php echo U('FinanceOrder/save_deposit')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="oid" value="<?php echo $oid?>"  />
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x150">打款（收款）金额：</label>
+                        <input type="text" name="money" id="p_name" value="" size="15" data-rule="required">元
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="j_custom_indate" class="control-label x150">打款（收款）时间：</label>
+                        <input type="text" name="pay_time" id="pay_time" value="" data-toggle="datepicker" data-rule="required:date" size="15">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x150">状态：</label>
+                        <input type="radio" name="type" id="j_custom_status1" data-toggle="icheck" value="expend" data-rule="checked" data-label="打款&nbsp;&nbsp;">
+                        <input type="radio" name="type" id="j_custom_status2" data-toggle="icheck" value="income" data-label="收款">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    <label for="pro_desc" class="control-label x150">打款凭证：</label>
+                    <div style="display: inline-block; vertical-align: middle;">
+                        <div id="j_custom_pic_up" data-toggle="upload" data-uploader="<?php echo U('FinanceOrder/upload_attachment')?>?sessionid=?" 
+                             data-file-size-limit="1024000000"
+                             data-file-type-exts="*.jpg;*.png;*.gif;*.mpg"
+                             data-multi="true"
+                             data-on-upload-success="pic_upload_success"
+                             data-icon="cloud-upload"
+                             data-form-data='{"field":"deposit"}'
+                             data-file-obj-name='deposit'></div>
+                    </div>
+                        <input type="hidden" name="repay_pic" value="" id="j_custom_pic">
+                        <span id="j_custom_span_pic">
+                    </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>
+<script>
+    function pic_upload_success(file, data) {
+    var json = $.parseJSON(data)
+    
+    $(this).bjuiajax('ajaxDone', json)
+    if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+        $('#j_custom_pic').val(json.content.file_path).trigger('validate')
+        $('#j_custom_span_pic').html('<img src="'+ json.content.file_path +'" width="100" />')
+    }
+}
+    
+</script>  

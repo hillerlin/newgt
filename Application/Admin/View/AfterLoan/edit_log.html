@@ -1,0 +1,49 @@
+<div class="bjui-pageContent">
+    <form action="<?php echo U('AfterLoan/save_log')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="log_id" value='{$log_id}'>
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="company_id" class="control-label x120">项目：</label>
+                        <input type="hidden" name="pro_id" value='{$pro_info.pro_id}'>
+                        <input type="text" id="p_company" value="{$pro_info.pro_title}" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x120">公司：</label>
+                        <select name="company_id" data-rule="required" data-toggle="selectpicker">
+                            <option value="">--请选择--</option>
+                            <?php foreach($company_list as $val):?>
+                            <option <?php echo $company_id == $val['company_id'] ? 'selected':'';?> value="<?php echo $val['company_id']?>"><?php echo $val['company_name']?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="content" class="control-label x120">事项：</label>
+                        <textarea name="content" id="j_custom_note_1" cols="30" rows="2"><?php echo $content?></textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>
+<script>
+//    $(function(){
+//            for(var i=0;i<3;i++) {
+//                if($("select").get(0).options[i].value == '{$company_id}')  {
+//                    $("select").get(0).options[i].selected = true;  
+//                    break;
+//                }
+//            }
+//     });
+</script>  

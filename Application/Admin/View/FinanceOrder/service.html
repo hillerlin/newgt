@@ -1,0 +1,76 @@
+<div class="bjui-pageContent">
+    <?php if ($service_rate_status) {?>
+    <table class="table table-bordered table-hover table-top">
+        <thead>
+            <tr>
+                <th align="center" width="150">服务费(元)</th>
+                <th data-order-direction="asc" data-order-field="real_repay_time" align="center" width="150">打款款日期</th>
+                <th align="center" width="100">还款凭证</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($list as $v){?>
+                <td align="center"><?php echo number_format($v['money'], 2)?></td>
+                <td align="center"><?php echo date('Y-m-d',$v['pay_time'])?></td>
+                <td align="center"><a href="<?php echo $v['pay_pic']?>" target="_blank"><img src="<?php echo $v['pay_pic']?>" width="50" /></a></td>
+            <?php }?>
+        </tbody>
+    </table>
+    <?php } else {?>
+    <form action="<?php echo U('FinanceOrder/save_service')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="oid" value="<?php echo $oid?>"  />
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x150">打款金额：</label>
+                        <input type="text" name="money" id="p_name" value="" size="15" data-rule="required">元
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="j_custom_indate" class="control-label x150">打款时间：</label>
+                        <input type="text" name="pay_time" id="pay_time" value="" data-toggle="datepicker" data-rule="required:date" size="15">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    <label for="pro_desc" class="control-label x150">打款凭证：</label>
+                    <div style="display: inline-block; vertical-align: middle;">
+                        <div id="j_custom_pic_up" data-toggle="upload" data-uploader="<?php echo U('FinanceOrder/upload_attachment')?>?sessionid=?" 
+                             data-file-size-limit="1024000000"
+                             data-file-type-exts="*.jpg;*.png;*.gif;*.mpg"
+                             data-multi="true"
+                             data-on-upload-success="pic_upload_success"
+                             data-icon="cloud-upload"
+                             data-form-data='{"field":"service"}'
+                             data-file-obj-name='service'></div>
+                    </div>
+                        <input type="hidden" name="pay_pic" value="" id="j_custom_pic">
+                        <span id="j_custom_span_pic">
+                    </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+    <?php }?>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>
+<script>
+    function pic_upload_success(file, data) {
+    var json = $.parseJSON(data)
+    
+    $(this).bjuiajax('ajaxDone', json)
+    if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+        $('#j_custom_pic').val(json.content.file_path).trigger('validate')
+        $('#j_custom_span_pic').html('<img src="'+ json.content.file_path +'" width="100" />')
+    }
+}
+    
+</script>  

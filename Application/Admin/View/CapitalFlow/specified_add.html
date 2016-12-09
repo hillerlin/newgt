@@ -1,0 +1,142 @@
+<div class="bjui-pageContent">
+    <form action="<?php echo U('CapitalFlow/save')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="pro_id" value="<?php echo $debt_info['pro_id']?>">
+        <input type="hidden" name="debt_all_id" value="<?php echo $debt_info['debt_all_id']?>">
+        <input type="hidden" name="fid" id="fid" value=""  />
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="money" class="control-label x120 red">金额：</label>
+                        <input type="text" name="money" id="p_account" value="" size="15" data-rule="required">元
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x120">打款银行：</label>
+                        <select name="bank_id" data-toggle="selectpicker" id="select_bank" data-rule="required" >
+                            <option value="">--请选择--</option>
+                            <?php foreach($banks as $val):?>
+                            <option value="<?php echo $val['bank_id']?>"><?php echo $val['account_name'].'-'.$val['bank_name']?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="control-label x120">流水类型:</label>
+                        <select name="type" data-toggle="selectpicker" id="select_status" data-rule="required" >
+                            <option value="">全部</option>
+                            <?php foreach($type_describe as $key => $val):?>
+                            <option value="<?php echo $key?>"><?php echo $val?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x120">选择凭证：</label>
+                        <a href="<?php echo U('FinanceFlow/lookUpNew')?>" data-toggle="lookupbtn" data-width="900" >打开财务流水表</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="money" class="control-label x120 red">打款时间：</label>
+                        <input type="text" name="pay_time" id="p_company" value="<?php echo date('Y-m-d', time())?>" size="15" data-toggle="datepicker" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="loan_remark" class="control-label x120">备注：</label>
+                        <textarea name="remark" id="j_custom_note_1" cols="30" rows="2"></textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table id='file-list' class="table table-condensed table-hover" width="100%">
+            <thead>
+                <tr>
+                    <th align="center" width="300">文件名</th>
+                    <th align="center" width="300">上传日期</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td align="center"><a target="_blank" href=""></a></td>
+                    <td align="center"></td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>
+<script>
+    $('#bank_id').on('afterchange.bjui.lookup', function (e, data) {
+        var bank_id = 0;
+        var myvalue = data.value;
+        var bank_id_arr = myvalue.split(',');
+        debugger;
+//        $("li[data-original-index='4']").parent().find('li').removeClass('selected')
+//        $("li[data-original-index='4']").addClass('selected');
+//        var text = $("li[data-original-index='4']").find('a').text();
+//        $("button[data-id='bank_id']").find("span[class='filter-option pull-left']").text(text);
+        $('#select_bank').selectpicker('val', bank_id_arr['0']);
+    });
+    $('#fid').on('afterchange.bjui.lookup', function (e, data) {
+//        debugger;
+        var repay_money = 0;
+        var myvalue = data.value;
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: "/Admin/FinanceFlow/getVouchers",
+            data: {fids: myvalue},
+            success: function (list) {
+                if (list.statusCode == 200) {
+                    var content = list.content;
+                    $('#file-list > tbody').html('');
+                    for (i = 0; i < content.length; i++) {
+                        add_uploadedfile(content[i]);
+                    }
+                } else {
+                    alert('非法数据');
+                }
+            }
+        });
+    });
+
+    function add_uploadedfile(data) {
+        var time = formatDate(data.addtime);
+        var i = $('#file-list> tbody > tr').length + 1;
+        var newTr = '<tr><td align="center"><a href="' + data.path + '"><img src=' + data.path + ' style="max-width: 150px; max-height: 150px;"></a></td><td align="center">' + time + '</td></tr>';
+//        var newImg = '<li id="' + data.file_id + '"><input type="hidden" name="attachment['+ i +'][path]" value="' + data.file_path + '" /><div class="thumb-list-pics"><a href="javascript:void(0);"><img src="' + data.file_path + '" alt=""/></a></div><a href="javascript:del_file_upload(0,' + data.file_id + ',\'' + data.file_path + '\');" class="del" title="删除">X</a><a href="javascript:insert_editor(\'' + data.file_path + '\');" class="inset"><i class="fa fa-clipboard"></i>插入图片</a></li>';
+        $('#file-list > tbody').append(newTr);
+
+    }
+
+    function formatDate(now)   { 
+        var   now = new Date(now * 1000);
+        var   year = now.getFullYear();     
+        var   month = now.getMonth() + 1;     
+        var   date = now.getDate();     
+        var   hour = now.getHours(); 
+        var   minute = now.getMinutes();     
+        var   second = now.getSeconds(); 
+        return   year + "年" + fixZero(month, 2) + "月" + fixZero(date, 2) + "日";// + fixZero(hour, 2) + ":" + fixZero(minute, 2) + ":" + fixZero(second, 2); 
+    }
+//时间如果为单位数补0 
+    function fixZero(num, length) {
+    var str = "" + num; 
+    var len = str.length;
+    var s = ""; 
+    for (var i = length; i-- > len; ) {
+         s += "0";
+     } 
+   return s + str;
+    }  
+</script>

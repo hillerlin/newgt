@@ -1,0 +1,152 @@
+<style type="text/css">
+    td,th{ text-align: center; }
+    .date{ width: 107px; }
+    .showbutton{ cursor: pointer; }
+</style>
+<div class="bjui-pageContent tableContent">
+    <form action="<?php echo U('Opinion/save')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+    <table class="table table-bordered table-hover table-striped table-top">
+            <thead>
+            <th colspan="2">融资方及应收款买方名单</th>
+            <th colspan="5">法院被执行</th>
+            <th colspan="2">网络新闻</th>
+            </thead>
+            <tbody>
+            <tr>
+                <td align="center" width="300" colspan="2">查询主体</td>
+                <td align="center" width="100">立案时间</td>
+                <td align="center" width="100">案号</td>
+                <td align="center" width="100">被执行标的（裁判/裁定结果)</td>
+                <td align="center" width="60">是否失信</td>
+                <td align="center" width="100">案件类型</td>
+                <td align="center" width="540">内容</td>
+            </tr>
+            <tr>
+                <td style="margin:15px;">项目名称</td>
+                <td colspan="8"><input type="text" name="pro_title" size="150" value="{$result['pro_title']}"></td>
+            </tr>
+            <input type="hidden" name="opinion_id" value="{$result['opinion_id']}">
+            <foreach name="result" item="v" key="keyname">
+                <php> if(in_array($keyname,array('opinion_id','addtime','pro_title'))) continue; </php>
+                <tr class_data="{$keyname}" class="{$keyname}">
+                    <td rowspan="{:count($v)}">
+                        <button type="button" class="btn-green  showbutton" onClick="addline(this)"> 添加</button>
+                        <button type="button" class="btn-red  showbutton" onClick="delline(this)">  删除</button><br/>
+                        <php>
+                            if($keyname=='financing'){echo '融资方';}elseif($keyname=='partner'){echo '融资方股东';}elseif($keyname=='guarantor'){echo '担保人';}elseif($keyname=='purchaser'){echo '应收买方';} </php>
+                    </td>
+                    <php>$nums=1;</php>
+                    <foreach name="v" item="vv">
+                        <php> if($nums>1):</php>
+                        <tr class_data="{$keyname}" class="{$keyname}">
+                        <php>endif;$nums++;</php>
+                        <input type="hidden" name="opdetail_id[]" value="{$vv['opdetail_id']}">
+                        <td><input type="text" value="{$vv['name']}" name="{$keyname}_financing[]" placeholder=""/></td>
+                        <td>
+                            <input type="text" value="{$vv['ftime']}"  placeholder="日期" name="{$keyname}_ftime[]" class="date" data-toggle="datepicker"/>
+                        </td>
+                        <td><input type="text" value="{$vv['fileid']}" name="{$keyname}_fileid[]" placeholder="案号"/></td>
+                        <td><input type="text" value="{$vv['integrity']}" name="{$keyname}_result[]" placeholder="结果"/></td>
+                        <td>
+                            <input type="text" value="{$vv['integrity']}" name="{$keyname}_integrity[]" style="width:50px;">
+                        </td>
+                        <td><input type="text" value="{$vv['fclass']}" name="{$keyname}_fclass[]" placeholder="案件类型"/></td>
+
+                        <td class="addtd">
+                            <php> $num=1;//用于判断添加和删除的出现次数</php>
+                            <foreach name="vv['content']" item="content">
+                                <php>if($num==1):</php>
+                                    <button type="button" class="btn-green  add" onClick="addtd(this)">添加</button>
+                                    <button type="button" class="btn-red  showbutton" onClick="deltd(this)"> 删除</button><br/>
+                                    <input type="hidden" value="{:count($vv['content'])}" count="countlink" name="{$keyname}_countlink[]"/>
+                                <php>endif;</php>
+                                <div >
+                                    <!--记录每条记录有多少条这样的日期链接-->
+                                    <input type="text" value="{$content->link}" name="{$keyname}_link[]" placeholder="链接">
+                                    <input type="text" value="{$content->title}" name="{$keyname}_title[]" placeholder="标题">
+                                    <input type="text" value="{$content->addtime}" placeholder="日期" name="{$keyname}_addtime[]"  class="date" data-toggle="datepicker">
+                                </div>
+                                <php>$num=2;</php>
+                            </foreach>
+                        </td>
+                        </tr>
+                    </foreach>
+            </foreach>
+            </tbody>
+        </table>
+        </form>
+ </div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>
+<script type="text/javascript">
+    function addline(e){
+        var rows=parseInt($(e).parent('td').attr('rowspan'))+1;
+        $(e).parent('td').attr('rowspan',rows);
+        var newtr=$(e).parents('tr').clone();
+        newtr.find('td')[0].remove();
+        $(e).parents('tr').after(newtr); //添加要以对象来添加，不要以字符串来添加
+    }
+    function delline(e){
+        var deltr=$(e);
+        $(e).alertmsg('confirm', '去掉要删除此栏吗？',{okCall:function(){
+            var class_data=deltr.parents('tr').attr('class_data');
+            if($('.'+class_data).length>1){
+                var rows=parseInt(deltr.parent('td').attr('rowspan'))-1;
+                deltr.parent('td').attr('rowspan',rows);
+                $('.'+class_data).last().remove();
+                $(this).alertmsg('ok', '数据临时删除，点击此栏保存按钮确认修改数据')
+            }else{
+                $(this).alertmsg('error', '必须存在至少一个此栏目')
+                return false;
+            }
+        }});
+    }
+    function addtd(e){
+        var content=$(e).siblings('div:last').clone();
+        var countlink = parseInt($(e).siblings('input[count=countlink]').val())+1;
+        $(e).parent('td').append(content);
+        $(e).siblings('input[count=countlink]').val(countlink);
+    }
+    function deltd(e){
+        var deltd=$(e);
+        $(deltd).alertmsg('confirm','确定要删除此内容吗？',{okCall:function(){
+            if($(deltd).siblings('div').length>1){
+                $(deltd).siblings('div').last().remove();
+                var countlink = parseInt($(e).siblings('input[count=countlink]').val())-1;
+                $(e).siblings('input[count=countlink]').val(countlink);
+                $(this).alertmsg('ok','数据临时删除，点击此栏保存按钮确认修改数据');
+            }else{
+                $(this).alertmsg('error', '必须存在至少一个此栏目')
+                return false;
+            }
+        }});
+    }
+    //保存数据
+    function save(e){
+        var classname=$(e).parents('tr').attr('class_data');
+        var datas=new Array();
+
+        $('.'+classname).find('input').each(function(){
+            datas.push($(this).attr('name')+':'+$(this).val());
+        });
+        datas=datas.join(',');
+        console.log(typeof datas);
+        console.log(datas);
+        $.ajax({
+            url:'/Admin/Opinion/editHandle',
+            dataType:'json',
+            data:{'datas':datas},
+            type:'post',
+            success:function(data){
+                console.log(data);
+            },
+            error:function(){
+
+            }
+        });
+    }
+</script>

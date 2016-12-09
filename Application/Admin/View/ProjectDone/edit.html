@@ -1,0 +1,223 @@
+<div class="bjui-pageContent">
+    <form action="<?php echo U('ProjectDone/save')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="pro_id" id='pro_id' value="{$pro_id}">
+        <input type="hidden" name="finish_id" value="{$finish_id}">
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="company_id" class="control-label x85">项目名称：</label>
+                        <input type="text" name="pro_title" id="p_company" value="{$pro_title}" size="15" data-toggle="lookup" data-url="<?php echo U('projectDone/couldApplyList')?>" data-width="600" data-height="300" readonly>
+                    </td>
+                    <td>
+                        <label for="company_id" class="control-label x85">项目经理：</label>
+                        <input type="text" name="pro_linker_name" value="{$pro_linker_name}" size="15" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="company_id" class="control-label x85">期限：</label>
+                        <input type="text" name="pro_time_limit" value="{$pro_time_limit}" size="20" readonly>
+                    </td>
+                    <td>
+                        <label for="company_id" class="control-label x85">金额：</label>
+                        <input type="text" name="pro_account" value="<?php echo number_format($pro_account,2); ?>" size="15" readonly>元
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="7">
+                        <label for="debt_no" class="control-label x120">申请内容：</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="check_back_ukey" id="back_Ukey" data-toggle="icheck" data-label="退还Ukey" value="1" <?php echo $back_ukey > 0 ? 'checked':''; ?>>&nbsp;<input type="text" name="back_ukey" id="p_company" value="<?php echo $back_ukey > 0 ? $back_ukey:''; ?>" size="5" data-width="600" data-height="300" readonly>个，详情：
+                        <input type="text" name="back_ukey_detail" id="p_company" value="{$back_ukey_detail}" size="20" data-width="600" data-height="300" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="check_back_invoice" id="back_tax" data-toggle="icheck" data-label="退还发票原件" value="1" <?php echo $back_invoice > 0 ? 'checked':''; ?>>&nbsp;共<input type="text" name="back_invoice" id="p_company" value="<?php echo $back_invoice > 0 ? $back_invoice : '' ?>" size="5" data-width="600" data-height="300" readonly>张
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="logout_zdw" id="logout_zdw" data-toggle="icheck" data-label="注销中登网登记" value="1" <?php echo $logout_zdw > 0 ? 'checked':''; ?>>&nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="logout_account" id="logout_account" data-toggle="icheck" data-label="注销账户（虚拟/实体）" value="1" <?php echo $logout_account > 0 ? 'checked':''; ?>>&nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="change_yz" id="change_yz" data-toggle="icheck" data-label="更改印鉴" value="1" <?php echo $change_yz > 0 ? 'checked':''; ?> >&nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="check_other" id="other" data-toggle="icheck" data-label="其他" value="1" <?php echo empty($other) === true ? '':'checked'; ?>>&nbsp;<input type="text" name="other" id="p_company" value="<?php echo $other?>" size="15" data-width="600" data-height="300" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label for="debt_no" class="control-label x85">项目情况说明：</label>
+                            <textarea name="content" id="j_custom_note_1" data-toggle="autoheight" rows="2" cols="50">{$content}</textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+    <h4>项目收益情况</h4>
+    <table id='profit' class="table table-bordered table-striped table-hover" width="100%">
+        <thead>
+            <tr>
+                <th align="center" width="400">项目名称</th>
+                <th align="center" width="150">扣除保证金融资额度（万）</th>
+                <th align="center" width="300">放款时间</th>
+                <th align="center" width="300">还款时间</th>
+                <th align="center" width="150">资金占用天数</th>
+                <th align="center" width="150">手续费（万）</th>
+                <th align="center" width="150">投资咨询费（万）</th>
+                <th align="center" width="300">实收利息（含罚息）（万）</th>
+                <th align="center" width="300">合计（万）</th>
+                <th align="center" width="100">收益率</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php 
+                foreach($profit as $v){
+                    $principal += $v['real_loan'];
+                    $handling_charge += $v['handling_charge'];
+                    $counseling_fee += $v['counseling_fee'];
+                    $interest += $v['interest'];
+                    $sum += $v['sum'];
+                    $sum_profit += $v['part_sum_profit']
+            ?>
+            <tr data-id="<?php echo $v['debt_all_id']?>">
+                <td align="center"><?php echo $v['pro_title']?></td>
+                <td align="center"><?php echo round($v['real_loan'], 4)?></td>
+                <td align="center"><?php echo $v['real_time']?></td>
+                <td align="center"><?php echo $v['real_pay_time']?></td>
+                <td align="center"><?php echo $v['days'] ?></td>
+                <td align="center"><?php echo round($v['handling_charge'], 4)?></td>
+                <td align="center"><?php echo round($v['counseling_fee'], 4)?></td>
+                <td align="center"><?php echo round($v['interest'], 4)?></td>
+                <td align="center"><?php echo round($v['sum'], 4)?></td>
+                <td align="center"><?php echo round($v['profit_rate'] * 100, 2) ?>%</td>
+                
+            </tr>
+            <?php }?>
+            <tr data-id="sum">
+                <td align="center">合计</td>
+                <td align="center"><?php echo round($principal, 4)?></td>
+                <td align="center"></td>
+                <td align="center"></td>
+                <td align="center"></td>
+                <td align="center"><?php echo round($handling_charge, 4)?></td>
+                <td align="center"><?php echo round($counseling_fee, 4)?></td>
+                <td align="center"><?php echo round($interest, 4)?></td>
+                <td align="center"><?php echo round($sum, 4)?></td>
+                <td align="center"></td>
+            </tr>
+            <tr data-id="sum">
+                <td align="center"></td>
+                <td align="center"></td>
+                <td align="center"></td>
+                <td align="center"></td>
+                <td align="center"></td>
+                <td align="center"></td>
+                <td align="center"></td>
+                <td align="center"></td>
+                <td align="center">综合收益</td>
+                <td align="center"><?php echo round($sum_profit * 100, 2)?>%</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>
+<script>
+$('#pro_id').on('afterchange.bjui.lookup', function (e, data) {
+        var repay_money = 0;
+        var myvalue = data.value;
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: "/Admin/ProjectDone/getProfit",
+            data: {pro_id: myvalue},
+            success: function (list) {
+                if (list.statusCode == 200) {
+                    var content = list.content;
+                    var table = $('#profit > tbody');
+                    table.html('');
+                    var sum_debt_account = 0;
+                    var sum_handling_charge = 0;
+                    var sum_counseling_fee = 0;
+                    var sum_interest = 0;
+                    var sum_sum = 0;
+                    var profit_rate = 0;
+                    for (i = 0; i < content.length; i++) {
+                        data = content[i];
+                        var newTr = '<tr><td align="center">' + data.pro_title + '</td><td align="center">' + data.debt_account + '</td>\n\
+                                    <td align="center">' + data.real_time + '</td><td align="center">' + data.real_pay_time + '</td><td align="center">' + data.days + '</td>\n\
+                                    <td align="center">' + data.handling_charge + '</td><td align="center">' + data.counseling_fee + '</td><td align="center">' + data.interest + '</td>\n\
+                                    <td align="center">' + data.sum + '</td><td align="center">' + data.profit_rate + '</td></tr>';
+                        sum_debt_account += parseFloat(data.debt_account);
+                        sum_handling_charge += parseFloat(data.handling_charge);
+                        sum_counseling_fee += parseFloat(data.counseling_fee);
+                        sum_interest += parseFloat(data.interest);
+                        sum_sum += parseFloat(data.sum);
+                        table.append(newTr);
+                    }
+                    var sum = '<tr><td align="center">合计</td><td align="center">' + sum_debt_account + '</td>\n\
+                                    <td align="center"></td><td align="center"></td><td align="center"></td>\n\
+                                    <td align="center">' + sum_handling_charge + '</td><td align="center">' + sum_counseling_fee + '</td><td align="center">' + sum_interest + '</td>\n\
+                                    <td align="center">' + sum_sum + '</td><td align="center"></td></tr>\n\
+                                <tr><td align="center"></td><td align="center"></td>\n\
+                                    <td align="center"></td><td align="center"></td><td align="center"></td>\n\
+                                    <td align="center"></td><td align="center"></td><td align="center"></td>\n\
+                                    <td align="center">综合收益</td><td align="center">' + profit_rate + '</td></tr>';
+                    table.append(sum);                
+                } else {
+                    alert('非法数据');
+                }
+            }
+        });
+    });
+    //退还ukey
+    $('#back_Ukey').on('ifChecked', function (event) {
+        $('input[name="back_ukey"]').attr('data-rule', 'required');
+        $('input[name="back_ukey"]').removeAttr('readonly');
+        $('input[name="back_ukey_detail"]').removeAttr('readonly');
+    });
+    $('#back_Ukey').on('ifUnchecked', function (event) {
+        $('input[name="back_ukey"]').removeAttr('data-rule', 'required');
+        $('input[name="back_ukey"]').attr('readonly', true);
+        $('input[name="back_ukey_detail"]').attr('readonly', true);
+    });
+    //退还发票
+    $('#back_tax').on('ifChecked', function (event) {
+        $('input[name="back_invoice"]').attr('data-rule', 'required');
+        $('input[name="back_invoice"]').removeAttr('readonly');
+    });
+    $('#back_tax').on('ifUnchecked', function (event) {
+        $('input[name="back_invoice"]').removeAttr('data-rule', 'required');
+        $('input[name="back_invoice"]').attr('readonly', true);
+    });
+    //其他
+    $('#other').on('ifChecked', function (event) {
+        $('input[name="other"]').attr('data-rule', 'required');
+        $('input[name="other"]').removeAttr('readonly');
+    });
+    $('#other').on('ifUnchecked', function (event) {
+        $('input[name="other"]').removeAttr('data-rule', 'required');
+        $('input[name="other"]').attr('readonly', true);
+    });
+
+</script>

@@ -1,0 +1,105 @@
+<div class="bjui-pageContent">
+    
+    <h4>项目收益情况</h4>
+    <table id='profit' class="table table-bordered table-striped table-hover" width="100%">
+        <thead>
+            <tr>
+                <th align="center" width="400">项目名称</th>
+                <th align="center" width="150">融资额度(不包含保证金)（万）</th>
+                <th align="center" width="300">放款时间</th>
+                <th align="center" width="300">还款时间</th>
+                <th align="center" width="150">资金占用天数</th>
+                <th align="center" width="150">手续费（万）</th>
+                <th align="center" width="150">投资咨询费（万）</th>
+                <th align="center" width="300">实收利息（含罚息）（万）</th>
+                <th align="center" width="300">合计（万）</th>
+                <th align="center" width="100">收益率</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-id="<?php echo $profit['debt_all_id']?>">
+                <td align="center"><?php echo $profit['pro_title']?></td>
+                <td align="center" id='debt_account'><?php echo round($profit['debt_account'], 4)?></td>
+                <td align="center" id='startDate'><?php echo $profit['real_time']?></td>
+                <td align="center" id='endDate'><?php echo $profit['real_pay_time']?></td>
+                <td align="center" id="days" ><?php echo $profit['days'] ?></td>
+                <td align="center" ><?php echo round($profit['handling_charge'], 4)?></td>
+                <td align="center" ><?php echo round($profit['counseling_fee'], 4)?></td>
+                <td align="center" ><?php echo round($profit['interest'], 4)?></td>
+                <td align="center" id='sum'><?php echo round($profit['sum'], 4)?></td>
+                <td align="center" id='profit_rate'><?php echo round($profit['profit_rate'] * 100, 2) ?>%</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="alert alert-info form-inline">收益率=(手续费+咨询投资费+实收利息)/融资额度(不包含保证金)/资金占用天数X365</div>
+    <h4>选择还款完成时间</h4>
+    <form action="<?php echo U('ProjectDebt/repaymentDone')?>" id="repaymentDone" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="debt_all_id" id='debt_all_id' value="{$debt_all_id}">
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="company_id" class="control-label x120">还款完成时间：</label>
+                        <input type="text" name="real_pay_time" id="real_pay_time" value="<?php echo date('Y-m-d', time())?>" size="15" data-toggle="datepicker" readonly>
+                        <!--<input type="text" value="项管部" size="15" readonly>-->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="button" class="btn-default" data-icon="save" data-toggle="alertmsg" data-options="{msg:'是否确定已经还款完成', type:'confirm', okCall:'submitForm'}">保存</button></li>
+    </ul>
+</div>
+<script>
+//    $('.btn-default').alertmsg('confirm', '是否确定已经还款完成！');
+    function submitForm() {
+        $("#repaymentDone").submit();
+    }
+    $('#real_pay_time').on('afterchange.bjui.datepicker', function(e, data) {
+        var startDate = $('#startDate').text();
+        startDate = new Date(startDate);
+        var endDate = data.value;
+        endDate = new Date(endDate);
+        var diffDate = (endDate-startDate)/(1000*3600*24);
+        if (diffDate <= 0) {
+            $(e).alertmsg('warn', '还款时间必须大于放款时间！');
+            return false;
+        }
+        var days =  parseInt(Math.ceil(diffDate));
+        $('#days').text(days);
+        endDate = formatDate(endDate);
+        $('#endDate').text(endDate);
+        var sum = $('#sum').text();
+        var debt_account = $('#debt_account').text();
+        var profit = parseFloat(sum);
+        var rate = parseFloat(profit) / parseFloat(debt_account) / days * 365 * 100;
+        $('#profit_rate').text(rate.toFixed(2) + '%');
+    });
+    
+    function formatDate(now)   { 
+        var   now = new Date(now);
+        var   year = now.getFullYear();     
+        var   month = now.getMonth() + 1;     
+        var   date = now.getDate();     
+        var   hour = now.getHours(); 
+        var   minute = now.getMinutes();     
+        var   second = now.getSeconds(); 
+        return   year + "-" + fixZero(month, 2) + "-" + fixZero(date, 2) ;// + fixZero(hour, 2) + ":" + fixZero(minute, 2) + ":" + fixZero(second, 2); 
+    }
+    
+    //时间如果为单位数补0 
+    function fixZero(num, length) {
+    var str = "" + num; 
+    var len = str.length;
+    var s = ""; 
+    for (var i = length; i-- > len; ) {
+         s += "0";
+     } 
+   return s + str;
+    }  
+
+</script>

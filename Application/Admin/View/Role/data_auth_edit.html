@@ -1,0 +1,63 @@
+<div class="bjui-pageHeader">
+</div>
+<div class="bjui-pageContent tableContent">
+    <form action="<?php echo U('Role/saveDataAuth')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" value="<?php echo $role_id?>" name="role_id">
+        <table class="table table-bordered table-hover table-top">
+            <thead>
+                <tr>
+                    <th data-order-field="pro_title" align="center" width="300" rowspan="2">数据名称</th>
+                    <th align="center" width="300" colspan="4">操作</th>
+                </tr>
+                <tr>
+                    <th align="center" width="300">新增</th>
+                    <th align="center" width="300">修改</th>
+                    <th align="center" width="300">查询</th>
+                    <th align="center" width="300">删除</th>
+                    <!--<th align="center" width="300">删除</th>-->
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($list as $v){?>
+                <tr data-id="<?php echo $v['id']?>" class="<?php echo debt_tr_class($v['status'], $v['end_time'])?>" >
+                    <td align="center" title="<?php echo $v['describe']?>"><?php echo $v['title']?></td>
+                    <td align="center">
+                        <input type="checkbox" name="ids[<?php echo $v['id']?>][add]" data-toggle="icheck" <?php echo in_array('add', $v['auth']) ? 'checked' : ''?>>
+                    </td>
+                    <td align="center">
+                        <input type="checkbox" name="ids[<?php echo $v['id']?>][mod]" data-toggle="icheck" <?php echo in_array('mod', $v['auth']) ? 'checked' : ''?>>
+                    </td>
+                    <td align="center">
+                        <input type="checkbox" name="ids[<?php echo $v['id']?>][find]" data-toggle="icheck" <?php echo in_array('find', $v['auth']) ? 'checked' : ''?>>
+                    </td>
+                    <td align="center">
+                        <input type="checkbox" name="ids[<?php echo $v['id']?>][del]" data-toggle="icheck" <?php echo in_array('del', $v['auth']) ? 'checked' : ''?>>
+                    </td>
+<!--                    <td align="center">
+                        <input type="checkbox" id="check_all" data-toggle="icheck" data-label="全选">
+                    </td>-->
+                </tr>
+                <?php }?>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>
+{//分页组件}
+<!--{:W('Layout/PageFooter', array($total))}-->
+<script>
+   $('#check_all').on('ifChecked', function (event) {
+       $(this).parent();
+       debugger;
+        $('input[]').iCheck('check');
+    });
+    $('#check_all').on('ifUnchecked', function (event) {
+        $('input[name="mids"]').iCheck('uncheck');
+    });
+
+</script>    

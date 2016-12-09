@@ -1,0 +1,65 @@
+<div class="bjui-pageHeader">
+    <form id="pagerForm" data-toggle="ajaxsearch" action="<?php echo U('Company/index')?>" method="post">
+        <input type="hidden" name="isSearch" value="1">
+        <input type="hidden" name="pageSize" value="${model.pageSize}">
+        <input type="hidden" name="pageCurrent" value="${model.pageCurrent}">
+        <input type="hidden" name="orderField" value="${param.orderField}">
+        <input type="hidden" name="orderDirection" value="${param.orderDirection}">
+        <div class="bjui-searchBar">
+            <button data-url="{:U('Company/add')}" class="btn btn-blue" data-toggle="dialog" data-height='400' data-icon="plus" data-id="company-add">新增客户</button>
+            &nbsp;
+            <label>公司名称：</label><input type="text" id="company_name" value="{$post.company_name}" name="company_name" class="form-control" size="10">&nbsp;
+            <label>联系人姓名：</label><input type="text" value="{$post.company_linker}" name="company_linker" class="form-control" size="8">&nbsp;
+            <!--<input type="checkbox" id="j_table_chk" value="true" data-toggle="icheck" data-label="我的客户">-->
+            <!--<button type="button" class="showMoreSearch" data-toggle="moresearch" data-name="custom"><i class="fa fa-angle-double-down"></i></button>-->
+            <button type="submit" class="btn-default" data-icon="search">查询</button>&nbsp;
+            <a class="btn btn-orange" href="javascript:;" data-toggle="reloadsearch" data-clear-query="true" data-icon="undo">清空查询</a>
+        </div>
+        <div class="bjui-moreSearch">
+            <label>职业：</label><input type="text" value="" name="profession" size="15" />
+            <label>&nbsp;性别:</label>
+            <select name="sex" data-toggle="selectpicker">
+                <option value="">全部</option>
+                <option value="true">男</option>
+                <option value="false">女</option>
+            </select>
+            <label>&nbsp;手机:</label>
+            <input type="text" value="" name="mobile" size="10">
+        </div>
+    </form>
+</div>
+<div class="bjui-pageContent tableContent">
+    <table class="table table-bordered table-hover table-top">
+        <thead>
+            <tr>
+                <th data-order-field="company_name" align="center" width="300">步骤名称</th>
+                <th data-order-field="company_linker" align="center" width="100">通过</th>
+                <th data-order-field="company_mobile" align="center" width="100">不通过</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($list as $v1) {?>
+            <?php foreach($v1 as $v) { ?>
+            <tr data-id="<?php echo $v['company_id']?>" >
+                <td align="center"><?php echo $v['step_desc']?></td>
+                <td align="center"> <a href="<?php echo U('Company/edit', array('company_id'=>$v['company_id']))?>" class="btn btn-green" data-toggle="dialog" data-height="400" data-id="company-edit" data-title="编辑">编辑</a></td>
+                <td align="center"> <a href="<?php echo U('Company/edit', array('company_id'=>$v['company_id']))?>" class="btn btn-green" data-toggle="dialog" data-height="400" data-id="company-edit" data-title="编辑">编辑</a></td>
+            </tr>
+            <?php }?>
+            <?php }?>
+        </tbody>
+    </table>
+</div>
+{//分页组件}
+{:W('Layout/PageFooter', array($total))}
+<script>
+    $(function(){
+            for(var i=0;i<3;i++) {
+                if($("select").get(0).options[i].value == '{$post.status}')  {
+                    $("select").get(0).options[i].selected = true;  
+                    break;
+                }
+            }
+     })
+    
+</script>    

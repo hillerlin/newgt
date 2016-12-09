@@ -1,0 +1,85 @@
+<script type="text/javascript">
+function pic_upload_success(file, data) {
+    var json = $.parseJSON(data)
+    
+    $(this).bjuiajax('ajaxDone', json)
+    if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+        $('#j_custom_pic').val(json.filename).trigger('validate')
+        $('#j_custom_span_pic').html('<img src="'+ json.filename +'" width="100" />')
+    }
+}
+function do_OK(json, $form) {
+    console.log(json)
+    console.log($form)
+}
+//护照有效日期  = 签发日期 + 10年
+$('#j_custom_issuedate').on('afterchange.bjui.datepicker', function(e, data) {
+    var pattern = 'yyyy-MM-dd'
+    var start   = end = data.value
+    
+    end.setFullYear(start.getFullYear() + 10)
+    end.setDate(start.getDate() - 1)
+    
+    $('#j_custom_indate').val(end.formatDate(pattern))
+})
+</script>
+<div class="bjui-pageContent">
+    <form action="<?php echo U('ProjectDebtDetail/doExchangeAdd')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="debt_all_id" value="<?php echo $debt_all_id?>"  />
+        <input type="hidden" name="debt_id" value="<?php echo $debt_id?>"  />
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x120">债权的编号：</label>
+                        <input type="text" name="debt_no" id="p_name" value="{$debt_no}" data-rule="required" size="15">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_account" class="control-label x120">债权金额：</label>
+                        <input type="text" name="debt_value" id="p_name" value="{$debt_value}" data-rule="required" size="15">元
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="start_time" class="control-label x120">开始时间：</label>
+                        <input type="text" name="start_time" id="p_title" value="<?php echo date('Y-m-d', $start_time)?>" data-rule="required" size="15" data-toggle="datepicker">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="end_time" class="control-label x120">结束时间：</label>
+                        <input type="text" name="end_time" id="p_account" value="<?php echo date('Y-m-d', $end_time)?>" data-rule="required" size="15" data-toggle="datepicker">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="pro_type" class="control-label x120">是否商票背书：</label>
+                        <input type="checkbox" name="type" id="check" data-toggle="icheck" <?php echo $type == 1 ? 'checked' : '';?> value="1">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="end_time" class="control-label x120">备注：</label>
+                        <textarea name="remark" id="j_custom_note_1" cols="30" rows="2">{$remark}</textarea>
+                    </td>
+                </tr>
+            </tbody>    
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>
+<script>
+$('input[name="type"]').on('ifChecked', function (event) {
+        $('input[name="type"]').val('1');
+    });
+    $('input[name="type"]').on('ifUnchecked', function (event) {
+        $('input[name="type"]').val('0');
+    });    
+</script>

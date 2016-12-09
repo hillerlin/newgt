@@ -1,0 +1,41 @@
+<div class="bjui-pageContent">
+    <div style="margin:15px auto 0; width:96%;">
+        <div class="row" style="padding: 0 8px;">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i>近30天放款情况柱状/拆线图 </h3></div>
+<!--                    <div class="panel-body">
+                        <div style="mini-width:400px;height:350px" data-toggle="echarts" data-type="bar,line" data-url="/Admin/ReportForms/dayLoan.html"></div>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover table-striped table-top">
+        <thead>
+            <tr>
+                <th data-order-field="pro_no" align="center" width="200">项目标题</th>
+                <th data-order-direction="asc" data-order-field="pay_time" align="center" width="180">放款时间</th>
+                <th data-order-field="money" align="center" width="150">放款金额(万元)</th>
+                <th data-order-field="money" align="center" width="150">收款总金额(万元)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($list as $v){?>
+            <tr data-id="<?php echo $v['oid']?>">
+                <?php if($n_counts[$v['pro_id']] == $pro_id_counts[$v['pro_id']]){ ?>
+                <td rowspan="<?php echo $pro_id_counts[$v['pro_id']];?>"  align="center"><a href="<?php echo U('ReportForms/projectFlow', array('pro_id' => $v['pro_id']))?>" data-toggle="dialog" data-height='500' data-width='820'><?php echo $v['pro_title']?></a></td>
+                <?php } --$n_counts[$v['pro_id']];?>
+                <td align="center"><?php echo date('Y-m-d',$v['addtime'])?></td>
+                <td align="center"><?php echo number_format($v['out_money']/10000, 2)?></td>
+                <td align="center"><?php echo number_format($v['in_money']/10000, 2)?></td>
+            </tr>
+            <?php }?>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">关闭</button></li>
+    </ul>
+</div>

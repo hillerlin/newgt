@@ -1,0 +1,28 @@
+<div class="bjui-pageContent">
+    <form action="<?php echo U('Workflow/save')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="step_id" value="{$step_id}"  />
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x150">操作名称：</label>
+                        <input type="text" name="pro_title" id="p_name" value="{$step_desc}" data-rule="required" size="15">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x150">角色：</label>
+                        <input type="hidden" name="step_role_id" value="{$step_role_id}">
+                        <input type="text" name="role_name" id="p_name" value="{$role_name}"  data-toggle="lookup" data-url="<?php echo U('role/lookup')?>?is_loan=1" data-rule="required" size="15" readonly>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>

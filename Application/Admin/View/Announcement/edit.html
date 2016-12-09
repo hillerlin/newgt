@@ -1,0 +1,38 @@
+<div class="bjui-pageContent">
+    <form action="<?php echo U('Announcement/save')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="id" value="{$id}">
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="company_id" class="control-label x85">标题：</label>
+                        <input type="text" name="title" value="{$title}" size="30">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="status" class="control-label x85">状态：</label>
+                        <input type="radio" name="status" id="check" data-toggle="icheck" data-label="发布" value="1" <?php echo $status == 1 ? 'checked' : ''?>>&nbsp;
+                        <input type="radio" name="status" id="check" data-toggle="icheck" data-label="隐藏" value="0" <?php echo $status == 0 ? 'checked' : ''?>>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="j_custom_content" class="control-label x85">内容编辑：</label>
+                        <div style="display: inline-block; vertical-align: middle;">
+                            <textarea name="content" id="j_form_content" class="j-content" style="width: 800px;" data-toggle="kindeditor" data-minheight="200">
+                                <?php echo htmlspecialchars_decode($content)?>
+                            </textarea>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>

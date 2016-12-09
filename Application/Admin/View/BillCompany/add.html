@@ -1,0 +1,26 @@
+<div class="bjui-pageContent">
+    <form action="<?php echo U('BillCompany/save')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="debt_no" class="control-label x150">公司名称：</label>
+                        <input type="text" name="company_name" id="p_name" value="" data-rule="required" size="15">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="remark" class="control-label x150">公司备注：</label>
+                        <textarea name="remark" id="j_custom_note_1" data-toggle="autoheight" rows="2" ></textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>

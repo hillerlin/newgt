@@ -1,0 +1,72 @@
+<script type="text/javascript">
+    function pic_upload_success(file, data) {
+        var json = $.parseJSON(data)
+        $(this).bjuiajax('ajaxDone', json)
+        if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+            add_uploadedfile(json.content);
+//        $('#j_custom_pic').val(json.filename).trigger('validate')
+//        $('#j_custom_span_pic').html('<img src="'+ json.filename +'" width="100" />')
+        }
+    }
+    function do_OK(json, $form) {
+        console.log(json)
+        console.log($form)
+    }
+// 图片上传
+
+    function add_uploadedfile(data) {
+        var i = $('#file-list> tbody > tr').length + 1;
+        var newTr = '<tr><td align="center"><a href="'+data.file_path+'">' + data.file_name + '</a></td><td align="center">' + data.addtime + '</td><td align="center"><a href="<?php echo U("FundManage/remove_attachment")?>?aid='+data.aid+'&fund_id={#fund_id}" data-data=\'{"file_path":\"'+data.file_path+'\","fund_id":"{#fund_id}","aid":"'+data.aid+'\"}\' class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td></tr>';
+//        var newImg = '<li id="' + data.file_id + '"><input type="hidden" name="attachment['+ i +'][path]" value="' + data.file_path + '" /><div class="thumb-list-pics"><a href="javascript:void(0);"><img src="' + data.file_path + '" alt=""/></a></div><a href="javascript:del_file_upload(0,' + data.file_id + ',\'' + data.file_path + '\');" class="del" title="删除">X</a><a href="javascript:insert_editor(\'' + data.file_path + '\');" class="inset"><i class="fa fa-clipboard"></i>插入图片</a></li>';
+        $('#file-list > tbody').prepend(newTr);
+    }
+    
+    
+</script>
+<div class="bjui-pageContent">
+
+    <input id="fund_id" type="hidden" name="fund_id" value="<?php echo $fund_id?>">
+    <table id='file-list' class="table table-condensed table-hover" width="100%">
+        <thead>
+            <tr>
+                <th align="center" width="100">编号</th>
+                <th align="center" width="300">文件名</th>
+                <th align="center" width="300">上传日期</th>
+                <th width="300" align="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php $i = 1;foreach($list as $v){?>
+            <tr>
+                <td align="center"><?php echo $i++;?></td>
+                <td align="center"><a target="_blank" href="<?php echo $v["path"]?>"><?php echo $v['doc_name']?></a></td>
+                <td align="center"><?php echo date('Y-m-d H:s:i', $v['addtime'])?></td>
+                <td align="center"><a href="<?php echo U('FundManage/remove_attachment')?>" data-data='{"file_path":"<?php echo $v["path"]?> ","fund_id":"<?php echo $v["fund_id"]?>","aid":"<?php echo $v["id"]?>","file_id":"<?php echo $v["id"]?>"}'  class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td>
+            </tr>
+            <?php }?>
+        </tbody>
+    </table>
+    <form action="<?php echo U('FundManage/save_project')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
+        <label for="pro_desc" class="control-label x85">上传文件：</label>
+        <div style="display: inline-block; vertical-align: middle;">
+            <div id="j_custom_pic_up" data-toggle="upload" data-uploader="<?php echo U('FundManage/upload_attachment')?>?sessionid=?" 
+                 data-file-size-limit="1024000000"
+                 data-file-type-exts="<?php echo $exts ?>"
+                 data-multi="true"
+                 data-on-upload-success="pic_upload_success"
+                 data-icon="cloud-upload"
+                 data-auto="true"
+                 data-form-data='{"file_id":"<?php echo $file_id?>","fund_id":"<?php echo $fund_id?>"}'
+                 data-file-obj-name='fund-<?php echo $fund_id?>'></div>
+            </div>
+            <input type="hidden" name="filename" value="" id="j_custom_pic">
+            <span id="j_custom_span_pic">
+            </span>
+    </form>
+</div>
+<!--<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>-->

@@ -1,0 +1,17 @@
+<div class="bjui-pageContent">
+    <div style="margin:15px auto 0; width:1000px;">
+        <fieldset>
+            <legend>{$title}</legend>
+            <?php if($type==1):?>
+            <?php echo htmlspecialchars_decode($file_path)?>
+            <?php else:?>
+            <?php echo htmlspecialchars_decode($contract_file)?>
+            <?php endif;?>
+        </fieldset>
+    </div>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">关闭</button></li>
+    </ul>
+</div>

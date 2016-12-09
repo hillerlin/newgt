@@ -1,0 +1,151 @@
+
+<div class="bjui-pageContent tableContent">
+    <table id="test-datagrid-json" data-height="100%" data-width="100%" class="table table-bordered">
+        </table>
+</div>
+<script>
+    $('#test-datagrid-json').datagrid({
+//    gridTitle : 'Test datagrid - Array 数据类型，dialog编辑，显示行号及复选框，表头快速筛选，显示页脚',
+    local: 'remote',
+    dataUrl: '/Admin/ReportForms/projectStatistics',
+    dataType: 'json',
+    columns: [
+        {
+            name: 'pro_title',
+            label: '项目标题',
+            align: 'center',
+            width: 100
+        },
+        
+        {
+            name: 'loan_time',
+            label: '初次放款时间',
+            align: 'center',
+            width: 100
+        },
+        {
+            name: 'deadline',
+            label: '放款到期日',
+            align: 'center',
+            width: 100
+        },
+        {
+            name: 'term',
+            label: '融资期限（月）',
+            align: 'center',
+            width: 85
+        },
+        {
+            name: 'real_loan_money',
+            label: '融资金额（万）',
+            calc: 'sum',
+            calcTit: '合计',
+            align: 'center',
+            width: 100
+        },
+        {
+            name: 'repurchase_rate',
+            label: '溢价表（%）',
+            width: 100
+        },
+        {
+            name: 'handling_charge',
+            label: '保理手续费（%）',
+            width: 100
+        },
+        {
+            name: 'counseling_fee',
+            label: '咨询费（%）',
+            width: 80
+        },
+        {
+            name: 'profit_rate',
+            label: '合计（%）',
+            align: 'center',
+            width: 80
+        },
+        {
+            name: 'pro_linker_name',
+            label: '项目经理',
+            align: 'center',
+            width: 80
+        },
+        {
+            name: 'pmd_name',
+            label: 'PMD',
+            align: 'center',
+            width: 80
+        },
+        {
+            name: 'cash_deposit_money',
+            label: '保证金（万）',
+            calc: 'sum',
+            calcTit: '合计',
+            align: 'center',
+            width: 80
+        },
+        {
+            name: 'debt',
+            label: '应收（万）',
+            calc: 'sum',
+            calcTit: '合计',
+            align: 'center',
+            width: 65
+        },
+        {
+            name: 'profit',
+            label: '还款额（万）',
+            calc: 'sum',
+            calcTit: '合计',
+            align: 'center',
+            width: 100
+        },
+        {
+            name: 'interest_type',
+            label: '付息方式',
+            align: 'center',
+            width: 80
+        },
+        {
+            name: 'contract_money',
+            label: '合同融资额（万）',
+            align: 'center',
+            width: 100
+        },
+        {
+            name: 'industry',
+            label: '行业分类',
+            align: 'center',
+            width: 100
+        },
+        {
+            name: 'pro_kind',
+            label: '明/暗',
+            align: 'center',
+            type: 'boolean',
+            render: function(value) {
+                return (value && String(value) == 1) ? '暗' : '明';
+            },
+            width: 60
+        },
+        {
+            name: 'pro_type',
+            label: '正/反向',
+            align: 'center',
+            type: 'boolean',
+            render: function(value) {
+                return (value && String(value) == 1) ? '反向' : '正向';
+            },
+            width: 80
+        }
+    ],
+    paging: {pageSize:60},
+    showTfoot: true,
+//    fullGrid: true,
+    showLinenumber: true,
+    hScrollbar: true,
+    filterThead: false,
+    fieldSortable: false,
+    columnFilter: false
+});
+</script>

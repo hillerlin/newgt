@@ -1,0 +1,81 @@
+<div class="bjui-pageHeader">
+    <form id="pagerForm" data-toggle="ajaxsearch" action="<?php echo U('RiskControlResearch/undistributed')?>" method="post">
+        <input type="hidden" name="pageSize" value="${model.pageSize}">
+        <input type="hidden" name="pageCurrent" value="${model.pageCurrent}">
+        <input type="hidden" name="orderField" value="${param.orderField}">
+        <input type="hidden" name="orderDirection" value="${param.orderDirection}">
+        <div class="bjui-searchBar">
+            <!--<button data-url="/Admin/Project/add.html" class="btn btn-blue" data-toggle="dialog" data-width='600' data-mask='true' data-icon="plus" data-id="project-add">新增项目</button>-->
+            <label>提交状态:</label>
+            <select name="submit_status" data-toggle="selectpicker">
+                <option value="">全部</option>
+                <option value="0">草稿</option>
+                <option value="1">已提交</option>
+            </select>&nbsp;
+            <label>项目编号：</label><input type="text" id="pro_no" value="" name="pro_no" class="form-control" size="10">&nbsp;
+            <button type="submit" class="btn-default" data-icon="search">查询</button>&nbsp;
+            <a class="btn btn-orange" href="javascript:;" data-toggle="reloadsearch" data-clear-query="true" data-icon="undo">清空查询</a>
+        </div>
+        <div class="bjui-moreSearch">
+            <label>职业：</label><input type="text" value="" name="profession" size="15" />
+            <label>&nbsp;性别:</label>
+            <select name="sex" data-toggle="selectpicker">
+                <option value="">全部</option>
+                <option value="true">男</option>
+                <option value="false">女</option>
+            </select>
+            <label>&nbsp;手机:</label>
+            <input type="text" value="" name="mobile" size="10">
+        </div>
+    </form>
+</div>
+<div class="bjui-pageContent tableContent">
+    <table class="table table-bordered table-hover table-striped table-top" data-selected-multi="true">
+        <thead>
+            <tr>
+                <th data-order-field="pro_no" align="center" width="300">项目编号</th>
+                <th data-order-field="pro_title" align="center" width="300">项目标题</th>
+                <th data-order-direction="asc" data-order-field="addtime" align="center" width="300">添加时间</th>
+                <th data-order-field="company" align="center" width="300">公司</th>
+                <th data-order-field="gt_uid" align="center" width="100">项管部跟进人</th>
+                <th data-order-field="gt_uid" align="center" width="100">风控部跟进人</th>
+                <th data-order-field="pro_status"  align="center" width="100">立项状态</th>
+                <th width="300" align="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($list as $v){?>
+            <tr data-id="<?php echo $v['pro_id']?>">
+                <td align="center"><?php echo $v['pro_no']?></td>
+                <td align="center"><?php echo $v['pro_title']?></td>
+                <td align="center"><?php echo date('Y-m-d H:i:s',$v['addtime'])?></td>
+                <td align="center"><?php echo $v['company_name']?></td>
+                <td align="center"><?php echo $v['pmd_name']?></td>
+                <td align="center"><?php echo empty($v['rcd_name']) ? '<code>未分配</code>' : $v['rcd_name']?></td>
+                <td align="center"><?php echo $v['step_pid'] > 2 ? '风控审核完成' : $workflow[$v['step_pid']][$v['pro_step']]['step_desc']?></td>
+                <td align="center">
+                    <a href="<?php echo U('RiskControlResearch/exchange', array('pro_id'=>$v['pro_id']))?>" class="btn btn-green" data-toggle="dialog" data-id="project-distribute" data-title="分配跟进人">分配跟进人</a>
+                    <a href="<?php echo U('Project/detail', array('pro_id'=>$v['pro_id']))?>" class="btn btn-green" data-toggle="navtab" data-id="project-detail" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="项目详情">查看</a>
+                    <a href="<?php echo U('Project/file', array('pro_id'=>$v['pro_id']))?>" class="btn btn-green" data-toggle="navtab" data-id="project-file" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="项目相关文件">相关文件</a>
+                </td>
+            </tr>
+            <?php }?>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+    <div class="pages">
+        <span>每页&nbsp;</span>
+        <div class="selectPagesize">
+            <select data-toggle="selectpicker" data-toggle-change="changepagesize">
+                <option value="30">30</option>
+                <option value="60">60</option>
+                <option value="120">120</option>
+                <option value="150">150</option>
+            </select>
+        </div>
+        <span>&nbsp;条，共 <?php echo $total?> 条</span>
+    </div>
+    <div class="pagination-box" data-toggle="pagination" data-total="<?php echo $total?>" data-page-size="30" data-page-current="1">
+    </div>
+</div>

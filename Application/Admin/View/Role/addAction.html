@@ -1,0 +1,30 @@
+<div class="bjui-pageContent">
+    <table data-toggle="tablefixed" data-width="100%">
+        <thead></thead>
+        <tbody>
+        <tr>
+            <td>控制器名:</td>
+            <td><input type="text" name="actionname" onchange="ActionChange(this)" /></td>
+        </tr>
+        <tr>
+            <td>路径:</td>
+            <td><input type="text" name="actionpath" onchange="ActionChange(this)" /></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <a href="javascript:;" id="returnData" data-toggle="lookupback" data-args="{pid:'2', name:'工程师'}" class="btn btn-blue" title="选择本项" data-icon="check">选择</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    function ActionChange(e){
+        var actionname=$('input[name=actionname]').val();
+        var actionpath=$('input[name=actionpath]').val();
+        var returnData="{actionname:'"+actionname+"',actionpath:'"+actionpath+"',addtr:'1'}";
+        alert(returnData);
+        $('#returnData').attr('data-args',returnData);
+
+    }
+</script>

@@ -337,6 +337,16 @@ function roleNameToid($name)
 
 }
 
+//根据项目的状态返回相应的操作事件
+function projectToAction($authType,$pageAuth,$middleType='pre')
+{
+     $attrInde=C('proLevel')[$authType];
+    foreach ($pageAuth[$attrInde][$middleType] as $k=>$v)
+    {
+
+    }
+}
+
 
 
 

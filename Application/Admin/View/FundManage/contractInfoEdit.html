@@ -32,6 +32,7 @@
                                 <td align="center"><a target="_blank" href="<?php echo $v['path']?>"><img src="<?php echo $v['path']?>" style="max-width: 550px; max-height: 450px;"></a></td>
 
                                 <td align="center"><a href="/Admin/FundManage/remove.html" data-data='{"file_path":"<?php echo $v[path]?>","fund_id":"<?php echo $fund_id?>","imgIndex":<?php echo $k?>}'  class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td>
+                                <input type="hidden" name="voucher[][path]" value="<?php echo $v[path]?>" />
 
 
                             </tr>

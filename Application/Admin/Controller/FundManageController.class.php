@@ -476,7 +476,7 @@ class FundManageController extends CommonController
         $model->create();
         if(count(json_decode($list['file_path'],true))==1)
         {
-            $model->file_path=' ';
+            $model->file_path='';
             $updata=$model->save();
         }
         else

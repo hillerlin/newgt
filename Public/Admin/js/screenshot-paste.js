@@ -42,7 +42,7 @@
                     var src = JSON.parse(xhr.responseText);
                     var i = $(options.imgContainer + '> li').length + 1;
                     //document.getElementById("img_puth").value = img.src;
-                    var newImg = '<li id="1"><input type="hidden" name="voucher['+ i +'][path]" value="' + src + '" /><div class="thumb-list-pics"><a href="javascript:void(0);"><img src="' + src + '" alt=""/></a></div>\n\
+                    var newImg = '<li id="1"><input type="hidden" name="voucher[][path]" value="' + src + '" /><div class="thumb-list-pics"><a href="javascript:void(0);"><img src="' + src + '" alt=""/></a></div>\n\
                     <a href="/Admin/FinanceFlow/remove" data-data=\'' + src + '\' class="del" title="删除">X</a></li>';
                     $(document).find(options.imgContainer).prepend(newImg);
                 };

@@ -277,14 +277,20 @@ class ProjectModel extends BaseModel {
             $list = $this
                 ->table($this->trueTableName . ' AS t')
                 ->join('LEFT JOIN __ADMIN__ AS a1 ON a1.admin_id=t.admin_id')
-                ->join('LEFT JOIN __ADMIN__ AS a2 ON a2.admin_id=t.risk_admin_id')
+                ->join("LEFT JOIN __ADMIN__ AS a2 ON a2.admin_id='".$adminId."'")
+                ->join('LEFT JOIN __PJ_WORKFLOW__ AS pw ON t.pro_id=pw.pj_id')
                 ->join('LEFT JOIN __WORKFLOW_LOG__ as l ON t.pro_id=l.pj_id')
                 ->join('__COMPANY__ AS cp ON t.company_id=cp.company_id')
-                ->field('t.*,l.*,pro_title,pro_no,a1.real_name as pmd_name,a2.real_name as rcd_name,company_name')
+                ->field('t.*,l.*,pw.pro_level_now as pro_level_now,pro_title,pro_no,a1.real_name as pmd_name,a2.authpage as authpage,company_name')
                 ->where(array('pro_id'=>array('in',$idList)))
                 ->page($page, $pageSize)
                 ->order($order)
                 ->select();
+            foreach ($list as $kk=>$vv)
+            {
+                 $list[$kk]['authpage']=projectToAction($vv['pro_level_now'],json_decode($vv['authpage'],true));
+            }
+
            return array('total' => $total, 'list' => $list);
 
         }

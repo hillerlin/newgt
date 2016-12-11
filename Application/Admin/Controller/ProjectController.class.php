@@ -68,7 +68,6 @@ class ProjectController extends CommonController {
         $model=D('project');
         $pageSize = I('post.pageSize', 30);
         $page = I('post.pageCurrent', 1);
-        $pageAction=D('admin')->where('`admin_id`=%d',array($admin['admin_id']))->field('authpage')->find();
         $list= $model->isAudit($page,$pageSize,'t.addtime DESC',$admin['admin_id'],$admin['role_id'],0);
         $this->assign(array('name'=>$admin['real_name'],'list'=>$list['list'],'total' => $list['total'], 'pageCurrent' => $page,));
         $this->display();

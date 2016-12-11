@@ -40,20 +40,13 @@
             <td align="center"><?php echo date('Y-m-d H:i:s', $v['addtime'])?></td>
             <td align="center"><?php echo $v['company_name']?></td>
             <td align="center"><?php echo empty($v['pmd_name']) ? '<code>未分配</code>' : $v['pmd_name']?>&nbsp;</td>
-            <td align="center"><?php echo C('proLevel')[$v['pro_level']]?></td>
+            <td align="center"><?php echo C('proLevel')[$v['pro_level_now']]?></td>
             <!--<td align="center"><?php echo $v['submit_status']==1?'已提交':'草稿'?></td>-->
             <td align="center">
-                <?php if($v['submit_status'] == 0){?>
-                <a href="<?php echo U('Project/submit', array('pro_id'=>$v['pro_id']))?>" class="btn btn-green" data-toggle="navtab" data-id="project-submit" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="项目审核">提交</a>
-                <a href="<?php echo U('Project/del', array('pro_id'=>$v['pro_id']))?>" class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a>
-                <?php }else{ ?>
-                <a href="<?php echo U('Project/auditEdit', array('pro_id'=>$v['pro_id']))?>" class="btn btn-green" data-toggle="dialog" data-mask="true" data-height="900" data-width="800" data-id="project-audit" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="<?php echo $workflow[$v['step_pid']][$v['pro_step']]['step_desc']?>"><?php echo $workflow[$v['step_pid']][$v['pro_step']]['step_desc']?></a>
-                <a href="<?php echo U('Project/file', array('pro_id'=>$v['pro_id']))?>" class="btn btn-green" data-toggle="navtab" data-id="project-file" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="资料包">资料包</a>
-                <a href="<?php echo U('Project/edit', array('pro_id'=>$v['pro_id']))?>" class="btn btn-green" data-toggle="dialog" data-width='600' data-mask='true' data-id="project-edit" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="编辑-项目">编辑</a>
-                <?php if ($is_supper || $is_boss) :?>
-                <a href="<?php echo U('Project/exchange', array('pro_id'=>$v['pro_id']))?>" class="btn btn-red" data-toggle="dialog" data-mask="true" data-height="300" data-width="500" data-id="project-exchange"><?php echo empty($v['pmd_name']) ? '分配跟进人' : '交接' ?></a>
-                <?php endif; ?>
-                <?php }?>
+                <?php foreach($v['authpage'] as $kk=>$vv):?>
+                <a href="<?php echo U($kk, array('pro_id'=>$v['pro_id']))?>" class="btn btn-green" data-toggle="<?php if($vv=='资料包') {echo 'navtab';}else{echo 'dialog';}?>" data-id="project-submit" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="<?php echo $vv?>"><?php echo $vv?></a>
+                <?php endforeach;?>
+
             </td>
         </tr>
         <?php }?>

@@ -341,10 +341,8 @@ function roleNameToid($name)
 function projectToAction($authType,$pageAuth,$middleType='pre')
 {
      $attrInde=C('proLevel')[$authType];
-    foreach ($pageAuth[$attrInde][$middleType] as $k=>$v)
-    {
+     return $pageAuth[$attrInde][$middleType];
 
-    }
 }
 
 

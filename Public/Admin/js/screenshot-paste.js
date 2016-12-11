@@ -2,7 +2,6 @@
 
     $.fn.screenshotPaste = function (options) {
         var me = this;
-
         if (typeof options == 'string') {
             var method = $.fn.screenshotPaste.methods[options];
 
@@ -39,9 +38,9 @@
                     var img = new Image();
 
                     $(img).css({height: options.imgHeight});
+                   // debugger
                     var src = JSON.parse(xhr.responseText);
                     var i = $(options.imgContainer + '> li').length + 1;
-                    debugger;
                     //document.getElementById("img_puth").value = img.src;
                     var newImg = '<li id="1"><input type="hidden" name="voucher['+ i +'][path]" value="' + src + '" /><div class="thumb-list-pics"><a href="javascript:void(0);"><img src="' + src + '" alt=""/></a></div>\n\
                     <a href="/Admin/FinanceFlow/remove" data-data=\'' + src + '\' class="del" title="删除">X</a></li>';
@@ -49,6 +48,7 @@
                 };
 
                 // this.result得到图片的base64 (可以用作即时显示)
+
                 fd.append('file', e.target.result);
 //                that.innerHTML = '<img src="'+this.result+'" alt=""/>';
                 xhr.send(fd);

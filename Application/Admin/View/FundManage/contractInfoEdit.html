@@ -1,4 +1,5 @@
 <div class="bjui-pageContent">
+    <script type="text/javascript" src="__ADMIN__/js/screenshot-paste.js"></script>
     <form action="<?php echo U('FundManage/contractInfoSave')?>" id="j_custom_form" data-toggle="validate"
           data-alertmsg="false">
         <input type="hidden" name="fund_id" value="{$fund_id}">
@@ -10,10 +11,44 @@
                     <label for="j_custom_content" class="control-label x85">内容编辑：</label>
                     <div style="display: inline-block; vertical-align: middle;">
                         <?php if($type===1):?>
-                             <textarea name="file_path" id="j_form_content" class="j-content" style="width: 800px;"
-                                       data-toggle="kindeditor" data-minheight="200">
-                                <?php echo htmlspecialchars_decode($file_path)?>
-                                </textarea>
+                       <!--      <textarea name="file_path" id="j_form_content" class="j-content" style="width: 800px;"
+                                       data-toggle="kindeditor" data-minheight="200">-->
+                               <!-- <?php echo htmlspecialchars_decode($file_path)?>-->
+                        <textarea id="hovertreedemo"  placeholder="截屏，然后点击这里，ctrl+v 粘帖，图片将在下方显示" style="width:275px;height:100px;"></textarea>
+                    <div>
+                    <div id="imgPreviewHoverTree" class=" ncap-thumb-list" ></div>
+                    </div>
+                        <?php if(!empty($file_path)):?>
+                        <table id="file-list" class="table table-condensed table-hover" width="100%">
+                            <thead>
+                            <tr>
+                                <th align="center" width="300">文件名</th>
+                                <th align="center" width="300">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach(json_decode($file_path,true) as $k=> $v):?>
+                            <tr>
+                                <td align="center"><a target="_blank" href="<?php echo $v['path']?>"><img src="<?php echo $v['path']?>" style="max-width: 550px; max-height: 450px;"></a></td>
+
+                                <td align="center"><a href="/Admin/FundManage/remove.html" data-data='{"file_path":"<?php echo $v[path]?>","fund_id":"<?php echo $fund_id?>","imgIndex":<?php echo $k?>}'  class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td>
+
+
+                            </tr>
+                            <?php endforeach;?>
+                            </tbody>
+                        </table>
+                        <?php endif;?>
+                        <script>
+                            $('#hove'+'rtreedemo').screenshotPaste({
+                                imgContainer: '#imgPreviewHoverTree',
+                                uploadUrl: '/Admin/FinanceFlow/uploadBase64',
+                                delUrl: '/Admin/FinanceFlow/remove'
+                            });
+
+
+                        </script>
+                                <!--</textarea>-->
                         <?php else:?>
                                          <textarea name="contract_file" id="j_form_content2" class="j-content"
                                                    style="width: 800px;" data-toggle="kindeditor" data-minheight="200">

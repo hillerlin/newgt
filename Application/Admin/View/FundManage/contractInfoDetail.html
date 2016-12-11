@@ -3,7 +3,26 @@
         <fieldset>
             <legend>{$title}</legend>
             <?php if($type==1):?>
-            <?php echo htmlspecialchars_decode($file_path)?>
+            <?php if(!empty($file_path)):?>
+            <table id="file-list" class="table table-condensed table-hover" width="100%">
+                <thead>
+                <tr>
+                    <th align="center" width="300">文件名</th>
+                  <!--  <th align="center" width="300">上传日期</th>-->
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach(json_decode($file_path,true) as $v):?>
+                <tr>
+                    <td align="center"><a target="_blank" href="<?php echo $v['path']?>"><img src="<?php echo $v['path']?>" style="max-width: 550px; max-height: 450px;"></a></td>
+                    <!--<td align="center">2016-12-11 00:35:08</td>-->
+                    <!--<td align="center"><a href="/Admin/FinanceFlow/remove.html" data-data='{"file_path":"/Uploads/finance/2016-12-11/584c2882080d6.png ","aid":"12","file_id":"12"}'  class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td>-->
+                </tr>
+                <?php endforeach;?>
+                </tbody>
+            </table>
+            <?php endif;?>
+
             <?php else:?>
             <?php echo htmlspecialchars_decode($contract_file)?>
             <?php endif;?>

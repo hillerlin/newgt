@@ -442,10 +442,16 @@ class FundManageController extends CommonController
         $mode=D('FundOrder');
         $admin = session('admin');
         $roleId = $admin['role_id'];
+
         if(false==$date=$mode->create())
         {
             $e=$mode->getError();
             $this->json_error($e);
+        }
+        if(intval(I('post.type'))==1)
+        {
+            $imgInfo=I('post.voucher');
+            $mode->file_path=json_encode($imgInfo);
         }
         $mode->isaudit=$roleId==23?'1':'0';
         if($mode->save()!==false)
@@ -457,6 +463,39 @@ class FundManageController extends CommonController
             $this->json_error('保存失败');
         }
         
+    }
+
+    public function remove()
+    {
+        $fundId=I('post.fund_id');
+        $imgIndex=I('post.imgIndex');
+        $filePath=I('post.file_path');
+        $model= D('FundOrder');
+        $list=$model->where("`fund_id`=%d",array($fundId))->field('file_path')->find();
+        $fileAttr=json_decode($list['file_path'],true);
+        $model->create();
+        if(count(json_decode($list['file_path'],true))==1)
+        {
+            $model->file_path=' ';
+            $updata=$model->save();
+        }
+        else
+        {
+            foreach ($fileAttr as $k=>$v)
+            {
+                unset($fileAttr[$imgIndex]);
+            }
+            $model->file_path=json_encode($fileAttr);
+            $updata=$model->save();
+        }
+        if($updata)
+        {
+            $this->json_success('删除成功');
+        }
+        else{
+            $this->json_error('删除失败');
+        }
+
     }
     //删除图片，因与之前附件存储的方式不一样，所以另起方法
     public function deleImg()
@@ -491,7 +530,10 @@ class FundManageController extends CommonController
 
     }
     
-    
+
+
+
+
     //删除附件
     public function remove_attachment()
     {

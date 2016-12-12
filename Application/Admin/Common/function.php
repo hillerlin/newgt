@@ -345,6 +345,12 @@ function projectToAction($authType,$pageAuth,$middleType='pre')
 
 }
 
+//返回封装好的url
+/*function urlTodecode()
+{
+    return
+}*/
+
 
 
 

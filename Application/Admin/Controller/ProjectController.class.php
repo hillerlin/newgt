@@ -73,6 +73,8 @@ class ProjectController extends CommonController
         $model = D('project');
         $pageSize = I('post.pageSize', 30);
         $page = I('post.pageCurrent', 1);
+       // $bb=S()->hMset('adminId:29',array('type'=>2,'contents'=>'宋波分配任121212啦','time'=>time(),'proId'=>'2'));
+        //$aa=S()->hMget('adminId:28',array('type','contents','time','proId'));
         $list = $model->isAudit($page, $pageSize, 't.addtime DESC', $admin['admin_id'], $admin['role_id'], 0);
         $this->assign(array('name' => $admin['real_name'], 'list' => $list['list'], 'total' => $list['total'], 'pageCurrent' => $page));
         $this->display();
@@ -159,6 +161,48 @@ class ProjectController extends CommonController
             $this->json_success('成功', '', '', true, array('tabid' => 'project-auditList'));
         }
     }
+    //通知知情
+    public function Notice()
+    {
+        $adminInfo=D('Admin')->where(array('role_id'=>array('in','16,18')))->field('admin_id,role_id,real_name')->relation(true)->select();
+        $wfId = I('post.wfId');
+        $xmlId = I('post.xmlId');
+        $proIid = I('post.pro_id');
+        $spId=I('post.spId');
+        $proLevel = I('post.proLevel');//当前审批级别
+        $proTimes = I('post.proTimes');//当前审批轮次
+        $admin = session('admin');
+        if(IS_POST)
+        {
+            $flag=true;
+            $adminList=I('post.ids');
+            foreach ($adminList as $k=>$v)
+            {
+                //$proAuthJson=preg_replace("/^\{([a-z]+)\:\'([0-9]+)\'\}/",'{"${1}":"${2}"}',$v);
+                $proAuth=json_decode(htmlspecialchars_decode($v),true)['supplierid'];
+                $return=D('WorkflowLog')
+                    ->data(array('sp_id'=>$spId,'pj_id'=>$proIid,'pro_author'=>$proAuth,
+                        'pro_level'=>$proLevel,'pro_times'=>$proTimes,'pro_view'=>'上传资料','pro_state'=>'0','pro_addtime'=>time()+$k,
+                        'wf_id'=>$wfId,'pro_role'=>'','pro_xml_id'=>$xmlId
+                    ))->add();
+                $redisPost=redisCollect($proLevel,$admin['admin_id'],$proAuth.'|admin',time()+$k,$proIid,1);
+                $flag=$flag && $return && $redisPost ;
+            }
+            if($flag)
+            {
+                $this->json_success('知情已发送','','',true);
+
+            }
+            else
+            {
+                $this->json_error('知情发送失败','','',true);
+            }
+        }
+        $this->assign('list',$adminInfo);
+        $this->assign($_GET);
+        $this->display();
+    }
+
 
 
     //项目立项
@@ -306,6 +350,10 @@ class ProjectController extends CommonController
         $this->display();
     }
 
+
+
+
+
     //审核界面
     public function auditEdit()
     {
@@ -327,22 +375,6 @@ class ProjectController extends CommonController
         $this->assign('signin_admin', $admin);
         $this->assign($data);
         $this->display('audit_edit');
-    }
-    //通知知情
-    public function Notice()
-    {
-        $adminInfo=D('Admin')->where(array('role_id'=>array('in','16,18')))->field('admin_id,role_id,real_name')->relation(true)->select();
-        if(IS_POST)
-        {
-            $adminString='';
-            $adminList=I('post.ids');
-            foreach ($adminInfo as $k=>$v)
-            {
-
-            }
-        }
-        $this->assign('list',$adminInfo);
-        $this->display();
     }
 
     //审核资料附件

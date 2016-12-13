@@ -13,7 +13,14 @@
         </div>
     </form>
 </div>-->
-<form id="pagerForm" data-toggle="ajaxsearch" action="<?php echo U('Project/Notice');?>" method="post">
+<form id="pagerForm" data-toggle="validate" action="<?php echo U('Project/Notice');?>" method="post">
+    <input type="hidden" name="pro_id" value="{$pro_id}">
+    <input type="hidden"  name="plId" value="{$plId}">
+    <input type="hidden"  name="wfId" value="{$wfId}">
+    <input type="hidden"  name="xmlId" value="{$xmlId}">
+    <input type="hidden"  name="spId" value="{$spId}">
+    <input type="hidden"  name="proLevel" value="{$proLevel}">
+    <input type="hidden"  name="proTimes" value="{$proTimes}">
 <div class="bjui-pageContent">
     <table class="table table-hover table-striped" data-width="100%">
         <thead>
@@ -29,9 +36,9 @@
         <tr>
             <td><?php echo $v['role']['role_name']?></td>
             <td><?php echo $v['real_name']?></td>
-            <td><input type="checkbox" name="ids" data-toggle="icheck" value="{supplier_id:'<?php echo $v['admin_id']?>'}"></td>
+            <td><input type="checkbox" name="ids[]" data-toggle="icheck" value='{"supplierid":"<?php echo $v[admin_id]?>"}'></td>
             <td>
-                <a href="javascript:;" data-toggle="lookupback" data-args="{supplier_id:'<?php echo $v['admin_id']?>'}" class="btn btn-blue" title="选择本项" data-icon="check">选择</a>
+                <a href="javascript:;" data-toggle="lookupback" data-args="{supplierid:'<?php echo $v['admin_id']?>'}" class="btn btn-blue" title="选择本项" data-icon="check">选择</a>
             </td>
         </tr>
         <?php }?>

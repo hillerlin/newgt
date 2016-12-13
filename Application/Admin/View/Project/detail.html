@@ -1,86 +1,57 @@
 <style>
-.pbox{width: 1100px;margin: 0 auto;}
-.titleDiv{position: relative;}
-.titleDiv li{font-size: 14px;font-weight: bold;text-align: center;}
-.titleDiv li:nth-child(1){width: 152px;margin: 15px 0 0;}
-.titleDiv li:nth-child(2){position: absolute;top: 164px;right:86px;}
-.titleDiv li:nth-child(3){position: absolute;top: 164px;left:48px;}
-.titleDiv li:nth-child(4){position: absolute;top: 286px;right:86px;}
-.process ul{text-align: center;padding: 24px 0 0;clear:both;overflow: hidden;}
-.process ul li{float: left;width: 152px;margin: 0 30px 50px 0;position: relative;}
-.process ul:nth-child(2){padding-right: 188px;}
-.process ul:nth-child(n+3){padding-top: 38px;}
-.process ul:nth-child(5){padding-top: 52px;}
-.process ul:nth-child(4){padding-right: 6px;}
-.process ul:nth-child(2n) li{float: right;}
-.process ul li.large{margin: -10px 30px 40px 0;}
-.process ul li.large span.go{top: 10px;}
-.process ul li .deal{color:#fff;line-height: 22px;font-size: 13px;padding: 6px 0;border: 1px #ddd solid;background: #999;}
-.process ul li .deal.start,.process ul li .deal.end{border-radius: 30px;}
-.process ul li .deal.judge{border: none;background: none;}
-.process .judge b{color:#fff;position:relative;z-index:2;font-weight: normal;}
-.process .judge span{display: inline-block;width: 152px;height: 152px;background: #999;border: 1px #ddd solid;position: absolute;left: 0;top: -56px;z-index:1;transform:scale(0.7,0.4) rotate(45deg);
-    -webkit-transform:scale(0.7,0.4) rotate(45deg); 
-    -moz-transform:scale(0.7,0.4) rotate(45deg); 
-    -o-transform:scale(0.7,0.4) rotate(45deg);}
-.process ul li.pass .deal{color: #fff;background: #009c00;border-color:#f0f0f0;}
-.process ul li.pass .judge span{background: #009c00;border-color:#f0f0f0;}
-.process ul li.check .deal{color: #fff;border-color:#f0f0f0;}
-.process ul li.check .judge span{background: #d62c2c;border-color:#f0f0f0;}
-.process ul li span.go{font-size: 32px;line-height: 31px;position: absolute;top: 0;right: -31px;}
-.process ul li span.start,.process ul li span.go.goon{top: -34px;right: 68px;}
-.process ul li span.go.goon2{top: -58px;}
-.process ul li span.tab{top: 54px;right: 68px;}
-.process ul li span.gonext{top:0;right: 150px;}
-.process ul li span.go span{width: 32px;position: absolute;top:-6px;left: 0;}
+.pm{width: 750px;margin: 0 auto;}
+.pm h2{font-size: 15px;line-height: 30px;margin: 0;font-weight: bold;}
+.pm h3{font-size: 14px;line-height: 30px;margin-top: 10px;}
+.pm ul{clear:both;overflow: hidden;padding:24px 0;}
+.pm ul li{float: left;width: 120px;margin: 0 40px 0 0;position: relative;}
+.pm ul li:first-child{width: 60px;}
+.pm ul li .person{display: block;text-align: center;margin-top: -10px;}
+.pm ul li .person span{font-size: 40px;font-weight: 100;line-height: 34px;}
+.pm ul li .person span.footer{font-size: 41px;line-height: 16px;}
+.pm ul li span.deal{display: block;text-align: center;line-height: 22px;font-size: 13px;padding: 6px 0;border: 1px #999 solid;background: #eaeaea;border-radius: 6px;}
+.pm ul li.file{width: 70px;margin-top: -8px;}
+.pm ul li.file .deal{height: 48px;line-height: 60px;border-bottom:0;border-radius: 0;position: relative;z-index: 2;}
+.pm ul li.file i{display: block;width: 70px;height: 70px;border: 1px #999 solid;background: #eaeaea;border-radius: 100%;position: absolute;top:-34px;left: 0;z-index: 3;transform:scaleY(0.4);
+    -webkit-transform:scaleY(0.4); 
+    -moz-transform:scaleY(0.4); 
+    -o-transform:scaleY(0.4);}
+.pm ul li.pass .deal{color: #fff;background: #d62c2c;border: 1px #f0f0f0 solid;border-bottom: 0;}
+.pm ul li.file i.bottom{top:13px;z-index: 1;}
+.pm ul li.file.pass i{background: #d62c2c;border: 1px #f0f0f0 solid;}
+.pm ul li span.go{font-size: 32px;line-height: 31px;position: absolute;top: 0;right: -36px;}
+.pm ul li span.start,.process ul li span.go.goon{top: -34px;right: 68px;}
+.pm ul li span.go.goon2{top: -58px;}
+.pm ul li span.tab{top: 54px;right: 68px;}
+.pm ul li span.gonext{top:0;right: 150px;}
+.pm ul li span.go span{width: 32px;position: absolute;top:-6px;left: 0;}
 </style>
 <div class="bjui-pageContent">
-    <div class="pbox">
-        <div class="titleDiv">
-            <ul>
-                <li>项目立项</li>
-                <li>风控审核</li>
-                <li>合同签订</li>
-                <li>放款审核</li>
-            </ul>
-        </div>
-        <div class="process">
-            <ul>
-                <li class="pass"><div class="deal start">开 始</div><span class="go start">↓</span><span class="go">→</span></li>
-                <li class="large pass"><div class="deal">项管经理/项管专员<br />创建项目</div><span class="go">→</span></li>
-                <li class="pass"><div class="deal">项管总监分配任务</div><span class="go">→</span></li>
-                <li class="check"><div class="deal judge"><b>项管专员审核</b><span></span></div><span class="go">→</span></li>
-                <li><div class="deal">风控初审</div><span class="go">→</span></li>
-                <li><div class="deal judge"><b>项管专员发布立项会</b><span></span></div><span class="go tab">↓</span></li>
-            </ul>
-            <ul>
-                <li><div class="deal">风控总监分配尽调人员</div><span class="go">←</span></li>
-                <li class="large"><div class="deal">尽调人员<br />创建项目</div><span class="go">←</span></li>
-                <li><div class="deal judge"><b>项管专员发布风控会</b><span></span></div><span class="go">←</span></li>
-                <li><div class="deal">尽调人员上传审核意见书</div><span class="go">←</span><span class="go gonext">←</span></li>
-            </ul>
-            <ul>
-                <li class="large"><div class="deal">项管专员从通过风控的项目中选择项目发起签约</div><span class="go goon">↓</span><span class="go">→</span></li>
-                <li><div class="deal judge"><b>风控总监审核</b><span></span></div><span class="go">→</span></li>
-                <li><div class="deal judge"><b>副总裁审核</b><span></span></div><span class="go">→<span>通过</span></span></li>
-                <li><div class="deal judge"><b>总裁审核</b><span></span></div><span class="go">→</span></li>
-                <li><div class="deal">法务上传合同文本</div><span class="go">→</span></li>
-            </ul>
-            <ul>
-                <li class="large"><div class="deal">项管专员从签约项目中选择项目</div><span class="go goon">↓</span></li>
-                <li><div class="deal judge"><b>法务审核创建项目</b><span></span></div><span class="go">←</span></li>
-                <li><div class="deal judge"><b>项目主审人审核</b><span></span></div><span class="go">←</span></li>
-                <li><div class="deal judge"><b>贷中审核人审核</b><span></span></div><span class="go">←</span></li>
-                <li><div class="deal judge"><b>风控总监审核</b><span></span></div><span class="go">←</span></li>
-                <li><div class="deal judge"><b>副总裁审核</b><span></span></div><span class="go">←</span></li>
-            </ul>
-            <ul>
-                <li><div class="deal judge"><b>总裁审核</b><span></span></div><span class="go goon goon2">↓</span><span class="go">→</span></li>
-                <li><div class="deal">财务总监确认</div><span class="go">→</span></li>
-                <li><div class="deal">出纳确认</div><span class="go">→</span></li>
-                <li><div class="deal end">放款成功</div></li>
-            </ul>
-        </div>
+    <div class="pm">
+        <h2>项目管理流程</h2>
+        <h3>1、项目经理-项管专员项目申报流程</h3>
+        <ul class="process">
+            <li><span class="person"><span class="mbody">♀</span><br /><span class="footer">∧</span></span><span class="go">→</span></li>
+            <li><span class="deal">项管总监</span><span class="go">→</span></li>
+            <li class="pass"><span class="deal">项管专员</span><span class="go">→</span></li>
+            <li><span class="deal">项管总监</span><span class="go">→</span></li>
+            <li class="file"><span class="deal">归档</span><i></i><i class="bottom"></i></li>
+        </ul>
+        <h3>2、项目立项流程</h3>
+        <ul class="process">
+            <li><span class="person"><span class="mbody">♀</span><br /><span class="footer">∧</span></span><span class="go">→</span></li>
+            <li><span class="deal">项管总监</span><span class="go">→</span></li>
+            <li><span class="deal">项管专员</span><span class="go">→</span></li>
+            <li><span class="deal">项管总监</span><span class="go">→</span></li>
+            <li class="file pass"><span class="deal">归档</span><i></i><i class="bottom"></i></li>
+        </ul>
+        <h3>3、风控会流程</h3>
+        <ul class="process">
+            <li><span class="person"><span class="mbody">♀</span><br /><span class="footer">∧</span></span><span class="go">→</span></li>
+            <li><span class="deal">项管总监</span><span class="go">→</span></li>
+            <li><span class="deal">项管专员</span><span class="go">→</span></li>
+            <li><span class="deal">项管总监</span><span class="go">→</span></li>
+            <li class="file"><span class="deal">归档</span><i></i><i class="bottom"></i></li>
+        </ul>
     </div>
 </div>
 <div class="bjui-pageFooter">

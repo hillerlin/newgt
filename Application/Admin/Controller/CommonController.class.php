@@ -110,7 +110,7 @@ class CommonController extends Controller {
      * @param type $jumpUrl
      * @return void
      */
-    private function dispatch($statusCode = 200, $message = '', $closeCurrent = false, $jumpUrl = '', $forwardConfirm = '', $reload = array()) {
+    public function dispatch($statusCode = 200, $message = '', $closeCurrent = false, $jumpUrl = '', $forwardConfirm = '', $reload = array()) {
         $data = array(
             'statusCode' => $statusCode,    //必选。状态码(ok = 200, error = 300, timeout = 301)，可以在BJUI.init时配置三个参数的默认值。
             'closeCurrent' => $closeCurrent,        //可选。是否关闭当前窗口(navtab或dialog)。

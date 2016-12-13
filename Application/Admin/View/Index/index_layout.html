@@ -21,11 +21,11 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading"><h3 class="panel-title">待办事项：<span class="pull-right">共<?php echo $backlog['total']?>项未办</span></h3></div>
-                    <div class="panel-body bjui-doc" style="padding:0; height: 100px">
+                    <div class="panel-body bjui-doc" style="padding:0; min-height: 400px">
                         <ul>
                             <?php foreach($backlog['list'] as $list) {?>
                             <li><a href="<?php echo U($list['controller'] . '/' .$list['action'])?>" data-toggle="navtab" data-id="<?php echo strtolower($list['controller']) .'-'. $list['action']?>" data-title="<?php echo $list['title']?>" style="font-size: 14px"><?php echo $list['description']?></a>
-                                <span style="position:absolute;right:0;width:25%;line-height:auto"><?php echo date('Y-m-d H:i:s', $list['addtime'])?></span></li>
+                                <span style="position:absolute;right:10px;width:25%;line-height:auto"><?php echo date('Y-m-d H:i:s', $list['addtime'])?></span></li>
                             <?php }?>
                         </ul>
                     </div>
@@ -50,45 +50,63 @@
     </div>
     <div style="position:absolute;top:15px;right:0;width:50%;">
         <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading"><h3 class="panel-title">消息提醒：<span class="pull-right">共<?php echo $unReadNums?>项未读<a href="<?php echo U('Message/more')?>" data-toggle="dialog" data-width="620" data-id="message-more">更多</a></span></h3></div>
-                    <div class="panel-body bjui-doc" style="padding:0; height: 100px">
-                        <ul>
-                            
-                            <!--<li><a href="<?php echo U('tips/read')?>" data-toggle="doajax" data-id="<?php echo strtolower($list['controller']) .'-'. $list['action']?>" data-title="<?php echo $list['title']?>" style="font-size: 14px">aaaa</a>-->
-                            <?php foreach($messages['list'] as $list) {?>
-                            <li <?php echo $list['status'] == 0 ? '' : 'class="read"'?>>
-                                <?php if($list['status'] == 0) {?>
-                                <a id="read" href="<?php echo U('Message/read')?>" data-data='{"id":"<?php echo $list['id']?>"}' data-toggle="doajax" data-callback="read" data-id="message-read" data-title="<?php echo $list['title']?>" style="font-size: 14px"><?php echo html_entity_decode($list['description'])?></a>
-                                <?php }else{ ?>
-                                <?php echo html_entity_decode($list['description'])?>
-                                <?php }?>
-                                <span style="position:absolute;right:0;width:25%;line-height:auto"><?php echo date('Y-m-d H:i:s', $list['addtime'])?></span></li>
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3 class="panel-title">消息提醒：<span class="pull-right">共<?php echo $unReadNums?>项未读<a href="<?php echo U('Message/more')?>" data-toggle="dialog" data-width="620" data-id="message-more">更多</a></span></h3></div>
+                <div class="panel-body bjui-doc" style="padding:0; min-height:400px">
+                    <fieldset>
+                    <h5>项目立项</h5>
+                    <ul>
+                        <!--<li><a href="<?php echo U('tips/read')?>" data-toggle="doajax" data-id="<?php echo strtolower($list['controller']) .'-'. $list['action']?>" data-title="<?php echo $list['title']?>" style="font-size: 14px">aaaa</a>-->
+                        <?php foreach($messages['list'] as $list) {?>
+                        <li <?php echo $list['status'] == 0 ? '' : 'class="read"'?>>
+                            <?php if($list['status'] == 0) {?>
+                            <a id="read" href="<?php echo U('Message/read')?>" data-data='{"id":"<?php echo $list['id']?>"}' data-toggle="doajax" data-callback="read" data-id="message-read" data-title="<?php echo $list['title']?>" style="font-size: 14px"><?php echo html_entity_decode($list['description'])?></a>
+                            <?php }else{ ?>
+                            <?php echo html_entity_decode($list['description'])?>
                             <?php }?>
-                        </ul>
-                    </div>
+                            <span style="position:absolute;right:20px;width:25%;line-height:auto"><?php echo date('Y-m-d H:i:s', $list['addtime'])?></span></li>
+                        <?php }?>
+                    </ul>
+                    </fieldset>
+                    <fieldset>
+                    <h5>合同签约</h5>
+                    <ul>
+                        <li>合同签约消息<span style="position:absolute;right:20px;width:25%;line-height:auto">2016-11-30 19:28:47</span></li>
+                        <li>合同签约消息<span style="position:absolute;right:20px;width:25%;line-height:auto">2016-11-30 19:28:47</span></li>
+                        <li>合同签约消息<span style="position:absolute;right:20px;width:25%;line-height:auto">2016-11-30 19:28:47</span></li>
+                    </ul>
+                    </fieldset>
+                    <fieldset>
+                    <h5>放款</h5>
+                    <ul>
+                        <li>放款消息<span style="position:absolute;right:20px;width:25%;line-height:auto">2016-11-30 19:28:47</span></li>
+                        <li>放款消息<span style="position:absolute;right:20px;width:25%;line-height:auto">2016-11-30 19:28:47</span></li>
+                        <li>放款消息<span style="position:absolute;right:20px;width:25%;line-height:auto">2016-11-30 19:28:47</span></li>
+                    </ul>
+                    </fieldset>
                 </div>
             </div>
-        <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading"><h3 class="panel-title">日历</h3></div>
-                    
-                    <div class="panel-body" style="padding:0; height: 500px">
-                        <!--<a href="<?php echo U('Help/cal')?>" data-toggle="dialog" data-width="620" data-id="message-more">日历</a>-->
-                        <div data-toggle="fullCalendar" data-width="620" data-id="message-more"></div>
-                        <!--<div id='calendar'></div>-->
-                    </div>
+        </div>
+        <!-- <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3 class="panel-title">日历</h3></div>
+                
+                <div class="panel-body" style="padding:0; height: 500px">
+                    <a href="<?php echo U('Help/cal')?>" data-toggle="dialog" data-width="620" data-id="message-more">日历</a>
+                    <div data-toggle="fullCalendar" data-width="620" data-id="message-more"></div>
+                    <div id='calendar'></div>
                 </div>
-            </div><!--
+            </div>
+        </div>
         <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading"><h3 class="panel-title">BJUI/GIT</h3></div>
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3 class="panel-title">BJUI/GIT</h3></div>
+                
+                <div class="panel-body">
                     
-                    <div class="panel-body">
-                        
-                    </div>
                 </div>
-            </div>-->
+            </div>
+        </div> -->
     </div>
 </div>
 <script>

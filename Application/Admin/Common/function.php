@@ -345,12 +345,76 @@ function projectToAction($authType,$pageAuth,$middleType='pre')
 
 }
 
-//返回封装好的url
-/*function urlTodecode()
-{
-    return
-}*/
+/******
+ * @param $proLevel 审批级别
+ * @param $sender   送审人全称
+ * @param $receive  审批人 25|role or admin  role是roleId  admin是adminId
+ * @param $time     时间
+ * @param $proId    项目Id
+ * @param $proNmae    项目名称
+ * @param $specialType   特殊类型   比如项管专员发送知情通知
+ */
 
+function redisCollect($proLevel,$sender,$receive='',$time,$proId,$specialType=null)
+{
+    $type=auditMainProcessType($proLevel);
+    $adminAttr=D('Admin')->where("`admin_id`=%d",array($sender))->field('admin_id,admin_name')->find();
+    $sender=$adminAttr['admin_name'];//送审人的姓名
+    $receiveAttr=explode('|',$receive);
+    //查出是受审人是部门形式还是管理员形式
+    if($receiveAttr[1]=='role')
+    {
+        $receiveObj=D('Role')->where("`role_id`=%d",array($receiveAttr[0]))->field('role_name')->find();
+        $receive=$receiveObj['role_name'];
+    }else
+    {
+        $receiveObj=D('Admin')->where("`admin_id`=%d",array($receiveAttr[0]))->field('admin_name')->find();
+        $receive=$receiveObj['admin_name'];
+    }
+    //查出项目名字
+        $projectObj=D('Project')->where("`pro_id`=%d",array($proId))->field('pro_title')->find();
+        $proName=$projectObj['pro_title'];
+        $contents='';
+        $redisKey='Type:'.$type.':time:'.$time;
+
+    switch ($proLevel)
+    {
+        case 0:
+            //项目经理立项
+            $contents='项目经理:'.$sender.'提交项目-'.$proName;
+            break;
+        case 1:
+            //项目总监分配人手
+            $contents='项管总监:'.$sender.'将项目-'.$proName.'-分配给:'.$receive;
+            break;
+        case 2:
+            //项管专员准备召开立项会
+            if($specialType)
+            {
+                $contents='项管专员:'.$sender.'发送项目-'.$proName.'-知情给'.$receive;
+            }else
+            {
+                $contents='项管专员:'.$sender.'发起项目-'.$proName.'-风控会';
+            }
+            break;
+        case 3:
+            //风控召开初审会
+            break;
+    }
+    $redisValue=array('contents'=>$contents,'time'=>$time,'proId'=>$proId);
+    return S()->hMset($redisKey,$redisValue);
+}
+//返回子流程所属大流程所属大类
+function auditMainProcessType($proLevel)
+{
+    foreach (C('messAuth') as $k=>$v)
+    {
+        if(in_array($proLevel,$v['sub']))
+        {
+            return $k;
+        }
+    }
+}
 
 
 

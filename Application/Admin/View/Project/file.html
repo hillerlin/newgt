@@ -1,20 +1,20 @@
 <script type="text/javascript">
-function do_open_layout(event, treeId, treeNode) {
+    function do_open_layout(event, treeId, treeNode) {
 //    if (treeNode.isParent) {
 //        var zTree = $.fn.zTree.getZTreeObj(treeId)
-//        
+//
 //        zTree.expandNode(treeNode)
 //        return
 //    }
-    $(event.target).bjuiajax('doLoad', {url:treeNode.url, target:treeNode.divid})
-    
-    event.preventDefault()
-}
+        $(event.target).bjuiajax('doLoad', {url:treeNode.url, target:treeNode.divid})
+
+        event.preventDefault()
+    }
 </script>
 <div class="bjui-pageContent">
     <div style="float:left; width:250px;">
         <a data-url="/Admin/Tips/upload.html" class="btn btn-red" data-toggle="dialog" data-width='800' data-height='900'  data-mask='true' data-id="help-upload">上传功能提示！</a>
-        <a href="/Admin/Help/uploadDocument.html?pro_id=<?php echo $pro_id?>" class="btn btn-blue" target="_blank">文件夹上传</a>
+        <a href="/Admin/Help/uploadDocument/pro_id/<?php echo $pro_id;?>" class="btn btn-blue"  data-toggle="dialog" data-width="800" data-height="400"  data-id="dialog-mask" data-mask="true">文件夹上传</a>
         <!--<a href="/Admin/Help/download.html?pro_id=<?php echo $pro_id?>" class="btn btn-blue" onclick="doc_filedownload1(this); return false;">打包下载</a>-->
         <div >
             <div class="btn-group">
@@ -30,17 +30,17 @@ function do_open_layout(event, treeId, treeNode) {
                 <input type="checkbox" name="" id="reback_tax" data-toggle="icheck" data-label="" value="1">
                 <li data-id="{$m1.file_id}" data-pid="{$m1.pid}" data-url="<?php echo U('project/upload',array('pro_id'=>$pro_id,'file_id'=>$m1['file_id']))?>" data-divid="#layout-01">{$m1.file_name}</li>
                 <volist name="m1.sub" id="m2">
-                <li data-id="{$m2.file_id}" data-pid="{$m2.pid}" data-url="<?php echo U('project/upload',array('pro_id'=>$pro_id,'file_id'=>$m2['file_id']))?>" data-divid="#layout-01">{$m2.file_name}</li>
+                    <li data-id="{$m2.file_id}" data-pid="{$m2.pid}" data-url="<?php echo U('project/upload',array('pro_id'=>$pro_id,'file_id'=>$m2['file_id']))?>" data-divid="#layout-01">{$m2.file_name}</li>
                     <volist name="m2.sub" id="m3">
-                    <li data-id="{$m3.file_id}" data-pid="{$m3.pid}" data-url="<?php echo U('project/upload',array('pro_id'=>$pro_id,'file_id'=>$m3['file_id']))?>" data-divid="#layout-01">{$m3.file_name}</li>
+                        <li data-id="{$m3.file_id}" data-pid="{$m3.pid}" data-url="<?php echo U('project/upload',array('pro_id'=>$pro_id,'file_id'=>$m3['file_id']))?>" data-divid="#layout-01">{$m3.file_name}</li>
                         <?php if(isset($m3['sub'])): ?>
                         <?php foreach($m3['sub'] as $m4):?>
                         <li data-id="{$m4.file_id}" data-pid="{$m4.pid}" data-url="<?php echo U('project/upload',array('pro_id'=>$pro_id,'file_id'=>$m4['file_id']))?>" data-divid="#layout-01">{$m4.file_name}</li>
-                            <?php if(isset($m4['sub'])): ?>
-                            <?php foreach($m4['sub'] as $m5):?>
-                            <li data-id="{$m5.file_id}" data-pid="{$m5.pid}" data-url="<?php echo U('project/upload',array('pro_id'=>$pro_id,'file_id'=>$m5['file_id']))?>" data-divid="#layout-01">{$m5.file_name}</li>
-                            <?php endforeach;?>
-                            <?php endif; ?>
+                        <?php if(isset($m4['sub'])): ?>
+                        <?php foreach($m4['sub'] as $m5):?>
+                        <li data-id="{$m5.file_id}" data-pid="{$m5.pid}" data-url="<?php echo U('project/upload',array('pro_id'=>$pro_id,'file_id'=>$m5['file_id']))?>" data-divid="#layout-01">{$m5.file_name}</li>
+                        <?php endforeach;?>
+                        <?php endif; ?>
                         <?php endforeach;?>
                         <?php endif; ?>
                     </volist>
@@ -53,7 +53,7 @@ function do_open_layout(event, treeId, treeNode) {
             <fieldset style="height:100%;">
                 <legend>文件</legend>
                 <div id="layout-01" style="height:94%; overflow:hidden;">
-                    
+
                 </div>
             </fieldset>
         </div>
@@ -68,13 +68,13 @@ function do_open_layout(event, treeId, treeNode) {
             }
         })
     }
-    
+
     function doc_filedownload2(a) {
         var tree = $.fn.zTree.getZTreeObj("layout-tree");
         var menus = tree.getCheckedNodes();
 //        var checkedNodes = menus.getCheckedNodes();
         var file_id = '';
-        
+
         for (var i = 0; i < menus.length; i++) {
             if (menus[i].checked === true) {
                 file_id += menus[i].id + ',';

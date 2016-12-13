@@ -282,7 +282,7 @@ class ProjectModel extends BaseModel {
                 ->join('LEFT JOIN __WORKFLOW_LOG__ as l ON t.pro_id=l.pj_id')
                 ->join('__COMPANY__ AS cp ON t.company_id=cp.company_id')
                 ->field('t.*,l.*,pw.pro_level_now as pro_level_now,pw.wf_id as wfid,pro_title,pro_no,a1.real_name as pmd_name,a2.authpage as authpage,company_name')
-                ->where(array('pro_id'=>array('in',$idList),'l.pro_state'=>$auditType))
+                ->where(array('pro_id'=>array('in',$idList),'l.pro_state'=>$auditType ,'_string'=>"l.pro_author='".$adminId."' or l.pro_role='".$roleId."'"))
                 ->page($page, $pageSize)
                 ->order($order)
                 ->select();

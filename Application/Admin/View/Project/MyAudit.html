@@ -44,7 +44,7 @@
             <!--<td align="center"><?php echo $v['submit_status']==1?'已提交':'草稿'?></td>-->
             <td align="center">
                 <?php foreach($v['authpage'] as $kk=>$vv):?>
-                <a href="<?php echo U($kk, array('pro_id'=>$v['pro_id'],'plId'=>$v['pl_id'],'wfId'=>$v['wfid'],'xmlId'=>$v['pro_xml_id'],'proLevel'=>$v['pro_level'],'proTimes'=>$v['pro_times'])) ?>" class="btn btn-green"
+                <a href="<?php echo U($kk, array('pro_id'=>$v['pro_id'],'plId'=>$v['pl_id'],'wfId'=>$v['wfid'],'xmlId'=>$v['pro_xml_id'],'proLevel'=>$v['pro_level'],'proTimes'=>$v['pro_times'],'spId'=>$v['sp_id'])) ?>" class="btn btn-green"
                    data-toggle="<?php if($vv=='资料包') {echo 'navtab';}else{echo 'dialog';}?>"
                    <?php if($vv=='项管部审核') {echo 'data-height=900';}?> <?php if($vv=='项管部审核') {echo 'data-width=800';}?>
                    data-id="project-submit" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？"

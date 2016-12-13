@@ -11,6 +11,7 @@ class HelpController extends CommonController {
     /* 上传文件提示 */
 
     public function upload() {
+        unset($_GET['_']);
         $pro_id = I('get.pro_id');
         $this->assign('pro_id', $pro_id);
         if (D('Project')->getSubStatus($pro_id)) {
@@ -20,14 +21,10 @@ class HelpController extends CommonController {
     }
 
     public function uploadDocument() {
-//        echo phpinfo();
-       
+        unset($_GET['_']);
         $key=end(array_keys(I('get.')));
         $this->assign('k',$key);
         $this->assign('v', I('get.'.$key));
-//        if (D('Project')->getSubStatus($pro_id)) {
-//            $this->error('项目已被提交，禁止使用文件夹上传功能');
-//        }
         $this->display('upload_3');
     }
 	public function upFundDocument(){
@@ -85,7 +82,7 @@ class HelpController extends CommonController {
 
     //文件夹上传
     public function upDocument() {
-    	//获取要操作的id值
+        //获取要操作的id值
         $pro_id = I('get.pro_id');
         if (empty($pro_id)) {
             $this->error('非法操作');
@@ -102,7 +99,7 @@ class HelpController extends CommonController {
         //操作结果存入到日志中
         upload_log($pro_id, json_encode($paths));
 
-		//获取项目文件的相关信息
+        //获取项目文件的相关信息
         $file_model = D('ProjectFile');
         //获取文件的数量
         $maxId = $file_model->getMaxId($pro_id);
@@ -115,7 +112,7 @@ class HelpController extends CommonController {
         $field = 'pro-' . $pro_id;
         //上传文件
         $upload_info = upload_document('/project/attachment/', $field);
-		//将生成的结果存入到数据库zhon
+        //将生成的结果存入到数据库zhon
         foreach ($upload_info as $val) {
             $file_names = explode('-', $val['savename']);
             $file_id = $file_names[0];
@@ -129,6 +126,7 @@ class HelpController extends CommonController {
             $save_datas[] = $save_data;
         }
         if (!D('ProjectFile')->makeDir($pro_id, $dirs_info)) {
+
             $this->error('文件夹创建失败');
         }
         if (!(D('ProjectAttachment')->addAll($save_datas))) {

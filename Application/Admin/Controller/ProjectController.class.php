@@ -183,10 +183,10 @@ class ProjectController extends CommonController
                 $return=D('WorkflowLog')
                     ->data(array('sp_id'=>$spId,'pj_id'=>$proIid,'pro_author'=>$proAuth,
                         'pro_level'=>$proLevel,'pro_times'=>$proTimes,'pro_view'=>'上传资料','pro_state'=>'0','pro_addtime'=>time()+$k,
-                        'wf_id'=>$wfId,'pro_role'=>'','pro_xml_id'=>$xmlId
-                    ))->add();
+                        'wf_id'=>$wfId,'pro_role'=>'','pro_xml_id'=>$xmlId))->add();
                 $redisPost=redisCollect($proLevel,$admin['admin_id'],$proAuth.'|admin',time()+$k,$proIid,1);
-                $flag=$flag && $return && $redisPost ;
+                $redisPostAudit=redisPostAudit($proLevel,$admin['admin_id'],$proAuth.'|admin',time()+$k,$proIid,$return,1);
+                $flag=$flag && $return && $redisPost && $redisPostAudit ;
             }
             if($flag)
             {

@@ -23,9 +23,9 @@
                     <div class="panel-heading"><h3 class="panel-title">待办事项：<span class="pull-right">共<?php echo $backlog['total']?>项未办</span></h3></div>
                     <div class="panel-body bjui-doc" style="padding:0; min-height: 400px">
                         <ul>
-                            <?php foreach($backlog['list'] as $list) {?>
-                            <li><a href="<?php echo U($list['controller'] . '/' .$list['action'])?>" data-toggle="navtab" data-id="<?php echo strtolower($list['controller']) .'-'. $list['action']?>" data-title="<?php echo $list['title']?>" style="font-size: 14px"><?php echo $list['description']?></a>
-                                <span style="position:absolute;right:10px;width:25%;line-height:auto"><?php echo date('Y-m-d H:i:s', $list['addtime'])?></span></li>
+                            <?php foreach($backlog as $list) {?>
+                            <li><a href="<?php echo U('Project/MyAudit',array('pro_id'=>$list['proId']))?>" data-toggle="navtab" data-id="<?php echo strtolower($list['controller']) .'-'. $list['action']?>" data-title="<?php echo $list['title']?>" style="font-size: 14px"><?php echo $list['contents']?></a>
+                                <span style="position:absolute;right:10px;width:25%;line-height:auto"><?php echo date('Y-m-d H:i:s', $list['time'])?></span></li>
                             <?php }?>
                         </ul>
                     </div>

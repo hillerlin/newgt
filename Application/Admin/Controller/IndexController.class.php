@@ -95,7 +95,7 @@ class IndexController extends CommonController {
         $admin = session('admin');
         $map['admin_id'] = $admin['admin_id'];
         $messages = D('Message')->getlist(1, 3, $map);
-        $backlog = D('Backlog')->getlist(1, 3, $map);
+        //$backlog = D('Backlog')->getlist(1, 3, $map);
         $announcement_list = D('Announcement')->getlist(1, 3, array('t.status' => 1));
         $research_list = D('ResearchReport')->getlist(1, 3, array('t.status' => 1));
         $unReadNums = D('Message')->unReadNums($admin['admin_id']);
@@ -104,6 +104,17 @@ class IndexController extends CommonController {
         $this->assign('announcement_list', $announcement_list['list']);
         $this->assign('research_list', $research_list);
         $this->assign('messages', $messages);
+        $backlog=array();
+        $redisAdminKeys=S()->hKeys('admin:'.$admin['admin_id']);
+        if(is_array($redisAdminKeys))
+        {
+            foreach ($redisAdminKeys as $k=>$v)
+            {
+                $getRedis=S()->hMGet('admin:'.$admin['admin_id'],array($v));
+                krsort($getRedis);
+                array_push($backlog,json_decode($getRedis[$v],true));
+            }
+        }
         $this->assign('backlog', $backlog);
         $this->assign('admin', $admin);
 //        $this->start();

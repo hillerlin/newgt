@@ -358,8 +358,8 @@ function projectToAction($authType,$pageAuth,$middleType='pre')
 function redisCollect($proLevel,$sender,$receive='',$time,$proId,$specialType=null)
 {
     $type=auditMainProcessType($proLevel);
-    $adminAttr=D('Admin')->where("`admin_id`=%d",array($sender))->field('admin_id,admin_name')->find();
-    $sender=$adminAttr['admin_name'];//送审人的姓名
+    $adminAttr=D('Admin')->where("`admin_id`=%d",array($sender))->field('admin_id,real_name')->find();
+    $sender=$adminAttr['real_name'];//送审人的姓名
     $receiveAttr=explode('|',$receive);
     //查出是受审人是部门形式还是管理员形式
     if($receiveAttr[1]=='role')
@@ -368,14 +368,14 @@ function redisCollect($proLevel,$sender,$receive='',$time,$proId,$specialType=nu
         $receive=$receiveObj['role_name'];
     }else
     {
-        $receiveObj=D('Admin')->where("`admin_id`=%d",array($receiveAttr[0]))->field('admin_name')->find();
-        $receive=$receiveObj['admin_name'];
+        $receiveObj=D('Admin')->where("`admin_id`=%d",array($receiveAttr[0]))->field('real_name')->find();
+        $receive=$receiveObj['real_name'];
     }
     //查出项目名字
         $projectObj=D('Project')->where("`pro_id`=%d",array($proId))->field('pro_title')->find();
         $proName=$projectObj['pro_title'];
         $contents='';
-        $redisKey='Type:'.$type.':time:'.$time;
+        $redisKey='Type:'.$type;
 
     switch ($proLevel)
     {
@@ -401,8 +401,62 @@ function redisCollect($proLevel,$sender,$receive='',$time,$proId,$specialType=nu
             //风控召开初审会
             break;
     }
-    $redisValue=array('contents'=>$contents,'time'=>$time,'proId'=>$proId);
+    $redisValue=array($time=>json_encode(array('contents'=>$contents,'time'=>$time,'proId'=>$proId)));
     return S()->hMset($redisKey,$redisValue);
+}
+//待我审核事项
+function redisPostAudit($proLevel,$sender,$receive='',$time,$proId,$plId,$specialType=null)
+{
+
+    //查出项目名字
+    $projectObj=D('Project')->where("`pro_id`=%d",array($proId))->field('pro_title')->find();
+    $proName=$projectObj['pro_title'];
+    $adminAttr=D('Admin')->where("`admin_id`=%d",array($sender))->field('admin_id,real_name')->find();
+    $sender=$adminAttr['real_name'];//送审人的姓名
+    $receiveAttr=explode('|',$receive);
+    //查出是受审人是部门形式还是管理员形式
+    if($receiveAttr[1]=='role')
+    {
+        //$receiveObj=D('Role')->where("`role_id`=%d",array($receiveAttr[0]))->field('role_name')->find();
+       // $receive=$receiveObj['role_name'];
+        $redisKey='role:'.$receiveAttr[0];
+    }else
+    {
+        //$receiveObj=D('Admin')->where("`admin_id`=%d",array($receiveAttr[0]))->field('real_name')->find();
+        //$receive=$receiveObj['real_name'];
+        $redisKey='admin:'.$receiveAttr[0];
+    }
+    switch ($proLevel)
+    {
+        case 0:
+            //项目经理立项
+            $contents='项目经理:'.$sender.'提交项目-'.$proName.'-待我分配项管专员跟进！';
+            break;
+        case 1:
+            //项目总监分配人手
+            $contents='项管总监:'.$sender.'将项目-'.$proName.'-分配给我！';
+            break;
+        case 2:
+            //项管专员准备召开立项会
+            if($specialType)
+            {
+                $contents='项管专员:'.$sender.'发送项目-'.$proName.'-知情给我,要求我上传资料！';
+            }else
+            {
+                $contents='项管专员:'.$sender.'发起项目-'.$proName.'-风控会，待我审核！';
+            }
+            break;
+        case 3:
+            //风控召开初审会
+            break;
+    }
+    $redisValue=array($plId=>json_encode(array('contents'=>$contents,'time'=>$time,'proId'=>$proId,'plId'=>$plId)));
+    return S()->hMset($redisKey,$redisValue);
+
+
+
+
+
 }
 //返回子流程所属大流程所属大类
 function auditMainProcessType($proLevel)

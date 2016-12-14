@@ -199,6 +199,9 @@ class RoleController extends CommonController {
         if(I('post.real_name')){
             $where['a.real_name']=array('like','%'.I('post.real_name').'%');
         }
+        //此函数可被系统设置中的消息推送权限设置中的添加调用，因其具备多选的需求，所以在这里添加这个参数判断，以前台显示不同的样式
+        if(I('get.multi')) $this->assign('multi',I('get.multi'));
+        if(I('get.k')) $this->assign('k',I('get.k'));
         $list = D('Role')->listName($page,$pageSize,$where);
         $this->assign('list', $list['list']);
         $this->assign('total', $list['total']);

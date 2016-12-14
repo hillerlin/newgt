@@ -1,176 +1,59 @@
-<div class="bjui-pageHeader">
-    <form id="pagerForm" data-toggle="ajaxsearch" action="<?php echo U('Project/index')?>" method="post">
-        <input type="hidden" name="pageSize" value="${model.pageSize}">
-        <input type="hidden" name="pageCurrent" value="${model.pageCurrent}">
-        <input type="hidden" name="orderField" value="${param.orderField}">
-        <input type="hidden" name="orderDirection" value="${param.orderDirection}">
-        <div class="bjui-searchBar">
-            <!--<button data-url="/Admin/Project/add.html" class="btn btn-blue" data-toggle="navtab" data-icon="plus" data-id="project-add">新增项目</button>-->
-        </div>
-        <div class="bjui-moreSearch">
-            <label>职业：</label><input type="text" value="" name="profession" size="15" />
-            <label>&nbsp;性别:</label>
-            <select name="sex" data-toggle="selectpicker">
-                <option value="">全部</option>
-                <option value="true">男</option>
-                <option value="false">女</option>
-            </select>
-            <label>&nbsp;手机:</label>
-            <input type="text" value="" name="mobile" size="10">
-        </div>
-    </form>
-</div>
-<div class="bjui-pageContent tableContent">
-    <h5>项目立项</h5>
-    <table class="table table-bordered table-hover table-striped table-top" data-selected-multi="true">
-        <thead>
-            <tr>
-                <th data-order-field="pro_no" align="center" width="100">操作名称</th>
-                <th data-order-field="step_desc" align="center" width="100">操作名称</th>
-                <th align="center" width="300">下一步</th>
-                <th align="center" width="300">关联角色</th>
-                <th align="center" width="300">是否完成</th>
-                <th width="300" align="center">操作</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach($list[1] as $v){?>
-            <tr data-id="<?php echo $v['step_id']?>">
-                <td align="center"><?php echo $v['title']?></td>
-                <td align="center"><?php echo $v['step_desc']?></td>
-                <td align="center">
-                    <?php foreach($v['step_next'] as $next) {?>
-                    <span class="green"><?php echo $next['desc']; ?>：
-                        <a href="<?php echo U('Message/edit')?>" class="btn btn-green" data-toggle="dialog" data-id="message-edit" data-data='{"flow_id":"<?php echo $v['flow_id']?>","msg_id":"<?php echo $next['msg_id']?>"}' data-title="项目审核">消息编辑</a>
-                    </sapn>&nbsp
-                    <?php }?>
-                    <!--<span class="red">未通过：<?php echo $workflow[$v['step_next'][0]]['step_desc']?></sapn>-->
-                </td>
-                <td align="center"><?php echo $v['role_name']?></td>
-                <td align="center"><?php echo $v['is_over'] == 1 ? '完结' : '未完成'?></td>
-                <td align="center">
-                    <a href="<?php echo U('Workflow/edit', array('step_id'=>$v['step_id']))?>" class="btn btn-green" data-toggle="dialog" data-id="workflow-edit" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="项目审核">编辑</a>
-                </td>
-            </tr>
-            <?php }?>
-        </tbody>
-    </table>
-    <h5>风控审核</h5>
-     <table class="table table-bordered table-hover table-striped table-top" data-selected-multi="true">
-        <thead>
-            <tr>
-                <th data-order-field="pro_no" align="center" width="100">操作名称</th>
-                <th data-order-field="step_desc" align="center" width="100">操作名称</th>
-                <th align="center" width="300">下一步</th>
-                <th align="center" width="300">关联角色</th>
-                <th align="center" width="300">是否完成</th>
-                <th width="300" align="center">操作</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach($list[2] as $v){?>
-            <tr data-id="<?php echo $v['step_id']?>">
-                <td align="center"><?php echo $v['title']?></td>
-                <td align="center"><?php echo $v['step_desc']?></td>
-                <td align="center">
-                    <?php foreach($v['step_next'] as $next) {?>
-                    <span class="green"><?php echo $next['desc']; ?>：
-                        <a href="<?php echo U('Message/edit')?>" class="btn btn-green" data-toggle="dialog" data-id="message-edit" data-data='{"flow_id":"<?php echo $v['flow_id']?>","msg_id":"<?php echo $next['msg_id']?>"}' data-title="项目审核">消息编辑</a>
-                    </sapn>&nbsp
-                    <?php }?>
-                    <!--<span class="red">未通过：<?php echo $workflow[$v['step_next'][0]]['step_desc']?></sapn>-->
-                </td>
-                <td align="center"><?php echo $v['role_name']?></td>
-                <td align="center"><?php echo $v['is_over'] == 1 ? '完结' : '未完成'?></td>
-                <td align="center">
-                    <a href="<?php echo U('Workflow/edit', array('step_id'=>$v['step_id']))?>" class="btn btn-green" data-toggle="dialog" data-id="workflow-edit" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="项目审核">编辑</a>
-                </td>
-            </tr>
-            <?php }?>
-        </tbody>
-    </table>
-    <h5>合约签订</h5>
-     <table class="table table-bordered table-hover table-striped table-top" data-selected-multi="true">
-        <thead>
-            <tr>
-                <th data-order-field="pro_no" align="center" width="100">操作名称</th>
-                <th data-order-field="step_desc" align="center" width="100">操作名称</th>
-                <th align="center" width="300">下一步</th>
-                <th align="center" width="300">关联角色</th>
-                <th align="center" width="300">是否完成</th>
-                <th width="300" align="center">操作</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach($list[3] as $v){?>
-            <tr data-id="<?php echo $v['step_id']?>">
-                <td align="center"><?php echo $v['title']?></td>
-                <td align="center"><?php echo $v['step_desc']?></td>
-                <td align="center">
-                    <?php foreach($v['step_next'] as $next) {?>
-                    <span class="green"><?php echo $next['desc']; ?>：
-                        <a href="<?php echo U('Message/edit')?>" class="btn btn-green" data-toggle="dialog" data-id="message-edit" data-data='{"flow_id":"<?php echo $v['flow_id']?>","msg_id":"<?php echo $next['msg_id']?>"}' data-title="项目审核">消息编辑</a>
-                    </sapn>&nbsp
-                    <?php }?>
-                    <!--<span class="red">未通过：<?php echo $workflow[$v['step_next'][0]]['step_desc']?></sapn>-->
-                </td>
-                <td align="center"><?php echo $v['role_name']?></td>
-                <td align="center"><?php echo $v['is_over'] == 1 ? '完结' : '未完成'?></td>
-                <td align="center">
-                    <a href="<?php echo U('Workflow/edit', array('step_id'=>$v['step_id']))?>" class="btn btn-green" data-toggle="dialog" data-id="workflow-edit" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="项目审核">编辑</a>
-                </td>
-            </tr>
-            <?php }?>
-        </tbody>
-    </table>
-    <h5>放款申请</h5>
-     <table class="table table-bordered table-hover table-striped table-top" data-selected-multi="true">
-        <thead>
-            <tr>
-                <th data-order-field="pro_no" align="center" width="100">操作名称</th>
-                <th data-order-field="step_desc" align="center" width="100">操作名称</th>
-                <th align="center" width="300">下一步</th>
-                <th align="center" width="300">关联角色</th>
-                <th align="center" width="300">是否完成</th>
-                <th width="300" align="center">操作</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach($list[5] as $v){?>
-            <tr data-id="<?php echo $v['step_id']?>">
-                <td align="center"><?php echo $v['title']?></td>
-                <td align="center"><?php echo $v['step_desc']?></td>
-                <td align="center">
-                    <?php foreach($v['step_next'] as $next) {?>
-                    <span class="green"><?php echo $next['desc']; ?>：
-                        <a href="<?php echo U('Message/edit')?>" class="btn btn-green" data-toggle="dialog" data-id="message-edit" data-data='{"flow_id":"<?php echo $v['flow_id']?>","msg_id":"<?php echo $next['msg_id']?>"}' data-title="项目审核">消息编辑</a>
-                    </sapn>&nbsp
-                    <?php }?>
-                    <!--<span class="red">未通过：<?php echo $workflow[$v['step_next'][0]]['step_desc']?></sapn>-->
-                </td>
-                <td align="center"><?php echo $v['role_name']?></td>
-                <td align="center"><?php echo $v['is_over'] == 1 ? '完结' : '未完成'?></td>
-                <td align="center">
-                    <a href="<?php echo U('Workflow/edit', array('step_id'=>$v['step_id']))?>" class="btn btn-green" data-toggle="dialog" data-id="workflow-edit" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="项目审核">编辑</a>
-                </td>
-            </tr>
-            <?php }?>
-        </tbody>
-    </table>
-</div>
-<div class="bjui-pageFooter">
-<!--    <div class="pages">
-        <span>每页&nbsp;</span>
-        <div class="selectPagesize">
-            <select data-toggle="selectpicker" data-toggle-change="changepagesize">
-                <option value="30">30</option>
-                <option value="60">60</option>
-                <option value="120">120</option>
-                <option value="150">150</option>
-            </select>
-        </div>
-        <span>&nbsp;条，共 <?php echo $total?> 条</span>
+<style>
+.cate h5{font-weight: bold;}
+.cate span.glyphicon{margin-right: 6px;font-size: 14px;}
+.cate ul{clear: both;overflow: hidden;}
+.cate ul li{float: left;padding: 15px 20px 4px 18px;}
+.cate ul li a{font-size: 14px;}
+</style>
+<div class="bjui-pageContent">
+    <div class="cate">
+        <h5><span class="glyphicon glyphicon-hand-right"></span>项目流程立项</h5>
+        <ul>
+            <li><a data-url="/Admin/Project/add.html" class="btn btn-blue" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-icon="plus" data-id="project-add"><span class="glyphicon glyphicon-list-alt"></span>新建项目</a></li>
+            <li><a data-url="/Admin/Project/add.html" class="btn btn-blue" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-icon="plus" data-id="project-add"><span class="glyphicon glyphicon-list-alt"></span>新建投票</a></li>
+        </ul>
     </div>
-    <div class="pagination-box" data-toggle="pagination" data-total="<?php echo $total?>" data-page-size="30" data-page-current="1">
-    </div>-->
+    <hr />
+    <div class="cate">
+        <h5><span class="glyphicon glyphicon-hand-right"></span>业务类</h5>
+        <ul>
+            <li><a href=""><span class="glyphicon glyphicon-briefcase"></span>报价审批单</a></li>
+            <li><a href=""><span class="glyphicon glyphicon-briefcase"></span>设备采购单</a></li>
+            <li><a href=""><span class="glyphicon glyphicon-briefcase"></span>软硬件故障维护表</a></li>
+            <li><a href=""><span class="glyphicon glyphicon-briefcase"></span>工程报告</a></li>
+        </ul>
+    </div>
+    <hr />
+    <div class="cate">
+        <h5><span class="glyphicon glyphicon-hand-right"></span>人事类</h5>
+        <ul>
+            <li><a href=""><span class="glyphicon glyphicon-link"></span>转正申请单</a></li>
+            <li><a href=""><span class="glyphicon glyphicon-link"></span>离职申请表</a></li>
+            <li><a href=""><span class="glyphicon glyphicon-link"></span>入职申请表</a></li>
+            <li><a href=""><span class="glyphicon glyphicon-link"></span>调薪申请单</a></li>
+        </ul>
+    </div>
+    <hr />
+    <div class="cate">
+        <h5><span class="glyphicon glyphicon-hand-right"></span>考勤类</h5>
+        <ul>
+            <li><a href=""><span class="glyphicon glyphicon-check"></span>补录考勤申请</a></li>
+            <li><a href=""><span class="glyphicon glyphicon-check"></span>串休申请单</a></li>
+            <li><a href=""><span class="glyphicon glyphicon-check"></span>加班申请单</a></li>
+            <li><a href=""><span class="glyphicon glyphicon-check"></span>销假申请单</a></li>
+            <li><a href=""><span class="glyphicon glyphicon-check"></span>请假申请单</a></li>
+            <li><a href=""><span class="glyphicon glyphicon-check"></span>外出申请单</a></li>
+            <li><a href=""><span class="glyphicon glyphicon-check"></span>调休中</a></li>
+            <li><a href=""><span class="glyphicon glyphicon-check"></span>出差申请书</a></li>
+        </ul>
+    </div>
+    <hr />
+    <div class="cate">
+        <h5><span class="glyphicon glyphicon-hand-right"></span>工程类</h5>
+        <ul>
+            <li><a href=""><span class="glyphicon glyphicon-file"></span>工程合同审批单</a></li>
+            <li><a href=""><span class="glyphicon glyphicon-file"></span>合同费用请款</a></li>
+            <li><a href=""><span class="glyphicon glyphicon-file"></span>工程决算造价确认书</a></li>
+        </ul>
+    </div>
 </div>

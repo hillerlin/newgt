@@ -1,0 +1,97 @@
+<style>
+    .head{
+        font-size:20px;
+    }
+    .lablehead{
+        font-size:16px;
+    }
+    .contenthead , .contentbody{
+        margin-top:20px;
+    }
+    .contentbody span{
+        padding:0 20px 10px;
+        display: inline-block;
+    }
+</style>
+<div class="bjui-pageContent">
+    <form action="" id="j_custom_form121" data-toggle="validate" data-alertmsg="false">
+        <div class="head"> 消息推送权限设置</div>
+        <hr/>
+        <php> foreach(C('messAuth') as $k => $v):</php>
+        <fieldset>
+        <label class="lablehead" ajax_value="{$k}">{$v['depict']}</label>
+        <div class="contenthead">
+            <!--此处两个隐藏域记录用户的id和name-->
+            <input type="hidden" name="addbtn.adminId{$k}" class="adminid">
+            <input type="hidden" name="addbtn.profession{$k}" class="adduser">
+            <input type="hidden" name="delbtn.adminId{$k}" class="adminiddel">
+            <input type="hidden" name="delbtn.profession{$k}" class="deluser">
+            <!--multi常量用来在listName页面代表可以多选-->
+            <a href="/Admin/Role/listName/multi/1/k/{$k}" data-toggle="lookupbtn" class="btn btn-green" data-group="addbtn" >添加</a>&nbsp;&nbsp;
+            <a href="/admin/Help/sysdel/mstatus/{$k}" data-toggle="lookupbtn" class="btn btn-red" data-group="delbtn" >删除</a>
+        </div>
+        <div class="contentbody"> {$list[$k]['names']} </div>
+        </fieldset>
+        <php>endforeach;</php>
+    </form>
+</div>
+<script type="text/javascript">
+    //添加动作执行后的监督时间 ,data是#addbtn的值
+    $('.adminid').on('afterchange.bjui.lookup', function(e, data) {
+        //获取操作的状态类型
+       var mstatus= $(this).closest('fieldset').find('label').attr('ajax_value');
+        //获取添加的人员名称
+        var adduser=$(this).siblings('.adduser');
+        var conbody=$(this).closest('.contenthead').siblings('.contentbody');
+        $.ajax({
+            url:'/admin/Help/savesys',
+            type:'post',
+            dataType:'json',
+            data:{users_id:data.value,method:'addsys','mstatus':mstatus},
+            success:function(msgdata){
+                if(msgdata.message.status==1){
+                    var users=adduser.val();
+                    var username=users.split(',');
+                    var content='';
+                    $.each(username,function(n,value){
+                        content+='<span>'+value+'</span>';
+                    });
+                    //成功，则向页面上添加对应的成员
+                    if(conbody.html()==''){
+                        conbody.append(content);
+                    }else{
+                        conbody.children('span').last().after(content);
+                    }
+                   alert('添加成功');
+                }else{
+                    alert('添加失败');
+                }
+            },
+            error:function(msgdata){
+                $(this).alertmsg('error','服务器正忙');
+            }
+        });
+    });
+    //编辑动作执行后的监听事件
+    $('.deluser').on('afterchange.bjui.lookup', function(e, data) {
+        var adminids=$(this).siblings('.adminiddel').val();
+        var conbody=$(this).closest('.contenthead').siblings('.contentbody');
+        var mstatus= $(this).closest('fieldset').find('label').attr('ajax_value');
+        $.ajax({
+            url:'/admin/Help/savesys',
+            type:'post',
+            dataType:'json',
+            data:{users_id:adminids,method:'delsys','mstatus':mstatus},
+            success:function(msg){
+                if(msg.message.status==1){
+                    alert('删除成功');
+                }else{
+                    alert('删除失败');
+                }
+            },
+            error:function(){
+                alert('服务器正忙');
+            }
+        });
+    });
+</script>

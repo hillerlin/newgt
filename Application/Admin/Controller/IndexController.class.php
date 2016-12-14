@@ -94,28 +94,59 @@ class IndexController extends CommonController {
     public function index_layout() {
         $admin = session('admin');
         $map['admin_id'] = $admin['admin_id'];
-        $messages = D('Message')->getlist(1, 3, $map);
+       // $messages = D('Message')->getlist(1, 3, $map);
         //$backlog = D('Backlog')->getlist(1, 3, $map);
         $announcement_list = D('Announcement')->getlist(1, 3, array('t.status' => 1));
         $research_list = D('ResearchReport')->getlist(1, 3, array('t.status' => 1));
-        $unReadNums = D('Message')->unReadNums($admin['admin_id']);
+      //  $unReadNums = D('Message')->unReadNums($admin['admin_id']);
 
-        $this->assign('unReadNums', $unReadNums);
+      //  $this->assign('unReadNums', $unReadNums);
         $this->assign('announcement_list', $announcement_list['list']);
         $this->assign('research_list', $research_list);
-        $this->assign('messages', $messages);
+
         $backlog=array();
+        $redisAdminKeys=array();
+        $redisRoleKeys=array();
+        $getAdminRedis=array();
+        $getRoleRedis=array();
+        $getTotalRedis=array();
+        //消息提醒-我的待办
         $redisAdminKeys=S()->hKeys('admin:'.$admin['admin_id']);
-        if(is_array($redisAdminKeys))
+        $redisRoleKeys=S()->hKeys('role:'.$admin['role_id']);
+        $redisTotalKeys=array_merge($redisAdminKeys,$redisRoleKeys);
+        $backLogCount=count($redisTotalKeys);
+        if(is_array($redisTotalKeys))
         {
-            foreach ($redisAdminKeys as $k=>$v)
+            foreach ($redisTotalKeys as $k=>$v)
             {
-                $getRedis=S()->hMGet('admin:'.$admin['admin_id'],array($v));
-                krsort($getRedis);
-                array_push($backlog,json_decode($getRedis[$v],true));
+                $getAdminRedis=$redisAdminKeys ? S()->hMGet('admin:'.$admin['admin_id'],array($v)):array();
+                $getRoleRedis=$redisRoleKeys ? S()->hMGet('role:'.$admin['role_id'],array($v)):array();
+                $getTotalRedis=$getAdminRedis+$getRoleRedis;//数组合并并保留索引
+                krsort($getTotalRedis);
+                array_push($backlog,json_decode($getTotalRedis[$v],true));
             }
         }
+        //消息提醒-项目立项类消息
+        $wordFlowMessage=array();
+        foreach (C('messAuth') as $key=>$value)
+        {
+            if($value['depict']=='项目管理流程')
+            {
+                $sType=S()->sMembers('sType:'.$key);
+                foreach ($sType as $tkey=>$tvalue)
+                {
+                    $wordFlowKeys=S()->hKeys('Type:'.$key.':Time:'.$tvalue);
+                    rsort($wordFlowKeys);
+                    foreach ($wordFlowKeys as $wordFlowIndex=>$wordFlowValue)
+                    {
+                        array_push($wordFlowMessage,json_decode(S()->hMGet('Type:'.$key.':Time:'.$tvalue,array($wordFlowValue))[$wordFlowValue],true));
+                    }
+                }
+            }
+        }
+        $this->assign('wordFlowMessage',$wordFlowMessage);
         $this->assign('backlog', $backlog);
+        $this->assign('backLogCount', $backLogCount);
         $this->assign('admin', $admin);
 //        $this->start();
 //        $this->risk();

@@ -329,6 +329,19 @@ function xmlIdToInfo($id,$type=0)
 
     }
 }
+//根据xml的name返回下一级xml的id和name
+function xmlNameToIdAndName($name)
+{
+    $xmlInfo = logic('xml')->index();
+    foreach ($xmlInfo as $k=>$v)
+    {
+        $xmlName=explode('_',$v['name'])[0];
+        if($xmlName==$name)
+        {
+            return xmlIdToInfo($k);
+        }
+    }
+}
 //根据role_name返回role_id
 function roleNameToid($name)
 {
@@ -366,48 +379,59 @@ function redisCollect($proLevel,$sender,$receive='',$time,$proId,$specialType=nu
     {
         $receiveObj=D('Role')->where("`role_id`=%d",array($receiveAttr[0]))->field('role_name')->find();
         $receive=$receiveObj['role_name'];
+        $authorType='role';
     }else
     {
         $receiveObj=D('Admin')->where("`admin_id`=%d",array($receiveAttr[0]))->field('real_name')->find();
         $receive=$receiveObj['real_name'];
+        $authorType='admin';
     }
     //查出项目名字
         $projectObj=D('Project')->where("`pro_id`=%d",array($proId))->field('pro_title')->find();
         $proName=$projectObj['pro_title'];
         $contents='';
-        $redisKey='Type:'.$type;
-
+        $redisKey='Type:'.$type.':Time:'.date('Ymd',$time);
+    //用集合记录录入的时间
+    if(!S()->sIsMember('sType:'.$type,date('Ymd',time())))
+    {
+        S()->sAdd('sType:'.$type,date('Ymd',time()));
+    }
     switch ($proLevel)
     {
         case 0:
             //项目经理立项
-            $contents='项目经理:'.$sender.'提交项目-'.$proName;
+            $contents='项目经理<code>'.$sender.'</code>提交项目<code>'.$proName.'</code>';
             break;
         case 1:
             //项目总监分配人手
-            $contents='项管总监:'.$sender.'将项目-'.$proName.'-分配给:'.$receive;
+            $contents='项管总监<code>'.$sender.'</code>将项目<code>'.$proName.'</code>分配给<code>'.$receive.'</code>';
             break;
         case 2:
             //项管专员准备召开立项会
             if($specialType)
             {
-                $contents='项管专员:'.$sender.'发送项目-'.$proName.'-知情给'.$receive;
+                $contents='项管专员<code>'.$sender.'</code>发送项目<code>'.$proName.'</code>知情给<code>'.$receive.'</code>';
             }else
             {
-                $contents='项管专员:'.$sender.'发起项目-'.$proName.'-风控会';
+                $contents='项管专员<code>'.$sender.'</code>发起项目<code>'.$proName.'</code>风控会';
             }
             break;
         case 3:
             //风控召开初审会
             break;
     }
-    $redisValue=array($time=>json_encode(array('contents'=>$contents,'time'=>$time,'proId'=>$proId)));
+    $redisValue=array($time=>json_encode(array('contents'=>$contents,'time'=>$time,'proId'=>$proId,'authorType'=>$authorType)));
     return S()->hMset($redisKey,$redisValue);
+}
+//整合redis的消息发送
+function redisTotalPost($proLevel,$sender,$receive,$time,$proId,$plId,$specialType=null)
+{
+   return redisPostAudit($proLevel,$sender,$receive,$time,$proId,$plId,$specialType) && redisCollect($proLevel,$sender,$receive,$time,$proId,$specialType);
+
 }
 //待我审核事项
 function redisPostAudit($proLevel,$sender,$receive='',$time,$proId,$plId,$specialType=null)
 {
-
     //查出项目名字
     $projectObj=D('Project')->where("`pro_id`=%d",array($proId))->field('pro_title')->find();
     $proName=$projectObj['pro_title'];
@@ -420,37 +444,39 @@ function redisPostAudit($proLevel,$sender,$receive='',$time,$proId,$plId,$specia
         //$receiveObj=D('Role')->where("`role_id`=%d",array($receiveAttr[0]))->field('role_name')->find();
        // $receive=$receiveObj['role_name'];
         $redisKey='role:'.$receiveAttr[0];
+        $authorType='role';
     }else
     {
         //$receiveObj=D('Admin')->where("`admin_id`=%d",array($receiveAttr[0]))->field('real_name')->find();
         //$receive=$receiveObj['real_name'];
         $redisKey='admin:'.$receiveAttr[0];
+        $authorType='admin';
     }
     switch ($proLevel)
     {
         case 0:
             //项目经理立项
-            $contents='项目经理:'.$sender.'提交项目-'.$proName.'-待我分配项管专员跟进！';
+            $contents='项目经理:<code>'.$sender.'</code>提交项目<code>'.$proName.'</code>';
             break;
         case 1:
             //项目总监分配人手
-            $contents='项管总监:'.$sender.'将项目-'.$proName.'-分配给我！';
+            $contents='项管总监<code>'.$sender.'</code>将项目<code>'.$proName.'</code>分配给我！';
             break;
         case 2:
             //项管专员准备召开立项会
             if($specialType)
             {
-                $contents='项管专员:'.$sender.'发送项目-'.$proName.'-知情给我,要求我上传资料！';
+                $contents='项管专员<code>'.$sender.'</code>发送项目<code>'.$proName.'</code>知情给我!';
             }else
             {
-                $contents='项管专员:'.$sender.'发起项目-'.$proName.'-风控会，待我审核！';
+                $contents='项管专员<code>'.$sender.'</code>发起项目<code>'.$proName.'</code>风控会，待我审核！';
             }
             break;
         case 3:
             //风控召开初审会
             break;
     }
-    $redisValue=array($plId=>json_encode(array('contents'=>$contents,'time'=>$time,'proId'=>$proId,'plId'=>$plId)));
+    $redisValue=array($plId=>json_encode(array('contents'=>$contents,'time'=>$time,'proId'=>$proId,'plId'=>$plId,'authorType'=>$authorType)));
     return S()->hMset($redisKey,$redisValue);
 
 

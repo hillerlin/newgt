@@ -14,7 +14,7 @@
         <bpmn2:sequenceFlow id="flo_595916748583fc16e2dc931091716504" name="提交立项"
                             sourceRef="el_308715820583f9d39322489074895638"
                             targetRef="el_381469726583fc0063e7d00094158340"/>
-        <bpmn2:userTask id="el_308715820583f9d39322489074895638" name="项目经理立项">
+        <bpmn2:userTask id="el_308715820583f9d39322489074895638" name="项目经理_立项">
             <bpmn2:outgoing>flo_595916748583fc16e2dc931091716504</bpmn2:outgoing>
         </bpmn2:userTask>
         <bpmn2:sequenceFlow id="flo_pmui-23644628158451712b10974010783474" name="分配项目专员"

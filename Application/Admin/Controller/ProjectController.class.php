@@ -62,6 +62,56 @@ class ProjectController extends CommonController
         $this->display('all_list');
     }
 
+    /* 保存项目 */
+
+    public function save_project()
+    {
+        $model = D('Project');
+        $supplier_id = I('post.supplier_id');
+        $admin = session('admin');
+        if (false === $data = $model->create()) {
+            $e = $model->getError();
+            $this->json_error($e);
+        }
+        if ($model->pro_type == 1) {
+            $supplier_id = explode(',', $supplier_id);
+            foreach ($supplier_id as $v) {
+                $surpplie[] = array('company_id' => $v);
+            }
+            $model->supplier = $surpplie;
+        }
+
+        if ($data['pro_id']) {
+            $result = $model->relation('supplier')->save();
+            $action = 'mod';
+            $message = "修改项目:pro_id-{$data['pro_id']}";
+        } else {
+
+            $model->pro_linker = $admin['admin_id'];
+            $result = $model->relation('supplier')->add();
+            $action = 'add';
+            $message = "新增项目:pro_id-$result";
+            //审批流入库处理
+            $pjWorkFlow = D('PjWorkflow')->data(array('pj_id' => $result, 'pj_state' => '待审核', 'pro_level_now' => '1', 'pro_times_now' => '1'))->add();
+            $sendProcess = D('SendProcess')->data(array('wf_id' => $pjWorkFlow,'sp_message'=>'已提交', 'sp_author' => $admin['admin_id'], 'sp_addtime' => time(), 'sp_role_id' => $admin['role_id']))->add();
+            //根据name查出下个审批人的角色id
+            $xmlInfo = logic('xml')->index()[xmlNameToIdAndName(explode('_', C('proLevel')[0])[0])['TARGETREF']];//获取即将审核人的xml信息
+            $proRoleId = roleNameToid(explode('_', $xmlInfo['name'])[0]);//审批人角色id
+            $workFlowLog = D('WorkflowLog')->data(array(
+                'sp_id' => $sendProcess, 'pj_id' => $result, 'pro_level' => 1, 'pro_times' => 1, 'pro_state' => 0, 'pro_addtime' => time(),
+                'wf_id' => $pjWorkFlow, 'pro_role' => $proRoleId, 'pro_xml_id' => xmlNameToIdAndName(explode('_', C('proLevel')[0])[0])['TARGETREF']
+            ))->add();
+            $redisPost = redisTotalPost(0, $admin['admin_id'], $proRoleId . '|role', time(), $result, $workFlowLog);
+        }
+
+        if ($result === false || $pjWorkFlow === false || $sendProcess === false || $workFlowLog === false || $redisPost===false) {
+            $this->json_error('保存失败');
+        } else {
+            self::log($action, $message);
+            $this->json_success('保存成功', '', '', true, array('tabid' => 'project-start'));
+        }
+    }
+
     /*********
      * author:lmj
      * 我的审核项目
@@ -73,7 +123,7 @@ class ProjectController extends CommonController
         $model = D('project');
         $pageSize = I('post.pageSize', 30);
         $page = I('post.pageCurrent', 1);
-       // $bb=S()->hMset('adminId:29',array('type'=>2,'contents'=>'宋波分配任121212啦','time'=>time(),'proId'=>'2'));
+        // $bb=S()->hMset('adminId:29',array('type'=>2,'contents'=>'宋波分配任121212啦','time'=>time(),'proId'=>'2'));
         //$aa=S()->hMget('adminId:28',array('type','contents','time','proId'));
         $list = $model->isAudit($page, $pageSize, 't.addtime DESC', $admin['admin_id'], $admin['role_id'], 0);
         $this->assign(array('name' => $admin['real_name'], 'list' => $list['list'], 'total' => $list['total'], 'pageCurrent' => $page));
@@ -123,13 +173,12 @@ class ProjectController extends CommonController
         switch ($proLevel) {
             //分配项目跟进人
             case 1:
-                $proAdminId=I('get.admin_id');//项目跟进人ID
-                $flow=D('Project')->where("`pro_id`=%d",array($proIid))->data(array('admin_id'=>$proAdminId))->save();
-                if(false===$flow)
-                {
+                $proAdminId = I('get.admin_id');//项目跟进人ID
+                $flow = D('Project')->where("`pro_id`=%d", array($proIid))->data(array('admin_id' => $proAdminId))->save();
+                if (false === $flow) {
                     $this->json_error('分配项管专员失败！');
                 }
-            break;
+                break;
             case 2;
                 break;
 
@@ -156,53 +205,58 @@ class ProjectController extends CommonController
             ->data(array('pj_id' => $proIid, 'sp_id' => $newSendProcess, 'wf_id' => $wfId,
                 'pro_level' => $proLevel + 1, 'pro_times' => $proTimes, 'pro_state' => 0, 'pro_addtime' => time(), 'pro_role' => $proRoleId, 'pro_xml_id' => xmlIdToInfo($xmlId)['TARGETREF']))
             ->add();
-
-        if ($oldWorkFolwObj && $oldPjWorkFolwObj && $newWorkFlowLog) {
+        //发送消息
+        $redisPostMessage=redisTotalPost($proLevel,$admin['admin_id'],$proAdminId.'|admin',time(),$proIid,$newWorkFlowLog);
+        if ($oldWorkFolwObj && $oldPjWorkFolwObj && $newWorkFlowLog && $redisPostMessage) {
             $this->json_success('成功', '', '', true, array('tabid' => 'project-auditList'));
         }
     }
+
     //通知知情
     public function Notice()
     {
-        $adminInfo=D('Admin')->where(array('role_id'=>array('in','16,18')))->field('admin_id,role_id,real_name')->relation(true)->select();
+        $adminInfo = D('Admin')->where(array('role_id' => array('in', '16,18')))->field('admin_id,role_id,real_name')->relation(true)->select();
         $wfId = I('post.wfId');
         $xmlId = I('post.xmlId');
         $proIid = I('post.pro_id');
-        $spId=I('post.spId');
+        $spId = I('post.spId');
         $proLevel = I('post.proLevel');//当前审批级别
         $proTimes = I('post.proTimes');//当前审批轮次
         $admin = session('admin');
-        if(IS_POST)
-        {
-            $flag=true;
-            $adminList=I('post.ids');
-            foreach ($adminList as $k=>$v)
-            {
+        if (IS_POST) {
+            $flag = true;
+            $adminList = I('post.ids');
+            foreach ($adminList as $k => $v) {
                 //$proAuthJson=preg_replace("/^\{([a-z]+)\:\'([0-9]+)\'\}/",'{"${1}":"${2}"}',$v);
-                $proAuth=json_decode(htmlspecialchars_decode($v),true)['supplierid'];
-                $return=D('WorkflowLog')
-                    ->data(array('sp_id'=>$spId,'pj_id'=>$proIid,'pro_author'=>$proAuth,
-                        'pro_level'=>$proLevel,'pro_times'=>$proTimes,'pro_view'=>'上传资料','pro_state'=>'0','pro_addtime'=>time()+$k,
-                        'wf_id'=>$wfId,'pro_role'=>'','pro_xml_id'=>$xmlId))->add();
-                $redisPost=redisCollect($proLevel,$admin['admin_id'],$proAuth.'|admin',time()+$k,$proIid,1);
-                $redisPostAudit=redisPostAudit($proLevel,$admin['admin_id'],$proAuth.'|admin',time()+$k,$proIid,$return,1);
-                $flag=$flag && $return && $redisPost && $redisPostAudit ;
-            }
-            if($flag)
-            {
-                $this->json_success('知情已发送','','',true);
+                $wordFolwModel = D('WorkflowLog');
+                $proAuth = json_decode(htmlspecialchars_decode($v), true)['supplierid'];
+                $isNotice = $wordFolwModel->where("`pro_author`=%d and `pro_level`=%d", array($proAuth, $proLevel))->find();//如果重复通知就不新建wordflow
+                if ($isNotice) {
+                    $redisPostAudit = redisPostAudit($proLevel, $admin['admin_id'], $proAuth . '|admin', time() + $k, $proIid, $isNotice['pl_id'], 1);//我的待办通知
+                    continue;
+                } else {
+                    $return = $wordFolwModel->data(array('sp_id' => $spId, 'pj_id' => $proIid, 'pro_author' => $proAuth,
+                        'pro_level' => $proLevel, 'pro_times' => $proTimes, 'pro_view' => '上传资料', 'pro_state' => '0', 'pro_addtime' => time(),
+                        'wf_id' => $wfId, 'pro_role' => '', 'pro_xml_id' => $xmlId))->add();
 
+                    $redisPostAudit = redisPostAudit($proLevel, $admin['admin_id'], $proAuth . '|admin', time() + $k, $proIid, $return, 1);//我的待办通知
+                }
+
+                $redisPost = redisCollect($proLevel, $admin['admin_id'], $proAuth . '|admin', time() + $k, $proIid, 1);//消息通知库
+
+                $flag = $flag && $return && $redisPost && $redisPostAudit;
             }
-            else
-            {
-                $this->json_error('知情发送失败','','',true);
+            if ($flag) {
+                $this->json_success('知情已发送', '', '', true);
+
+            } else {
+                $this->json_error('知情发送失败', '', '', true);
             }
         }
-        $this->assign('list',$adminInfo);
+        $this->assign('list', $adminInfo);
         $this->assign($_GET);
         $this->display();
     }
-
 
 
     //项目立项
@@ -349,9 +403,6 @@ class ProjectController extends CommonController
         $this->assign('pro_type', $data['pro_type']);
         $this->display();
     }
-
-
-
 
 
     //审核界面
@@ -504,45 +555,6 @@ class ProjectController extends CommonController
         $this->json_success('成功', '', '', true, array('tabid' => 'project-auditList'));
     }
 
-    /* 保存项目 */
-
-    public function save_project()
-    {
-        $model = D('Project');
-        $supplier_id = I('post.supplier_id');
-        if (false === $data = $model->create()) {
-            $e = $model->getError();
-            $this->json_error($e);
-        }
-        if ($model->pro_type == 1) {
-            $supplier_id = explode(',', $supplier_id);
-            foreach ($supplier_id as $v) {
-                $surpplie[] = array('company_id' => $v);
-            }
-            // put(serialize($surpplie));
-            $model->supplier = $surpplie;
-        }
-
-        if ($data['pro_id']) {
-            $result = $model->relation('supplier')->save();
-            $action = 'mod';
-            $message = "修改项目:pro_id-{$data['pro_id']}";
-        } else {
-            $admin = session('admin');
-            $model->pro_linker = $admin['admin_id'];
-//            $this->setPm($model);
-            $result = $model->relation('supplier')->add();
-            $action = 'add';
-            $message = "新增项目:pro_id-$result";
-        }
-
-        if ($result === false) {
-            $this->json_error('保存失败');
-        } else {
-            self::log($action, $message);
-            $this->json_success('保存成功', '', '', true, array('tabid' => 'project-start'));
-        }
-    }
 
     protected function setPm(& $model)
     {

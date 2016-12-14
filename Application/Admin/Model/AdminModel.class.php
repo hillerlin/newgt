@@ -200,5 +200,17 @@ class AdminModel extends BaseModel
             ->count();
         return array('total'=>$count,'list'=>$list);
     }
-
+    //获取用户数据
+    public  function getuser($page,$pageSize,$map){
+        $count=$this->alias('a')
+            ->where($map)
+            ->count();
+        $list=$this->alias('a')
+            ->field('a.admin_id,a.real_name,r.role_name')
+            ->join('LEFT JOIN __ROLE__ as r ON r.role_id = a.role_id')
+            ->where($map)
+            ->page($page,$pageSize)
+            ->select();
+        return array('total'=>$count,'list'=>$list);
+    }
 }

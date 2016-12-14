@@ -95,22 +95,23 @@ return array(
             //状态描述
            'depict'=>'项目管理流程',
             //对应的proLevel子状态集合
-           'sub'=>array('1','2','3'),
+           'sub'=>array('0','1','2','3'),
         ),
          2=>array(
-             'dipict'=>'签约流程',
+             'depict'=>'签约流程',
              'sub'=>array()
          ),
          3=>array(
-             'dipict'=>'放款流程',
+             'depict'=>'放款流程',
              'sub'=>array()
          ),
          4=>array(
-             'dipict'=>'项目完结流程',
+             'depict'=>'项目完结流程',
              'sub'=>array()
          )
      ),
     'proLevel' => array(
+        0 => '项目经理_立项',
         1 => '分配跟进人',
         2 => '召开立项会',
         3 => '风控会初审',

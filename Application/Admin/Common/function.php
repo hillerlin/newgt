@@ -368,7 +368,7 @@ function projectToAction($authType,$pageAuth,$middleType='pre')
  * @param $specialType   特殊类型   比如项管专员发送知情通知
  */
 
-function redisCollect($proLevel,$sender,$receive='',$time,$proId,$specialType=null)
+function redisCollect($proLevel,$sender,$receive='',$time,$proId,$specialMessage=null,$specialType=null)
 {
     $type=auditMainProcessType($proLevel);
     $adminAttr=D('Admin')->where("`admin_id`=%d",array($sender))->field('admin_id,real_name')->find();
@@ -387,8 +387,7 @@ function redisCollect($proLevel,$sender,$receive='',$time,$proId,$specialType=nu
         $authorType='admin';
     }
     //查出项目名字
-        $projectObj=D('Project')->where("`pro_id`=%d",array($proId))->field('pro_title')->find();
-        $proName=$projectObj['pro_title'];
+        $proName=projectNameFromId($proId);
         $contents='';
         $redisKey='Type:'.$type.':Time:'.date('Ymd',$time);
     //用集合记录录入的时间
@@ -400,7 +399,7 @@ function redisCollect($proLevel,$sender,$receive='',$time,$proId,$specialType=nu
     {
         case 0:
             //项目经理立项
-            $contents='项目经理<code>'.$sender.'</code>提交项目<code>'.$proName.'</code>';
+            $contents='项目经理<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>';
             break;
         case 1:
             //项目总监分配人手
@@ -419,22 +418,24 @@ function redisCollect($proLevel,$sender,$receive='',$time,$proId,$specialType=nu
         case 3:
             //风控召开初审会
             break;
+        case -1:
+            $contents=$specialMessage;
+            break;
     }
     $redisValue=array($time=>json_encode(array('contents'=>$contents,'time'=>$time,'proId'=>$proId,'authorType'=>$authorType)));
     return S()->hMset($redisKey,$redisValue);
 }
 //整合redis的消息发送
-function redisTotalPost($proLevel,$sender,$receive,$time,$proId,$plId,$specialType=null)
+function redisTotalPost($proLevel,$sender,$receive,$time,$proId,$plId,$specialMessage=null,$specialType=null)
 {
-   return redisPostAudit($proLevel,$sender,$receive,$time,$proId,$plId,$specialType) && redisCollect($proLevel,$sender,$receive,$time,$proId,$specialType);
+   return redisPostAudit($proLevel,$sender,$receive,$time,$proId,$plId,$specialMessage,$specialType) && redisCollect($proLevel,$sender,$receive,$time,$proId,$specialMessage,$specialType);
 
 }
 //待我审核事项
-function redisPostAudit($proLevel,$sender,$receive='',$time,$proId,$plId,$specialType=null)
+function redisPostAudit($proLevel,$sender,$receive='',$time,$proId,$plId,$specialMessage=null,$specialType=null)
 {
     //查出项目名字
-    $projectObj=D('Project')->where("`pro_id`=%d",array($proId))->field('pro_title')->find();
-    $proName=$projectObj['pro_title'];
+    $proName=projectNameFromId($proId);
     $adminAttr=D('Admin')->where("`admin_id`=%d",array($sender))->field('admin_id,real_name')->find();
     $sender=$adminAttr['real_name'];//送审人的姓名
     $receiveAttr=explode('|',$receive);
@@ -456,7 +457,7 @@ function redisPostAudit($proLevel,$sender,$receive='',$time,$proId,$plId,$specia
     {
         case 0:
             //项目经理立项
-            $contents='项目经理:<code>'.$sender.'</code>提交项目<code>'.$proName.'</code>';
+            $contents='项目经理:<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>';
             break;
         case 1:
             //项目总监分配人手
@@ -475,14 +476,19 @@ function redisPostAudit($proLevel,$sender,$receive='',$time,$proId,$plId,$specia
         case 3:
             //风控召开初审会
             break;
+        case -1:
+            $contents=$specialMessage;
+            break;
     }
     $redisValue=array($plId=>json_encode(array('contents'=>$contents,'time'=>$time,'proId'=>$proId,'plId'=>$plId,'authorType'=>$authorType)));
     return S()->hMset($redisKey,$redisValue);
 
-
-
-
-
+}
+//根据项目id查出项目名字
+function projectNameFromId($proId)
+{
+    $projectObj=D('Project')->where("`pro_id`=%d",array($proId))->field('pro_title')->find();
+    return $projectObj['pro_title'];
 }
 //返回子流程所属大流程所属大类
 function auditMainProcessType($proLevel)
@@ -494,6 +500,32 @@ function auditMainProcessType($proLevel)
             return $k;
         }
     }
+}
+//返回驳回重新提交模块
+/*****
+ * @param $wfId
+ * @param $proIid
+ * @param $proRebutterLevel
+ * @param $proTimes
+ * @param $admin
+ * @param $proRebutter
+ * @param $xmlId
+ * @param $plId
+ * @return array
+ */
+function postRebutter($wfId,$proIid,$proRebutterLevel,$proTimes,$admin,$proRebutter,$xmlId,$plId)
+{
+    //审批流入库处理
+    $pjWorkFlow = D('PjWorkflow')->where("`wf_id`=%d",array($wfId))->data(array('pj_id' => $proIid, 'pj_state' => '待审核', 'pro_level_now' => $proRebutterLevel, 'pro_times_now' => $proTimes+1))->save();
+    $sendProcess = D('SendProcess')->data(array('wf_id' => $wfId,'sp_message'=>'已提交', 'sp_author' => $admin['admin_id'], 'sp_addtime' => time(), 'sp_role_id' => $admin['role_id']))->add();
+    $workFlowLog = D('WorkflowLog')->data(array(
+        'sp_id' => $sendProcess, 'pj_id' => $proIid, 'pro_level' => $proRebutterLevel, 'pro_times' => $proTimes+1, 'pro_state' => 0, 'pro_addtime' => time(),'pro_author'=>$proRebutter,
+        'wf_id' => $wfId, 'pro_xml_id' => $xmlId
+    ))->add();
+    $oldworkFlowLog=D('WorkflowLog')->where("`pl_id`=%d",array($plId))->data(array('pro_state'=>2))->save();
+    $contents=$admin['role_name'].'<code>'.$admin['real_name'].'</code>重新提交<code>被驳回</code>项目<code>'.projectNameFromId($proIid).'</code>';
+    $redisPost = redisTotalPost(-1, $admin['admin_id'], $proRebutter . '|admin', time(), $proIid, $workFlowLog,$contents,-1);
+    return array($pjWorkFlow,$sendProcess,$workFlowLog,$oldworkFlowLog && $redisPost);
 }
 
 

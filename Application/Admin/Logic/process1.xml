@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                   xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                   xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                   id="BPMNProcessmaker" targetNamespace="http://bpmn.io/schema/bpmn">
+    <bpmn2:process id="pmui-3031794465851289fe9d645048336145">
+        <bpmn2:userTask id="el_292541503583fc0a60758b7036469204" name="项管专员_归档">
+            <bpmn2:incoming>flo_47201538058451730e1e080039907057</bpmn2:incoming>
+            <bpmn2:outgoing>flo_pmui-8346199325851fb29ea1435088811386</bpmn2:outgoing>
+        </bpmn2:userTask>
+        <bpmn2:userTask id="el_308715820583f9d39322489074895638" name="项目经理_立项">
+            <bpmn2:incoming>flo_pmui-36153514658521b3feb9085047276650</bpmn2:incoming>
+            <bpmn2:outgoing>flo_595916748583fc16e2dc931091716504</bpmn2:outgoing>
+        </bpmn2:userTask>
+        <bpmn2:userTask id="el_381469726583fc0063e7d00094158340" name="项管部总监_分配人员">
+            <bpmn2:incoming>flo_595916748583fc16e2dc931091716504</bpmn2:incoming>
+            <bpmn2:outgoing>flo_47201538058451730e1e080039907057</bpmn2:outgoing>
+        </bpmn2:userTask>
+        <bpmn2:sequenceFlow id="flo_47201538058451730e1e080039907057" name="分配项目专员"
+                            sourceRef="el_381469726583fc0063e7d00094158340"
+                            targetRef="el_292541503583fc0a60758b7036469204"/>
+        <bpmn2:sequenceFlow id="flo_595916748583fc16e2dc931091716504" name="提交立项"
+                            sourceRef="el_308715820583f9d39322489074895638"
+                            targetRef="el_381469726583fc0063e7d00094158340"/>
+        <bpmn2:endEvent id="el_pmui-7640498905851fb1dea0d76037251186" name="立项归档">
+            <bpmn2:incoming>flo_pmui-8346199325851fb29ea1435088811386</bpmn2:incoming>
+        </bpmn2:endEvent>
+        <bpmn2:sequenceFlow id="flo_pmui-8346199325851fb29ea1435088811386" name="结束"
+                            sourceRef="el_292541503583fc0a60758b7036469204"
+                            targetRef="el_pmui-7640498905851fb1dea0d76037251186"/>
+        <bpmn2:startEvent id="el_pmui-27147933658521b37eb87b8041658836" name="立项流程1">
+            <bpmn2:outgoing>flo_pmui-36153514658521b3feb9085047276650</bpmn2:outgoing>
+        </bpmn2:startEvent>
+        <bpmn2:sequenceFlow id="flo_pmui-36153514658521b3feb9085047276650" name=" "
+                            sourceRef="el_pmui-27147933658521b37eb87b8041658836"
+                            targetRef="el_308715820583f9d39322489074895638"/>
+    </bpmn2:process>
+    <bpmndi:BPMNDiagram id="dia_1554521475851289fe9d625054844767">
+        <bpmndi:BPMNPlane id="plane_8665552635851289fe9d637084471891"
+                          bpmnElement="pmui-3031794465851289fe9d645048336145">
+            <bpmndi:BPMNShape id="di_el_292541503583fc0a60758b7036469204"
+                              bpmnElement="el_292541503583fc0a60758b7036469204">
+                <dc:Bounds x="1438" y="55" width="150" height="75"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="di_el_308715820583f9d39322489074895638"
+                              bpmnElement="el_308715820583f9d39322489074895638">
+                <dc:Bounds x="599" y="55" width="150" height="75"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="di_el_381469726583fc0063e7d00094158340"
+                              bpmnElement="el_381469726583fc0063e7d00094158340">
+                <dc:Bounds x="1001" y="55" width="150" height="75"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="flo_47201538058451730e1e080039907057_di"
+                             bpmnElement="flo_47201538058451730e1e080039907057">
+                <di:waypoint x="1152" y="93"/>
+                <di:waypoint x="1438" y="93"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="flo_595916748583fc16e2dc931091716504_di"
+                             bpmnElement="flo_595916748583fc16e2dc931091716504">
+                <di:waypoint x="750" y="93"/>
+                <di:waypoint x="1001" y="93"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="di_el_pmui-7640498905851fb1dea0d76037251186"
+                              bpmnElement="el_pmui-7640498905851fb1dea0d76037251186">
+                <dc:Bounds x="1745" y="76" width="33" height="33"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="flo_pmui-8346199325851fb29ea1435088811386_di"
+                             bpmnElement="flo_pmui-8346199325851fb29ea1435088811386">
+                <di:waypoint x="1589" y="93"/>
+                <di:waypoint x="1745" y="93"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="di_el_pmui-27147933658521b37eb87b8041658836"
+                              bpmnElement="el_pmui-27147933658521b37eb87b8041658836">
+                <dc:Bounds x="448" y="76" width="33" height="33"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="flo_pmui-36153514658521b3feb9085047276650_di"
+                             bpmnElement="flo_pmui-36153514658521b3feb9085047276650">
+                <di:waypoint x="481" y="93"/>
+                <di:waypoint x="599" y="93"/>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</bpmn2:definitions>

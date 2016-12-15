@@ -254,7 +254,7 @@ class ProjectModel extends BaseModel {
         return array('total' => $total, 'list' => $list);
     }
     
-    //根据admin_id来判断审核人是否有审核的项目
+    //根据admin_id来判断审核人是否有待办的项目
     public function isAudit($page = 1, $pageSize = 30, $order='t.addtime DESC',$adminId=null,$roleId=null,$auditType)
     {
         $map['pro_state']=$auditType;
@@ -262,8 +262,8 @@ class ProjectModel extends BaseModel {
         $idList=array();
         //isset($adminId)?$map['pro_author']=$adminId:$map['pro_role']=$roleId;
         $list=D('WorkflowLog')
-            ->union("select `pj_id` from`gt_workflow_log` where `pro_role`='".$roleId."' and `pro_state`='".$auditType."' ")
-            ->where($map)
+            ->union("select `pj_id` from`gt_workflow_log` where `pro_role`='".$roleId."' and `pro_state`='".$auditType."' or `pro_state`='3' ")
+            ->where(array('pro_author'=>$adminId,'_string'=>"`pro_state`='".$auditType."' or `pro_state`='3'"))
             ->field('pj_id')
             ->select();//查出不同状态的项目id
        if($list)
@@ -282,7 +282,7 @@ class ProjectModel extends BaseModel {
                 ->join('LEFT JOIN __WORKFLOW_LOG__ as l ON t.pro_id=l.pj_id')
                 ->join('__COMPANY__ AS cp ON t.company_id=cp.company_id')
                 ->field('t.*,l.*,pw.pro_level_now as pro_level_now,pw.wf_id as wfid,pro_title,pro_no,a1.real_name as pmd_name,a2.authpage as authpage,company_name')
-                ->where(array('pro_id'=>array('in',$idList),'l.pro_state'=>$auditType ,'_string'=>"l.pro_author='".$adminId."' or l.pro_role='".$roleId."'"))
+                ->where(array('pro_id'=>array('in',$idList) ,'_string'=>"l.pro_author='".$adminId."' or l.pro_role='".$roleId."'"))
                 ->page($page, $pageSize)
                 ->order($order)
                 ->select();

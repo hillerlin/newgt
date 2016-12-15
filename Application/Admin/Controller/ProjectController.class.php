@@ -83,31 +83,56 @@ class ProjectController extends CommonController
 
         if ($data['pro_id']) {
             $result = $model->relation('supplier')->save();
-            $action = 'mod';
-            $message = "修改项目:pro_id-{$data['pro_id']}";
+            $plId = I('post.plId');
+            $wfId = I('post.wfId');
+            $xmlId = I('post.xmlId');
+            $proIid = I('post.pro_id');
+            $auditType = I('post.auditType');
+            $proLevel = I('post.proLevel');//当前审批级别
+            $proTimes = I('post.proTimes');//当前审批轮次
+            $proRebutter = I('post.proRebutter');//驳回人id
+            $proRebutterLevel = I('post.proRebutterLevel');//第几级被驳回
+
+
+            if(intval($proRebutter)>0)//驳回重发的修改
+            {
+               list($pjWorkFlow,$sendProcess,$workFlowLog,$redisPost)= postRebutter($wfId,$proIid,$proRebutterLevel,$proTimes,$admin,$proRebutter,$xmlId,$plId);
+
+            }else
+                //正常提交新建项目
+            {
+                //根据name查出下个审批人的角色id
+                 $xmlInfo = logic('xml')->index()[xmlNameToIdAndName(explode('_', C('proLevel')[0])[0])['TARGETREF']];//获取即将审核人的xml信息
+                 $proRoleId = roleNameToid(explode('_', $xmlInfo['name'])[0]);//审批人角色id
+                $pjWorkFlow = D('PjWorkflow')->where("`wf_id`=%d",array($wfId))->data(array( 'pj_state' => '待审核', 'pro_level_now' => $proLevel+1, 'pro_times_now' => $proTimes))->save();
+                $sendProcess = D('SendProcess')->data(array('wf_id' => $wfId,'sp_message'=>'已提交', 'sp_author' => $admin['admin_id'], 'sp_addtime' => time(), 'sp_role_id' => $admin['role_id']))->add();
+                $workFlowLog = D('WorkflowLog')->data(array(
+                    'sp_id' => $sendProcess, 'pj_id' => $proIid, 'pro_level' => $proLevel+1, 'pro_times' => $proTimes, 'pro_state' => 0, 'pro_addtime' => time(),'pro_role'=>$proRoleId,
+                    'wf_id' => $wfId, 'pro_xml_id' => $xmlId
+                ))->add();
+                $oldworkFlowLog=D('WorkflowLog')->where("`pl_id`=%d",array($plId))->data(array('pro_state'=>2))->save();
+                $redisPost = redisTotalPost(0, $admin['admin_id'], $proRoleId . '|role', time(), $proIid, $workFlowLog) && $oldworkFlowLog;
+            }
+
+
+
         } else {
 
             $model->pro_linker = $admin['admin_id'];
             $result = $model->relation('supplier')->add();
-            $action = 'add';
-            $message = "新增项目:pro_id-$result";
             //审批流入库处理
-            $pjWorkFlow = D('PjWorkflow')->data(array('pj_id' => $result, 'pj_state' => '待审核', 'pro_level_now' => '1', 'pro_times_now' => '1'))->add();
+            $pjWorkFlow = D('PjWorkflow')->data(array('pj_id' => $result, 'pj_state' => '待审核', 'pro_level_now' => '0', 'pro_times_now' => '1'))->add();
             $sendProcess = D('SendProcess')->data(array('wf_id' => $pjWorkFlow,'sp_message'=>'已提交', 'sp_author' => $admin['admin_id'], 'sp_addtime' => time(), 'sp_role_id' => $admin['role_id']))->add();
-            //根据name查出下个审批人的角色id
-            $xmlInfo = logic('xml')->index()[xmlNameToIdAndName(explode('_', C('proLevel')[0])[0])['TARGETREF']];//获取即将审核人的xml信息
-            $proRoleId = roleNameToid(explode('_', $xmlInfo['name'])[0]);//审批人角色id
             $workFlowLog = D('WorkflowLog')->data(array(
-                'sp_id' => $sendProcess, 'pj_id' => $result, 'pro_level' => 1, 'pro_times' => 1, 'pro_state' => 0, 'pro_addtime' => time(),
-                'wf_id' => $pjWorkFlow, 'pro_role' => $proRoleId, 'pro_xml_id' => xmlNameToIdAndName(explode('_', C('proLevel')[0])[0])['TARGETREF']
+                'sp_id' => $sendProcess, 'pj_id' => $result, 'pro_level' => 0, 'pro_times' => 1, 'pro_state' => 0, 'pro_addtime' => time(),'pro_author'=>$admin['admin_id'],
+                'wf_id' => $pjWorkFlow, 'pro_role' => $admin['role_id'], 'pro_xml_id' => xmlNameToIdAndName(explode('_', C('proLevel')[0])[0])['TARGETREF']
             ))->add();
-            $redisPost = redisTotalPost(0, $admin['admin_id'], $proRoleId . '|role', time(), $result, $workFlowLog);
+            $redisPost = redisTotalPost(0, $admin['admin_id'], $admin['admin_id'] . '|admin', time(), $result, $workFlowLog);
         }
 
         if ($result === false || $pjWorkFlow === false || $sendProcess === false || $workFlowLog === false || $redisPost===false) {
             $this->json_error('保存失败');
         } else {
-            self::log($action, $message);
             $this->json_success('保存成功', '', '', true, array('tabid' => 'project-start'));
         }
     }
@@ -123,12 +148,9 @@ class ProjectController extends CommonController
         $model = D('project');
         $pageSize = I('post.pageSize', 30);
         $page = I('post.pageCurrent', 1);
-        // $bb=S()->hMset('adminId:29',array('type'=>2,'contents'=>'宋波分配任121212啦','time'=>time(),'proId'=>'2'));
-        //$aa=S()->hMget('adminId:28',array('type','contents','time','proId'));
         $list = $model->isAudit($page, $pageSize, 't.addtime DESC', $admin['admin_id'], $admin['role_id'], 0);
         $this->assign(array('name' => $admin['real_name'], 'list' => $list['list'], 'total' => $list['total'], 'pageCurrent' => $page));
         $this->display();
-        // logic('xml')->index();
 
     }
 
@@ -164,7 +186,6 @@ class ProjectController extends CommonController
         $auditType = I('get.auditType');
         $proLevel = I('get.proLevel');//当前审批级别
         $proTimes = I('get.proTimes');//当前审批轮次
-
         $admin = session('admin');
         // $aa=xmlIdToInfo($xmlId);
         // $adminId=I('get.adminId');//管理员id,如果没有管理员id
@@ -400,6 +421,7 @@ class ProjectController extends CommonController
             $data['supplier_name'] = implode(',', $data['supplier_name']);
         }
         $this->assign($data);
+        $this->assign($_GET);
         $this->assign('pro_type', $data['pro_type']);
         $this->display();
     }

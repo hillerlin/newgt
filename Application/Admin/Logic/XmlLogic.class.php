@@ -3,10 +3,11 @@ namespace Admin\Logic;
 
 class XmlLogic{
 
+    public $file;
     public function index()
     {
         //  加载XML内容
-        $content = file_get_contents(dirname(__FILE__).'\gtbltest.xml');
+        $content = file_get_contents(dirname(__FILE__).'/'.$this->file);
         $p = xml_parser_create();
         xml_parse_into_struct($p, $content, $vals, $index);
         xml_parser_free($p);

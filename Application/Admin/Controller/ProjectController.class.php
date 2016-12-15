@@ -96,7 +96,7 @@ class ProjectController extends CommonController
 
             if(intval($proRebutter)>0)//驳回重发的修改
             {
-               list($pjWorkFlow,$sendProcess,$workFlowLog,$redisPost)= postRebutter($wfId,$proIid,$proRebutterLevel,$proTimes,$admin,$proRebutter,$xmlId,$plId);
+                list($pjWorkFlow,$sendProcess,$workFlowLog,$redisPost)= postRebutter($wfId,$proIid,$proRebutterLevel,$proTimes,$admin,$proRebutter,$xmlId,$plId);
 
             }else
                 //正常提交新建项目
@@ -104,17 +104,8 @@ class ProjectController extends CommonController
                 //根据name查出下个审批人的角色id
                  $xmlInfo = logic('xml')->index()[xmlNameToIdAndName(explode('_', C('proLevel')[0])[0])['TARGETREF']];//获取即将审核人的xml信息
                  $proRoleId = roleNameToid(explode('_', $xmlInfo['name'])[0]);//审批人角色id
-                $pjWorkFlow = D('PjWorkflow')->where("`wf_id`=%d",array($wfId))->data(array( 'pj_state' => '待审核', 'pro_level_now' => $proLevel+1, 'pro_times_now' => $proTimes))->save();
-                $sendProcess = D('SendProcess')->data(array('wf_id' => $wfId,'sp_message'=>'已提交', 'sp_author' => $admin['admin_id'], 'sp_addtime' => time(), 'sp_role_id' => $admin['role_id']))->add();
-                $workFlowLog = D('WorkflowLog')->data(array(
-                    'sp_id' => $sendProcess, 'pj_id' => $proIid, 'pro_level' => $proLevel+1, 'pro_times' => $proTimes, 'pro_state' => 0, 'pro_addtime' => time(),'pro_role'=>$proRoleId,
-                    'wf_id' => $wfId, 'pro_xml_id' => $xmlId
-                ))->add();
-                $oldworkFlowLog=D('WorkflowLog')->where("`pl_id`=%d",array($plId))->data(array('pro_state'=>2))->save();
-                $redisPost = redisTotalPost(0, $admin['admin_id'], $proRoleId . '|role', time(), $proIid, $workFlowLog) && $oldworkFlowLog;
+                list($pjWorkFlow,$sendProcess,$workFlowLog,$redisPost)=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,$proRoleId,0,$xmlId,$plId);
             }
-
-
 
         } else {
 

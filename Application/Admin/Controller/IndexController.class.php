@@ -8,6 +8,11 @@ class IndexController extends CommonController {
     }
 
     public function index() {
+     /*   $xmlClass=logic('xml');
+        $xmlClass->file='process1.xml';
+        $xmlInfo = logic('xml')->index()[xmlIdToInfo('el_292541503583fc0a60758b7036469204')['TARGETREF']];//获取即将审核人的xml信息*/
+        //$xmlInfo = logic('xml')->index();
+        //el_292541503583fc0a60758b7036469204
         $admin = session('admin');
         if ($admin['is_supper'] == 0) {
             $model = D('Role');

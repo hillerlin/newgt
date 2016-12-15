@@ -511,9 +511,10 @@ function auditMainProcessType($proLevel)
  * @param $proRebutter
  * @param $xmlId
  * @param $plId
+ * @param $type list 是数组模式回传  one 是bool类型回传
  * @return array
  */
-function postRebutter($wfId,$proIid,$proRebutterLevel,$proTimes,$admin,$proRebutter,$xmlId,$plId)
+function postRebutter($wfId,$proIid,$proRebutterLevel,$proTimes,$admin,$proRebutter,$xmlId,$plId,$type='list')
 {
     //审批流入库处理
     $pjWorkFlow = D('PjWorkflow')->where("`wf_id`=%d",array($wfId))->data(array('pj_id' => $proIid, 'pj_state' => '待审核', 'pro_level_now' => $proRebutterLevel, 'pro_times_now' => $proTimes+1))->save();
@@ -525,7 +526,49 @@ function postRebutter($wfId,$proIid,$proRebutterLevel,$proTimes,$admin,$proRebut
     $oldworkFlowLog=D('WorkflowLog')->where("`pl_id`=%d",array($plId))->data(array('pro_state'=>2))->save();
     $contents=$admin['role_name'].'<code>'.$admin['real_name'].'</code>重新提交<code>被驳回</code>项目<code>'.projectNameFromId($proIid).'</code>';
     $redisPost = redisTotalPost(-1, $admin['admin_id'], $proRebutter . '|admin', time(), $proIid, $workFlowLog,$contents,-1);
-    return array($pjWorkFlow,$sendProcess,$workFlowLog,$oldworkFlowLog && $redisPost);
+    if($type=='list')
+    {
+
+        return array($pjWorkFlow,$sendProcess,$workFlowLog,$redisPost && $oldworkFlowLog);
+
+    }elseif($type=='one')
+    {
+        return $pjWorkFlow && $sendProcess && $workFlowLog && $oldworkFlowLog && $redisPost;
+    }
+}
+//返回执行完下一步的流程的结果
+/******
+ * @param $wfId
+ * @param $proLevel
+ * @param $proTimes
+ * @param $admin
+ * @param $proIid
+ * @param $proRoleId  有roleId  就传 实参
+ * @param $proAdminId 有adminId 就传 实参
+ * @param $xmlId
+ * @param $plId
+ * @param $type list 是数组模式回传  one 是bool类型回传
+ * @return bool
+ */
+function postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,$proRoleId='0',$proAdminId='0',$xmlId,$plId,$type='list')
+{
+    $pjWorkFlow = D('PjWorkflow')->where("`wf_id`=%d",array($wfId))->data(array( 'pj_state' => '待审核', 'pro_level_now' => $proLevel+1, 'pro_times_now' => $proTimes))->save();
+    $sendProcess = D('SendProcess')->data(array('wf_id' => $wfId,'sp_message'=>'已提交', 'sp_author' => $admin['admin_id'], 'sp_addtime' => time(), 'sp_role_id' => $admin['role_id']))->add();
+    $workFlowLog = D('WorkflowLog')->data(array(
+        'sp_id' => $sendProcess, 'pj_id' => $proIid, 'pro_level' => $proLevel+1, 'pro_times' => $proTimes, 'pro_state' => 0, 'pro_addtime' => time(),'pro_role'=>$proRoleId,'pro_author'=>$proAdminId,
+        'wf_id' => $wfId, 'pro_xml_id' => $xmlId
+    ))->add();
+    $oldworkFlowLog=D('WorkflowLog')->where("`pl_id`=%d",array($plId))->data(array('pro_state'=>2))->save();
+    $redisPost = redisTotalPost(0, $admin['admin_id'], $proRoleId . '|role', time(), $proIid, $workFlowLog) && $oldworkFlowLog;
+
+    if($type=='list')
+    {
+        return array($pjWorkFlow,$sendProcess,$workFlowLog,$redisPost && $oldworkFlowLog);
+
+    }elseif($type=='one')
+    {
+        return $pjWorkFlow && $sendProcess && $workFlowLog && $oldworkFlowLog && $redisPost;
+    }
 }
 
 

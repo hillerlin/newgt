@@ -22,7 +22,7 @@
         <bpmn2:sequenceFlow id="flo_595916748583fc16e2dc931091716504" name="提交立项"
                             sourceRef="el_308715820583f9d39322489074895638"
                             targetRef="el_381469726583fc0063e7d00094158340"/>
-        <bpmn2:endEvent id="el_pmui-7640498905851fb1dea0d76037251186" name="立项归档">
+        <bpmn2:endEvent id="el_pmui-7640498905851fb1dea0d76037251186" name="立项_结束">
             <bpmn2:incoming>flo_pmui-8346199325851fb29ea1435088811386</bpmn2:incoming>
         </bpmn2:endEvent>
         <bpmn2:sequenceFlow id="flo_pmui-8346199325851fb29ea1435088811386" name="结束"

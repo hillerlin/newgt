@@ -306,7 +306,9 @@ function auditInit($auditType)
 //$type是判断是水平审批还是垂直审批 0是垂直审批 1是水平审批
 function xmlIdToInfo($id,$type=0)
 {
-    $list=logic('xml')->index();
+    $xmlObj=logic('xml');
+    $xmlObj->file='process1.xml';
+    $list = $xmlObj->index();
     foreach ($list as $k=>$v)
     {
         if($k==$id)
@@ -332,7 +334,9 @@ function xmlIdToInfo($id,$type=0)
 //根据xml的name返回下一级xml的id和name
 function xmlNameToIdAndName($name)
 {
-    $xmlInfo = logic('xml')->index();
+    $xmlObj=logic('xml');
+    $xmlObj->file='process1.xml';
+    $xmlInfo = $xmlObj->index();
     foreach ($xmlInfo as $k=>$v)
     {
         $xmlName=explode('_',$v['name'])[0];
@@ -347,8 +351,14 @@ function roleNameToid($name)
 {
     $list=D('Role')->where(array('role_name'=>array('like',"%$name%")))->find();
     return $list['role_id'];
-
 }
+//根据adminId返回adminName
+function adminNameToId($adminId)
+{
+    $adminInfo=D('Admin')->where("`admin_id`=%d",array($adminId))->field('real_name')->find();
+    return $adminInfo['real_name'];
+}
+
 
 //根据项目的状态返回相应的操作事件
 function projectToAction($authType,$pageAuth,$middleType='pre')
@@ -406,17 +416,13 @@ function redisCollect($proLevel,$sender,$receive='',$time,$proId,$specialMessage
             $contents='项管总监<code>'.$sender.'</code>将项目<code>'.$proName.'</code>分配给<code>'.$receive.'</code>';
             break;
         case 2:
-            //项管专员准备召开立项会
-            if($specialType)
-            {
-                $contents='项管专员<code>'.$sender.'</code>发送项目<code>'.$proName.'</code>知情给<code>'.$receive.'</code>';
-            }else
-            {
-                $contents='项管专员<code>'.$sender.'</code>发起项目<code>'.$proName.'</code>风控会';
-            }
+            //项管专员归档
+            $contents='项管专员<code>'.$sender.'</code>将项目<code>'.$proName.'</code><code>归档</code>';
+
             break;
         case 3:
-            //风控召开初审会
+            //项管专员归档
+            $contents='项管专员<code>'.$sender.'</code>将项目<code>'.$proName.'</code><code>归档完成，并结束立项</code>';
             break;
         case -1:
             $contents=$specialMessage;
@@ -464,17 +470,12 @@ function redisPostAudit($proLevel,$sender,$receive='',$time,$proId,$plId,$specia
             $contents='项管总监<code>'.$sender.'</code>将项目<code>'.$proName.'</code>分配给我！';
             break;
         case 2:
-            //项管专员准备召开立项会
-            if($specialType)
-            {
-                $contents='项管专员<code>'.$sender.'</code>发送项目<code>'.$proName.'</code>知情给我!';
-            }else
-            {
-                $contents='项管专员<code>'.$sender.'</code>发起项目<code>'.$proName.'</code>风控会，待我审核！';
-            }
+            //项管专员归档
+            $contents='项管专员<code>'.$sender.'</code>将项目<code>'.$proName.'</code><code>归档</code>';
             break;
         case 3:
-            //风控召开初审会
+            //项管专员归档
+            $contents='项管专员<code>'.$sender.'</code>将项目<code>'.$proName.'</code><code>归档完成，并结束立项</code>';
             break;
         case -1:
             $contents=$specialMessage;
@@ -517,10 +518,10 @@ function auditMainProcessType($proLevel)
 function postRebutter($wfId,$proIid,$proRebutterLevel,$proTimes,$admin,$proRebutter,$xmlId,$plId,$type='list')
 {
     //审批流入库处理
-    $pjWorkFlow = D('PjWorkflow')->where("`wf_id`=%d",array($wfId))->data(array('pj_id' => $proIid, 'pj_state' => '待审核', 'pro_level_now' => $proRebutterLevel, 'pro_times_now' => $proTimes+1))->save();
+    $pjWorkFlow = D('PjWorkflow')->where("`wf_id`=%d",array($wfId))->data(array('pj_id' => $proIid, 'pj_state' => '待审核', 'pro_level_now' => $proRebutterLevel, 'pro_times_now' => $proTimes))->save();
     $sendProcess = D('SendProcess')->data(array('wf_id' => $wfId,'sp_message'=>'已提交', 'sp_author' => $admin['admin_id'], 'sp_addtime' => time(), 'sp_role_id' => $admin['role_id']))->add();
     $workFlowLog = D('WorkflowLog')->data(array(
-        'sp_id' => $sendProcess, 'pj_id' => $proIid, 'pro_level' => $proRebutterLevel, 'pro_times' => $proTimes+1, 'pro_state' => 0, 'pro_addtime' => time(),'pro_author'=>$proRebutter,
+        'sp_id' => $sendProcess, 'pj_id' => $proIid, 'pro_level' => $proRebutterLevel, 'pro_times' => $proTimes, 'pro_state' => 0, 'pro_addtime' => time(),'pro_author'=>$proRebutter,
         'wf_id' => $wfId, 'pro_xml_id' => $xmlId
     ))->add();
     $oldworkFlowLog=D('WorkflowLog')->where("`pl_id`=%d",array($plId))->data(array('pro_state'=>2))->save();
@@ -550,16 +551,19 @@ function postRebutter($wfId,$proIid,$proRebutterLevel,$proTimes,$admin,$proRebut
  * @param $type list 是数组模式回传  one 是bool类型回传
  * @return bool
  */
-function postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,$proRoleId='0',$proAdminId='0',$xmlId,$plId,$type='list')
+function postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,$proRoleId=0,$proAdminId=0,$xmlId,$plId,$type='list',$specialMessage=null,$specialType=null)
 {
-    $pjWorkFlow = D('PjWorkflow')->where("`wf_id`=%d",array($wfId))->data(array( 'pj_state' => '待审核', 'pro_level_now' => $proLevel+1, 'pro_times_now' => $proTimes))->save();
+    $pjWorkFlow = D('PjWorkflow')->where("`wf_id`=%d",array($wfId))->data(array( 'pj_state' => '待审核', 'pro_level_now' => intval($proLevel)+1, 'pro_times_now' => $proTimes))->save();
     $sendProcess = D('SendProcess')->data(array('wf_id' => $wfId,'sp_message'=>'已提交', 'sp_author' => $admin['admin_id'], 'sp_addtime' => time(), 'sp_role_id' => $admin['role_id']))->add();
     $workFlowLog = D('WorkflowLog')->data(array(
-        'sp_id' => $sendProcess, 'pj_id' => $proIid, 'pro_level' => $proLevel+1, 'pro_times' => $proTimes, 'pro_state' => 0, 'pro_addtime' => time(),'pro_role'=>$proRoleId,'pro_author'=>$proAdminId,
+        'sp_id' => $sendProcess, 'pj_id' => $proIid, 'pro_level' => intval($proLevel)+1, 'pro_times' => $proTimes, 'pro_state' => 0, 'pro_addtime' => time(),'pro_role'=>$proRoleId,'pro_author'=>$proAdminId,
         'wf_id' => $wfId, 'pro_xml_id' => $xmlId
     ))->add();
     $oldworkFlowLog=D('WorkflowLog')->where("`pl_id`=%d",array($plId))->data(array('pro_state'=>2))->save();
-    $redisPost = redisTotalPost(0, $admin['admin_id'], $proRoleId . '|role', time(), $proIid, $workFlowLog) && $oldworkFlowLog;
+    $adminValue=($proRoleId>0)?$proRoleId:$proAdminId;
+    $adminType=($proRoleId>0)?'|role':'|admin';
+    $noticeType=isset($specialType)?$specialType:$proLevel;
+    $redisPost = redisTotalPost($noticeType, $admin['admin_id'], $adminValue . $adminType, time(), $proIid, $workFlowLog,$specialMessage,$specialType) && $oldworkFlowLog;
 
     if($type=='list')
     {
@@ -570,6 +574,29 @@ function postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,$proRoleId='0'
         return $pjWorkFlow && $sendProcess && $workFlowLog && $oldworkFlowLog && $redisPost;
     }
 }
+//记录消息被谁查看了
+function checkMessage($data){
+    $admin_id=session('admin')['admin_id'];
+    $type=$data['type'];
+    $time=$data['time'];
+    $proId=$data['time'];
+    $data=json_decode(S()->hGet('Type:'.$type.':Time:'.date('Ymd',$time),$time),true);
+    if(empty($data['adminIds'])){
+        //adminIds为空，则表示没有人查看这条消息
+        $data['adminIds']=$admin_id;
+    }else{
+        //不为空，则将看过这条消息的id值和此人的id进行比较，不在里面就追加上，在里面就不操作
+        $tmp=explode(',',$data['adminIds']);
+        if(!in_array($admin_id,$tmp)){
+            array_push($tmp,$admin_id);
+        }
+        $tmp=implode(',',$tmp);
+        $data['adminIds']=$tmp;
+    }
+    //拼接好的数据加入进来,存入到redis中去,返回操作是否正确的结果
+    return  S()->hSet('Type:'.$type.':Time:'.date('Ymd',$time),$time,json_encode($data));
+}
+
 
 
 

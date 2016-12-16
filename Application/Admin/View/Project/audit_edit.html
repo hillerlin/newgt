@@ -5,9 +5,14 @@
     }
 </script>
 <div class="bjui-pageContent">
-    <form action="<?php echo U('Project/audit')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false">
-        <input type="hidden" name="pro_id" value="<?php echo $pro_id?>">
-        <input type="hidden" name="pro_step" value="<?php echo $pro_step?>">
+    <form action="<?php echo U('Project/saveMyAudit')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false" method="get">
+        <input type="hidden" name="pro_id" value="{$pro_id}">
+        <input type="hidden"  name="plId" value="{$plId}">
+        <input type="hidden"  name="wfId" value="{$wfId}">
+        <input type="hidden"  name="xmlId" value="{$xmlId}">
+        <input type="hidden"  name="spId" value="{$spId}">
+        <input type="hidden"  name="proLevel" value="{$proLevel}">
+        <input type="hidden"  name="proTimes" value="{$proTimes}">
         <table class="table table-condensed table-hover" width="100%">
             <tbody>
                 <tr>
@@ -51,45 +56,56 @@
                 <tr>
                     <td colspan="2">
                         <label for="" class="control-label x120">审核结果：</label>
-                        <select name="status" data-toggle="selectpicker" data-rule="required" value="选择" >
+                        <select name="status" data-toggle="selectpicker" data-rule="required" onchange="chooseRebutter()" value="选择" >
                             <option value="">--请选择--</option>
-                            <?php foreach($workflow[$step_pid][$pro_step]['step_next'] as $key => $select_status) {?>
-                            <option value="<?php echo $key?>"><?php echo $select_status['desc']?></option>
-                            <?php } ?>
+                            <option value="0">通过</option>
+                            <option value="1">驳回</option>
+                        </select>
+                        <label for="" id="rb" class="control-label x120" style="display: none"><span style="color:red">请选择驳回的对象：</span></label>
+                        <select name="reButter" style="display: none">
                         </select>
                         <!--                        <input type="radio" name="status" id="j_custom_status1" data-toggle="icheck" value="1" data-rule="checked" data-label="审核通过&nbsp;&nbsp;">
                                                 <input type="radio" name="status" id="j_custom_status2" data-toggle="icheck" value="0" data-label="审核不通过">-->
                     </td>
                 </tr>
+                <option>
+                    <script>
+                    function chooseRebutter() {
+                        var select=$("select[name='status']");
+                        var selectReButter= $("select[name='reButter']");
+                        var selectVal=select.val();
+                        var wfId=$("input[name='wfId']").val();
+                        var option="<option value=''>--请选择--</option>"  ;
+                        if(parseInt(selectVal)==1)
+                        {
+                           $.post("<?php echo U('Project/chooseRebutter')?>",{'wfId':wfId},function (data) {
+                              $.each(data,function (key,value) {
+                                  //alert(value.adminId)
+                                  option+="<option value='"+value.adminId+"'>"+value.adminName+"</option>"
+                              })
+                               selectReButter.append(option)
+                               selectReButter.css({'display':''})
+                               $("#rb").css({'display':''})
+                           },'json');
+                        }
+                        else
+                        {
+                            selectReButter.css({'display':'none'})
+                            selectReButter.empty()
+                            $("#rb").css({'display':'none'})
+                            selectReButter.val('');
+
+                        }
+
+
+                    }
+                </script>
                 <tr>
                     <td>
                         <label for="pro_desc" class="control-label x120">审核人意见：</label>
                         <textarea name="opinion" id="j_custom_note_1" data-toggle="autoheight" cols="60" data-minheight="100"></textarea>
                     </td>
                 </tr>
-                <?php if($pro_step == 8 ):?>
-                <tr>
-                    <td>
-                        <label for="pro_desc" class="control-label x120">合同预签申请表：</label>
-                        <!--<button data-url="/Admin/Contract/projectAdd.html?pro_id={$pro_id}" class="btn btn-blue" data-toggle="dialog" data-width='800' data-height="420" data-mask='true' data-icon="plus" data-id="project-add">合同预签申请表</button>-->
-                        <?php foreach($company_list as $company){ ?>
-                        <button data-url="/Admin/Contract/projectAdd.html?pro_id={$pro_id}&company_id=<?php echo $company['company_id']?>" class="btn btn-blue" data-toggle="lookupbtn" data-width='800' data-height="420" data-mask='true' data-icon="plus" data-id="project-add"><?php echo $company['company_name']?></button>
-                        <input type="hidden" name="contract_save_<?php echo $company['company_id']?>" value="" data-rule="required"/>
-                        <?php } ?>
-                    </td>
-                </tr>
-                <?php endif;?>
-                <?php if($pro_step == 9 ):?>
-                <tr>
-                    <td>
-                        <label for="pro_desc" class="control-label x120">合同预签申请表：</label>
-                        <?php foreach($company_list as $company){ ?>
-                        <button data-url="/Admin/Contract/edit.html?pro_id={$pro_id}&company_id=<?php echo $company['company_id']?>" class="btn btn-blue" data-toggle="lookupbtn" data-width='800' data-height="420" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $company['company_name']?></button>
-                        <!--<input type="hidden" name="contract_save_<?php echo $company['company_id']?>" value="" data-rule="required"/>-->
-                        <?php } ?>
-                    </td>
-                </tr>
-                <?php endif;?>
                 <tr>
                     <td>
                         <label for="pro_desc" class="control-label x120">上传文件：</label>

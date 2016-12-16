@@ -417,7 +417,7 @@ function redisCollect($proLevel,$sender,$receive='',$time,$proId,$specialMessage
             break;
         case 2:
             //项管专员归档
-            $contents='项管专员<code>'.$sender.'</code>将项目<code>'.$proName.'</code><code>归档</code>';
+            $contents='项管专员<code>'.$sender.'</code>将项目<code>'.$proName.'</code>归档';
 
             break;
         case 3:
@@ -471,7 +471,7 @@ function redisPostAudit($proLevel,$sender,$receive='',$time,$proId,$plId,$specia
             break;
         case 2:
             //项管专员归档
-            $contents='项管专员<code>'.$sender.'</code>将项目<code>'.$proName.'</code><code>归档</code>';
+            $contents='项管专员<code>'.$sender.'</code>将项目<code>'.$proName.'</code>归档';
             break;
         case 3:
             //项管专员归档

@@ -217,7 +217,7 @@ class ProjectController extends CommonController
                 //项目归档
                 /*****************驳回情况*******************/
                 $status=I('get.status');//是通过或者驳回状态的判断
-                if(intval($status)==1)
+                if(intval($status)==1)//驳回情况
                 {
                 $reButter=I('get.reButter');//驳回人的adminId
                 //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
@@ -237,6 +237,9 @@ class ProjectController extends CommonController
                 $contents='项管专员<code>'.$admin['real_name'].'</code>将项目<code>'.projectNameFromId($proIid).'</code>立项事宜驳回给<code>'.adminNameToId($reButter).'</code>';
                 $redisPost= redisTotalPost(-1,$admin['admin_id'],$reButter.'|admin',time(),$proIid,$plId,$contents,-1);
                 $return=$updateState && $updatePj && $sendProcess && $WflMode && $redisPost;
+                }
+                else{//审批通过
+                    $return= postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,0,$xmlId,$plId,'one');
                 }
                 break;
 

@@ -137,7 +137,7 @@ class IndexController extends CommonController {
         {
             if($value['depict']=='项目管理流程')
             {
-                $sType=S()->sMembers('sType:'.$key);
+                $sType=S()->sMembers('sType:'.$key);//判断如果是项目流程则取出项目流程中的消息集合
                 foreach ($sType as $tkey=>$tvalue)
                 {
                     $wordFlowKeys=S()->hKeys('Type:'.$key.':Time:'.$tvalue);

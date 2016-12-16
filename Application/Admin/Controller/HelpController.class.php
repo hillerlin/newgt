@@ -571,8 +571,15 @@ class HelpController extends CommonController
                 if(strpos($data['users_id'],$v)!==false) unset($deltmp[$k]);
             }
             $data['users_id']=implode(',',$deltmp);
+            $names = M('Admin')->field('real_name')->where('admin_id in (' . $data['users_id'] . ')')->select();
+            $tmp = array_column($names, 'real_name');
+            //将数组中的每个元素都用span标签括起来
+            array_walk($tmp, function (&$v) {
+                $v = '<span>' . $v . '</span>';
+            });
+            $htmlcontent = implode('', $tmp);
             if(M('MessAuth')->where('mstatus = '.$data['mstatus'])->save($data)){
-                $this->json_success(array('status'=>1));
+                $this->json_success(array('status'=>1,'htmlcontent'=>$htmlcontent));
             }else{
                 $this->json_error(array('status'=>2));
             }

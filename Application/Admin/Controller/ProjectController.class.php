@@ -139,6 +139,20 @@ class ProjectController extends CommonController
         $model = D('project');
         $pageSize = I('post.pageSize', 30);
         $page = I('post.pageCurrent', 1);
+        // $bb=S()->hMset('adminId:29',array('type'=>2,'contents'=>'宋波分配任121212啦','time'=>time(),'proId'=>'2'));
+        //$aa=S()->hMget('adminId:28',array('type','contents','time','proId'));
+        if(I('get.m')=='delredis'){
+            $pro_id=I('get.pro_id');//项目id
+            $authorType=I('get.authorType');//区分通知是按具体的人还是角色进行通知区分
+            $redisdata=S()->hGetAll($authorType.':'.$admin[$authorType.'_id']);
+            foreach($redisdata as $k=>$v){
+                $tmp=json_decode($v,true);
+                if($tmp['proId']==$pro_id){
+                    //删除对应的redis值
+                    S()->hDel($authorType.':'.$admin[$authorType.'_id'],$k);
+                }
+            }
+        }
         $list = $model->isAudit($page, $pageSize, 't.addtime DESC', $admin['admin_id'], $admin['role_id'], 0);
         $this->assign(array('name' => $admin['real_name'], 'list' => $list['list'], 'total' => $list['total'], 'pageCurrent' => $page));
         $this->display();

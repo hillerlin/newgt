@@ -1,6 +1,6 @@
 <style> .table td{ text-align:center; } </style>
 <div class="bjui-pageHeader">
-    <form id="pagerForm" data-toggle="ajaxsearch" action="/admin/Help/sysdel" method="post">
+    <form id="pagerForm" data-toggle="ajaxsearch" action="/admin/Help/sysdel/mstatus/<?php if($k){echo $k;}else{echo 1;} ?>" method="post">
         <input type="hidden" name="pageCurrent" value="1">
         <input type="hidden" name="pageSize" value="${model.pageSize}">
         <input type="hidden" name="orderField" value="${param.orderField}">

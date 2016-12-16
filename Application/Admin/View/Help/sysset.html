@@ -62,13 +62,13 @@
                     }else{
                         conbody.children('span').last().after(content);
                     }
-                   alert('添加成功');
+                    $(this).alertmsg('ok', '删除成功！');
                 }else{
-                    alert('添加失败');
+                    $(this).alertmsg('error', '删除失败！');
                 }
             },
             error:function(msgdata){
-                $(this).alertmsg('error','服务器正忙');
+                $(this).alertmsg('error', '服务器正忙！');
             }
         });
     });
@@ -84,13 +84,14 @@
             data:{users_id:adminids,method:'delsys','mstatus':mstatus},
             success:function(msg){
                 if(msg.message.status==1){
-                    alert('删除成功');
+                    conbody.html(msg.message.htmlcontent);
+                    $(this).alertmsg('ok', '删除成功！');
                 }else{
-                    alert('删除失败');
+                    $(this).alertmsg('error', '删除失败！');
                 }
             },
             error:function(){
-                alert('服务器正忙');
+                $(this).alertmsg('error', '服务器正忙！');
             }
         });
     });

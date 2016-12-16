@@ -26,7 +26,7 @@
             <div class="panel-body bjui-doc" style="padding:0; min-height: 400px">
                 <ul>
                     <?php foreach($backlog as $list) {?>
-                    <li><a href="<?php echo U('Project/MyAudit',array('pro_id'=>$list['proId'],'authorType'=>$list['authorType']))?>" data-toggle="navtab" data-id="<?php echo strtolower($list['controller']) .'-'. $list['action']?>" data-title="<?php echo $list['title']?>" style="font-size: 14px"><?php echo $list['contents']?></a>
+                    <li><a href="<?php echo U('Project/MyAudit',array('pro_id'=>$list['proId'],'authorType'=>$list['authorType'] ,'m'=>'delredis'))?>" data-toggle="navtab" data-id="<?php echo strtolower($list['controller']) .'-'. $list['action']?>" data-title="<?php echo $list['title']?>" style="font-size: 14px"><?php echo $list['contents']?></a>
                         <span style="float:right;"><?php echo date('Y-m-d H:i:s', $list['time'])?></span></li>
                     <?php }?>
                 </ul>
@@ -57,14 +57,14 @@
                 <h5>项目立项</h5>
                 <ul>
                   <?php foreach($wordFlowMessage as $wFMessage):?>
-                    <li class="<?php echo $list['status']==0?'':'read';?>"><?php echo $wFMessage['contents']?><span style="float:right;"><?php echo date('Y-m-d H:i:s',$wFMessage['time'])?></span></li>
+                    <li class=""><?php echo $wFMessage['contents']?><span style="float:right;"><?php echo date('Y-m-d H:i:s',$wFMessage['time'])?></span></li>
                     <?php endforeach;?>
                 </ul>
                 </fieldset>
                 <fieldset style="padding:10px;">
                 <h5>合同签约</h5>
                 <ul>
-                    <li class="<?php echo $list['status']==0?'':'read';?>">合同签约消息<span style="float:right;">2016-11-30 19:28:47</span></li>
+                    <li>合同签约消息<span style="float:right;">2016-11-30 19:28:47</span></li>
                     <li>合同签约消息<span style="float:right;">2016-11-30 19:28:47</span></li>
                     <li>合同签约消息<span style="float:right;">2016-11-30 19:28:47</span></li>
                 </ul>
@@ -72,7 +72,7 @@
                 <fieldset style="padding:10px;">
                 <h5>放款</h5>
                 <ul>
-                    <li class="<?php echo $list['status']==0?'':'read';?>">放款消息<span style="float:right;">2016-11-30 19:28:47</span></li>
+                    <li>放款消息<span style="float:right;">2016-11-30 19:28:47</span></li>
                     <li>放款消息<span style="float:right;">2016-11-30 19:28:47</span></li>
                     <li>放款消息<span style="float:right;">2016-11-30 19:28:47</span></li>
                 </ul>

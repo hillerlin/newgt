@@ -144,7 +144,18 @@ class IndexController extends CommonController {
                     rsort($wordFlowKeys);
                     foreach ($wordFlowKeys as $wordFlowIndex=>$wordFlowValue)
                     {
-                        array_push($wordFlowMessage,json_decode(S()->hMGet('Type:'.$key.':Time:'.$tvalue,array($wordFlowValue))[$wordFlowValue],true));
+                        $tmp=json_decode(S()->hMGet('Type:'.$key.':Time:'.$tvalue,array($wordFlowValue))[$wordFlowValue],true);
+                        if(!empty($tmp)){ //将消息类型也添加进去
+                            $tmp['Type'] = $key;
+                        }
+                        //判断此人是否已经查看过此消息了，查看了in就设置为1
+                        if(!empty($tmp['adminIds'])){
+                            if(in_array($admin['admin_id'],explode(',',$tmp['adminIds']))){
+                                $tmp['in']=1;
+                            }
+                        }
+                        array_push($wordFlowMessage,$tmp);
+                        $tmp='';
                     }
                 }
             }
@@ -157,7 +168,12 @@ class IndexController extends CommonController {
 //        $this->risk();
         $this->display();
     }
-    
+    //暂时在此处处理消息提醒的已读标记
+    public function handelMessage(){
+        checkMessage(I('get.'));
+        //虚拟页面展示
+        $sdf='sdf';
+    }
     protected function start() {
         $admin = session('admin');
         $is_boss = isBoss();

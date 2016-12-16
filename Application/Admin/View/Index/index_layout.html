@@ -57,7 +57,12 @@
                 <h5>项目立项</h5>
                 <ul>
                   <?php foreach($wordFlowMessage as $wFMessage):?>
-                    <li class=""><?php echo $wFMessage['contents']?><span style="float:right;"><?php echo date('Y-m-d H:i:s',$wFMessage['time'])?></span></li>
+                    <li class="">
+                        <a href="/admin/Index/handelMessage/time/{$wFMessage['time']}/proId/{$wFMessage['proId']}/type/{$wFMessage['Type']}.html">
+                            <?php echo $wFMessage['contents']?><span style="float:right;"><?php echo date('Y-m-d H:i:s',$wFMessage['time'])?></span>
+                            <span ><empty name="wFMessage['in']"><font style="color:red;">【未读】</font><else/><font style="color:green;">【已读】</font></empty></span>
+                        </a>
+                    </li>
                     <?php endforeach;?>
                 </ul>
                 </fieldset>

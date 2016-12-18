@@ -94,44 +94,83 @@ class ProjectController extends CommonController
             $proRebutterLevel = I('post.proRebutterLevel');//第几级被驳回
 
 
-            if(intval($proRebutter)>0)//驳回重发的修改
+            if (intval($proRebutter) > 0)//驳回重发的修改
             {
-                list($pjWorkFlow,$sendProcess,$workFlowLog,$redisPost)= postRebutter($wfId,$proIid,$proRebutterLevel,$proTimes,$admin,$proRebutter,$xmlId,$plId);
+                list($pjWorkFlow, $sendProcess, $workFlowLog, $redisPost) = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId);
 
-            }else
-                //正常提交新建项目
+            } else //正常提交新建项目
             {
                 //根据name查出下个审批人的角色id
-                 $xmlObj=logic('xml');
-                 $xmlObj->file='process1.xml';
-                 $xmlInfo = $xmlObj->index()[xmlNameToIdAndName(explode('_', C('proLevel')[0])[0])['TARGETREF']];//获取即将审核人的xml信息
-                 $proRoleId = roleNameToid(explode('_', $xmlInfo['name'])[0]);//审批人角色id
-                 //$xmlId=xmlIdToInfo($xmlId)['TARGETREF'];
-                 $contents=$admin['role_name'].'<code>'.$admin['real_name'].'</code>提交项目<code>'.projectNameFromId($proIid).'</code>';
-                 list($pjWorkFlow,$sendProcess,$workFlowLog,$redisPost)=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,$proRoleId,0,$xmlId,$plId,'list',$contents,-1);
+                $xmlObj = logic('xml');
+                $xmlObj->file = 'process1.xml';
+                $xmlInfo = $xmlObj->index()[xmlNameToIdAndName(C('proLevel')[0])['TARGETREF']];//获取即将审核人的xml信息
+                $proRoleId = roleNameToid(explode('_', $xmlInfo['name'])[0]);//审批人角色id
+                //$xmlId=xmlIdToInfo($xmlId)['TARGETREF'];
+                $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' . projectNameFromId($proIid) . '</code>';
+                list($pjWorkFlow, $sendProcess, $workFlowLog, $redisPost) = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, $proRoleId, 0, $xmlId, $plId, 'list', $contents, -1);
             }
 
         } else {
 
-            $xmlId=xmlNameToIdAndName(explode('_', C('proLevel')[0])[0])['TARGETREF'];
+            $xmlId = xmlNameToIdAndName(C('proLevel')[0])['TARGETREF'];
             $model->pro_linker = $admin['admin_id'];
             $result = $model->relation('supplier')->add();
 
             //审批流入库处理
             $pjWorkFlow = D('PjWorkflow')->data(array('pj_id' => $result, 'pj_state' => '待审核', 'pro_level_now' => '0', 'pro_times_now' => '1'))->add();
-            $sendProcess = D('SendProcess')->data(array('wf_id' => $pjWorkFlow,'sp_message'=>'已提交', 'sp_author' => $admin['admin_id'], 'sp_addtime' => time(), 'sp_role_id' => $admin['role_id']))->add();
+            $sendProcess = D('SendProcess')->data(array('wf_id' => $pjWorkFlow, 'sp_message' => '已提交', 'sp_author' => $admin['admin_id'], 'sp_addtime' => time(), 'sp_role_id' => $admin['role_id']))->add();
             $workFlowLog = D('WorkflowLog')->data(array(
-                'sp_id' => $sendProcess, 'pj_id' => $result, 'pro_level' => 0, 'pro_times' => 1, 'pro_state' => 0, 'pro_addtime' => time(),'pro_author'=>$admin['admin_id'],
-                'wf_id' => $pjWorkFlow, 'pro_role' => $admin['role_id'], 'pro_xml_id' =>$xmlId
+                'sp_id' => $sendProcess, 'pj_id' => $result, 'pro_level' => 0, 'pro_times' => 1, 'pro_state' => 0, 'pro_addtime' => time(), 'pro_author' => $admin['admin_id'],
+                'wf_id' => $pjWorkFlow, 'pro_role' => $admin['role_id'], 'pro_xml_id' => $xmlId
             ))->add();
             $redisPost = redisTotalPost(0, $admin['admin_id'], $admin['admin_id'] . '|admin', time(), $result, $workFlowLog);
         }
 
-        if ($result === false || $pjWorkFlow === false || $sendProcess === false || $workFlowLog === false || $redisPost===false) {
+        if ($result === false || $pjWorkFlow === false || $sendProcess === false || $workFlowLog === false || $redisPost === false) {
             $this->json_error('保存失败');
         } else {
             $this->json_success('保存成功', '', '', true, array('tabid' => 'project-start'));
         }
+    }
+
+    //新建子流程
+    public function saveSubProcess()
+    {
+        $pjId = I('get.pro_id');//项目id
+        $auditor_id = I('get.auditor_id');//分配跟进人
+        $auditor_name = I('get.auditor_name');//跟进人的名字
+        $pro_level = $auditType = I('get.auditType');//子流程的类型
+        $pro_subprocess_desc = $auditType = I('get.pro_subprocess_desc');//子流程备注
+        $admin = session('admin');
+        //添加子流程和添加子流程的代理人
+        $oldProject=addSubProcessAuditor($pjId,$auditor_id,$auditor_name,$pro_level,$pro_subprocess_desc);
+        $return = addSubProcess($pjId, $pro_level, $admin);
+        if ($return && $oldProject) {
+            $this->json_success('新建成功');
+        } else {
+            $this->json_error('保存失败');
+        }
+
+    }
+    //编辑子流程
+    public function editSubProcess()
+    {
+        $pro_id=I('get.pro_id');
+        $proLevel=I('get.proLevel');
+        $projectInfo=D('Project')->where("`pro_id`=%d",array($pro_id))->find();
+        foreach (json_decode($projectInfo['finish_status'],true)[$proLevel] as $k=>$v)
+        {
+
+            $data['auditorId'][]=$v['adminId'];
+            $data['auditorName'][]=$v['adminName'];
+
+        }
+        $data['auditorId']=implode(',',$data['auditorId']);
+        $data['auditorName']=implode(',',$data['auditorName']);
+        $this->assign(array('companyName'=>$projectInfo['pro_title'],'pre'=>$proLevel,'admin'=>session('admin')));
+        $this->assign($data);
+        $this->assign($_GET);
+        $this->display();
     }
 
     /*********
@@ -147,15 +186,15 @@ class ProjectController extends CommonController
         $page = I('post.pageCurrent', 1);
         // $bb=S()->hMset('adminId:29',array('type'=>2,'contents'=>'宋波分配任121212啦','time'=>time(),'proId'=>'2'));
         //$aa=S()->hMget('adminId:28',array('type','contents','time','proId'));
-        if(I('get.m')=='delredis'){
-            $pro_id=I('get.pro_id');//项目id
-            $authorType=I('get.authorType');//区分通知是按具体的人还是角色进行通知区分
-            $redisdata=S()->hGetAll($authorType.':'.$admin[$authorType.'_id']);
-            foreach($redisdata as $k=>$v){
-                $tmp=json_decode($v,true);
-                if($tmp['proId']==$pro_id){
+        if (I('get.m') == 'delredis') {
+            $pro_id = I('get.pro_id');//项目id
+            $authorType = I('get.authorType');//区分通知是按具体的人还是角色进行通知区分
+            $redisdata = S()->hGetAll($authorType . ':' . $admin[$authorType . '_id']);
+            foreach ($redisdata as $k => $v) {
+                $tmp = json_decode($v, true);
+                if ($tmp['proId'] == $pro_id) {
                     //删除对应的redis值
-                    S()->hDel($authorType.':'.$admin[$authorType.'_id'],$k);
+                    S()->hDel($authorType . ':' . $admin[$authorType . '_id'], $k);
                 }
             }
         }
@@ -210,70 +249,98 @@ class ProjectController extends CommonController
                 if (false === $flow) {
                     $this->json_error('分配项管专员失败！');
                 }
-                $xmlId=xmlIdToInfo($xmlId)['TARGETREF'];
-                $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$proAdminId,$xmlId,$plId,'one');
+                $xmlId = xmlIdToInfo($xmlId)['TARGETREF'];
+                $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $proAdminId, $xmlId, $plId, 'one');
                 break;
-            case 2;
+            case 2:
                 //项目归档
                 /*****************驳回情况*******************/
-                $status=I('get.status');//是通过或者驳回状态的判断
-                if(intval($status)==1)//驳回情况
+                $status = I('get.status');//是通过或者驳回状态的判断
+                if (intval($status) == 1)//驳回情况
                 {
-                $reButter=I('get.reButter');//驳回人的adminId
-                //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
-                $proRebutterLevel=0;
-                $WflMode=D('WorkflowLog');
-                //改变审批人的状态为2-已审核状态
-                $updateState=$WflMode->where("`pl_id`=%d",array($plId))->data(array('pro_state'=>'2'))->save();
-                $sendProcess = D('SendProcess')->data(array('wf_id' => $wfId,'sp_message'=>'已提交', 'sp_author' => $admin['admin_id'], 'sp_addtime' => time(), 'sp_role_id' => $admin['role_id']))->add();
-                //改变pj_workflow 表 因为是驳回，所以pro_time_now + 1
-                $updatePj=D('PjWorkflow')->where("`wf_id`=%d",array($wfId))->data(array('pro_level_now'=>$proRebutterLevel,'pro_times_now'=>intval($proTimes)+1))->save();
-                //新建worklowLog表中驳回的人的相关信息
-                $WflMode->data(array(
-                'sp_id'=>$sendProcess,'pj_id'=>$proIid,'pro_author'=>$reButter,'pro_level'=>$proRebutterLevel,'pro_times'=>intval($proTimes)+1,'pro_state'=>3,'pro_addtime'=>time(),
-                    'wf_id'=>$wfId,'pro_role'=>'0','pro_xml_id'=>$xmlId,'pro_rebutter'=>$admin['admin_id'],'pro_rebutter_level'=>$proLevel
-                ))->add();
-                //redis推送消息
-                $contents='项管专员<code>'.$admin['real_name'].'</code>将项目<code>'.projectNameFromId($proIid).'</code>立项事宜驳回给<code>'.adminNameToId($reButter).'</code>';
-                $redisPost= redisTotalPost(-1,$admin['admin_id'],$reButter.'|admin',time(),$proIid,$plId,$contents,-1);
-                $return=$updateState && $updatePj && $sendProcess && $WflMode && $redisPost;
+                    $reButter = I('get.reButter');//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = 0;
+                    $WflMode = D('WorkflowLog');
+                    //改变审批人的状态为2-已审核状态
+                    $updateState = $WflMode->where("`pl_id`=%d", array($plId))->data(array('pro_state' => '2'))->save();
+                    $sendProcess = D('SendProcess')->data(array('wf_id' => $wfId, 'sp_message' => '已提交', 'sp_author' => $admin['admin_id'], 'sp_addtime' => time(), 'sp_role_id' => $admin['role_id']))->add();
+                    //改变pj_workflow 表 因为是驳回，所以pro_time_now + 1
+                    $updatePj = D('PjWorkflow')->where("`wf_id`=%d", array($wfId))->data(array('pro_level_now' => $proRebutterLevel, 'pro_times_now' => intval($proTimes) + 1))->save();
+                    //新建worklowLog表中驳回的人的相关信息
+                    $WflMode->data(array(
+                        'sp_id' => $sendProcess, 'pj_id' => $proIid, 'pro_author' => $reButter, 'pro_level' => $proRebutterLevel, 'pro_times' => intval($proTimes) + 1, 'pro_state' => 3, 'pro_addtime' => time(),
+                        'wf_id' => $wfId, 'pro_role' => '0', 'pro_xml_id' => $xmlId, 'pro_rebutter' => $admin['admin_id'], 'pro_rebutter_level' => $proLevel
+                    ))->add();
+                    //redis推送消息
+                    $contents = '项管专员<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>立项事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $redisPost = redisTotalPost(-1, $admin['admin_id'], $reButter . '|admin', time(), $proIid, $plId, $contents, -1);
+                    $return = $updateState && $updatePj && $sendProcess && $WflMode && $redisPost;
+                } else {//审批通过
+                    $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one');
                 }
-                else{//审批通过
-                    $return= postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,0,$xmlId,$plId,'one');
-                }
+            case 4:
+                //提交新建知情
+                $auditor_id = I('get.auditor_id');//分配跟进人
+                $auditor_name = I('get.auditor_name');//跟进人的名字
+                $pro_subprocess_desc =I('get.pro_subprocess_desc');//子流程备注
+                $updataProject=addSubProcessAuditor($proIid,$auditor_id,$auditor_name,$proLevel+1,$pro_subprocess_desc);//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                $proRoleId=14;//业务类型指定了宋波或者项管总监
+                $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' . projectNameFromId($proIid) . '</code>知情事宜';
+                $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,$proRoleId,0,$xmlId,$plId,'one',$contents,-1);
                 break;
+            case 5:
+                //知情发起审核-项管总监
+
+                $auditor_id = I('get.auditor_id');//分配跟进人
+                $auditor_name = I('get.auditor_name');//跟进人的名字
+                $pro_subprocess_desc =I('get.pro_subprocess_desc');//子流程备注
+                $updataProject=addSubProcessAuditor($proIid,$auditor_id,$auditor_name,$proLevel,$pro_subprocess_desc);//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                $auditor_id = explode(',', $auditor_id);
+                $return=true;
+                /*****正常审批通过*******/
+                if($auditType==2)
+                {
+                    foreach ($auditor_id as $k=>$v)
+                    {
+                        $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$v,$xmlId,$plId,'one') && $return;
+                    }
+
+                }/*else
+                {
+                    /*****驳回*******/
+                //}
 
 
         }
-/*        $xmlObj=logic('xml');
-        $xmlObj->file='process1.xml';
-        $xmlInfo = $xmlObj->index()[xmlIdToInfo($xmlId)['TARGETREF']];//获取即将审核人的xml信息
+        /*        $xmlObj=logic('xml');
+                $xmlObj->file='process1.xml';
+                $xmlInfo = $xmlObj->index()[xmlIdToInfo($xmlId)['TARGETREF']];//获取即将审核人的xml信息
 
-        $proRoleId = roleNameToid(explode('_', $xmlInfo['name'])[0]);//审批人角色id   用explode  因为xml软件不允许项目框同名
+                $proRoleId = roleNameToid(explode('_', $xmlInfo['name'])[0]);//审批人角色id   用explode  因为xml软件不允许项目框同名
 
-        //更新旧流程日志表的状态workflow_log
-        $oldWorkFolwObj = D('WorkflowLog')->where("`pl_id`=%d", array($plId))->data(array('pro_state' => $auditType, 'pro_last_edit_time' => time()))->save();
+                //更新旧流程日志表的状态workflow_log
+                $oldWorkFolwObj = D('WorkflowLog')->where("`pl_id`=%d", array($plId))->data(array('pro_state' => $auditType, 'pro_last_edit_time' => time()))->save();
 
-        //更新项目流程表的审批次数
-        $oldPjWorkFolwObj = D('PjWorkflow')->where("`wf_id`=%d", array($wfId))->setInc('pro_level_now', 1);
+                //更新项目流程表的审批次数
+                $oldPjWorkFolwObj = D('PjWorkflow')->where("`wf_id`=%d", array($wfId))->setInc('pro_level_now', 1);
 
-        //新建send_process表
-        $newSendProcess = D('SendProcess')
-            ->data(array('wf_id' => $wfId, 'sp_author' => $admin['admin_id'], 'sp_message' => '已提交', 'sp_addtime' => time(), 'sp_role_id' => $admin['role_id']))
-            ->add();
+                //新建send_process表
+                $newSendProcess = D('SendProcess')
+                    ->data(array('wf_id' => $wfId, 'sp_author' => $admin['admin_id'], 'sp_message' => '已提交', 'sp_addtime' => time(), 'sp_role_id' => $admin['role_id']))
+                    ->add();
 
-        //新建workflow表
-        $newWorkFlowLog = D('WorkflowLog')
-            ->data(array('pj_id' => $proIid, 'sp_id' => $newSendProcess, 'wf_id' => $wfId,
-                'pro_level' => $proLevel + 1, 'pro_times' => $proTimes, 'pro_state' => 0, 'pro_addtime' => time(), 'pro_role' => $proRoleId, 'pro_xml_id' => xmlIdToInfo($xmlId)['TARGETREF']))
-            ->add();
-        //发送消息
-        $redisPostMessage=redisTotalPost($proLevel,$admin['admin_id'],$proAdminId.'|admin',time(),$proIid,$newWorkFlowLog);*/
-    /*    if ($oldWorkFolwObj && $oldPjWorkFolwObj && $newWorkFlowLog && $redisPostMessage) {
-            $this->json_success('成功', '', '', true, array('tabid' => 'project-auditList'));
-        }*/
-        if($return)
-        {
+                //新建workflow表
+                $newWorkFlowLog = D('WorkflowLog')
+                    ->data(array('pj_id' => $proIid, 'sp_id' => $newSendProcess, 'wf_id' => $wfId,
+                        'pro_level' => $proLevel + 1, 'pro_times' => $proTimes, 'pro_state' => 0, 'pro_addtime' => time(), 'pro_role' => $proRoleId, 'pro_xml_id' => xmlIdToInfo($xmlId)['TARGETREF']))
+                    ->add();
+                //发送消息
+                $redisPostMessage=redisTotalPost($proLevel,$admin['admin_id'],$proAdminId.'|admin',time(),$proIid,$newWorkFlowLog);*/
+        /*    if ($oldWorkFolwObj && $oldPjWorkFolwObj && $newWorkFlowLog && $redisPostMessage) {
+                $this->json_success('成功', '', '', true, array('tabid' => 'project-auditList'));
+            }*/
+        if ($return) {
             $this->json_success('成功', '', '', true, array('tabid' => 'project-auditList'));
         }
     }
@@ -325,19 +392,21 @@ class ProjectController extends CommonController
     }
 
 
-
-
-
-
-
-
     /* 项目立项 */
-
     public function add()
     {
         $admin = session('admin');
+        $pre = I('get.pre');
+        $this->assign('pre', $pre);
         $this->assign('admin', $admin);
-        $this->display();
+        if (intval($pre) == 4) {
+            //新建子流程1
+            $this->display('subProcess1');
+
+        } else {
+            $this->display();//新建立项
+        }
+
     }
 
     /* 编辑管理员 */
@@ -379,16 +448,16 @@ class ProjectController extends CommonController
         $data = $p_model->where(array('pro_id' => $pro_id))->relation(true)->find();
 
 
-/*        $map['t.context_id'] = $pro_id;
-        $map['t.context_type'] = 'pro_id';
-        $process_list = D('ProcessLog')->getList(1, 30, $map);
-        $workflow = D('Workflow')->getWorkFlow();   //工作流
-        $exts = getFormerExts();
-        $this->assign('exts', $exts);
-        $this->assign('workflow', $workflow);
-        $this->assign('review_file_autho', C('REVIEW_FILE_AUTHO'));
-        $this->assign('process_list', $process_list['list']);
-        $this->assign('signin_admin', $admin);*/
+        /*        $map['t.context_id'] = $pro_id;
+                $map['t.context_type'] = 'pro_id';
+                $process_list = D('ProcessLog')->getList(1, 30, $map);
+                $workflow = D('Workflow')->getWorkFlow();   //工作流
+                $exts = getFormerExts();
+                $this->assign('exts', $exts);
+                $this->assign('workflow', $workflow);
+                $this->assign('review_file_autho', C('REVIEW_FILE_AUTHO'));
+                $this->assign('process_list', $process_list['list']);
+                $this->assign('signin_admin', $admin);*/
         $this->assign($data);
         $this->assign($_GET);
 
@@ -397,10 +466,11 @@ class ProjectController extends CommonController
 
     public function chooseRebutter()
     {
-        $wfId=I('post.wfId');
-        $adminIdAndNameAttr=D('Project')->wfIdToAdminAndName($wfId);
+        $wfId = I('post.wfId');
+        $adminIdAndNameAttr = D('Project')->wfIdToAdminAndName($wfId);
         $this->ajaxReturn($adminIdAndNameAttr);
     }
+
     //审核资料附件
     public function fileReviewList()
     {

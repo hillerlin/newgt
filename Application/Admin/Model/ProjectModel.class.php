@@ -279,11 +279,12 @@ class ProjectModel extends BaseModel {
                 ->join('LEFT JOIN __ADMIN__ AS a1 ON a1.admin_id=t.admin_id')
                 ->join("LEFT JOIN __ADMIN__ AS a2 ON a2.admin_id='".$adminId."'")
                 ->join('LEFT JOIN __PJ_WORKFLOW__ AS pw ON t.pro_id=pw.pj_id')
-                ->join('LEFT JOIN __WORKFLOW_LOG__ as l ON t.pro_id=l.pj_id')
+                ->join('LEFT JOIN __WORKFLOW_LOG__ as l ON l.wf_id=pw.wf_id')
                 ->join('__COMPANY__ AS cp ON t.company_id=cp.company_id')
                 ->field('t.*,l.*,pw.pro_level_now as pro_level_now,pw.wf_id as wfid,pro_title,pro_no,a1.real_name as pmd_name,a2.authpage as authpage,company_name')
                 ->where(array('pro_id'=>array('in',$idList) ,'_string'=>"(l.pro_author='".$adminId."' or l.pro_role='".$roleId."') and (l.pro_state='0' or l.pro_state='3')"))
                 ->page($page, $pageSize)
+                ->group('pro_level_now')
                 ->order($order)
                 ->select();
             foreach ($list as $kk=>$vv)

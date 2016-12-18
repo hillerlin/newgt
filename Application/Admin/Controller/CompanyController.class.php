@@ -1,6 +1,7 @@
 <?php
 
 namespace Admin\Controller;
+use Admin\Model\BaseModel;
 
 class CompanyController extends CommonController {
 
@@ -225,5 +226,41 @@ class CompanyController extends CommonController {
         $this->assign('list', $result['list']);
         $this->assign('post', $post);
         $this->display('lookup_pm');
+    }
+
+    //查找符合子流程的项目
+    public function findRelateSubProcess()
+    {
+        $pre=I('get.pre');
+        $projectList=array();
+        $projectIng=D('Project')->where("`is_all_finish`=0")->select();
+        foreach ($projectIng as $k=>$v)
+        {
+            $finishStatus=json_decode($v['finish_status'],true);
+            if(!$finishStatus || !in_array($pre,$finishStatus))
+            {
+                array_push($projectList,$v);
+            }
+        }
+        $this->assign('list',$projectList);
+        $this->display();
+    }
+    // 根据不同类型返回不同的相关部门人员
+    public function findHeaderToType()
+    {
+        $type=I('get.pre');
+        switch ($type)
+        {
+            case 4:
+                //返回股权部和分控部老大的adminId
+                $adminList=D()->table('gt_role as r')
+                    ->join("LEFT JOIN __ADMIN__ AS a ON a.role_id=r.role_id")
+                    ->where(array('r.role_id'=>array('in','16,17')))
+                    ->select();
+                break;
+
+        }
+        $this->assign('adminList',$adminList);
+        $this->display();
     }
 }

@@ -25,6 +25,7 @@
                     <input type="text" name="pro_title" id="p_company" value="" size="30" data-toggle="lookup" data-url="<?php echo U('Company/findRelateSubProcess/',array('pre'=>$pre))?>" data-width="600" data-height="300" readonly>
                 </td>
             </tr>
+            <?php if($pre==4 || $pre==5):?>
             <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150">选择通知知情的相关人员：</label>
@@ -32,6 +33,7 @@
                     <input type="text" name="auditor_name" id="p_company" value="" size="30" data-toggle="lookup" data-url="<?php echo U('Company/findHeaderToType',array('pre'=>$pre))?>" data-width="600" data-height="300" readonly>
                 </td>
             </tr>
+            <?php endif;?>
 
             <tr>
                 <td>

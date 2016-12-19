@@ -3,41 +3,78 @@
                    xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
                    xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
                    id="BPMNProcessmaker" targetNamespace="http://bpmn.io/schema/bpmn">
-    <bpmn2:process id="pmui-3031794465851289fe9d645048336145">
+    <bpmn2:process id="pmui-29854739358577c005b4e76043819341">
         <bpmn2:userTask id="el_292541503583fc0a60758b7036469204" name="项管专员_归档">
             <bpmn2:incoming>flo_47201538058451730e1e080039907057</bpmn2:incoming>
-            <bpmn2:outgoing>flo_pmui-8346199325851fb29ea1435088811386</bpmn2:outgoing>
+            <bpmn2:outgoing>flo_3399658205851fb40850735007999106</bpmn2:outgoing>
         </bpmn2:userTask>
         <bpmn2:userTask id="el_308715820583f9d39322489074895638" name="项目经理_立项">
-            <bpmn2:incoming>flo_pmui-36153514658521b3feb9085047276650</bpmn2:incoming>
+            <bpmn2:incoming>flo_50097656258521b48e15260081748601</bpmn2:incoming>
             <bpmn2:outgoing>flo_595916748583fc16e2dc931091716504</bpmn2:outgoing>
         </bpmn2:userTask>
         <bpmn2:userTask id="el_381469726583fc0063e7d00094158340" name="项管部总监_分配人员">
             <bpmn2:incoming>flo_595916748583fc16e2dc931091716504</bpmn2:incoming>
             <bpmn2:outgoing>flo_47201538058451730e1e080039907057</bpmn2:outgoing>
         </bpmn2:userTask>
+        <bpmn2:task id="el_63308715858577a75adf118032991311" name="新建知情">
+            <bpmn2:incoming>flo_45254516658577b15c56ae1036645841</bpmn2:incoming>
+            <bpmn2:outgoing>flo_12603759758577b15c5a965035099443</bpmn2:outgoing>
+        </bpmn2:task>
+        <bpmn2:task id="el_63983154258577a9e625689083783107" name="相关部门主管_分配人手">
+            <bpmn2:incoming>flo_77966308558577bf2c39ee5061166198</bpmn2:incoming>
+            <bpmn2:outgoing>flo_99264526358577b15c62662071009547</bpmn2:outgoing>
+        </bpmn2:task>
+        <bpmn2:task id="el_86016845758577a9e421c17089623069" name="项管总监_审核">
+            <bpmn2:incoming>flo_12603759758577b15c5a965035099443</bpmn2:incoming>
+            <bpmn2:outgoing>flo_77966308558577bf2c39ee5061166198</bpmn2:outgoing>
+        </bpmn2:task>
+        <bpmn2:task id="el_86914062558577aedcede80051571990" name="上传资料">
+            <bpmn2:incoming>flo_99264526358577b15c62662071009547</bpmn2:incoming>
+            <bpmn2:outgoing>flo_71569824258577b15c62664039620454</bpmn2:outgoing>
+        </bpmn2:task>
+        <bpmn2:startEvent id="el_15875244158521b4893ecc5008664912" name="立项流程1">
+            <bpmn2:outgoing>flo_50097656258521b48e15260081748601</bpmn2:outgoing>
+        </bpmn2:startEvent>
+        <bpmn2:endEvent id="el_28195190458577b15ba6e31032886072" name="结束">
+            <bpmn2:incoming>flo_71569824258577b15c62664039620454</bpmn2:incoming>
+        </bpmn2:endEvent>
+        <bpmn2:startEvent id="el_52539062558574160863083002386466" name="立项流程2">
+            <bpmn2:outgoing>flo_45254516658577b15c56ae1036645841</bpmn2:outgoing>
+        </bpmn2:startEvent>
+        <bpmn2:endEvent id="el_6256713865851fb40781689068978239" name="立项_结束">
+            <bpmn2:incoming>flo_3399658205851fb40850735007999106</bpmn2:incoming>
+        </bpmn2:endEvent>
+        <bpmn2:sequenceFlow id="flo_12603759758577b15c5a965035099443" name=" "
+                            sourceRef="el_63308715858577a75adf118032991311"
+                            targetRef="el_86016845758577a9e421c17089623069"/>
+        <bpmn2:sequenceFlow id="flo_3399658205851fb40850735007999106" name="结束"
+                            sourceRef="el_292541503583fc0a60758b7036469204"
+                            targetRef="el_6256713865851fb40781689068978239"/>
+        <bpmn2:sequenceFlow id="flo_45254516658577b15c56ae1036645841" name=" "
+                            sourceRef="el_52539062558574160863083002386466"
+                            targetRef="el_63308715858577a75adf118032991311"/>
         <bpmn2:sequenceFlow id="flo_47201538058451730e1e080039907057" name="分配项目专员"
                             sourceRef="el_381469726583fc0063e7d00094158340"
                             targetRef="el_292541503583fc0a60758b7036469204"/>
+        <bpmn2:sequenceFlow id="flo_50097656258521b48e15260081748601" name=" "
+                            sourceRef="el_15875244158521b4893ecc5008664912"
+                            targetRef="el_308715820583f9d39322489074895638"/>
         <bpmn2:sequenceFlow id="flo_595916748583fc16e2dc931091716504" name="提交立项"
                             sourceRef="el_308715820583f9d39322489074895638"
                             targetRef="el_381469726583fc0063e7d00094158340"/>
-        <bpmn2:endEvent id="el_pmui-7640498905851fb1dea0d76037251186" name="立项_结束">
-            <bpmn2:incoming>flo_pmui-8346199325851fb29ea1435088811386</bpmn2:incoming>
-        </bpmn2:endEvent>
-        <bpmn2:sequenceFlow id="flo_pmui-8346199325851fb29ea1435088811386" name="结束"
-                            sourceRef="el_292541503583fc0a60758b7036469204"
-                            targetRef="el_pmui-7640498905851fb1dea0d76037251186"/>
-        <bpmn2:startEvent id="el_pmui-27147933658521b37eb87b8041658836" name="立项流程1">
-            <bpmn2:outgoing>flo_pmui-36153514658521b3feb9085047276650</bpmn2:outgoing>
-        </bpmn2:startEvent>
-        <bpmn2:sequenceFlow id="flo_pmui-36153514658521b3feb9085047276650" name=" "
-                            sourceRef="el_pmui-27147933658521b37eb87b8041658836"
-                            targetRef="el_308715820583f9d39322489074895638"/>
+        <bpmn2:sequenceFlow id="flo_71569824258577b15c62664039620454" name=" "
+                            sourceRef="el_86914062558577aedcede80051571990"
+                            targetRef="el_28195190458577b15ba6e31032886072"/>
+        <bpmn2:sequenceFlow id="flo_77966308558577bf2c39ee5061166198" name=" "
+                            sourceRef="el_86016845758577a9e421c17089623069"
+                            targetRef="el_63983154258577a9e625689083783107"/>
+        <bpmn2:sequenceFlow id="flo_99264526358577b15c62662071009547" name=" "
+                            sourceRef="el_63983154258577a9e625689083783107"
+                            targetRef="el_86914062558577aedcede80051571990"/>
     </bpmn2:process>
-    <bpmndi:BPMNDiagram id="dia_1554521475851289fe9d625054844767">
-        <bpmndi:BPMNPlane id="plane_8665552635851289fe9d637084471891"
-                          bpmnElement="pmui-3031794465851289fe9d645048336145">
+    <bpmndi:BPMNDiagram id="dia_33385495858577c005b4e49057632632">
+        <bpmndi:BPMNPlane id="plane_55631207958577c005b4e54025683415"
+                          bpmnElement="pmui-29854739358577c005b4e76043819341">
             <bpmndi:BPMNShape id="di_el_292541503583fc0a60758b7036469204"
                               bpmnElement="el_292541503583fc0a60758b7036469204">
                 <dc:Bounds x="1438" y="55" width="150" height="75"/>
@@ -50,33 +87,82 @@
                               bpmnElement="el_381469726583fc0063e7d00094158340">
                 <dc:Bounds x="1001" y="55" width="150" height="75"/>
             </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="di_el_63308715858577a75adf118032991311"
+                              bpmnElement="el_63308715858577a75adf118032991311">
+                <dc:Bounds x="599" y="179" width="150" height="75"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="di_el_63983154258577a9e625689083783107"
+                              bpmnElement="el_63983154258577a9e625689083783107">
+                <dc:Bounds x="1140" y="179" width="150" height="75"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="di_el_86016845758577a9e421c17089623069"
+                              bpmnElement="el_86016845758577a9e421c17089623069">
+                <dc:Bounds x="865" y="179" width="150" height="75"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="di_el_86914062558577aedcede80051571990"
+                              bpmnElement="el_86914062558577aedcede80051571990">
+                <dc:Bounds x="1430" y="179" width="150" height="75"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="di_el_15875244158521b4893ecc5008664912"
+                              bpmnElement="el_15875244158521b4893ecc5008664912">
+                <dc:Bounds x="448" y="76" width="33" height="33"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="di_el_28195190458577b15ba6e31032886072"
+                              bpmnElement="el_28195190458577b15ba6e31032886072">
+                <dc:Bounds x="1745" y="200" width="33" height="33"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="di_el_52539062558574160863083002386466"
+                              bpmnElement="el_52539062558574160863083002386466">
+                <dc:Bounds x="448" y="200" width="33" height="33"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="di_el_6256713865851fb40781689068978239"
+                              bpmnElement="el_6256713865851fb40781689068978239">
+                <dc:Bounds x="1745" y="76" width="33" height="33"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="flo_12603759758577b15c5a965035099443_di"
+                             bpmnElement="flo_12603759758577b15c5a965035099443">
+                <di:waypoint x="750" y="217"/>
+                <di:waypoint x="865" y="217"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="flo_3399658205851fb40850735007999106_di"
+                             bpmnElement="flo_3399658205851fb40850735007999106">
+                <di:waypoint x="1589" y="93"/>
+                <di:waypoint x="1745" y="93"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="flo_45254516658577b15c56ae1036645841_di"
+                             bpmnElement="flo_45254516658577b15c56ae1036645841">
+                <di:waypoint x="481" y="217"/>
+                <di:waypoint x="599" y="217"/>
+            </bpmndi:BPMNEdge>
             <bpmndi:BPMNEdge id="flo_47201538058451730e1e080039907057_di"
                              bpmnElement="flo_47201538058451730e1e080039907057">
                 <di:waypoint x="1152" y="93"/>
                 <di:waypoint x="1438" y="93"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="flo_50097656258521b48e15260081748601_di"
+                             bpmnElement="flo_50097656258521b48e15260081748601">
+                <di:waypoint x="481" y="93"/>
+                <di:waypoint x="599" y="93"/>
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNEdge id="flo_595916748583fc16e2dc931091716504_di"
                              bpmnElement="flo_595916748583fc16e2dc931091716504">
                 <di:waypoint x="750" y="93"/>
                 <di:waypoint x="1001" y="93"/>
             </bpmndi:BPMNEdge>
-            <bpmndi:BPMNShape id="di_el_pmui-7640498905851fb1dea0d76037251186"
-                              bpmnElement="el_pmui-7640498905851fb1dea0d76037251186">
-                <dc:Bounds x="1745" y="76" width="33" height="33"/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNEdge id="flo_pmui-8346199325851fb29ea1435088811386_di"
-                             bpmnElement="flo_pmui-8346199325851fb29ea1435088811386">
-                <di:waypoint x="1589" y="93"/>
-                <di:waypoint x="1745" y="93"/>
+            <bpmndi:BPMNEdge id="flo_71569824258577b15c62664039620454_di"
+                             bpmnElement="flo_71569824258577b15c62664039620454">
+                <di:waypoint x="1581" y="217"/>
+                <di:waypoint x="1745" y="217"/>
             </bpmndi:BPMNEdge>
-            <bpmndi:BPMNShape id="di_el_pmui-27147933658521b37eb87b8041658836"
-                              bpmnElement="el_pmui-27147933658521b37eb87b8041658836">
-                <dc:Bounds x="448" y="76" width="33" height="33"/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNEdge id="flo_pmui-36153514658521b3feb9085047276650_di"
-                             bpmnElement="flo_pmui-36153514658521b3feb9085047276650">
-                <di:waypoint x="481" y="93"/>
-                <di:waypoint x="599" y="93"/>
+            <bpmndi:BPMNEdge id="flo_77966308558577bf2c39ee5061166198_di"
+                             bpmnElement="flo_77966308558577bf2c39ee5061166198">
+                <di:waypoint x="1016" y="217"/>
+                <di:waypoint x="1140" y="217"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="flo_99264526358577b15c62662071009547_di"
+                             bpmnElement="flo_99264526358577b15c62662071009547">
+                <di:waypoint x="1291" y="217"/>
+                <di:waypoint x="1430" y="217"/>
             </bpmndi:BPMNEdge>
         </bpmndi:BPMNPlane>
     </bpmndi:BPMNDiagram>

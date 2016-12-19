@@ -304,10 +304,10 @@ function auditInit($auditType)
 }
 //根据前一个指派xmlId返回下一个执行人的信息
 //$type是判断是水平审批还是垂直审批 0是垂直审批 1是水平审批
-function xmlIdToInfo($id,$type=0)
+function xmlIdToInfo($id,$file,$type=0)
 {
     $xmlObj=logic('xml');
-    $xmlObj->file='processchilren.xml';
+    $xmlObj->file=$file;
     $list = $xmlObj->index();
     foreach ($list as $k=>$v)
     {
@@ -320,7 +320,7 @@ function xmlIdToInfo($id,$type=0)
                     if($vv['tag']=='BPMN2:OUTGOING')//指出的线
                     {
                         // $id=$vv['value'];
-                         return  xmlIdToInfo($vv['value']);
+                         return  xmlIdToInfo($vv['value'],$file);
                     }
                 }
             }else
@@ -332,25 +332,25 @@ function xmlIdToInfo($id,$type=0)
     }
 }
 //根据xml的name返回下一级xml的id和name
-function xmlNameToIdAndName($name)
+function xmlNameToIdAndName($name,$file)
 {
     $xmlObj=logic('xml');
-    $xmlObj->file='processchilren.xml';
+    $xmlObj->file=$file;
     $xmlInfo = $xmlObj->index();
     foreach ($xmlInfo as $k=>$v)
     {
         //$xmlName=explode('_',$v['name'])[0];
         if($v['name']==$name) //新建的config的第一项必须跟xml的第一步相等
         {
-            return xmlIdToInfo($k);
+            return xmlIdToInfo($k,$file);
         }
     }
 }
 //根据xml的name返回当前的信息
-function xmlNameToLoacalInfo($name)
+function xmlNameToLoacalInfo($name,$file)
 {
     $xmlObj=logic('xml');
-    $xmlObj->file='processchilren.xml';
+    $xmlObj->file=$file;
     $xmlInfo = $xmlObj->index();
     foreach ($xmlInfo as $k=>$v)
     {
@@ -422,28 +422,33 @@ function redisCollect($proLevel,$sender,$receive='',$time,$proId,$specialMessage
     }
     switch ($proLevel)
     {
-        case 0:
+        case '0':
             //项目经理立项
             $contents='项目经理<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>';
             break;
-        case 1:
+        case '0_1':
             //项目总监分配人手
             $contents='项管总监<code>'.$sender.'</code>将项目<code>'.$proName.'</code>分配给<code>'.$receive.'</code>';
             break;
-        case 2:
+        case '0_2':
             //项管专员归档
             $contents='项管专员<code>'.$sender.'</code>将项目<code>'.$proName.'</code>归档';
-
             break;
-        case 3:
+        case '0_3':
             //项管专员归档
             $contents='项管专员<code>'.$sender.'</code>将项目<code>'.$proName.'</code><code>归档完成，并结束立项</code>';
             break;
-        case 4:
+        case '4':
             $contents='项管专员<code>'.$sender.'</code>发起项目<code>'.$proName.'</code>通知知情事宜';
             break;
-        case 5:
-            $contents='项管总监<code>'.$sender.'</code>发起项目<code>'.$proName.'</code>给股权部和风控部';
+        case '4_1':
+            $contents='项管总监<code>'.$sender.'</code>发起项目<code>'.$proName.'</code>知情给<code>'.$receive.'</code>';
+            break;
+        case '5':
+            $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>风控审核子流程';
+            break;
+        case '5_1':
+            $contents='项管总监<code>'.$sender.'</code>发起项目<code>'.$proName.'</code>风控审核通知给<code>'.$receive.'</code>';
             break;
         case -1:
             $contents=$specialMessage;
@@ -482,27 +487,33 @@ function redisPostAudit($proLevel,$sender,$receive='',$time,$proId,$plId,$specia
     }
     switch ($proLevel)
     {
-        case 0:
+        case '0':
             //项目经理立项
             $contents='项目经理:<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>';
             break;
-        case 1:
+        case '0_1':
             //项目总监分配人手
             $contents='项管总监<code>'.$sender.'</code>将项目<code>'.$proName.'</code>分配给我！';
             break;
-        case 2:
+        case '0_2':
             //项管专员归档
             $contents='项管专员<code>'.$sender.'</code>将项目<code>'.$proName.'</code>归档';
             break;
-        case 3:
+        case '0_3':
             //项管专员归档
             $contents='项管专员<code>'.$sender.'</code>将项目<code>'.$proName.'</code><code>归档完成，并结束立项</code>';
             break;
-        case 4:
+        case '4':
             $contents='项管专员<code>'.$sender.'</code>发起项目<code>'.$proName.'</code>通知知情事宜';
             break;
-        case 5:
+        case '4_1':
             $contents='项管总监<code>'.$sender.'</code>发起项目<code>'.$proName.'</code>知情给我';
+            break;
+        case '5':
+            $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>风控审核子流程';
+            break;
+        case '5_1':
+            $contents='项管总监<code>'.$sender.'</code>发起项目<code>'.$proName.'</code>风控审核通知给我';
             break;
         case -1:
             $contents=$specialMessage;
@@ -580,10 +591,20 @@ function postRebutter($wfId,$proIid,$proRebutterLevel,$proTimes,$admin,$proRebut
  */
 function postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,$proRoleId=0,$proAdminId=0,$xmlId,$plId,$type='list',$specialMessage=null,$specialType=null)
 {
-    $pjWorkFlow = D('PjWorkflow')->where("`wf_id`=%d",array($wfId))->data(array( 'pj_state' => '待审核', 'pro_level_now' => intval($proLevel)+1, 'pro_times_now' => $proTimes))->save();
+    $explodeLevel=explode('_',$proLevel);//拼接审批轮次
+    if(!$explodeLevel[1])
+    {
+        $newLevel=$explodeLevel[0].'_1';
+    }
+    else
+    {
+        $modify=$explodeLevel[1]+1;
+        $newLevel=$explodeLevel[0].'_'.$modify;
+    }
+    $pjWorkFlow = D('PjWorkflow')->where("`wf_id`=%d",array($wfId))->data(array( 'pj_state' => '待审核', 'pro_level_now' => $newLevel, 'pro_times_now' => $proTimes))->save();
     $sendProcess = D('SendProcess')->data(array('wf_id' => $wfId,'sp_message'=>'已提交', 'sp_author' => $admin['admin_id'], 'sp_addtime' => time(), 'sp_role_id' => $admin['role_id']))->add();
     $workFlowLog = D('WorkflowLog')->data(array(
-        'sp_id' => $sendProcess, 'pj_id' => $proIid, 'pro_level' => intval($proLevel)+1, 'pro_times' => $proTimes, 'pro_state' => 0, 'pro_addtime' => time(),'pro_role'=>$proRoleId,'pro_author'=>$proAdminId,
+        'sp_id' => $sendProcess, 'pj_id' => $proIid, 'pro_level' => $newLevel, 'pro_times' => $proTimes, 'pro_state' => 0, 'pro_addtime' => time(),'pro_role'=>$proRoleId,'pro_author'=>$proAdminId,
         'wf_id' => $wfId, 'pro_xml_id' => $xmlId
     ))->add();
     $oldworkFlowLog=D('WorkflowLog')->where("`pl_id`=%d",array($plId))->data(array('pro_state'=>2))->save();
@@ -609,9 +630,9 @@ function postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,$proRoleId=0,$
  * @param $admin
  * @return array
  */
-function addSubProcess($result,$pro_level,$admin)
+function addSubProcess($result,$pro_level,$admin,$xmlfile)
 {
-    $xmlId=xmlNameToIdAndName(C('proLevel')[$pro_level])['TARGETREF'];
+    $xmlId=xmlNameToIdAndName(C('proLevel')[$pro_level],$xmlfile)['TARGETREF'];
     //审批流入库处理
     $pjWorkFlow = D('PjWorkflow')->data(array('pj_id' => $result, 'pj_state' => '待审核', 'pro_level_now' => $pro_level, 'pro_times_now' => '1'))->add();
     $sendProcess = D('SendProcess')->data(array('wf_id' => $pjWorkFlow,'sp_message'=>'已提交', 'sp_author' => $admin['admin_id'], 'sp_addtime' => time(), 'sp_role_id' => $admin['role_id']))->add();
@@ -633,22 +654,49 @@ function addSubProcess($result,$pro_level,$admin)
 function addSubProcessAuditor($pjId,$auditor_id,$auditor_name,$pro_level,$pro_subprocess_desc)
 {
     $projectModel = D('Project');
+    //因为是新建子流程  还有个提交的流程  所以不能做拼接
+    //$explodeLevel=explode('_',$pro_level);//拼接审批轮次
+/*    if(!$explodeLevel[1])
+    {
+        $newLevel=$explodeLevel[0].'_1';
+    }
+    else
+    {
+        $modify=$explodeLevel[1]+1;
+        $newLevel=$explodeLevel[0].'_'.$modify;
+    }*/
     //往project表添加状态
     $finishStatusJson = $projectModel->where("`pro_id`=%d", array($pjId))->field('finish_status')->find();
     //将adminid和adminname转数组
     $auditor_id = explode(',', $auditor_id);
     $auditor_name = explode(',', $auditor_name);
-    //$finish_status = json_decode($finishStatusJson['finish_status'],true);
+    $finish_status = json_decode($finishStatusJson['finish_status'],true);
     //$proKeys = array_keys($finish_status);
     foreach ($auditor_id as $k => $v) {
-        $finish_attr[$pro_level][$k]['adminId'] = $v;
-        $finish_attr[$pro_level][$k]['adminName'] = $auditor_name[$k];
+        $finish_status[$pro_level][$k]['adminId'] = $v;
+        $finish_status[$pro_level][$k]['adminName'] = $auditor_name[$k];
 
     }
-    $finish_enjson = json_encode($finish_attr);
-
-    $oldProject = $projectModel->where("`pro_id`=%d", array($pjId))->data(array('pro_subprocess1_desc' => $pro_subprocess_desc, 'finish_status' => $finish_enjson))->save();
+    $finish_enjson = json_encode($finish_status);
+    $proSubprocessDesc='pro_subprocess'.explode('_',$pro_level)[0].'_desc'; //如果4_1 4_2 4_3 还原成4
+    $oldProject = $projectModel->where("`pro_id`=%d", array($pjId))->data(array($proSubprocessDesc => $pro_subprocess_desc, 'finish_status' => $finish_enjson))->save();
     return $oldProject;
+}
+//新审批轮次加1
+function addNewLevel($proLevel)
+{
+    $explodeLevel=explode('_',$proLevel);//拼接审批轮次
+        if(!$explodeLevel[1])
+        {
+            $newLevel=$explodeLevel[0].'_1';
+        }
+        else
+        {
+            $modify=$explodeLevel[1]+1;
+            $newLevel=$explodeLevel[0].'_'.$modify;
+        }
+    return $newLevel;
+
 }
 //记录消息被谁查看了
 function checkMessage($data){

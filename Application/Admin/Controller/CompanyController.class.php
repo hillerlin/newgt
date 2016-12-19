@@ -258,7 +258,12 @@ class CompanyController extends CommonController {
                     ->where(array('r.role_id'=>array('in','16,17')))
                     ->select();
                 break;
-
+            case 5:
+                //返回风控部所有人的信息
+                $adminList=D()->table('gt_role as r')
+                    ->join("LEFT JOIN __ADMIN__ AS a ON a.role_id=r.role_id")
+                    ->where(array('r.role_id'=>array('in','18,17,21')))
+                    ->select();
         }
         $this->assign('adminList',$adminList);
         $this->display();

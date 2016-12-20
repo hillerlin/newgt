@@ -27,7 +27,7 @@
         <input type="hidden"  name="proRebutterLevel" value="{$proRebutterLevel}">
         <table class="table table-condensed table-hover" width="100%">
             <tbody>
-            <?php if($pre=='7_1'||$pre=='7_2' ||$pre=='7_3'):?>
+            <?php if($pre=='7_1'||$pre=='7_2' || $pre=='7_3' || $pre=='6_2' || $pre=='6_3' || $pre=='8_3' || $pre=='9_3'):?>
             <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150">已绑定的项目：</label>
@@ -54,7 +54,7 @@
             <?php if($admin['role_name']=='项管部总监'||$pre=='7_2'):?>
                <tr>
                    <td>
-                   <label for='company_id' class='control-label x150'>请选择:</label>
+                   <label for='company_id' class='control-label x150'>请选择：</label>
                    <select name="auditType" class="auditType" data-rule="required" data-toggle="selectpicker">
                        <option value="">选择审核类型</option>
                        <option value="2">通过</option>
@@ -65,8 +65,8 @@
             <?php endif;?>
             <tr>
                 <td>
-                    <label for="pro_desc" class="control-label x100">备注：</label>
-                    <textarea name="pro_subprocess_desc"   id="j_custom_note_1" data-toggle="autoheight" cols="30" rows="2">{$pro_subprocess_desc}</textarea>
+                    <label for="pro_desc" class="control-label x150">备注：</label>
+                    <textarea name="pro_subprocess_desc"   id="j_custom_note_1" data-toggle="autoheight" cols="30" rows="3">{$pro_subprocess_desc}</textarea>
                 </td>
             </tr>
             </tbody>

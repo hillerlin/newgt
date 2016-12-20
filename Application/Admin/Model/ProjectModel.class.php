@@ -262,7 +262,7 @@ class ProjectModel extends BaseModel {
         $idList=array();
         //isset($adminId)?$map['pro_author']=$adminId:$map['pro_role']=$roleId;
         $list=D('WorkflowLog')
-            ->union("select `pj_id` from`gt_workflow_log` where `pro_role`='".$roleId."' and (`pro_state`='".$auditType."' or `pro_state`='3') ")
+            ->union("select `pj_id` from`gt_workflow_log` where `pro_role`='".$roleId."'and `pro_author`='0' and (`pro_state`='".$auditType."' or `pro_state`='3') ")
             ->where(array('pro_author'=>$adminId,'_string'=>"`pro_state`='".$auditType."' or `pro_state`='3'"))
             ->field('pj_id')
             ->select();//查出不同状态的项目id

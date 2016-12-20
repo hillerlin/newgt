@@ -25,7 +25,7 @@
                     <input type="text" name="pro_title" id="p_company" value="" size="30" data-toggle="lookup" data-url="<?php echo U('Company/findRelateSubProcess/',array('pre'=>$pre))?>" data-width="600" data-height="300" readonly>
                 </td>
             </tr>
-            <?php if($pre==4 || $pre==5 || $pre==7):?>
+            <?php if($pre==4 || $pre==5 || $pre==6 || $pre==7 || $pre==8 || $pre==9):?>
             <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150">选择通知知情的相关人员：</label>
@@ -37,8 +37,8 @@
 
             <tr>
                 <td>
-                    <label for="pro_desc" class="control-label x120">备注：</label>
-                    <textarea name="pro_subprocess_desc" id="j_custom_note_1" data-toggle="autoheight" cols="40" rows="2"></textarea>
+                    <label for="pro_desc" class="control-label x150">备注：</label>
+                    <textarea name="pro_subprocess_desc" id="j_custom_note_1" data-toggle="autoheight" cols="30" rows="3"></textarea>
                 </td>
             </tr>
             </tbody>

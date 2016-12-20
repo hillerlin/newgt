@@ -12,7 +12,6 @@
                 <option value="1">已提交</option>
             </select>&nbsp;
             <label>项目标题：</label><input type="text" id="pro_no" value="" name="pro_title" class="form-control" size="10">&nbsp;
-            <!--<button type="button" class="showMoreSearch" data-toggle="moresearch" data-name="custom"><i class="fa fa-angle-double-down"></i></button>-->
             <button type="submit" class="btn-default" data-icon="search">查询</button>&nbsp;
             <a class="btn btn-orange" href="javascript:;" data-toggle="reloadsearch" data-clear-query="true" data-icon="undo">清空查询</a>
         </div>
@@ -28,27 +27,25 @@
             <th data-order-field="company" align="center" width="300">公司</th>
             <th data-order-field="gt_uid" align="center" width="150">项管部跟进人</th>
             <th data-order-field="pro_status"  align="center" width="100">立项状态</th>
-            <!--<th data-order-field="file"  align="center" width="100"></th>-->
             <th width="300" align="center">操作</th>
         </tr>
         </thead>
         <tbody>
         <?php foreach($list as $v){?>
-        <tr data-id="<?php echo $v['pro_id']?>">
+        <tr data-id="<?php echo $v['pro_id']?>" ondblclick="showWorkflow(this)">
             <td align="center"><?php echo $v['pro_no']?></td>
             <td align="center"><?php echo $v['pro_title']?></td>
             <td align="center"><?php echo date('Y-m-d H:i:s', $v['addtime'])?></td>
             <td align="center"><?php echo $v['company_name']?></td>
             <td align="center"><?php echo empty($v['pmd_name']) ? '<code>未分配</code>' : $v['pmd_name']?>&nbsp;</td>
             <td align="center"><?php echo C('proLevel')[$v['pro_level_now']]?></td>
-            <!--<td align="center"><?php echo $v['submit_status']==1?'已提交':'草稿'?></td>-->
             <td align="center">
                 <?php foreach($v['authpage'] as $kk=>$vv):?>
                 <a href="<?php echo U($kk, array('pro_id'=>$v['pro_id'],'plId'=>$v['pl_id'],'wfId'=>$v['wfid'],
                 'xmlId'=>$v['pro_xml_id'],'proLevel'=>$v['pro_level'],'proRebutter'=>$v['pro_rebutter'],'proRebutterLevel'=>$v['pro_rebutter_level'],
                 'proTimes'=>$v['pro_times'],'spId'=>$v['sp_id'],'proState'=>$v['pro_state'])) ?>" class="btn btn-green"
                    data-toggle="<?php if($vv=='资料包') {echo 'navtab';}else{echo 'dialog';}?>"
-                   <?php if($vv=='项管部审核'|| $vv=='归档审核')
+                   <?php if($vv=='项管部审核'|| $vv=='归档审核'|| $vv=='上传资料' || $vv=='下载资料' || $vv=='查看流程')
                    {echo 'data-height=900 data-width=800';}
                    elseif($vv=='提交/编辑')
                    {echo 'data-height=400 data-width=600';}?>
@@ -78,33 +75,10 @@
     <div class="pagination-box" data-toggle="pagination" data-total="<?php echo $total?>" data-page-size="30" data-page-current="1">
     </div>
 </div>
-
-
-
-
-<!--
-<div class="bjui-pageHeader">
-    <label style="margin-top: 10px;margin-bottom: 10px;">我是：{$name}</label>
-    <table class="table table-bordered table-hover table-striped table-top" data-selected-multi="true">
-        <thead>
-        <tr>
-            <th align="center" width="300">我的项目ID</th>
-            <th align="center" width="300">项目状态</th>
-            <th align="center" width="300">操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach($list as $v):?>
-        <tr>
-            <td align="center"><?php echo $v['pj_id'];?></td>
-            <td align="center"><?php echo auditInit($v['pro_state']).'-&#45;&#45;&#45;&#45;'.C('proLevel');?></td>
-            <td align="center"> <a href="<?php echo U('Project/MyAuditProject', array('wf_id'=>$v['wf_id'],'pl_id'=>$v['pl_id'],'xml_id'=>$v['pro_xml_id'],'pj_id'=>$v['pj_id'],'pro_level'=>$v['pro_level'],'pro_times'=>$v['pro_times']))?>" class="btn btn-green"
-                                   data-toggle="dialog" data-mask="true" data-height="1000" data-width="800" data-id="modify">点击审核</a></td>
-        </tr>
-        <?php endforeach;?>
-        </tbody>
-    </table>
-
-</div>-->
-
+<script type="text/javascript">
+    function showWorkflow(e){
+        var dataId=$(e).attr('data-id');
+        $(e).dialog({id:'mydialogasasa', url:'/Admin/Project/detail/dataId/'+dataId, title:'damailicai',width:1000,height:800});
+    }
+</script>
 

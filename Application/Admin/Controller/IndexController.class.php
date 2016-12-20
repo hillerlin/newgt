@@ -160,6 +160,9 @@ class IndexController extends CommonController {
                 }
             }
         }
+        $sordtime=array_column($wordFlowMessage,'time');
+        //按照时间从大到小进行排序
+        $newtime=array_multisort($sordtime,SORT_DESC,$wordFlowMessage);
         $this->assign('wordFlowMessage',$wordFlowMessage);
         $this->assign('backlog', $backlog);
         $this->assign('backLogCount', $backLogCount);

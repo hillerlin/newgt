@@ -233,7 +233,18 @@ class CompanyController extends CommonController {
     {
         $pre=I('get.pre');
         $projectList=array();
-        $projectIng=D('Project')->where("`is_all_finish`=0")->select();
+        $pjInfo=D('PjWorkflow')->select();
+        $proIdString='';
+/*        foreach ($pjInfo as $kk=>$vv)
+        {
+            if(explode('_',$vv['pro_level_now'])[0]==$pre)
+            {
+                $proIdString.=$vv['pj_id'].',';
+            }
+        }*/
+        //$mapStripTags =rtrim($proIdString,',');
+        isset($proIdString)?$map=" and `pro_id`":$map='';
+        $projectIng=D('Project')->where("`is_all_finish`=0 $map")->select();
         foreach ($projectIng as $k=>$v)
         {
             $finishStatus=json_decode($v['finish_status'],true);
@@ -264,12 +275,35 @@ class CompanyController extends CommonController {
                     ->join("LEFT JOIN __ADMIN__ AS a ON a.role_id=r.role_id")
                     ->where(array('r.role_id'=>array('in','18,17,21')))
                     ->select();
+                break;
+            case 6:
+                //返回风控部所有人的信息
+                $adminList=D()->table('gt_role as r')
+                    ->join("LEFT JOIN __ADMIN__ AS a ON a.role_id=r.role_id")
+                    ->where(array('r.role_id'=>array('in','16,18,17,21')))
+                    ->select();
+                break;
             case 7:
                 //返回风控部所有人的信息
                 $adminList=D()->table('gt_role as r')
                     ->join("LEFT JOIN __ADMIN__ AS a ON a.role_id=r.role_id")
                     ->where(array('r.role_id'=>'18'))
                     ->select();
+                break;
+            case 8:
+                //返回风控部所有人的信息
+                $adminList=D()->table('gt_role as r')
+                    ->join("LEFT JOIN __ADMIN__ AS a ON a.role_id=r.role_id")
+                    ->where(array('r.role_id'=>array('in','16,18,17,21')))
+                    ->select();
+                break;
+            case 9:
+                //返回风控部所有人的信息
+                $adminList=D()->table('gt_role as r')
+                    ->join("LEFT JOIN __ADMIN__ AS a ON a.role_id=r.role_id")
+                    ->where(array('r.role_id'=>array('in','16,18,17,21')))
+                    ->select();
+                break;
         }
         $this->assign('adminList',$adminList);
         $this->display();

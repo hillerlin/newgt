@@ -428,7 +428,7 @@ function redisCollect($proLevel,$sender,$receive='',$time,$proId,$specialMessage
             break;
         case '0_1':
             //项目总监分配人手
-            $contents='项管总监<code>'.$sender.'</code>将项目<code>'.$proName.'</code>分配给<code>'.$receive.'</code>';
+            $contents='项管总监<code>'.$sender.'</code>将项目<code>'.$proName.'</code>分配给：<code>'.$receive.'</code>';
             break;
         case '0_2':
             //项管专员归档
@@ -442,19 +442,37 @@ function redisCollect($proLevel,$sender,$receive='',$time,$proId,$specialMessage
             $contents='项管专员<code>'.$sender.'</code>发起项目<code>'.$proName.'</code>通知知情事宜';
             break;
         case '4_1':
-            $contents='项管总监<code>'.$sender.'</code>发起项目<code>'.$proName.'</code>知情给<code>'.$receive.'</code>';
+            $contents='项管总监<code>'.$sender.'</code>发起项目<code>'.$proName.'</code>知情给：<code>'.$receive.'</code>';
             break;
         case '5':
             $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>风控审核子流程';
             break;
         case '5_1':
-            $contents='项管总监<code>'.$sender.'</code>发起项目<code>'.$proName.'</code>风控审核通知给<code>'.$receive.'</code>';
+            $contents='项管总监<code>'.$sender.'</code>发起项目<code>'.$proName.'</code>风控审核通知给：<code>'.$receive.'</code>';
+            break;
+        case '6':
+            $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>立项会';
+            break;
+        case '6_1':
+            $contents='项管总监<code>'.$sender.'</code>将项目<code>'.$proName.'</code>召开立项会事宜通知：<code>'.$receive.'</code>';
             break;
         case '7':
             $contents='风控总监<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>风控报告';
             break;
         case '7_2':
             $contents='项管专员<code>'.$sender.'</code>已完成项目<code>'.$proName.'</code>风控报告的审核';
+            break;
+        case '8':
+            $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>风控会';
+            break;
+        case '8_1':
+            $contents='项管总监<code>'.$sender.'</code>将项目<code>'.$proName.'</code>风控会事宜通知：<code>'.$receive.'</code>';
+            break;
+        case '9':
+            $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>投委会';
+            break;
+        case '9_1':
+            $contents='项管总监<code>'.$sender.'</code>将项目<code>'.$proName.'</code>投委会事宜通知：<code>'.$receive.'</code>';
             break;
         case -1:
             $contents=$specialMessage;
@@ -521,11 +539,29 @@ function redisPostAudit($proLevel,$sender,$receive='',$time,$proId,$plId,$specia
         case '5_1':
             $contents='项管总监<code>'.$sender.'</code>发起项目<code>'.$proName.'</code>风控审核通知给我';
             break;
+        case '6':
+            $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>立项会';
+            break;
+        case '6_1':
+            $contents='项管总监<code>'.$sender.'</code>将项目<code>'.$proName.'</code>召开立项会事宜通知我';
+            break;
         case '7':
             $contents='风控总监<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>风控报告';
             break;
         case '7_2':
             $contents='项管专员<code>'.$sender.'</code>已完成项目<code>'.$proName.'</code>风控报告的审核';
+            break;
+        case '8':
+            $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>风控会';
+            break;
+        case '8_1':
+            $contents='项管总监<code>'.$sender.'</code>将项目<code>'.$proName.'</code>风控会事宜通知我';
+            break;
+        case '9':
+            $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>投委会';
+            break;
+        case '9_1':
+            $contents='项管总监<code>'.$sender.'</code>将项目<code>'.$proName.'</code>投委会事宜通知我';
             break;
         case -1:
             $contents=$specialMessage;
@@ -656,7 +692,7 @@ function addSubProcess($result,$pro_level,$admin,$xmlfile)
     return $pjWorkFlow && $sendProcess && $workFlowLog && $redisPost;
 }
 //往project库里添加子流程的审核人
-/****
+/**** $auditor_id $auditor_name为null时就只存pro_subprocess_desc
  * @param $pjId
  * @param $auditor_id
  * @param $auditor_name
@@ -691,8 +727,16 @@ function addSubProcessAuditor($pjId,$auditor_id,$auditor_name,$pro_level,$pro_su
     }
     $finish_enjson = json_encode($finish_status);
     $proSubprocessDesc='pro_subprocess'.explode('_',$pro_level)[0].'_desc'; //如果4_1 4_2 4_3 还原成4
-    $oldProject = $projectModel->where("`pro_id`=%d", array($pjId))->data(array($proSubprocessDesc => $pro_subprocess_desc, 'finish_status' => $finish_enjson))->save();
-    return $oldProject;
+    if(!$auditor_id || !$auditor_name)
+    {
+        $oldProject = $projectModel->where("`pro_id`=%d", array($pjId))->data(array($proSubprocessDesc => $pro_subprocess_desc))->save();
+    }
+    else
+    {
+        $oldProject = $projectModel->where("`pro_id`=%d", array($pjId))->data(array($proSubprocessDesc => $pro_subprocess_desc, 'finish_status' => $finish_enjson))->save();
+
+    }
+    return $oldProject===false?false:true;
 }
 //新审批轮次加1
 function addNewLevel($proLevel)

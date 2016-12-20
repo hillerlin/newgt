@@ -27,6 +27,15 @@
         <input type="hidden"  name="proRebutterLevel" value="{$proRebutterLevel}">
         <table class="table table-condensed table-hover" width="100%">
             <tbody>
+            <?php if($pre=='7_1'||$pre=='7_2' ||$pre=='7_3'):?>
+            <tr>
+                <td>
+                    <label for="j_custom_name" class="control-label x150">已绑定的项目：</label>
+                    <input type="hidden" name="pro_id" value="{$pro_id}">
+                    <input type="text" name="pro_title" id="p_company" value="{$companyName}" size="30"   readonly>
+                </td>
+            </tr>
+            <?php else:?>
             <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150">请绑定项目：</label>
@@ -41,7 +50,8 @@
                     <input type="text" name="auditor_name" id="p_company" value="<?php echo $auditorName?>" size="30" data-toggle="lookup" data-url="<?php echo U('Company/findHeaderToType',array('pre'=>4))?>" data-width="600" data-height="300" readonly>
                 </td>
             </tr>
-            <?php if($admin['role_name']=='项管部总监'):?>
+            <?php endif;?>
+            <?php if($admin['role_name']=='项管部总监'||$pre=='7_2'):?>
                <tr>
                    <td>
                    <label for='company_id' class='control-label x150'>请选择:</label>
@@ -66,7 +76,7 @@
 <div class="bjui-pageFooter">
     <ul>
         <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
-        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">提交</button></li>
     </ul>
 </div>
 <script>

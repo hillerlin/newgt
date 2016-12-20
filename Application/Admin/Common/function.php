@@ -450,6 +450,12 @@ function redisCollect($proLevel,$sender,$receive='',$time,$proId,$specialMessage
         case '5_1':
             $contents='项管总监<code>'.$sender.'</code>发起项目<code>'.$proName.'</code>风控审核通知给<code>'.$receive.'</code>';
             break;
+        case '7':
+            $contents='风控总监<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>风控报告';
+            break;
+        case '7_2':
+            $contents='项管专员<code>'.$sender.'</code>已完成项目<code>'.$proName.'</code>风控报告的审核';
+            break;
         case -1:
             $contents=$specialMessage;
             break;
@@ -514,6 +520,12 @@ function redisPostAudit($proLevel,$sender,$receive='',$time,$proId,$plId,$specia
             break;
         case '5_1':
             $contents='项管总监<code>'.$sender.'</code>发起项目<code>'.$proName.'</code>风控审核通知给我';
+            break;
+        case '7':
+            $contents='风控总监<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>风控报告';
+            break;
+        case '7_2':
+            $contents='项管专员<code>'.$sender.'</code>已完成项目<code>'.$proName.'</code>风控报告的审核';
             break;
         case -1:
             $contents=$specialMessage;
@@ -696,6 +708,13 @@ function addNewLevel($proLevel)
             $newLevel=$explodeLevel[0].'_'.$modify;
         }
     return $newLevel;
+
+}
+//找项目提交人的id
+function ProjectSubmitter($spId)
+{
+     $submitterInfo= D('SendProcess')->where("`sp_id`=%d",array($spId))->field('sp_author')->find();
+     return $submitterInfo['sp_author'];
 
 }
 //记录消息被谁查看了

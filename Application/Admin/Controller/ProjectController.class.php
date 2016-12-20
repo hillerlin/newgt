@@ -117,6 +117,9 @@ class ProjectController extends CommonController
             case '5':
                 $oldProject=addSubProcessAuditor($pjId,$auditor_id,$auditor_name,$pro_level,$pro_subprocess_desc);
                 break;
+            case '7':
+                $oldProject=addSubProcessAuditor($pjId,$auditor_id,$auditor_name,$pro_level,$pro_subprocess_desc);
+                break;
         }
 
         $return = addSubProcess($pjId, $pro_level, $admin,$xmlfile);
@@ -211,6 +214,7 @@ class ProjectController extends CommonController
         $auditType = I('get.auditType');
         $proLevel = I('get.proLevel');//当前审批级别
         $proTimes = I('get.proTimes');//当前审批轮次
+        $spId=I('get.spId');
         $admin = session('admin');
         $xmlfile='process1.xml';
         // $aa=xmlIdToInfo($xmlId);
@@ -329,6 +333,57 @@ class ProjectController extends CommonController
                     /*****驳回*******/
                 //}
                 break;
+            case '7':
+                //风控报告编写-报告编写-风控专员
+                $auditor_id = I('get.auditor_id');//分配跟进人
+                $auditor_name = I('get.auditor_name');//跟进人的名字
+                $pro_subprocess_desc =I('get.pro_subprocess_desc');//子流程备注
+                $newProLevel=addNewLevel($proLevel);
+                $updataProject=addSubProcessAuditor($proIid,$auditor_id,$auditor_name,$newProLevel,$pro_subprocess_desc);//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                $auditor_id = explode(',', $auditor_id);
+                $return=true;
+                    foreach ($auditor_id as $k=>$v)
+                    {
+                        $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的风控报告分配给<code>'.adminNameToId($v).'</code>';
+                        $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$v,$xmlId,$plId,'one',$contents,-1) && $return;
+                        sleep(1);
+                    }
+
+                break;
+            case '7_1':
+                //风控专员报告编写完毕发送给项管专员审核
+                $allocationId='2';//业务需求分配给项管所有专员
+                $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的风控报告上传完毕';
+                $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, $allocationId, 0, $xmlId, $plId, 'one',$contents,-1);
+                break;
+            case '7_2':
+                //项管专员审核
+                /*****正常审批通过*******/
+                if($auditType==2)
+                {
+                    //业务需求审核过后给项管总监宋波继续审核
+                    $allocationId=14;
+                    $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, $allocationId, 0, $xmlId, $plId, 'one');
+
+                }/*else
+                {
+                    /*****驳回*******/
+                //}
+                break;
+            case '7_3':
+                //项管总监最终审核
+                if($auditType==2)
+                {
+                    //业务需求审核过后给项管总监宋波继续审核
+                    $allocationId=ProjectSubmitter($spId);//返回上一级提交人的adminId
+                    $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的风控报告进行最终审核';
+                    $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $allocationId, $xmlId, $plId, 'one',$contents,-1);
+
+                }/*else
+                {
+                    /*****驳回*******/
+                //}
+                break;
         }
 
         if ($return) {
@@ -414,7 +469,7 @@ class ProjectController extends CommonController
         $pre = I('get.pre');
         $this->assign('pre', $pre);
         $this->assign('admin', $admin);
-        if (intval($pre) == 4 || intval($pre) == 5) {
+        if (intval($pre) == 4 || intval($pre) == 5 || intval($pre) == 7) {
             //新建子流程1
             $this->display('subProcess1');
 

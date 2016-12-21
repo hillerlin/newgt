@@ -48,10 +48,14 @@
 <div class="bjui-pageFooter">
     <ul>
         <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
-        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">提交</button></li>
     </ul>
 </div>
 <script>
+    function doc_dialog_onClose() {
+        $(this).alertmsg('info', 'onClose回调：你刚刚关闭了一个dialog。')
+    }
+
     $('input[name="pro_type"]').on('ifChecked', function (event) {
         $('#reversed').show();
         $('input[name="supplier_name"]').attr('data-rule', 'required');

@@ -255,6 +255,6 @@ class RiskControlResearchController extends CommonController {
         $pro_model->commit();
         session($pro_id . '-pre_contract', null);
         session($pro_id . '-edit_contract', null);
-        $this->json_success('成功', '', '', true, array('tabid' => 'riskcontrolresearch-auditList'));
+        $this->json_success('成功!!!', '', '', true, array('tabid' => 'riskcontrolresearch-auditList'));
     }
 }

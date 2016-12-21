@@ -133,9 +133,9 @@ class ProjectController extends CommonController
 
         $return = addSubProcess($pjId, $pro_level, $admin,$xmlfile);
         if ($return && $oldProject) {
-            $this->json_success('成功', '', '', true, array('tabid' => 'project-auditList'));
+            $this->json_success('新建成功', '/Admin/Project/MyAudit', '', true, array('tabid' => 'Project-MyAudit'),1);
         } else {
-            $this->json_error('失败', '', '', true, array('tabid' => 'project-auditList'));
+            $this->json_error('失败', '', '', true, array('tabid' => 'project-auditList'),1);
         }
 
     }

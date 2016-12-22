@@ -87,9 +87,10 @@ class ProjectController extends CommonController
                 'sp_id' => $sendProcess, 'pj_id' => $result, 'pro_level' => 0, 'pro_times' => 1, 'pro_state' => 0, 'pro_addtime' => time(), 'pro_author' => $admin['admin_id'],
                 'wf_id' => $pjWorkFlow, 'pro_role' => $admin['role_id'], 'pro_xml_id' => $xmlId
             ))->add();
+            $createFolder=createFolder($result);
             $redisPost = redisTotalPost(0, $admin['admin_id'], $admin['admin_id'] . '|admin', time(), $result, $workFlowLog);
         }
-
+        empty($proIid)?$proIid=$result:$proIid=$proIid;
         if ($result === false || $pjWorkFlow === false || $sendProcess === false || $workFlowLog === false || $redisPost === false) {
             $this->json_error('创建失败', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1000','height'=>'800'),2,'/Admin/Project/MyAudit');
         } else {

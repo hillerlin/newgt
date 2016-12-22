@@ -787,7 +787,17 @@ function checkMessage($time,$type,$proId){
     return  S()->hSet('Type:'.$type.':Time:'.date('Ymd',$time),$time,json_encode($data));
 }
 
-
+//新建立项时创建资料包对应的文件夹
+function createFolder($proId)
+{
+    $returns=true;
+    foreach (C('upLoadFolder') as $k=>$v)
+    {
+        $return=D('ProjectFile')->data(array('pro_id'=>$proId,'pid'=>0,'file_name'=>$v,))->add();
+        $returns=$return && $returns;
+    }
+    return $return;
+}
 
 
 

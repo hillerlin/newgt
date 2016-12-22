@@ -761,12 +761,15 @@ function ProjectSubmitter($spId)
      return $submitterInfo['sp_author'];
 
 }
-//记录消息被谁查看了
-function checkMessage($data){
+
+/**
+ * @param $time 时间
+ * @param $type 消息类型
+ * @param $proId 项目id
+ * @return mixed
+ */
+function checkMessage($time,$type,$proId){
     $admin_id=session('admin')['admin_id'];
-    $type=$data['type'];
-    $time=$data['time'];
-    $proId=$data['time'];
     $data=json_decode(S()->hGet('Type:'.$type.':Time:'.date('Ymd',$time),$time),true);
     if(empty($data['adminIds'])){
         //adminIds为空，则表示没有人查看这条消息

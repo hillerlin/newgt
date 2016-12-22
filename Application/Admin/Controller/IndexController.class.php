@@ -174,8 +174,8 @@ class IndexController extends CommonController {
     //暂时在此处处理消息提醒的已读标记
     public function handelMessage(){
         checkMessage(I('get.'));
-        //虚拟页面展示
-        $sdf='sdf';
+        //跳转到workflowlog这个指定的页面
+
     }
     protected function start() {
         $admin = session('admin');

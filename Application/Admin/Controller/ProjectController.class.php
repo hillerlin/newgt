@@ -67,7 +67,6 @@ class ProjectController extends CommonController
             } else //正常提交新建项目
             {
                 //根据name查出下个审批人的角色id
-
                 $xmlInfo = $xmlObj->index()[xmlNameToIdAndName(C('proLevel')['0'],$xmlObj->file)['TARGETREF']];//获取即将审核人的xml信息
                 $proRoleId = roleNameToid(explode('_', $xmlInfo['name'])['0']);//审批人角色id
                 //$xmlId=xmlIdToInfo($xmlId)['TARGETREF'];
@@ -92,9 +91,9 @@ class ProjectController extends CommonController
         }
 
         if ($result === false || $pjWorkFlow === false || $sendProcess === false || $workFlowLog === false || $redisPost === false) {
-            $this->json_error('保存失败');
+            $this->json_error('创建失败', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1000','height'=>'800'),2,'/Admin/Project/MyAudit');
         } else {
-            $this->json_success('保存成功', '', '', true, array('tabid' => 'project-start'));
+            $this->json_success('新建成功', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1000','height'=>'800'),2,'/Admin/Project/MyAudit');
         }
     }
 
@@ -133,9 +132,9 @@ class ProjectController extends CommonController
 
         $return = addSubProcess($pjId, $pro_level, $admin,$xmlfile);
         if ($return && $oldProject) {
-            $this->json_success('新建成功', '/Admin/Project/MyAudit', '', true, array('tabid' => 'Project-MyAudit'),1);
+            $this->json_success('新建成功', '/Admin/Project/MyAudit', '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目'),1);
         } else {
-            $this->json_error('失败', '', '', true, array('tabid' => 'project-auditList'),1);
+            $this->json_error('创建失败，请联系开发人员查看原因', '/Admin/Project/MyAudit', '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目'),1);
         }
 
     }
@@ -561,18 +560,17 @@ class ProjectController extends CommonController
                     $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的投委会投票结果已进行审核';
                     $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $allocationId, $xmlId, $plId, 'one',$contents,-1) && $updataProject;
                 }else{//驳回情况
-
                 }
                 break;
 
 
-
-
-
         }
 
-        if ($return) {
-            $this->json_success('成功', '', '', true, array('tabid' => 'project-auditList'));
+        if (!$return) {
+            $this->json_error('创建失败', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1000','height'=>'800'),2,'/Admin/Project/MyAudit');
+        } else {
+            $this->json_success('新建成功', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1000','height'=>'800'),2,'/Admin/Project/MyAudit');
+            //$this->json_success('成功', '', '', true, array('tabid' => 'project-auditList'));
         }
     }
     //子流程-2风控和项目经理分配人手
@@ -634,11 +632,11 @@ class ProjectController extends CommonController
 
                 $flag = $flag && $return && $redisPost && $redisPostAudit;
             }
-            if ($flag) {
-                $this->json_success('知情已发送', '', '', true);
-
+            if (!$flag) {
+                $this->json_error('创建失败', '/Admin/Project/detail/dataId/'.$proIid, '', '', array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1000','height'=>'800'),2,'/Admin/Project/MyAudit');
             } else {
-                $this->json_error('知情发送失败', '', '', true);
+                $this->json_success('新建成功', '/Admin/Project/detail/dataId/'.$proIid, '', '', array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1000','height'=>'800'),2,'/Admin/Project/MyAudit');
+                //$this->json_success('成功', '', '', '', array('tabid' => 'project-auditList'));
             }
         }
         $this->assign('list', $adminInfo);
@@ -743,6 +741,9 @@ class ProjectController extends CommonController
         $this->display('file_review_list');
     }
 
+    /**
+     * 流程详细流程，每个子流程都显示出来
+     */
     public function detail()
     {
         $admin = session('admin');
@@ -765,12 +766,41 @@ class ProjectController extends CommonController
                 }
             }
             $result[$tmpindex]['current']=$item;
+            $result[$tmpindex]['wfid']=$item;
+
             $tmpindex='';
         }
         $this->assign('list',$result);
+        $pj_id=end($proWorkflow)['pj_id'];
+        $this->assign('pro_id',$pj_id);//项目id号
+        $pro_title=M('Project')->getFieldByProId($pj_id,'pro_title');
+        $this->assign('title',$pro_title);//项目标题
         $this->display();
     }
+    /**
+     * 项目流程完结记录
+     * @param string $pro_id 项目的id号
+     */
+    public  function workflowlog(){
+        $admin = session('admin');
+        $pageSize = I('post.pageSize', 30);
+        $page = I('post.pageCurrent', 1);
+        //项目标题
+        if(I('post.pro_title')) $map['p.pro_title']=array('like','%'.I('post.pro_title').'%');
+        //项目编号
+        if(I('post.pro_no')) $map['p.pro_no']=array('eq',I('post.pro_no'));
+        //项目是否已经完结
+        if(I('post.is_all_finish'))$map['p.is_all_finish']=array('eq',I('post.is_all_finish'));
+        //项目id
+        if(I('get.pro_id'))$map['p.pro_id']=array('eq',I('get.pro_id'));
 
+        //如果是消息推送过来的就需要标记redis了
+        if(I('get.type') && I('get.pro_id')&& I('get.time'))  checkMessage(I('get.time'),I('get.type'),I('get.pro_id'));
+
+        $result=D('Project')->projectinfo($page, $pageSize,$map,$order);
+        $this->assign(array('list' => $result['list'], 'total' => $result['total'], 'pageCurrent' => $page));
+        $this->display('Project/workflowlog');
+    }
     public function submit()
     {
         $p_model = D('Project');

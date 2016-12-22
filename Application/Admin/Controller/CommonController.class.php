@@ -110,7 +110,7 @@ class CommonController extends Controller {
      * @param type $jumpUrl
      * @return void
      */
-    public function dispatch($statusCode = 200, $message = '', $closeCurrent = false, $jumpUrl = '', $forwardConfirm = '', $reload = array(),$special='') {
+    public function dispatch($statusCode = 200, $message = '', $closeCurrent = false, $jumpUrl = '', $forwardConfirm = '', $reload = array(),$special='',$layoutUrl='') {
         $data = array(
             'statusCode' => $statusCode,    //必选。状态码(ok = 200, error = 300, timeout = 301)，可以在BJUI.init时配置三个参数的默认值。
             'closeCurrent' => $closeCurrent,        //可选。是否关闭当前窗口(navtab或dialog)。
@@ -118,19 +118,24 @@ class CommonController extends Controller {
             'tabid' => isset($reload['tabid']) ? $reload['tabid'] : '',              //可选。待刷新navtab id，多个id以英文逗号分隔开，当前的navtab id不需要填写，填写后可能会导致当前navtab重复刷新。
             'dialogid' => isset($reload['dialogid']) ? $reload['dialogid'] : '',        //可选。待刷新div id，多个id以英文逗号分隔开，请不要填写当前的div id，要控制刷新当前div，请设置该div中表单的reload参数。
             'divid' => isset($reload['divid']) ? $reload['divid'] : '',              //可选。待刷新div id，多个id以英文逗号分隔开，请不要填写当前的div id，要控制刷新当前div，请设置该div中表单的reload参数。
+            'tabName'=>isset($reload['tabName'])?$reload['tabName']:'',//新增属性tab名，用来做局部刷新
+            'tabTitle'=>isset($reload['tabTitle'])?$reload['tabTitle']:'',
+            'width'=>isset($reload['width'])?$reload['width']:'',
+            'height'=>isset($reload['height'])?$reload['height']:'',
             'forward' => $jumpUrl,          //可选。跳转到某个url。
+            'layoutUrl'=>$layoutUrl,//刷新底层的页面，弹出框并刷新底层的时候用
             'forwardConfirm' => $forwardConfirm,    //可选。跳转url前的确认提示信息。
-            'special'=>$special,
+            'special'=>$special,//1是普通刷新模式 2是弹出框并刷新底层模式
         );
         $this->ajaxRe($data);
     }
 
-    protected function json_success($message = '', $jumpUrl = '',$forwardConfirm = '', $closeCurrent = false, $reload = array(),$special='') {
-        $this->dispatch(200, $message, $closeCurrent, $jumpUrl, $forwardConfirm, $reload,$special);
+    protected function json_success($message = '', $jumpUrl = '',$forwardConfirm = '', $closeCurrent = false, $reload = array(),$special='',$layoutUrl='') {
+        $this->dispatch(200, $message, $closeCurrent, $jumpUrl, $forwardConfirm, $reload,$special,$layoutUrl);
     }
 
-    protected function json_error($message = '', $jumpUrl = '',$forwardConfirm = '', $closeCurrent = false, $reload = array(),$special='') {
-        $this->dispatch(300, $message, $closeCurrent, $jumpUrl, $forwardConfirm, $reload,$special);
+    protected function json_error($message = '', $jumpUrl = '',$forwardConfirm = '', $closeCurrent = false, $reload = array(),$special='',$layoutUrl='') {
+        $this->dispatch(300, $message, $closeCurrent, $jumpUrl, $forwardConfirm, $reload,$special,$layoutUrl);
     }
 
     /**

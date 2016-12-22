@@ -315,6 +315,20 @@ class ProjectModel extends BaseModel {
         }
         return $adminIdAndName;
     }
-    
+    public function projectinfo($page = 1, $pageSize = 30, $map = '', $order = ''){
+        $total = $this
+            ->table($this->trueTableName . ' AS p')
+            ->where($map)
+            ->count();
+        $list = $this
+            ->table($this->trueTableName . ' AS p')
+            ->join('LEFT JOIN __COMPANY__ AS c ON c.company_id = p.company_id')
+            ->field('p.pro_id,p.pro_no,p.admin_id,p.pro_title,p.addtime,c.company_name,p.is_all_finish')
+            ->where($map)
+            ->page($page, $pageSize)
+            ->order($order)
+            ->select();
+        return array('total' => $total, 'list' => $list);
+    }
 }
 

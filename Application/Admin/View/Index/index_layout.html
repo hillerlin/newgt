@@ -19,33 +19,21 @@
         </ul>
     </div>
 </div>
-<div class="bjui-pageContent">
+<div class="bjui-pageContent" id="layout-1" style="min-width:1385px;">
     <div style="float:left;width:50%;">
         <div class="panel panel-default" style="margin:10px;">
             <div class="panel-heading"><h3 class="panel-title">待办事项：<span class="pull-right">共<?php echo $backLogCount?>项待办</span></h3></div>
             <div class="panel-body bjui-doc" style="padding:0; min-height: 400px">
                 <ul>
                     <?php foreach($backlog as $list) {?>
-                    <li><a href="<?php echo U('Project/MyAudit',array('pro_id'=>$list['proId'],'authorType'=>$list['authorType'] ,'m'=>'delredis'))?>" data-toggle="navtab" data-id="<?php echo strtolower($list['controller']) .'-'. $list['action']?>" data-title="<?php echo $list['title']?>" style="font-size: 14px"><?php echo $list['contents']?></a>
-                        <span style="float:right;"><?php echo date('Y-m-d H:i:s', $list['time'])?></span></li>
+                    <li><a href="<?php echo U('Project/MyAudit',array('pro_id'=>$list['proId'],'authorType'=>$list['authorType'] ,'m'=>'delredis'))?>" data-toggle="navtab" data-id="<?php echo strtolower($list['controller']) .'-'. $list['action']?>" data-title="<?php echo $list['title']?>" style="font-size: 14px;"><?php echo $list['contents']?></a>
+                        <span style="float:right;"><?php echo date('Y-m-d H:i:s', $list['time'])?></span>
+                    </li>
                     <?php }?>
                 </ul>
             </div>
         </div>
         <?php if($admin['dp_id'] == 1) {?>
-    <!--<div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-heading"><h3 class="panel-title">知识中心：<span class="pull-right">最新研报<?php echo $research_list['total']?><a href="<?php echo U('ResearchReport/more')?>" data-toggle="navtab" data-width="620" data-id="message-more" data-title='知识中心'>更多</a></span></h3></div>
-                <div class="panel-body bjui-doc" style="padding:0; height: 100px">
-                    <ul>
-                        <?php foreach($research_list['list'] as $list) {?>
-                        <li><a href="<?php echo $list['path']?>" target="_blank"><?php echo getFilename($list['filename'])?></a>
-                            <span style="position:absolute;right:0;width:25%;line-height:auto"><?php echo date('Y-m-d H:i:s', $list['add_time'])?></span></li>
-                        <?php }?>
-                    </ul>
-                </div>
-            </div>
-        </div>-->
         <?php }?>
     </div>
     <div style="float:right;width:50%;">
@@ -56,13 +44,11 @@
                 <fieldset style="padding:10px;">
                 <h5>项目立项</h5>
                 <ul>
-                  <?php foreach($wordFlowMessage as $wFMessage):?>
-                    <li class="<?php echo $list['status']==0?'':'read';?>">
-                        <a href="/admin/Index/handelMessage/time/{$wFMessage['time']}/proId/{$wFMessage['proId']}/type/{$wFMessage['Type']}.html">
-                            <?php echo $wFMessage['contents']?><span style="float:right;"><?php echo date('Y-m-d H:i:s',$wFMessage['time'])?></span>
+                  <?php foreach( $wordFlowMessage as $wFMessage):?>
+                    <a class="<?php echo $list['status']==0?'':'read';?>" data-expand-all="true" onclick="do_open_layout('project-workflowlog','/Admin/Project/workflowlog?pro_id={$wFMessage[proId]}&time={$wFMessage[time]}&type={$wFMessage[Type]}&m=1','流程监控')" >
+                            {$wFMessage["contents"]}<span style="float:right;"><?php echo date('Y-m-d H:i:s',$wFMessage['time'])?></span>
                             <span ><empty name="wFMessage['in']"><font style="color:red;">【未读】</font><else/><font style="color:green;">【已读】</font></empty></span>
-                        </a>
-                    </li>
+                    </a><br/>
                     <?php endforeach;?>
                 </ul>
                 </fieldset>
@@ -84,60 +70,12 @@
                 </fieldset>
             </div>
         </div>
-        <!-- <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-heading"><h3 class="panel-title">日历</h3></div>
-                
-                <div class="panel-body" style="padding:0; height: 500px">
-                    <a href="<?php echo U('Help/cal')?>" data-toggle="dialog" data-width="620" data-id="message-more">日历</a>
-                    <div data-toggle="fullCalendar" data-width="620" data-id="message-more"></div>
-                    <div id='calendar'></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-heading"><h3 class="panel-title">BJUI/GIT</h3></div>
-                
-                <div class="panel-body">
-                    
-                </div>
-            </div>
-        </div> -->
+
     </div>
 </div>
 <script>
-// $("li.read").each(function(i, domEle){
-//     debugger;
-//     var a,b,c;
-//     a = $(domEle).html();
-//     b = $(domEle).val();
-//     c = $(domEle).text();
-////     a = delHtmlTag(a);
-// });
- $("li.read").text(function(n){
-     $(this).html(RemoveAH($(this).html()) );
-    });
-// function delHtmlTag(str)
-//{
-//      return str.replace(/<[^>]+>/g,"");//去掉所有的html标记
-//}
-function RemoveAH ( strText ){
-
-    var regEx = /<code[^>]*>[^>]*<[^>]code>/g;
-    var regEx = /(<code[^>]*>)|(<[^>]code>)/g;
-
-    return strText.replace(regEx, "");
-
-}
-var options = {
-    callback: 'cancel'
-}
-function read(aa) {
-    console.log(aa);
-    $(this).navtab('reloadForm', true);
-    checkAlert();
-}
-//$("#read").bjuiajax('doAjax', options);
-//$('#calendar').fullCalendar('option', 'height', 700);
+    function do_open_layout(id,url,title)
+    {
+        $(event.target).navtab({id: id, url: url, title: title, fresh: "", external: ""});
+    }
 </script>

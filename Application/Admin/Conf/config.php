@@ -87,7 +87,8 @@ return array(
     'authpage' => array(
         'pre' => '待审核',
         'suf' => '审核后',
-        'com' => '驳回'
+        'com' => '驳回',
+        'all'=>'全部'
     ),
     //消息推送权限设置
      'messAuth'=>array(
@@ -123,6 +124,14 @@ return array(
         5=>'风控报告',
         6=>'风控会',
         7=>'投委会',
+    ),
+    //上传文件夹改变状态的子流程下标
+    'changeUplodState'=>array(
+        1=>'4.3',
+        2=>'5_2',
+        3=>'6_2',
+        4=>'8_2',
+        5=>'9_2',
     ),
     'proLevel' => array(
         //立项总流程

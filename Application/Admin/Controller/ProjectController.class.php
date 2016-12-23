@@ -92,9 +92,9 @@ class ProjectController extends CommonController
         }
         empty($proIid)?$proIid=$result:$proIid=$proIid;
         if ($result === false || $pjWorkFlow === false || $sendProcess === false || $workFlowLog === false || $redisPost === false) {
-            $this->json_error('创建失败', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1000','height'=>'800'),2,'/Admin/Project/MyAudit');
+            $this->json_error('创建失败', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
         } else {
-            $this->json_success('新建成功', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1000','height'=>'800'),2,'/Admin/Project/MyAudit');
+            $this->json_success('新建成功', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
         }
     }
 
@@ -568,9 +568,9 @@ class ProjectController extends CommonController
         }
 
         if (!$return) {
-            $this->json_error('创建失败', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1000','height'=>'800'),2,'/Admin/Project/MyAudit');
+            $this->json_error('创建失败', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
         } else {
-            $this->json_success('新建成功', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1000','height'=>'800'),2,'/Admin/Project/MyAudit');
+            $this->json_success('新建成功', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
             //$this->json_success('成功', '', '', true, array('tabid' => 'project-auditList'));
         }
     }
@@ -634,9 +634,9 @@ class ProjectController extends CommonController
                 $flag = $flag && $return && $redisPost && $redisPostAudit;
             }
             if (!$flag) {
-                $this->json_error('创建失败', '/Admin/Project/detail/dataId/'.$proIid, '', '', array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1000','height'=>'800'),2,'/Admin/Project/MyAudit');
+                $this->json_error('创建失败', '/Admin/Project/detail/dataId/'.$proIid, '', '', array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
             } else {
-                $this->json_success('新建成功', '/Admin/Project/detail/dataId/'.$proIid, '', '', array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1000','height'=>'800'),2,'/Admin/Project/MyAudit');
+                $this->json_success('新建成功', '/Admin/Project/detail/dataId/'.$proIid, '', '', array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
                 //$this->json_success('成功', '', '', '', array('tabid' => 'project-auditList'));
             }
         }
@@ -742,66 +742,7 @@ class ProjectController extends CommonController
         $this->display('file_review_list');
     }
 
-    /**
-     * 流程详细流程，每个子流程都显示出来
-     */
-    public function detail()
-    {
-        $admin = session('admin');
-        //查询项目编号为156的项目当前的流程信息
-        $proWorkflow=D('PjWorkflow')->where('pj_id = '.I('get.dataId'))->select();
-        //取出这个项目的所有子流程
-        $workflowInfos=array_column($proWorkflow,'pro_level_now');
-        foreach ($workflowInfos as $key => $item) {
-            //将0，0_1这种下标由‘_’来分割，并取  ‘_’ 前面的数字，然后再获取配置文件中的子流程
-            $tmpindex=reset(explode('_',$item));
-            $reg='/^'.$tmpindex.'(_[\d])?/';
-            foreach (C('proLevel') as $k=> $v) {
-                //如果配置文件中存在此键，则说明它使我们要找的键值对
-                if(preg_match($reg,$k)>0){
-                    if(strpos($k,'_')!==false){
-                        $result[$tmpindex]['sub'][$k]=trim($v);
-                    }else{
-                        $result[$tmpindex]['name']=trim($v);
-                    }
-                }
-            }
-            $result[$tmpindex]['current']=$item;
-            $result[$tmpindex]['wfid']=$item;
 
-            $tmpindex='';
-        }
-        $this->assign('list',$result);
-        $pj_id=end($proWorkflow)['pj_id'];
-        $this->assign('pro_id',$pj_id);//项目id号
-        $pro_title=M('Project')->getFieldByProId($pj_id,'pro_title');
-        $this->assign('title',$pro_title);//项目标题
-        $this->display();
-    }
-    /**
-     * 项目流程完结记录
-     * @param string $pro_id 项目的id号
-     */
-    public  function workflowlog(){
-        $admin = session('admin');
-        $pageSize = I('post.pageSize', 30);
-        $page = I('post.pageCurrent', 1);
-        //项目标题
-        if(I('post.pro_title')) $map['p.pro_title']=array('like','%'.I('post.pro_title').'%');
-        //项目编号
-        if(I('post.pro_no')) $map['p.pro_no']=array('eq',I('post.pro_no'));
-        //项目是否已经完结
-        if(I('post.is_all_finish'))$map['p.is_all_finish']=array('eq',I('post.is_all_finish'));
-        //项目id
-        if(I('get.pro_id'))$map['p.pro_id']=array('eq',I('get.pro_id'));
-
-        //如果是消息推送过来的就需要标记redis了
-        if(I('get.type') && I('get.pro_id')&& I('get.time'))  checkMessage(I('get.time'),I('get.type'),I('get.pro_id'));
-
-        $result=D('Project')->projectinfo($page, $pageSize,$map,$order);
-        $this->assign(array('list' => $result['list'], 'total' => $result['total'], 'pageCurrent' => $page));
-        $this->display('Project/workflowlog');
-    }
     public function submit()
     {
         $p_model = D('Project');
@@ -950,6 +891,7 @@ class ProjectController extends CommonController
 //        var_dump($file_tree[1]['sub'][7]['sub']);exit;
         $this->assign('file_tree', $file_tree);
         $this->assign($map);
+        $this->assign($_GET);
         $this->display();
     }
 
@@ -1460,9 +1402,7 @@ class ProjectController extends CommonController
         $loan_log = D('ProcessLog')->getLoanList(1, 30, $map1);
         $process_list = array_merge($loan_log['list'], $process_list['list']);
         $data = $p_model->where(array('pro_id' => $pro_id))->relation(true)->find();
-
         $workflow = D('Workflow')->getWorkFlow();   //工作流
-
         $exts = getFormerExts();
         $this->assign('exts', $exts);
         $this->assign('workflow', $workflow);
@@ -1471,5 +1411,112 @@ class ProjectController extends CommonController
         $this->assign('signin_admin', $admin);
         $this->assign($data);
         $this->display('detail_all');
+    }
+    /**
+     * 流程详细流程，每个子流程都显示出来
+     */
+    public function detail()
+    {
+        $admin = session('admin');
+
+        $proWorkflow=D('Project')->projectWorkflowInfo('w.pj_id = '.I('get.dataId'));
+        //取出这个项目的所有子流程
+        $workflowInfos=array_column($proWorkflow,'pro_level_now');
+        foreach ($workflowInfos as $key => $item) {
+            //将0，0_1这种下标由‘_’来分割，并取  ‘_’ 前面的数字，然后再获取配置文件中的子流程
+            $tmpindex=reset(explode('_',$item));
+            $reg='/^'.$tmpindex.'(_[\d])?/';
+            foreach (C('proLevel') as $k=> $v) {
+                //如果配置文件中存在此键，则说明它是我们要找的键值对
+                if(preg_match($reg,$k)>0){
+                    if(strpos($k,'_')!==false){
+                        $result[$tmpindex]['sub'][$k]=trim($v);
+                    }else{
+                        $result[$tmpindex]['name']=trim($v);
+                    }
+                }
+            }
+            $result[$tmpindex]['current']=$item;
+            $result[$tmpindex]['wfid']=$proWorkflow[$key]['wf_id'];
+            $tmpindex='';
+        }
+        //执行人的名字和执行的时间
+        $wfids=array_column($proWorkflow,'wf_id');
+         $tmpexecutor=D('Project')->executorInfo('wf_id in ('.implode(',',$wfids).')');
+        //补全按用户角色来区分的用户信息
+        array_walk($tmpexecutor ,function(&$v,$k){
+            if(empty($v['pro_author'])) $v['real_name']=M('Admin')->getFieldByRoleId($v['pro_role'],'real_name');
+        });
+        //转换执行人的数组形式，wf_id作为最外层的key,pro_level最为第二层的key
+        foreach($result as $v){
+            foreach($tmpexecutor as $ev){
+                //项目处于同一个进程下，且其在此进程中的执行步骤不能大于等于用$v['current']表示现在正在执行的步骤
+                if($v['wfid']==$ev['wf_id'] && strcmp($v['current'],$ev['pro_level'])>=0){
+                    $executor[$ev['wf_id']][$ev['pro_level']]=$ev;
+                }
+            }
+        }
+        //项目id号
+        $pj_id=end($proWorkflow)['pj_id'];
+        //项目标题
+        $pro_title=M('Project')->getFieldByProId($pj_id,'pro_title');
+        $this->assign(array('list'=>$result,'pro_id'=>$pj_id,'title'=>$pro_title,'executor'=>$executor));
+        $this->display();
+    }
+    /**
+     * 项目流程完结记录
+     * @param string $pro_id 项目的id号
+     */
+    public  function workflowlog(){
+        $admin = session('admin');
+        $pageSize = I('post.pageSize', 30);
+        $page = I('post.pageCurrent', 1);
+        //项目标题
+        if(I('post.pro_title')) $map['p.pro_title']=array('like','%'.I('post.pro_title').'%');
+        //项目编号
+        if(I('post.pro_no')) $map['p.pro_no']=array('eq',I('post.pro_no'));
+        //项目是否已经完结
+        if(I('post.is_all_finish'))$map['p.is_all_finish']=array('eq',I('post.is_all_finish'));
+        //项目id
+        if(I('get.pro_id'))$map['p.pro_id']=array('eq',I('get.pro_id'));
+
+        //如果是消息推送过来的就需要标记redis了
+        if(I('get.type') && I('get.pro_id')&& I('get.time'))  checkMessage(I('get.time'),I('get.type'),I('get.pro_id'));
+
+        $result=D('Project')->projectinfo($page, $pageSize,$map,$order);
+        foreach($result['list'] as &$v){
+            $v['authpage']=json_decode($v['authpage'],true);
+        }
+        //当前用户是所拥有的页面权限
+        $authpage=M('Admin')->getFieldByAdminId($admin['admin_id'],'authpage');
+        $authpage=json_decode($authpage,true);
+        $this->assign('authpage',$authpage);
+        $this->assign(array('list' => $result['list'], 'total' => $result['total'], 'pageCurrent' => $page));
+        $this->display('Project/workflowlog');
+    }
+
+    //详情细化
+    public  function detailMore(){
+        $wf_id=I('get.wf_id');
+        //获取子流程被执行的详细信息
+        $list=D('Project')->WorkflowLogInfo('wf_id = '.$wf_id);
+
+        array_walk($list ,function(&$v,$k){
+            if(empty($v['pro_author'])) $v['real_name']=M('Admin')->getFieldByRoleId($v['pro_role'],'real_name');
+        });
+        foreach($list as $k=>$v){
+            if($v['pro_level']!==null){
+                //判断是否是新建的子流程
+                if(strpos($v['pro_level'],'_')===false){
+                    $list[$k]['content']=$v['real_name'].'&nbsp;&nbsp;新建了&nbsp;&nbsp;【'.C('proLevel')[$v['pro_level']].'】子流程';
+                }else{
+                    $list[$k]['content']=$v['real_name']."&nbsp;&nbsp;".
+                        ($v['pro_state']==2?'通过':($v['pro_state']==3?'驳回':($v['pro_state']==0?'待操作':'')))."&nbsp;&nbsp;【".
+                        C('proLevel')[$v['pro_level']].'】';
+                }
+            }
+        }
+        $this->assign('list',$list);
+        $this->display();
     }
 }

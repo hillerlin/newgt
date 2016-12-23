@@ -798,6 +798,55 @@ function createFolder($proId)
     }
     return $return;
 }
+//上传文件夹或者下载文件夹改变状态
+/*****
+ * @param $wfId
+ * @param $proLevel
+ * @param $proTimes
+ * @param $admin
+ * @param $proIid
+ * @param int $proRoleId
+ * @param int $proAdminId
+ * @param $plId
+ * @param int $isUpload //0是下载 1是上传
+ * @param $isUploadEnd //下载或者上传是否就结束项目 0是结束 1是继续流程
+ * @param null $specialMessage
+ * @param null $specialType
+ */
+function uploadUpdataWorkFlowState($wfId,$proLevel,$proTimes,$admin,$proIid,$plId,$isUpload=0,$isUploadEnd=0,$specialMessage=null,$specialType=null)
+{
+    $explodeLevel=explode('_',$proLevel);//拼接审批轮次
+    if(!$explodeLevel[1])
+    {
+        $newLevel=$explodeLevel[0].'_1';
+    }
+    else
+    {
+        $modify=$explodeLevel[1]+1;
+        $newLevel=$explodeLevel[0].'_'.$modify;
+    }
+    //更新原数据状态
+    $wfModel=D('WorkflowLog');
+    $pjModel=D('PjWorkflow');
+    $result=true;
+    if($isUploadEnd==0)//下载或者上传就结束
+    {
+        $updataOldPj=$pjModel->data(array('pro_level_now'=>$newLevel))->where("`wf_id`=%d",array($wfId))->save();
+        $workFlowLog = D('WorkflowLog')->data(array(
+            'sp_id' => '', 'pj_id' => $proIid, 'pro_level' => $newLevel, 'pro_times' => $proTimes, 'pro_state' => 2, 'pro_addtime' => time(),'pro_role'=>'','pro_author'=>'',
+            'wf_id' => $wfId, 'pro_xml_id' => ''
+        ))->add();
+        $result=$result && $updataOldPj && $workFlowLog;
+    }
+    $updataOldWf=$wfModel->data(array('pro_state'=>'2','pro_last_edit_time'=>time()))->where("`pl_id`=%d",array($plId))->save();
+     $result=$result && $updataOldWf;
+    $noticeType=isset($specialType)?$specialType:$proLevel;
+    $isUpload==0?$action='下载':$action='上传';
+    $specialMessage=$contents= $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>'.$action.'项目<code>' . projectNameFromId($proIid) . '</code>资料';
+    $redisPost = redisCollect($noticeType,$admin['admin_id'],$receive='',time(),$proIid,$specialMessage,$specialType) && $result;
+    return $redisPost;
+
+}
 
 
 

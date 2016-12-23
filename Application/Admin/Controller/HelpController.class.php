@@ -25,10 +25,11 @@ class HelpController extends CommonController
 
     public function uploadDocument()
     {
-        unset($_GET['_']);
+/*        unset($_GET['_']);
         $key = end(array_keys(I('get.')));
         $this->assign('k', $key);
-        $this->assign('v', I('get.' . $key));
+        $this->assign('v', I('get.' . $key));*/
+        $this->assign($_GET);
         $this->display('upload_3');
     }
 
@@ -90,15 +91,19 @@ class HelpController extends CommonController
     public function upDocument()
     {
         //获取要操作的id值
-        $pro_id = I('get.pro_id');
+        $plId = I('post.plId');
+        $wfId = I('post.wfId');
+        $proLevel = I('post.proLevel');//当前审批级别
+        $proTimes = I('post.proTimes');//当前审批轮次
+        $pro_id = I('post.pro_id');
         if (empty($pro_id)) {
             $this->error('非法操作');
         }
         //获取管理员的相关信息
         $admin = session('admin');
-        if (!$this->checkAuthUpload($pro_id, $admin['role_id'], $admin['admin_id'])) {
+/*        if (!$this->checkAuthUpload($pro_id, $admin['role_id'], $admin['admin_id'])) {
             $this->error('本阶段您没有上传权限');
-        }
+        }*/
         //将操作对象的ID值存入到session中
         session('pro_id', $pro_id);
         //切割路径
@@ -140,18 +145,25 @@ class HelpController extends CommonController
         if (!(D('ProjectAttachment')->addAll($save_datas))) {
             $this->json_error('上传失败');
         }
-        $this->success('上传成功');
-        self::log('add', json_encode($save_datas));
-//        var_dump($upload_info);
+        //处理审批流事宜
+        if(in_array($proLevel,C('changeUplodState'))) //要处理的等级做匹配
+        {
+            if($proLevel=='4_3' || $proLevel=='6_2' || $proLevel=='8_2' || $proLevel=='9_2')
+            {
+               $workFlowUpdata= uploadUpdataWorkFlowState($wfId,$proLevel,$proTimes,$admin,$pro_id,$plId,0,0,'',-1);
+            }
+        }
+
+        $this->success('上传成功','','',$pro_id);
     }
 
     public function checkAutho()
     {
         $pro_id = I('post.pro_id');
         $admin = session('admin');
-        if (!$this->checkAuthUpload($pro_id, $admin['role_id'], $admin['admin_id'])) {
+/*        if (!$this->checkAuthUpload($pro_id, $admin['role_id'], $admin['admin_id'])) {
             $this->error('本阶段您没有上传权限');
-        }
+        }*/
         $this->success('可以上传');
     }
 

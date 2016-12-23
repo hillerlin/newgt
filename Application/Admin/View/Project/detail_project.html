@@ -1,0 +1,60 @@
+<style>
+.pm{width: 750px;margin: 0 auto;}
+.pm h2{font-size: 15px;line-height: 30px;margin: 0;font-weight: bold;}
+.pm h3{font-size: 14px;line-height: 30px;margin-top: 10px;}
+.pm ul{clear:both;overflow: hidden;padding:24px 0;}
+.pm ul li{float: left;width: auto;margin: 0 40px 0 0;position: relative; }
+.pm ul li:first-child{width: 60px;}
+.pm ul li .person{display: block;text-align: center;margin-top: -10px;}
+.pm ul li .person span{font-size: 40px;font-weight: 100;line-height: 34px;}
+.pm ul li .person span.footer{font-size: 41px;line-height: 16px;}
+.pm ul li span.deal{display: block;text-align: center;line-height: 22px;font-size: 13px;padding: 6px 12px;border: 1px #999 solid;background: #eaeaea;border-radius: 6px;}
+.pm ul li.file{margin-top: -8px;}
+.pm ul li.file .deal{height: 48px;line-height: 60px;border-bottom:0;border-radius: 0;position: relative;z-index: 2;padding:0 5px;}
+.pm ul li.file i{display: block;width: 70px;height: 70px;border: 1px #999 solid;background: #eaeaea;border-radius: 100%;position: absolute;top:-34px;left: 0;z-index: 3;transform:scaleY(0.4);
+    -webkit-transform:scaleY(0.4); 
+    -moz-transform:scaleY(0.4); 
+    -o-transform:scaleY(0.4);}
+.pm ul li.pass .deal{color: #fff;background: #d62c2c;border: 1px #f0f0f0 solid;border-bottom: 0;}
+.pm ul li.file i.bottom{top:13px;z-index: 1;}
+.pm ul li.file.pass i{background: #d62c2c;border: 1px #f0f0f0 solid;}
+.pm ul li span.go{font-size: 32px;line-height: 31px;position: absolute;top: 0;right: -36px;}
+.pm ul li span.start,.process ul li span.go.goon{top: -34px;right: 68px;}
+.pm ul li span.go.goon2{top: -58px;}
+.pm ul li span.tab{top: 54px;right: 68px;}
+.pm ul li span.gonext{top:0;right: 150px;}
+.pm ul li span.go span{width: 32px;position: absolute;top:-6px;left: 0;}
+.fontred{ color:red; }
+</style>
+<div class="bjui-pageContent">
+    <div class="pm">
+        <h2>项目管理流程</h2>
+        <php>$i=1; foreach($list as $k => $wk):</php>
+        <h3>{$i}、{$wk['name']}</h3>
+        <ul class="process">
+            <li  class="<php> echo (strpos($wk['current'],'_')===false) ? 'fontred':'';</php>" >
+                <span class="person"><span class="mbody">♀</span><br /><span class="footer">∧</span></span><span class="go">→</span>
+            </li>
+            <foreach name="wk['sub']" item="subv">
+                <if condition="$subv neq end($wk['sub'])">
+                    <li class="<php> echo ($key==$wk['current'])?'pass':''; </php>">
+                        <span class="deal">{$subv}</span><span class="go">→</span>
+                    </li>
+                <else/>
+                    <li class="file <php> echo ($key==$wk['current'])?'pass':''; </php>">
+                        <span class="deal">{$subv}</span><i></i><i class="bottom"></i>
+                    </li>
+                </if>
+            </foreach>
+        </ul>
+        <php>$i++; endforeach;</php>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        $('.pm ul li.file .deal').map(function(){
+            var iwidth=$(this).css('width');
+            $(this).siblings('i').css('width',iwidth)
+        });
+    });
+</script>

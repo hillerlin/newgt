@@ -26,7 +26,8 @@ class ProjectFileModel extends BaseModel {
             $data['file_id'] = $val['file_id'];
             $data['pro_id'] = $pro_id;
             $data['pid'] = $val['pid'];
-            $data['file_name'] = $key;
+            $file_name = explode('_', $key);
+            $data['file_name'] = $file_name[0];
             $save_data[] = $data;
         }
         return $this->addAll($save_data);

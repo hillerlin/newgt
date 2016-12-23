@@ -29,12 +29,13 @@ $(document).ready(function() {
         
         e.preventDefault();
         checkAutho();
-//        doUpload();
+       // doUpload();
     })
 });
 
 function checkAutho() {
-    var pro_id = $("#pro_id").val();
+    var pro_id = $("input[name='pro_id']").val();
+    //debugger
     var url = $("#upload-form").attr('action');
     var xhr = $.ajax({
         url: "/Admin/Help/checkAutho",
@@ -45,9 +46,9 @@ function checkAutho() {
         data: {"pro_id":pro_id},
         dataType: 'json',
         success: function(data) {
-//            debugger
+            //debugger
             if (data.status == 0) {
-                alert(data.info);
+                // alert(data.info);
             }
             else {
                 doUpload();
@@ -112,7 +113,6 @@ function doUpload() {
         success: function(data) {
             $progressBar.css({"width": "100%"});
             $progressBar.text("100%");
-//            debugger
             // How'd it go?
             if (data.status == 0) {
                 // Uh-oh.
@@ -124,7 +124,12 @@ function doUpload() {
                 // Ok! Get the UUID.
 //                var uuid = data.msg;
 //                window.location = NEXT_URL + uuid;
-                alert(data.info);
+               // alert(data.info);
+                $(".dialogShadow").remove();
+                $(".bjui-dialogBackground").remove();
+                $(event.target).navtab({id: "project-workflowlog", url: "/Admin/Project/workflowlog", title: "流程监控", fresh: "", external: ""})
+                $(this).dialog({id:'mydialogasasa', url:'/Admin/Project/detail/dataId/'+data.proId, title:'流程监控',width:1000,height:800});
+
             }
         },
     });

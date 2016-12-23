@@ -41,23 +41,35 @@ class FileTree {
         if (empty($this->dirs)) {
             $pid = 0;
         }
-//        $basename = basename($path);
-//        var_dump($basename);
+        //文件路径分组
         $path_arr = explode('/', $path);
-//        var_dump($path_arr);
 //        $path_parts  =  pathinfo ( $path );
+        //推出数组最后，也就是文件名
         $basename = array_pop($path_arr);
+        $i = 0;
         foreach($path_arr as $val) {
+            $key = $i++;
+            $flag = false;
+            //如果文件名已经存在了，返回文件id
             if (array_key_exists($val, $this->dirs)) {
-                $pid = $this->dirs[$val]['file_id'];
-                $current_file_id = $pid;
-                continue;
+                $flag = true;
+                //判断是上层文件夹是否一样，不一样需要重建
+                //拿到数组的前一个
+                $mode = isset($path_arr[$key - 1]) ? $path_arr[$key - 1] : false;
+                if ($mode == false || $this->dirs[$mode]['file_id'] == $this->dirs[$val]['pid']) {
+                    $flag = false;
+                    $pid = $this->dirs[$val]['file_id'];
+                    $current_file_id = $pid;
+                    continue;
+                }
             }
-//            var_dump($basename);
-//            var_dump($val);
             if ($basename == $val) {
                 self::$files[$val] = array('file_id' => $file_id);
             } else {
+                if ($flag) {
+                    $this_pid = $this->dirs[$mode]['file_id'];
+                    $val = $val . '_' . $this_pid;
+                }
                 $this->dirs[$val] = array('file_id' => $file_id + 1, 'pid' => $pid);
                 $pid = $file_id + 1;
                 $file_id++;

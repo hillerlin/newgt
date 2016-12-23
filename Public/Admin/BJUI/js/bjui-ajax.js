@@ -233,7 +233,7 @@
     
     Bjuiajax.prototype.dialogCallback = function(json) {
         var that = this
-        debugger
+       // debugger
         if (json.tabid)
             setTimeout(function() { that.$element.navtab('reloadFlag', json.tabid) }, 100)
         if (json.dialogid)

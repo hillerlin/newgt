@@ -37,7 +37,7 @@ fieldset{border-color:#c3ced5;}
 .table > thead > tr > th.orderby a.order:hover{color:#fff!important; background:#16669e;}
 .table > tbody > tr.selected > td{background-color:#d9e7f2;}
 /* Main */
-#bjui-header{background:#c3ced5 url(topbg.png); border-bottom:2px #11629A solid;}
+#bjui-header{background:#c3ced5 url(topbg.png);}
 #bjui-header > .bjui-navbar-header > .bjui-navbar-toggle:focus,
 #bjui-header > .bjui-navbar-header > .bjui-navbar-toggle:hover{background:#16669e;}
 #bjui-header > #bjui-navbar-collapse > .bjui-navbar-right > li{border-right:1px #89b7dd solid;}

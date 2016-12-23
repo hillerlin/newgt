@@ -58,9 +58,15 @@
 <body id="holder">
 <h1>资料包上传</h1>
 <hr>
-<form id="upload-form" action="/admin/help/<?php if($k=='pro_id'){echo 'upDocument';}elseif($k=='fund_id'){echo 'upFundDocument';}?>?{$k}={$v}" method="POST" enctype="multipart/form-data">
-    <input type="hidden" id="{$k}" value="{$v}">
-    <input type="hidden" name="{$k}" value="{$v}">
+<form id="upload-form" action="/admin/help/upDocument/" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="pro_id" value="{$pro_id}">
+    <input type="hidden"  name="plId" value="{$plId}">
+    <input type="hidden"  name="wfId" value="{$wfId}">
+    <input type="hidden"  name="xmlId" value="{$xmlId}">
+    <input type="hidden"  name="spId" value="{$spId}">
+    <input type="hidden"  name="proLevel" value="{$proLevel}">
+    <input type="hidden"  name="proTimes" value="{$proTimes}">
+    <input type="hidden"  name="proState" value="{$proState}">
     <a href="javascript:;" class="a-upload">
         <input id="file-picker" type="file" name="file"  onchange="inputfile(this)" multiple webkitdirectory>
         <span>请先点击这里上传文件</span>

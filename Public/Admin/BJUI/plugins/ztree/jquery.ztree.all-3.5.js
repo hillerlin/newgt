@@ -747,6 +747,7 @@
 	tools = {
 		apply: function(fun, param, defaultValue) {
 			if ((typeof fun) == "function") {
+				//debugger
 				return fun.apply(zt, param?param:[]);
 			}
 			return defaultValue;
@@ -1753,6 +1754,7 @@
 	_initCache = function(treeId) {},
 	//default bind event of excheck
 	_bindEvent = function(setting) {
+		//debugger
 		var o = setting.treeObj,
 		c = consts.event;
 		o.bind(c.CHECK, function (event, srcEvent, treeId, node) {

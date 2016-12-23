@@ -77,6 +77,7 @@
                 return Dialog.DEFAULTS
             },
             init: function($dialog) {
+                //debugger
                 var width  = that.options.width > that.options.minW ? that.options.width : that.options.minW
                 var height = that.options.height > that.options.minH ? that.options.height : that.options.minH
                 var wW     = $(window).width(),
@@ -94,7 +95,7 @@
                     .css({left:(wW - width) / 2, top:0, opacity:0.1})
                     .animate({top:iTop > 0 ? iTop : 0, opacity:1})
                     .addClass(shadow)
-                    .find('> .dialogContent').height(height - $('> .dialogHeader', $dialog).outerHeight() - 6)
+                    .find('> .dialogContent').height(height - $('> .dialogHeader', $dialog).outerHeight() - 20)
                 
                 $('body').find('> .bjui-dialog-container').not($dialog).removeClass(shadow)
             },
@@ -301,9 +302,9 @@
     //特殊局部刷新并有弹出框效果
     Dialog.prototype.layoutlow = function(option, initOptionFlag) {
 
-        //var that    = this
-        //var options = $.extend({}, typeof option == 'object' && option)
-       // var $dialog = (options.id && $('body').data(options.id)) || that.getCurrent()
+        var that    = this
+        var options = $.extend({}, typeof option == 'object' && option)
+        var $dialog = (options.id && $('body').data(options.id)) || that.getCurrent()
         //debugger
         $(event.target).navtab({id: option.tabName, url: option.url, title: option.tabTitle, fresh: '', external: ''})
 
@@ -316,11 +317,12 @@
         if ($dialog && $dialog.length) {
             var initOptions = $dialog.data('initOptions'), op = $.extend({}, initOptions, options)
             var _reload = function() {
+
                 var $dialogContent = $dialog.find('> .dialogContent')
                 
                 if (initOptions.width != op.width) {
                     if (!op.max) {
-                        $dialog.animate({ width:op.width}, 'normal', function() { $dialogContent.width(op.width) })
+                        $dialog.animate({ width:op.width}, 'normal', function() { $dialogContent.width(op.width-12) }) //-12为了迎合动态赋值大小的需求
                     } else {
                         $dialog.width(op.width)
                         $dialogContent.width(op.width)

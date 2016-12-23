@@ -315,6 +315,7 @@ class ProjectModel extends BaseModel {
         }
         return $adminIdAndName;
     }
+    //获取项目和绑定公司的信息
     public function projectinfo($page = 1, $pageSize = 30, $map = '', $order = ''){
         $total = $this
             ->table($this->trueTableName . ' AS p')
@@ -329,6 +330,31 @@ class ProjectModel extends BaseModel {
             ->order($order)
             ->select();
         return array('total' => $total, 'list' => $list);
+    }
+    //获取项目流程信息以及执行人的信息
+    public function projectWorkflowInfo($map){
+        $result=M('PjWorkflow')->alias('w')
+            ->field('w.wf_id, w.pj_id, w.pro_level_now,wl.pro_role ,wl.pro_author, wl.pro_addtime, GROUP_CONCAT(a.real_name) as name')
+            ->join('LEFT JOIN __WORKFLOW_LOG__ AS wl ON  w.wf_id= wl.wf_id and w.pro_level_now=wl.pro_level')
+            ->join('LEFT JOIN __ADMIN__ AS a ON a.admin_id=wl.pro_author or wl.pro_role=a.role_id')
+            ->where($map)
+            ->group('w.pro_level_now')
+            ->select();
+        return $result;
+    }
+    //获取项目流程被执行的日志信息
+    public function WorkflowLogInfo($map){
+        $result=M('WorkflowLog')->alias('wl')
+            ->field('wl.pj_id,wl.pro_level,wl.pro_author, wl.pro_role,wl.pro_view,wl.pro_state,wl.pro_addtime,a.real_name')
+            ->join('LEFT JOIN __ADMIN__ AS a ON a.admin_id=wl.pro_author')
+            ->where($map)
+            ->select();
+        return $result;
+    }
+    //获取执行人信息,姓名，执行时间，执行的步骤
+    public  function executorInfo($map){
+        $result=M('WorkflowLog')->query("select re.* from( SELECT wl.pro_level, wl.wf_id, wl.pro_author, wl.pro_role, wl.pro_addtime, a.real_name FROM gt_workflow_log wl LEFT JOIN gt_admin AS a ON a.admin_id = wl.pro_author WHERE ".$map." ORDER BY wf_id ASC ,pro_addtime DESC ) as re GROUP BY re.pro_level,re.wf_id ");
+        return $result;
     }
 }
 

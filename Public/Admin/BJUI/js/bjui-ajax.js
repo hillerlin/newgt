@@ -180,6 +180,7 @@
         if (that.options.reloadNavtab)
             setTimeout(function() { that.$element.navtab('refresh') }, 100)
         if (json.forward) {
+           // debugger
             var _forward = function() {
                 $target.ajaxUrl({url: json.forward})
             }
@@ -215,10 +216,10 @@
         else if (that.options.reload)
             setTimeout(function() { that.$element.navtab('refresh') }, 100)
         if (json.forward) {
+           // debugger
             var _forward = function() {
                 that.$element.navtab('reload', {url:json.forward})
             }
-            
             if (json.forwardConfirm) {
                 that.$element.alertmsg('confirm', json.forwardConfirm, {
                     okCall: function() { _forward() },
@@ -232,7 +233,7 @@
     
     Bjuiajax.prototype.dialogCallback = function(json) {
         var that = this
-        
+        debugger
         if (json.tabid)
             setTimeout(function() { that.$element.navtab('reloadFlag', json.tabid) }, 100)
         if (json.dialogid)
@@ -245,9 +246,17 @@
             setTimeout(function() { that.$element.dialog('refresh') }, 100)
         if (that.options.reloadNavtab)
             setTimeout(function() { that.$element.navtab('refresh') }, 100)
-        if (json.forward) {
+        if (json.forward && !json.special) {
             var _forward = function() {
-                that.$element.dialog('reload', {url:json.forward})
+                if(json.width)
+                {
+                    //自定义宽高
+                    that.$element.dialog('reload', {url:json.forward,width:json.width,height:json.height})
+                }else
+                {
+                    that.$element.dialog('reload', {url:json.forward})
+                }
+
             }
             
             if (json.forwardConfirm) {
@@ -257,6 +266,15 @@
             } else {
                 _forward()
             }
+        }else if(json.special==1 && json.forward)
+        {
+            that.$element.dialog('closeCurrent')
+            that.$element.dialog('layout', {url:json.forward,tabName:json.tabName,tabTitle:json.tabTitle})
+        }else if(json.special==2 && json.forward)
+        {
+           // that.$element.dialog('closeCurrent')
+            that.$element.dialog('reload', {url:json.forward,width:json.width,height:json.height})
+            that.$element.dialog('layoutlow', {url:json.layoutUrl,tabName:json.tabName,tabTitle:json.tabTitle})
         }
     }
     

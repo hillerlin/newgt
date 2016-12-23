@@ -43,8 +43,8 @@
     
     Slidebar.prototype.lock = function() {
         var that   = this
-        var cleft  = that.$bar.outerWidth() + 4
-        var cwidth = BJUI.windowWidth - $('#bjui-sidebar').width() - 6
+        var cleft  = that.$bar.outerWidth()-1
+        var cwidth = BJUI.windowWidth - $('#bjui-sidebar').width() - 1
         
         that.faLock()
         that.hoverLock()

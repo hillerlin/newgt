@@ -163,6 +163,7 @@
     
     /* Lateral Navigation */
     $(document).one(BJUI.eventType.afterInitUI, function(e) {
+        //debugger
         var $hnavbar = $('#bjui-hnav-navbar'), $active = $hnavbar.find('> li.active')
         
         if ($active.length && $active.find('> .items').length) {

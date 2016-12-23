@@ -39,6 +39,7 @@
     // DIALOG CLASS DEFINITION
     // ======================
     var Dialog = function(element, options) {
+
         this.$element = $(element)
         this.options  = options
         this.tools    = this.TOOLS()
@@ -53,8 +54,8 @@
         loadingmask : true,
         width       : 500,
         height      : 300,
-        minW        : 65,
-        minH        : 40,
+        minW        : 100,
+        minH        : 80,
         max         : false,
         mask        : false,
         resizable   : true,
@@ -84,7 +85,8 @@
                 
                 if (width > wW)  width  = wW
                 if (height > wH) height = wH
-                
+
+
                 $dialog
                     .height(height)
                     .width(width)
@@ -113,21 +115,17 @@
                     })
                 } else if (options.target) {
                     var html = $(options.target).html() || $dialog.data('bjui.dialog.target')
-                    
                     $(options.target).empty()
                     $dialog.data('bjui.dialog.target', html)
                     $dialogContent.trigger(BJUI.eventType.beforeAjaxLoad).html(html).initui()
-                    
                     if (onLoad) onLoad.apply(that, [$dialog])
                 }
             },
             resizeContent:function($dialog, width, height) {
                 var $dialogContent = $dialog.find('> .dialogContent')
-                
                 $dialogContent
                     .css({width:(width - 12), height:(height - $dialog.find('> .dialogHeader').outerHeight() - 6)})
                     .resizePageH()
-                
                 $(window).trigger(BJUI.eventType.resizeGrid)
             }
         }
@@ -287,11 +285,34 @@
         }
     }
     
-    Dialog.prototype.reload = function(option, initOptionFlag) {
+    //特殊局部刷新效果
+    Dialog.prototype.layout = function(option, initOptionFlag) {
+
         var that    = this
         var options = $.extend({}, typeof option == 'object' && option)
         var $dialog = (options.id && $('body').data(options.id)) || that.getCurrent()
-        
+        //debugger
+        $(event.target).navtab({id: option.tabName, url: option.url, title: option.tabTitle, fresh: '', external: ''})
+       // this.$element.bjuiajax('doLoad', {url:option.url, target:'#layout-1'})
+        //$('#layout-1').addClass('navtabPage unitBox fade in').removeClass('bjui-pageContent bjui-layout');
+        /*$('.navtab-tab li.active').find('a').attr('title','我的项目').children('span').text('我的项目');
+        $('.level1').removeClass('curSelectedNode').find('#bjui-hnav-tree0_12_a').addClass('curSelectedNode');*/
+    }
+    //特殊局部刷新并有弹出框效果
+    Dialog.prototype.layoutlow = function(option, initOptionFlag) {
+
+        //var that    = this
+        //var options = $.extend({}, typeof option == 'object' && option)
+       // var $dialog = (options.id && $('body').data(options.id)) || that.getCurrent()
+        //debugger
+        $(event.target).navtab({id: option.tabName, url: option.url, title: option.tabTitle, fresh: '', external: ''})
+
+    }
+    Dialog.prototype.reload = function(option, initOptionFlag) {
+        //debugger
+        var that    = this
+        var options = $.extend({}, typeof option == 'object' && option)
+        var $dialog = (options.id && $('body').data(options.id)) || that.getCurrent()
         if ($dialog && $dialog.length) {
             var initOptions = $dialog.data('initOptions'), op = $.extend({}, initOptions, options)
             var _reload = function() {

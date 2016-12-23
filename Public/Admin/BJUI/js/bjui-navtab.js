@@ -42,13 +42,14 @@
             $moreBtn.click(function() { $moreBox.show() })
             
             $(document).on('click.bjui.navtab.switchtab', function(e) {
+               // debugger
                 var $target = e.target.tagName == 'I' ? $(e.target).parent() : $(e.target)
                 
-                if ($moreBtn[0] != $target[0]) $moreBox.hide()
+                if ($moreBtn[0] != $target[0])
+                    $moreBox.hide()
             })
             
             var mainTit, options
-            
             $main
                 .navtab('contextmenu', $main)
                 .click(function() { $(this).navtab('switchTab', 'main') })
@@ -375,8 +376,14 @@
     
     // if found tabid replace tab, else create a new tab.
     Navtab.prototype.openTab = function() {
+        //debugger
         var that = this, $element = this.$element, options = this.options, tools = this.tools
-        
+        if(options.id)//如果有相同的id  则关闭其窗口另外刷新
+        {
+            var index = this.tools.indexTabId(options.id)
+            if (index > 0)
+                this.tools.closeTab(index)
+        }
         if (!options.url && options.href) options.url = options.href
         if (!options.url) {
             BJUI.debug('Navtab Plugin: Error trying to open a navtab, url is undefined!')
@@ -399,7 +406,8 @@
             options.id = 'navtab'
             iOpenIndex = -1
         }
-        
+        //赋值让其强制刷新
+        iOpenIndex = -1
         if (iOpenIndex >= 0) {
             if (!options.id) delete options.id
             
@@ -414,6 +422,7 @@
             
             currentIndex = iOpenIndex
         } else {
+
             var tabFrag = '<li><a href="javascript:" title="#title#"><span>#title#</span></a><span class="close">&times;</span></li>'
             var $tab = $(tabFrag.replaceAll('#title#', options.title))
             var $panel = $('<div class="navtabPage unitBox"></div>')
@@ -422,7 +431,7 @@
             $tab.appendTo($tabs)
             $panel.appendTo($panels)
             $more.appendTo($moreBox)
-            
+
             $tab.data('options', options).data('initOptions', options)
             
             if (options.external || (options.url && options.url.isExternalUrl())) {
@@ -432,12 +441,14 @@
                 $tab.removeClass('external')
                 tools.reloadTab($panel, options)
             }
-            
+            $tab.removeClass('external')
+            tools.reloadTab($panel, options)
             currentIndex = tools.getTabs().length - 1
             this.contextmenu($tab)
             
             //events
             $tab.on('click', function(e) {
+
                 var $target = $(e.target)
                 
                 if ($target.hasClass('close'))
@@ -457,6 +468,7 @@
     }
     
     Navtab.prototype.closeTab = function(tabid) {
+
         var index = this.tools.indexTabId(tabid)
         
         if (index > 0)
@@ -601,15 +613,21 @@
     // =======================
     
     function Plugin(option) {
+        //debugger
         var args     = arguments
         var property = option
         
         return this.each(function () {
+            //debugger
+            var data= ''
+
             var $this   = $(this)
+            $this.data=function (){}
             var options = $.extend({}, Navtab.DEFAULTS, typeof option == 'object' && option)
-            var data    = $this.data('bjui.navtab')
+            data    = $this.data('bjui.navtab')
             
-            if (!data) $this.data('bjui.navtab', (data = new Navtab(this, options)))
+            //if (!data)
+                $this.data('bjui.navtab', (data = new Navtab(this, options)))
             
             if (typeof property == 'string' && $.isFunction(data[property])) {
                 [].shift.apply(args)

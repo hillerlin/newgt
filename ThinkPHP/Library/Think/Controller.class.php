@@ -195,8 +195,8 @@ abstract class Controller {
      * @param mixed $ajax 是否为Ajax方式 当数字时指定跳转时间
      * @return void
      */
-    protected function success($message='',$jumpUrl='',$ajax=false) {
-        $this->dispatchJump($message,1,$jumpUrl,$ajax);
+    protected function success($message='',$jumpUrl='',$ajax=false,$proId='') {
+        $this->dispatchJump($message,1,$jumpUrl,$ajax,$proId);
     }
 
     /**
@@ -258,12 +258,13 @@ abstract class Controller {
      * @access private
      * @return void
      */
-    private function dispatchJump($message,$status=1,$jumpUrl='',$ajax=false) {
+    private function dispatchJump($message,$status=1,$jumpUrl='',$ajax=false,$proId='') {
         if(true === $ajax || IS_AJAX) {// AJAX提交
             $data           =   is_array($ajax)?$ajax:array();
             $data['info']   =   $message;
             $data['status'] =   $status;
             $data['url']    =   $jumpUrl;
+            $data['proId']    =   $proId;
             $this->ajaxReturn($data);
         }
         if(is_int($ajax)) $this->assign('waitSecond',$ajax);

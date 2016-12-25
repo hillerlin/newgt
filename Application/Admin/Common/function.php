@@ -829,7 +829,7 @@ function uploadUpdataWorkFlowState($wfId,$proLevel,$proTimes,$admin,$proIid,$plI
     $wfModel=D('WorkflowLog');
     $pjModel=D('PjWorkflow');
     $result=true;
-    if($isUploadEnd==0)//下载或者上传就结束
+    if($isUploadEnd==0 && $isUpload==0)//下载或者上传就结束
     {
         $updataOldPj=$pjModel->data(array('pro_level_now'=>$newLevel))->where("`wf_id`=%d",array($wfId))->save();
         $workFlowLog = D('WorkflowLog')->data(array(
@@ -837,9 +837,32 @@ function uploadUpdataWorkFlowState($wfId,$proLevel,$proTimes,$admin,$proIid,$plI
             'wf_id' => $wfId, 'pro_xml_id' => ''
         ))->add();
         $result=$result && $updataOldPj && $workFlowLog;
+    }elseif ($isUploadEnd==1 && $isUpload==0)
+    {
+        $updataOldWf=$wfModel->data(array('pro_state'=>'2','pro_last_edit_time'=>time()))->where("`pl_id`=%d",array($plId))->save();
+        $result=$result && $updataOldWf;
     }
-    $updataOldWf=$wfModel->data(array('pro_state'=>'2','pro_last_edit_time'=>time()))->where("`pl_id`=%d",array($plId))->save();
-     $result=$result && $updataOldWf;
+    elseif ($isUploadEnd==0 && $isUpload==1)//下载完成就结束
+    {
+        $oldPjInfo=$wfModel->where("`pj_id`=%d and `pro_level`=%s",array($proIid,$proLevel))->find();
+        if($oldPjInfo)
+        //如果已经更新过就不需要新添加，而是改变自身的状态就好
+        {
+            $updataOldWf=$wfModel->data(array('pro_state'=>'2','pro_last_edit_time'=>time()))->where("`pl_id`=%d",array($plId))->save();
+            $result=$result && $updataOldWf;
+        }else
+        {
+            $updataOldPj=$pjModel->data(array('pro_level_now'=>$newLevel))->where("`wf_id`=%d",array($wfId))->save();
+            $workFlowLog = D('WorkflowLog')->data(array(
+                'sp_id' => '', 'pj_id' => $proIid, 'pro_level' => $newLevel, 'pro_times' => $proTimes, 'pro_state' => 2, 'pro_addtime' => time(),'pro_role'=>'','pro_author'=>'',
+                'wf_id' => $wfId, 'pro_xml_id' => ''
+            ))->add();
+            $result=$result && $updataOldPj && $workFlowLog;
+        }
+
+    }
+
+
     $noticeType=isset($specialType)?$specialType:$proLevel;
     $isUpload==0?$action='下载':$action='上传';
     $specialMessage=$contents= $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>'.$action.'项目<code>' . projectNameFromId($proIid) . '</code>资料';

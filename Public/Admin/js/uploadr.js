@@ -125,10 +125,12 @@ function doUpload() {
 //                var uuid = data.msg;
 //                window.location = NEXT_URL + uuid;
                // alert(data.info);
-                $(".dialogShadow").remove();
-                $(".bjui-dialogBackground").remove();
+                //$(".dialogShadow").remove();
+                //$(".bjui-dialogBackground").remove();
+               // $(".bjui-dialog-wrap").remove();
                 $(event.target).navtab({id: "project-workflowlog", url: "/Admin/Project/workflowlog", title: "流程监控", fresh: "", external: ""})
                 $(this).dialog({id:'mydialogasasa', url:'/Admin/Project/detail/dataId/'+data.proId, title:'流程监控',width:1000,height:800});
+
 
             }
         },

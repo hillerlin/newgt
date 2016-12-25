@@ -1418,8 +1418,14 @@ class ProjectController extends CommonController
     public function detail()
     {
         $admin = session('admin');
-
-        $proWorkflow=D('Project')->projectWorkflowInfo('w.pj_id = '.I('get.dataId'));
+        if(I('get.plId'))//如果是立项会查看知情就改变状态
+        {
+            $updateOldPj=D('workflowLog')->data(array('pro_state'=>2))->where("`pl_id`=%d",array(I('get.plId')))->save();
+           // if($updateOldPj)
+            //$this->json_success('项目详情', '/Admin/Project/detail/dataId/'.I('get.pro_id'), '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
+        }
+        I('get.dataId')?$dataId=I('get.dataId'):$dataId=I('get.pro_id');
+        $proWorkflow=D('Project')->projectWorkflowInfo('w.pj_id = '.$dataId);
         //取出这个项目的所有子流程
         $workflowInfos=array_column($proWorkflow,'pro_level_now');
         foreach ($workflowInfos as $key => $item) {
@@ -1461,6 +1467,7 @@ class ProjectController extends CommonController
         //项目标题
         $pro_title=M('Project')->getFieldByProId($pj_id,'pro_title');
         $this->assign(array('list'=>$result,'pro_id'=>$pj_id,'title'=>$pro_title,'executor'=>$executor));
+        //$this->assign($_GET);
         $this->display();
     }
     /**

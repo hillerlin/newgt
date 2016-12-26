@@ -1,0 +1,55 @@
+<div style="float:left;width:50%;">
+    <div class="panel panel-default" style="margin:10px;">
+        <div class="panel-heading"><h3 class="panel-title">待办事项：<span class="pull-right">共<?php echo $backLogCount?>项待办</span></h3></div>
+        <div class="panel-body bjui-doc" style="padding:0; min-height: 400px">
+            <ul>
+                <?php foreach($backlog as $list) {?>
+                <li><a href="<?php echo U('Project/MyAudit',array('pro_id'=>$list['proId'],'authorType'=>$list['authorType'] ,'m'=>'delredis'))?>" data-toggle="navtab" data-id="<?php echo strtolower($list['controller']) .'-'. $list['action']?>" data-title="<?php echo $list['title']?>" style="font-size: 14px;"><?php echo $list['contents']?></a>
+                    <span style="float:right;"><?php echo date('Y-m-d H:i:s', $list['time'])?></span>
+                    <span ><empty name="wFMessage['in']"><font style="color:red;">【未读】</font><else/><font style="color:green;">【已读】</font></empty></span>
+                </li>
+                <?php }?>
+            </ul>
+        </div>
+    </div>
+    <?php if($admin['dp_id'] == 1) {?>
+    <?php }?>
+</div>
+<div style="float:right;width:50%;">
+    <div class="panel panel-default" style="margin:10px;">
+        <div class="panel-heading"><h3 class="panel-title">消息提醒</h3></div>
+        <div class="panel-body bjui-doc" style="padding:0; min-height:400px">
+
+            <fieldset style="padding:10px;">
+                <h5>项目立项</h5>
+                <ul>
+                    <?php foreach( $workFlowMessage as $wFMessage):?>
+                    <a class="<?php echo $wFMessage['in']==0?'':'read';?>" data-expand-all="true" onclick="do_open_layout('project-workflowlog','/Admin/Project/workflowlog?pro_id={$wFMessage[proId]}&time={$wFMessage[time]}&type={$wFMessage[Type]}&m=1','流程监控')" >
+                        {$wFMessage["contents"]}<span style="float:right;"><?php echo date('Y-m-d H:i:s',$wFMessage['time'])?></span>
+                        <span ><empty name="wFMessage['in']"><font style="color:red;">【未读】</font><else/><font style="color:green;">【已读】</font></empty></span>
+                    </a><br/>
+                    <?php endforeach;?>
+                </ul>
+                <php>if(count($workFlowMessage)>=5):</php>
+                <a href="{:U('/admin/Index/ajaxMessageMore',array('type'=>'workFlowMessage'))}"  style="float: right;" data-toggle="dialog" data-width="800" data-height="400" data-id="dialog-ajaxMessage" data-title="项目立项">更多.....</a>
+                <php>endif;</php>
+            </fieldset>
+           <!-- <fieldset style="padding:10px;">
+                <h5>合同签约</h5>
+                <ul>
+                    <li>合同签约消息<span style="float:right;">2016-11-30 19:28:47</span></li>
+                    <li>合同签约消息<span style="float:right;">2016-11-30 19:28:47</span></li>
+                    <li>合同签约消息<span style="float:right;">2016-11-30 19:28:47</span></li>
+                </ul>
+            </fieldset>
+            <fieldset style="padding:10px;">
+                <h5>放款</h5>
+                <ul>
+                    <li>放款消息<span style="float:right;">2016-11-30 19:28:47</span></li>
+                    <li>放款消息<span style="float:right;">2016-11-30 19:28:47</span></li>
+                    <li>放款消息<span style="float:right;">2016-11-30 19:28:47</span></li>
+                </ul>
+            </fieldset>-->
+        </div>
+    </div>
+</div>

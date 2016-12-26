@@ -41,6 +41,11 @@
             <td align="center"><?php echo C('proLevel')[$v['pro_level_now']]?></td>
             <td align="center">
                 <?php foreach($v['authpage'] as $kk=>$vv):?>
+                <?php if($vv=='查看知情' || $vv=='查看流程'):?>
+                <button href="javascript:;" data-id="<?php echo $v['pro_id']?>" data-plid="<?php echo $v['pl_id']?>" data-height="1000" data-width="900" onclick="showWorkflowSubProcess(this)"
+                data-id="project-submit"
+                data-title="<?php echo $vv?>"><?php echo $vv?></button>
+               <?php else:?>
                 <a href="<?php echo U($kk, array('pro_id'=>$v['pro_id'],'plId'=>$v['pl_id'],'wfId'=>$v['wfid'],
                 'xmlId'=>$v['pro_xml_id'],'proLevel'=>$v['pro_level'],'proRebutter'=>$v['pro_rebutter'],'proRebutterLevel'=>$v['pro_rebutter_level'],
                 'proTimes'=>$v['pro_times'],'spId'=>$v['sp_id'],'proState'=>$v['pro_state'])) ?>" class="btn btn-green"
@@ -48,9 +53,10 @@
                    <?php if($vv=='项管部审核'|| $vv=='归档审核'|| $vv=='上传资料' || $vv=='下载资料' || $vv=='查看流程' || $vv=='查看立项会知情')
                    {echo 'data-height=900 data-width=800';}
                    elseif($vv=='提交/编辑')
-                   {echo 'data-height=400 data-width=600';}?>
-                   data-id="project-submit" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？"
+                   {echo 'data-height=600 data-width=500';}?>
+                   data-id="project-submit"
                    data-title="<?php echo $vv?>"><?php echo $vv?></a>
+                <?php endif;?>
                 <?php endforeach;?>
 
             </td>
@@ -80,6 +86,19 @@
         var dataId=$(e).attr('data-id');
         var dataTitle=$(e).attr('data-title');
         $(e).dialog({id:'mydialogasasa', url:'/Admin/Project/detail/dataId/'+dataId, title:dataTitle,width:1000,height:800});
+    }
+    function showWorkflowSubProcess(e){
+        var dataId=$(e).attr('data-id');
+        var dataTitle=$(e).attr('data-title');
+        var plId=$(e).attr('data-plid');
+        $.post('/Admin/Project/ProjectMeetingCheckFile',{'plId':plId,'proId':dataId},function (data) {
+            if(data.status==1)
+            {
+                $(event.target).navtab({id: "project-workflowlog", url: "/Admin/Project/workflowlog", title: "流程监控", fresh: "", external: ""})
+                $(this).dialog({id:'mydialogasasa', url:'/Admin/Project/detail/dataId/'+dataId, title:'流程监控',width:1000,height:800});
+            }
+        })
+
     }
 </script>
 

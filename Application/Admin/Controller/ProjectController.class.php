@@ -389,12 +389,12 @@ class ProjectController extends CommonController
                 break;
             case '6_3':
                 //召开立项会-项管总监审核投票结果通过
-                $allocationId=ProjectSubmitter($spId);//返回上一级提交人的adminId
+                //$allocationId=ProjectSubmitter($spId);//返回上一级提交人的adminId---进过协商后，这里直接结束子流程
                 $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
                 if($auditType==2)
                 {
                     $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的立项会投票结果已进行审核';
-                    $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $allocationId, $xmlId, $plId, 'one',$contents,-1) && $updataProject;
+                    $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one',$contents,-1) && $updataProject;
                 }else{//驳回情况
 
                 }
@@ -429,9 +429,10 @@ class ProjectController extends CommonController
                 {
                     //业务需求审核过后给项管总监宋波继续审核
                     $allocationId=14;
-                    //$pro_subprocess_desc =I('get.pro_subprocess_desc');//子流程备注
+                   // $allocationId=ProjectSubmitter($spId);//返回上一级提交人的adminId
+                    $upateOldAdminId=D('WorkflowLog')->where("`pl_id`=%d",array($plId))->data(array('pro_author'=>$admin['admin_id']))->save();
                     $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
-                    $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, $allocationId, 0, $xmlId, $plId, 'one') && $updataProject;
+                    $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, $allocationId, 0, $xmlId, $plId, 'one') && $updataProject && $upateOldAdminId;
 
                 }/*else
                 {
@@ -443,11 +444,11 @@ class ProjectController extends CommonController
                 if($auditType==2)
                 {
                     //业务需求审核过后给项管总监宋波继续审核
-                    $allocationId=ProjectSubmitter($spId);//返回上一级提交人的adminId
+                   // $allocationId=ProjectSubmitter($spId);//返回上一级提交人的adminId----经过协商不需要返回adminId
                     //$pro_subprocess_desc =I('get.pro_subprocess_desc');//子流程备注
                     $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
                     $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的风控报告进行最终审核';
-                    $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $allocationId, $xmlId, $plId, 'one',$contents,-1) && $updataProject;
+                    $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one',$contents,-1) && $updataProject;
 
                 }/*else
                 {
@@ -499,12 +500,12 @@ class ProjectController extends CommonController
                 break;
             case '8_3':
                 //风控会-项管总监审核投票结果通过
-                $allocationId=ProjectSubmitter($spId);//返回上一级提交人的adminId
+                //$allocationId=ProjectSubmitter($spId);//返回上一级提交人的adminId----经过协商不需要返回adminId
                 $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
                 if($auditType==2)
                 {
                     $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的风控会投票结果已进行审核';
-                    $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $allocationId, $xmlId, $plId, 'one',$contents,-1) && $updataProject;
+                    $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one',$contents,-1) && $updataProject;
                 }else{//驳回情况
 
                 }
@@ -554,12 +555,12 @@ class ProjectController extends CommonController
                 break;
             case '9_3':
                 //投委会-项管总监审核投票结果通过
-                $allocationId=ProjectSubmitter($spId);//返回上一级提交人的adminId
+               // $allocationId=ProjectSubmitter($spId);//返回上一级提交人的adminId----经过协商不需要返回adminId
                 $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
                 if($auditType==2)
                 {
                     $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的投委会投票结果已进行审核';
-                    $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $allocationId, $xmlId, $plId, 'one',$contents,-1) && $updataProject;
+                    $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one',$contents,-1) && $updataProject;
                 }else{//驳回情况
                 }
                 break;
@@ -581,6 +582,18 @@ class ProjectController extends CommonController
 
         $this->assign($_GET);
         $this->display();
+    }
+    //立项会审核6_2风控部查看资料
+    public function ProjectMeetingCheckFile()
+    {
+        $admin=session('admin');
+        if(I('post.plId'))//如果是立项会查看知情就改变状态
+        {
+          //  $updateOldPj=D('workflowLog')->data(array('pro_state'=>2))->where("`pl_id`=%d",array(I('post.plId')))->save();
+            $updateOldPj=uploadUpdataWorkFlowState('','6_2',1,$admin,I('post.proId'),I('post.plId'),2,0,'',-1);
+            if($updateOldPj)
+            $this->success('上传成功');
+        }
     }
     public function proSubAllocationMember2()
     {
@@ -1418,12 +1431,7 @@ class ProjectController extends CommonController
     public function detail()
     {
         $admin = session('admin');
-        if(I('get.plId'))//如果是立项会查看知情就改变状态
-        {
-            $updateOldPj=D('workflowLog')->data(array('pro_state'=>2))->where("`pl_id`=%d",array(I('get.plId')))->save();
-           // if($updateOldPj)
-            //$this->json_success('项目详情', '/Admin/Project/detail/dataId/'.I('get.pro_id'), '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
-        }
+
         I('get.dataId')?$dataId=I('get.dataId'):$dataId=I('get.pro_id');
         $proWorkflow=D('Project')->projectWorkflowInfo('w.pj_id = '.$dataId);
         //取出这个项目的所有子流程
@@ -1509,21 +1517,42 @@ class ProjectController extends CommonController
         $list=D('Project')->WorkflowLogInfo('wf_id = '.$wf_id);
 
         array_walk($list ,function(&$v,$k){
-            if(empty($v['pro_author'])) $v['real_name']=M('Admin')->getFieldByRoleId($v['pro_role'],'real_name');
+            if(empty($v['pro_author'])) $v['real_name']=M('Role')->getFieldByRoleId($v['pro_role'],'role_name');
         });
         foreach($list as $k=>$v){
             if($v['pro_level']!==null){
                 //判断是否是新建的子流程
                 if(strpos($v['pro_level'],'_')===false){
                     $list[$k]['content']=$v['real_name'].'&nbsp;&nbsp;新建了&nbsp;&nbsp;【'.C('proLevel')[$v['pro_level']].'】子流程';
-                }else{
-                    $list[$k]['content']=$v['real_name']."&nbsp;&nbsp;".
-                        ($v['pro_state']==2?'通过':($v['pro_state']==3?'驳回':($v['pro_state']==0?'待操作':'')))."&nbsp;&nbsp;【".
-                        C('proLevel')[$v['pro_level']].'】';
+                } else {
+                        $tmpLevel=$v['pro_level'];
+                        //让其自动在配置文件中取下一个元素，判断其是否为空，例如，当前是7_1 ,那么此时我们需要判断C('pro_Level')[7_3]的值是否存在，不存在就表示是最后一个元素了
+                        if(!empty(C('proLevel')[substr($tmpLevel,0,2).(substr($tmpLevel,strpos($tmpLevel,'_')+1,1)+1)])){
+                            $list[$k]['content']=$v['real_name']."&nbsp;&nbsp;".
+                                ($v['pro_state']==2?'通过':($v['pro_state']==3?'驳回':($v['pro_state']==0?'待操作':'')))."&nbsp;&nbsp;【".
+                                C('proLevel')[$v['pro_level']].'】';
+                        }else{
+                            //最后一个则不显示操作的人名字
+                            $list[$k]['content']="【". C('proLevel')[$v['pro_level']] ."】";
+                        }
+                        $tmpLevel='';
                 }
             }
         }
         $this->assign('list',$list);
+        $this->display();
+    }
+    //备注
+    public  function remark(){
+        if(I('get.pro_id'))
+        $map['pro_id']=array('eq',I('get.pro_id'));
+
+        $list=D('Project')->remark($map);
+        foreach ($list as $key=>$v){
+            if(!empty($v))
+            $result[C('proLevel')[trim(preg_replace('/[^\d]/s', '', $key))]]=$v;
+        }
+        $this->assign('list',$result);
         $this->display();
     }
 }

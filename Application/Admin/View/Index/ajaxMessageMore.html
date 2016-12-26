@@ -1,0 +1,30 @@
+<style>
+    .quicklink ul{clear: both;overflow: hidden;}
+    .quicklink ul li{float: left;width: 120px;line-height: 36px;text-align: center;margin: 20px 15px;background: #d9edf7;border:1px #bce8f1 solid;border-radius: 18px;}
+    .quicklink ul li:hover{background: #C8E1ED;}
+    .quicklink ul li a{display: block;font-size: 15px;color: #31708f;line-height: 36px;}
+    .quicklink ul li a span{font-size: 15px;}
+</style>
+<div class="bjui-pageContent" id="layout-1">
+        <div class="panel panel-default" style="margin:10px;">
+            <div class="panel-body bjui-doc" style="padding:0;">
+                    <ul>
+                        <?php foreach( $message as $wFMessage):?>
+                        <a class="<?php echo $wFMessage['in']==0?'':'read';?>" data-expand-all="true"
+                           onclick="do_open_layout('project-workflowlog','/Admin/Project/workflowlog?pro_id={$wFMessage[proId]}&time={$wFMessage[time]}&type={$wFMessage[Type]}&m=1','流程监控',this)" >
+                            {$wFMessage["contents"]}
+                            <span style="float:right;"><?php echo date('Y-m-d H:i:s',$wFMessage['time'])?></span>
+                            <span ><empty name="wFMessage['in']"><font style="color:red;">【未读】</font><else/><font style="color:green;">【已读】</font></empty></span>
+                        </a>
+                        <br/>
+                        <?php endforeach;?>
+                    </ul>
+            </div>
+        </div>
+</div>
+<script>
+    function do_open_layout(id,url,title,object)
+    {
+        $(event.target).navtab({id: id, url: url, title: title, fresh: "", external: ""});
+    }
+</script>

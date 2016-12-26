@@ -808,7 +808,7 @@ function createFolder($proId)
  * @param int $proRoleId
  * @param int $proAdminId
  * @param $plId
- * @param int $isUpload //0是下载 1是上传
+ * @param int $isUpload //0是下载 1是上传 2是查看
  * @param $isUploadEnd //下载或者上传是否就结束项目 0是结束 1是继续流程
  * @param null $specialMessage
  * @param null $specialType
@@ -832,19 +832,20 @@ function uploadUpdataWorkFlowState($wfId,$proLevel,$proTimes,$admin,$proIid,$plI
     if($isUploadEnd==0 && $isUpload==0)//下载或者上传就结束
     {
         $updataOldPj=$pjModel->data(array('pro_level_now'=>$newLevel))->where("`wf_id`=%d",array($wfId))->save();
+        $updataOldWf=$wfModel->data(array('pro_state'=>'2','pro_last_edit_time'=>time()))->where("`pl_id`=%d",array($plId))->save();
         $workFlowLog = D('WorkflowLog')->data(array(
             'sp_id' => '', 'pj_id' => $proIid, 'pro_level' => $newLevel, 'pro_times' => $proTimes, 'pro_state' => 2, 'pro_addtime' => time(),'pro_role'=>'','pro_author'=>'',
             'wf_id' => $wfId, 'pro_xml_id' => ''
         ))->add();
-        $result=$result && $updataOldPj && $workFlowLog;
+        $result=$result && $updataOldPj && $workFlowLog && $updataOldWf;
     }elseif ($isUploadEnd==1 && $isUpload==0)
     {
         $updataOldWf=$wfModel->data(array('pro_state'=>'2','pro_last_edit_time'=>time()))->where("`pl_id`=%d",array($plId))->save();
         $result=$result && $updataOldWf;
     }
-    elseif ($isUploadEnd==0 && $isUpload==1)//下载完成就结束
+    elseif ($isUploadEnd==0 && $isUpload==1)//上传完成就结束
     {
-        $oldPjInfo=$wfModel->where("`pj_id`=%d and `pro_level`=%s",array($proIid,$proLevel))->find();
+        $oldPjInfo=$wfModel->where("`pj_id`=%d and `pro_level`='%s'",array($proIid,$newLevel))->find();
         if($oldPjInfo)
         //如果已经更新过就不需要新添加，而是改变自身的状态就好
         {
@@ -853,18 +854,23 @@ function uploadUpdataWorkFlowState($wfId,$proLevel,$proTimes,$admin,$proIid,$plI
         }else
         {
             $updataOldPj=$pjModel->data(array('pro_level_now'=>$newLevel))->where("`wf_id`=%d",array($wfId))->save();
+            $updataOldWf=$wfModel->data(array('pro_state'=>'2','pro_last_edit_time'=>time()))->where("`pl_id`=%d",array($plId))->save();
             $workFlowLog = D('WorkflowLog')->data(array(
                 'sp_id' => '', 'pj_id' => $proIid, 'pro_level' => $newLevel, 'pro_times' => $proTimes, 'pro_state' => 2, 'pro_addtime' => time(),'pro_role'=>'','pro_author'=>'',
                 'wf_id' => $wfId, 'pro_xml_id' => ''
             ))->add();
-            $result=$result && $updataOldPj && $workFlowLog;
+            $result=$result && $updataOldPj && $workFlowLog && $updataOldWf;
         }
 
+    }elseif($isUpload==2)
+    {
+        $updataOldPj=$wfModel->data(array('pro_state'=>2))->where("`pl_id`=%d",array($plId))->save();
+        $result=$result && $updataOldPj;
     }
 
 
     $noticeType=isset($specialType)?$specialType:$proLevel;
-    $isUpload==0?$action='下载':$action='上传';
+    $isUpload==0?$action='下载':($isUpload==2?$action='已查看':$action='上传');
     $specialMessage=$contents= $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>'.$action.'项目<code>' . projectNameFromId($proIid) . '</code>资料';
     $redisPost = redisCollect($noticeType,$admin['admin_id'],$receive='',time(),$proIid,$specialMessage,$specialType) && $result;
     return $redisPost;

@@ -1,0 +1,25 @@
+<style>
+    #remark  dt{
+        font-weight: bold;
+        padding: 20px 0 10px 0;
+        border-bottom: 1px solid #ccc;
+        width: 158px;
+        margin: 26px 0 20px;
+    }
+    #remark dt:first-child{
+        margin-top:10px;
+    }
+    #remark dd{
+        text-indent: 2em;
+    }
+</style>
+<div class="bjui-pageContent">
+    <div id="remark">
+    <php>$i=0; foreach($list as $k=>$v):</php>
+    <dl>
+        <dt><php>echo ++$i,'、',$k;</php></dt>
+        <dd><php>echo $v;</php></dd>
+    </dl>
+    <php>endforeach;</php>
+    </div>
+</div>

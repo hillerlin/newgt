@@ -4,6 +4,12 @@
 .quicklink ul li:hover{background: #C8E1ED;}
 .quicklink ul li a{display: block;font-size: 15px;color: #31708f;line-height: 36px;}
 .quicklink ul li a span{font-size: 15px;margin-right: 6px;}
+.read code{
+    color:#999;
+    white-space: normal;
+    background: none;
+    border-radius: 4px;
+}
 </style>
 <div class="bjui-pageHeader" style="background:#fff;">
     <div class="alert alert-info" role="alert" style="display:none;">
@@ -28,6 +34,7 @@
                     <?php foreach($backlog as $list) {?>
                     <li><a href="<?php echo U('Project/MyAudit',array('pro_id'=>$list['proId'],'authorType'=>$list['authorType'] ,'m'=>'delredis'))?>" data-toggle="navtab" data-id="<?php echo strtolower($list['controller']) .'-'. $list['action']?>" data-title="<?php echo $list['title']?>" style="font-size: 14px;"><?php echo $list['contents']?></a>
                         <span style="float:right;"><?php echo date('Y-m-d H:i:s', $list['time'])?></span>
+                        <span ><empty name="wFMessage['in']"><font style="color:red;">【未读】</font><else/><font style="color:green;">【已读】</font></empty></span>
                     </li>
                     <?php }?>
                 </ul>
@@ -38,21 +45,29 @@
     </div>
     <div style="float:right;width:50%;">
         <div class="panel panel-default" style="margin:10px;">
-            <div class="panel-heading"><h3 class="panel-title">消息提醒<span class="pull-right"><a href="<?php echo U('Message/more')?>" data-toggle="dialog" data-width="620" data-id="message-more">更多</a></span></h3></div>
+            <div class="panel-heading"><h3 class="panel-title">消息提醒</h3></div>
             <div class="panel-body bjui-doc" style="padding:0; min-height:400px">
-
                 <fieldset style="padding:10px;">
                 <h5>项目立项</h5>
                 <ul>
-                  <?php foreach( $wordFlowMessage as $wFMessage):?>
-                    <a class="<?php echo $list['status']==0?'':'read';?>" data-expand-all="true" onclick="do_open_layout('project-workflowlog','/Admin/Project/workflowlog?pro_id={$wFMessage[proId]}&time={$wFMessage[time]}&type={$wFMessage[Type]}&m=1','流程监控')" >
-                            {$wFMessage["contents"]}<span style="float:right;"><?php echo date('Y-m-d H:i:s',$wFMessage['time'])?></span>
-                            <span ><empty name="wFMessage['in']"><font style="color:red;">【未读】</font><else/><font style="color:green;">【已读】</font></empty></span>
+                  <?php foreach( $workFlowMessage as $wFMessage):?>
+                    <a class="<?php echo $wFMessage['in']==0?'':'read';?>" data-expand-all="true" onclick="do_open_layout('project-workflowlog','/Admin/Project/workflowlog?pro_id={$wFMessage[proId]}&time={$wFMessage[time]}&type={$wFMessage[Type]}&m=1','流程监控')">
+
+                            {$wFMessage["contents"]}
+                        <span style="float:right;">
+                             <?php echo date('Y-m-d H:i:s',$wFMessage['time'])?>
+                        </span>
+                        <span ><empty name="wFMessage['in']"><font style="color:red;">【未读】</font><else/><font style="color:green;">【已读】</font></empty></span>
                     </a><br/>
                     <?php endforeach;?>
                 </ul>
+                <php>if(count($workFlowMessage)>=5):</php>
+                <a href="{:U('/admin/Index/ajaxMessageMore',array('type'=>'workFlowMessage'))}" style="float: right;" data-toggle="dialog" data-width="800" data-height="400" data-id="dialog-max" data-title="项目立项">
+                    更多.....
+                </a>
+                <php>endif;</php>
                 </fieldset>
-                <fieldset style="padding:10px;">
+                <!--<fieldset style="padding:10px;">
                 <h5>合同签约</h5>
                 <ul>
                     <li>合同签约消息<span style="float:right;">2016-11-30 19:28:47</span></li>
@@ -67,7 +82,7 @@
                     <li>放款消息<span style="float:right;">2016-11-30 19:28:47</span></li>
                     <li>放款消息<span style="float:right;">2016-11-30 19:28:47</span></li>
                 </ul>
-                </fieldset>
+                </fieldset>-->
             </div>
         </div>
 
@@ -78,4 +93,21 @@
     {
         $(event.target).navtab({id: id, url: url, title: title, fresh: "", external: ""});
     }
+    $(function(){
+        setInterval(function(){
+            $.ajax({
+                url:'/admin/Index/index_layout',
+                type:'post',
+                dataType:'json',
+                data:{m:'ajaxMessage'},
+                success:function(data){
+                    if(data.status==1)
+                    $('#layout-1').html(data.info);
+                },
+                error:function(data){
+                }
+            });
+        },60000);
+        
+    });
 </script>

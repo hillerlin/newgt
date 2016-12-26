@@ -95,31 +95,17 @@ class IndexController extends CommonController {
         $Verify = new \Think\Verify(array('fontSize'=>60,'length'=>4,'fontttf'=>'5.ttf', 'useAl' => true));
         $Verify->entry();
     }
-    
-    public function index_layout() {
-        $admin = session('admin');
-        $map['admin_id'] = $admin['admin_id'];
-       // $messages = D('Message')->getlist(1, 3, $map);
-        //$backlog = D('Backlog')->getlist(1, 3, $map);
-        $announcement_list = D('Announcement')->getlist(1, 3, array('t.status' => 1));
-        $research_list = D('ResearchReport')->getlist(1, 3, array('t.status' => 1));
-      //  $unReadNums = D('Message')->unReadNums($admin['admin_id']);
 
-      //  $this->assign('unReadNums', $unReadNums);
-        $this->assign('announcement_list', $announcement_list['list']);
-        $this->assign('research_list', $research_list);
-
-        $backlog=array();
-        $redisAdminKeys=array();
-        $redisRoleKeys=array();
-        $getAdminRedis=array();
-        $getRoleRedis=array();
-        $getTotalRedis=array();
-        //消息提醒-我的待办
+    /**
+     * 代办消息提醒
+     * @param $admin  管理员信息，必须包括admin_id, role_id
+     * @return 二维数组，从redis中取出的所有代办消息记录
+     */
+    public  function backlog($admin){
         $redisAdminKeys=S()->hKeys('admin:'.$admin['admin_id']);
         $redisRoleKeys=S()->hKeys('role:'.$admin['role_id']);
         $redisTotalKeys=array_merge($redisAdminKeys,$redisRoleKeys);
-        $backLogCount=count($redisTotalKeys);
+        $backlog=[];
         if(is_array($redisTotalKeys))
         {
             foreach ($redisTotalKeys as $k=>$v)
@@ -131,8 +117,16 @@ class IndexController extends CommonController {
                 array_push($backlog,json_decode($getTotalRedis[$v],true));
             }
         }
-        //消息提醒-项目立项类消息
-        $wordFlowMessage=array();
+        return empty($backlog)?array():$backlog;
+    }
+
+    /**
+     * 项目立项消息提醒
+     * @param $admin  管理员信息，必须包括admin_id, role_id
+     * @return 二维数组，从redis中取出的所有项目立项消息提醒记录，按时间从大到小进行排序
+     */
+    public function workFlowMessage($admin){
+        $workFlowMessage=[];
         foreach (C('messAuth') as $key=>$value)
         {
             if($value['depict']=='项目管理流程')
@@ -154,28 +148,59 @@ class IndexController extends CommonController {
                                 $tmp['in']=1;
                             }
                         }
-                        array_push($wordFlowMessage,$tmp);
+                        array_push($workFlowMessage,$tmp);
                         $tmp='';
                     }
                 }
             }
         }
-        $sordtime=array_column($wordFlowMessage,'time');
-        //按照时间从大到小进行排序
-        $newtime=array_multisort($sordtime,SORT_DESC,$wordFlowMessage);
-        $this->assign('wordFlowMessage',$wordFlowMessage);
-        $this->assign('backlog', $backlog);
-        $this->assign('backLogCount', $backLogCount);
+        if($workFlowMessage){
+            $sordtime=array_column($workFlowMessage,'time');
+            //按照时间从大到小进行排序
+            array_multisort($sordtime,SORT_DESC,$workFlowMessage);
+        }
+        //返回的必须是数组类型，不能返回false ,因 count(false) ==1 而不是0
+        return empty($workFlowMessage)?array():$workFlowMessage;
+    }
+    /**
+     * 我的主页
+     */
+    public function index_layout() {
+        $admin = session('admin');
+        $map['admin_id'] = $admin['admin_id'];
+        $announcement_list = D('Announcement')->getlist(1, 3, array('t.status' => 1));
+        $research_list = D('ResearchReport')->getlist(1, 3, array('t.status' => 1));
+        $this->assign('announcement_list', $announcement_list['list']);
+        $this->assign('research_list', $research_list);
+
+        //消息提醒-我的待办
+        $backlog=$this->backlog($admin);
+        //消息提醒-项目立项类消息
+        $workFlowMessage=$this->workFlowMessage($admin);
+        //项目立项消息提醒显示5条
+        $this->assign('workFlowMessage',array_slice($workFlowMessage,0,5));
+        //代办显示10条
+        $this->assign('backlog', array_slice($backlog,0,10));
+        $this->assign('backLogCount', count($backlog));
         $this->assign('admin', $admin);
-//        $this->start();
-//        $this->risk();
+        if(strcmp(I('post.m'),'ajaxMessage')===0){
+            $html=$this->fetch('ajaxMessage');
+            $this->success($html);
+        }
         $this->display();
     }
-    //暂时在此处处理消息提醒的已读标记
-    public function handelMessage(){
-        checkMessage(I('get.'));
-        //跳转到workflowlog这个指定的页面
 
+
+    /**
+     * 更多消息连接，的详细内容，
+     */
+    public function ajaxMessageMore(){
+        $admin= session('admin');
+        //需要显示哪个版块的信息,值为，backlog--代办 , workFlowMessage--项目立项
+        $type=I('get.type');
+        $message=$this->$type($admin);
+        $this->assign('message',$message);
+        $this->display();
     }
     protected function start() {
         $admin = session('admin');

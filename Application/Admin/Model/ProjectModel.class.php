@@ -281,7 +281,7 @@ class ProjectModel extends BaseModel {
                 ->join('LEFT JOIN __PJ_WORKFLOW__ AS pw ON t.pro_id=pw.pj_id')
                 ->join('LEFT JOIN __WORKFLOW_LOG__ as l ON l.wf_id=pw.wf_id')
                 ->join('__COMPANY__ AS cp ON t.company_id=cp.company_id')
-                ->field('t.*,l.*,pw.pro_level_now as pro_level_now,pw.wf_id as wfid,pro_title,pro_no,a1.real_name as pmd_name,a2.authpage as authpage,company_name')
+                ->field('t.*,l.*,l.pro_level as pro_level_now,pw.wf_id as wfid,pro_title,pro_no,a1.real_name as pmd_name,a2.authpage as authpage,company_name')
                 ->where(array('pro_id'=>array('in',$idList) ,'_string'=>"(l.pro_author='".$adminId."' or l.pro_role='".$roleId."') and (l.pro_state='0' or l.pro_state='3')"))
                 ->page($page, $pageSize)
                 ->group('pro_level_now')
@@ -355,6 +355,14 @@ class ProjectModel extends BaseModel {
     public  function executorInfo($map){
         $result=M('WorkflowLog')->query("select re.* from( SELECT wl.pro_level, wl.wf_id, wl.pro_author, wl.pro_role, wl.pro_addtime, a.real_name FROM gt_workflow_log wl LEFT JOIN gt_admin AS a ON a.admin_id = wl.pro_author WHERE ".$map." ORDER BY wf_id ASC ,pro_addtime DESC ) as re GROUP BY re.pro_level,re.wf_id ");
         return $result;
+    }
+    //项目备注
+    public function remark($map){
+        $content=M('Project')
+            ->field('pro_subprocess4_desc,pro_subprocess5_desc,pro_subprocess6_desc, pro_subprocess7_desc, pro_subprocess8_desc, pro_subprocess9_desc, pro_subprocess10_desc')
+            ->where($map)
+            ->find();
+        return $content;
     }
 }
 

@@ -274,10 +274,14 @@
                             <?php foreach($m1['sub'] as $m2):?>
                             <ul id="bjui-hnav-tree<?php echo $j++; ?>" class="ztree ztree_main" data-toggle="ztree" data-on-click="MainMenuClick" data-expand-all="true" data-faicon="check-square-o" data-tit="<?php echo $m2['menu_name'];?>">
                             <?php foreach($m2['sub'] as $m3):?>
-                                <?php if($m3['menu_name']=='权限' || $m3['menu_name']=='审批流转'|| $m3['menu_name']=='报表中心'):?>
+                                <?php if($m3['menu_name']=='权限' || $m3['menu_name']=='审批流转'):?>
+                              <li data-id="<?php echo $m3['menu_id']?>" data-pid="<?php echo $m3['pid']?>" data-url="<?php echo U($m3['module_name'].'/'.$m3['action_name'])?>?<?php echo $m3['data']?>" data-tabid="<?php echo strtolower($m3['module_name']); ?>-<?php echo $m3['action_name'];?>" data-faicon="caret-right"><?php echo $m3['menu_name'];?></li>
                                 <?php foreach($m3['sub'] as $m4):?>
                                 <li data-id="<?php echo $m4['menu_id']?>" data-pid="<?php echo $m3['menu_id']?>" data-url="<?php echo U($m4['module_name'].'/'.$m4['action_name'])?>?<?php echo $m4['data']?>" data-tabid="<?php echo strtolower($m4['module_name']); ?>-<?php echo $m4['action_name'];?>" data-faicon="caret-right"><?php echo $m4['menu_name'];?></li>
                                 <?php endforeach;?>
+                                <?php else: ?>
+                         <li data-id="<?php echo $m3['menu_id']?>" data-pid="<?php echo $m3['pid']?>" data-url="<?php echo U($m3['module_name'].'/'.$m3['action_name'])?>?<?php echo $m3['data']?>" data-tabid="<?php echo strtolower($m3['module_name']); ?>-<?php echo $m3['action_name'];?>" data-faicon="caret-right"><?php echo $m3['menu_name'];?></li>
+
                                 <?php endif; ?>
                             <?php endforeach;?>
                             </ul>

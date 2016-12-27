@@ -474,6 +474,12 @@ function redisCollect($proLevel,$sender,$receive='',$time,$proId,$specialMessage
         case '9_1':
             $contents='项管总监<code>'.$sender.'</code>将项目<code>'.$proName.'</code>投委会事宜通知：<code>'.$receive.'</code>';
             break;
+        case '10':
+            $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>签约流程-风控审核意见';
+            break;
+        case '11':
+            $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>预签合同';
+            break;
         case -1:
             $contents=$specialMessage;
             break;
@@ -562,6 +568,12 @@ function redisPostAudit($proLevel,$sender,$receive='',$time,$proId,$plId,$specia
             break;
         case '9_1':
             $contents='项管总监<code>'.$sender.'</code>将项目<code>'.$proName.'</code>投委会事宜通知我';
+            break;
+        case '10':
+            $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>签约流程-风控审核意见';
+            break;
+        case '11':
+            $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>预签合同';
             break;
         case -1:
             $contents=$specialMessage;
@@ -723,7 +735,6 @@ function addSubProcessAuditor($pjId,$auditor_id,$auditor_name,$pro_level,$pro_su
     foreach ($auditor_id as $k => $v) {
         $finish_status[$pro_level][$k]['adminId'] = $v;
         $finish_status[$pro_level][$k]['adminName'] = $auditor_name[$k];
-
     }
     $finish_enjson = json_encode($finish_status);
     $proSubprocessDesc='pro_subprocess'.explode('_',$pro_level)[0].'_desc'; //如果4_1 4_2 4_3 还原成4
@@ -875,6 +886,20 @@ function uploadUpdataWorkFlowState($wfId,$proLevel,$proTimes,$admin,$proIid,$plI
     $redisPost = redisCollect($noticeType,$admin['admin_id'],$receive='',time(),$proIid,$specialMessage,$specialType) && $result;
     return $redisPost;
 
+}
+//拿出project表中finish_status字段里面选中的人
+function getFinishStatus($proLevel,$proId)
+{
+    $projectInfo=D('Project')->where("`pro_id`=%d",array($proId))->find();
+    foreach (json_decode($projectInfo['finish_status'],true)[$proLevel] as $k=>$v)
+    {
+
+        $data['auditorId'][]=$v['adminId'];
+        $data['auditorName'][]=$v['adminName'];
+
+    }
+    return $data['auditorId'];
+    
 }
 
 

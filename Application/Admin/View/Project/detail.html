@@ -42,7 +42,7 @@
             <div class="backflow">
                 <dl>
                     <dt class="<php>if($v['current'] == $subk) echo 'current';</php>">
-                        <php> echo  $subv==end($v['sub'])?'&nbsp;':"$subv"</php>
+                        <php> echo  $subv==end($v['sub'])?'&nbsp;':mb_substr($subv,-4,4,'utf-8');</php>
                     </dt>
                     <dd>
                         <php>

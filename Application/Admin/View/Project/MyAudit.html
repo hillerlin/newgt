@@ -85,7 +85,7 @@
     function showWorkflow(e){
         var dataId=$(e).attr('data-id');
         var dataTitle=$(e).attr('data-title');
-        $(e).dialog({id:'mydialogasasa', url:'/Admin/Project/detail/dataId/'+dataId, title:dataTitle,width:1000,height:800});
+        $(e).dialog({id:'mydialogasasa', url:'/Admin/Project/detail/dataId/'+dataId, title:dataTitle,width:1000,height:600});
     }
     function showWorkflowSubProcess(e){
         var dataId=$(e).attr('data-id');
@@ -95,7 +95,7 @@
             if(data.status==1)
             {
                 $(event.target).navtab({id: "project-workflowlog", url: "/Admin/Project/workflowlog", title: "流程监控", fresh: "", external: ""})
-                $(this).dialog({id:'mydialogasasa', url:'/Admin/Project/detail/dataId/'+dataId, title:'流程监控',width:1000,height:800});
+                $(this).dialog({id:'mydialogasasa', url:'/Admin/Project/detail/dataId/'+dataId, title:'流程监控',width:1000,height:600});
             }
         })
 

@@ -409,7 +409,8 @@ class SignApplyManageController extends CommonController {
             if ($result === false) {
                 $this->json_error('保存失败'.$model->_sql());
             } else {
-                $this->json_success('保存成功', '', '', true, array('dialogid' => 'signapplymanage-addprecontract'));
+                //$this->json_success('保存成功', '', '', true, array('dialogid' => 'signapplymanage-addprecontract'));
+                $this->json_success('保存成功', '', '', true, array('dialogid' => 'project-submit'));
             }
         }
     }

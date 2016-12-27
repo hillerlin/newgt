@@ -249,7 +249,7 @@
                                 <li><a href="<?php echo U('Index/logout')?>" class="red">&nbsp;<span class="glyphicon glyphicon-off"></span> 注销登陆</a></li>
                             </ul>
                         </li>
-                        <li><a href="index.html" title="切换为列表导航(窄版)" style="background-color:#ff7b61;">列表导航栏(窄版)</a></li>
+                        <li><a href="index.html" title="切换为列表导航(窄版)" style="background-color:#ff7b61;margin:0 15px;">列表导航栏(窄版)</a></li>
                         <li class="dropdown"><a href="#" class="dropdown-toggle theme blue" data-toggle="dropdown" title="切换皮肤"><i class="fa fa-tree"></i></a>
                             <ul class="dropdown-menu" role="menu" id="bjui-themes">
                                 <li><a href="javascript:;" class="theme_default" data-toggle="theme" data-theme="default">&nbsp;<i class="fa fa-tree"></i> 黑白分明&nbsp;&nbsp;</a></li>
@@ -261,6 +261,9 @@
                         </li>
                     </ul>
                 </nav>
+                <div class="topbg"></div>
+                <div class="top-skin"></div>
+                <div class="top-skin2"></div>
                 <div id="bjui-hnav" style="display:none;">
                     <button type="button" class="btn-default bjui-hnav-more-left" title="导航菜单左移"><i class="fa fa-angle-double-left"></i></button>
                     <div id="bjui-hnav-navbar-box">
@@ -275,12 +278,12 @@
                             <ul id="bjui-hnav-tree<?php echo $j++; ?>" class="ztree ztree_main" data-toggle="ztree" data-on-click="MainMenuClick" data-expand-all="true" data-faicon="check-square-o" data-tit="<?php echo $m2['menu_name'];?>">
                             <?php foreach($m2['sub'] as $m3):?>
                                 <?php if($m3['menu_name']=='权限' || $m3['menu_name']=='审批流转'):?>
-                              <li data-id="<?php echo $m3['menu_id']?>" data-pid="<?php echo $m3['pid']?>" data-url="<?php echo U($m3['module_name'].'/'.$m3['action_name'])?>?<?php echo $m3['data']?>" data-tabid="<?php echo strtolower($m3['module_name']); ?>-<?php echo $m3['action_name'];?>" data-faicon="caret-right"><?php echo $m3['menu_name'];?></li>
+                              <li data-id="<?php echo $m3['menu_id']?>" data-pid="<?php echo $m3['pid']?>" data-url="<?php echo U($m3['module_name'].'/'.$m3['action_name'])?>?<?php echo $m3['data']?>" data-tabid="<?php echo strtolower($m3['module_name']); ?>-<?php echo $m3['action_name'];?>" class="glyphicon glyphicon-folder-open"><?php echo $m3['menu_name'];?></li>
                                 <?php foreach($m3['sub'] as $m4):?>
-                                <li data-id="<?php echo $m4['menu_id']?>" data-pid="<?php echo $m3['menu_id']?>" data-url="<?php echo U($m4['module_name'].'/'.$m4['action_name'])?>?<?php echo $m4['data']?>" data-tabid="<?php echo strtolower($m4['module_name']); ?>-<?php echo $m4['action_name'];?>" data-faicon="caret-right"><?php echo $m4['menu_name'];?></li>
+                                <li data-id="<?php echo $m4['menu_id']?>" data-pid="<?php echo $m3['menu_id']?>" data-url="<?php echo U($m4['module_name'].'/'.$m4['action_name'])?>?<?php echo $m4['data']?>" data-tabid="<?php echo strtolower($m4['module_name']); ?>-<?php echo $m4['action_name'];?>" class="glyphicon glyphicon-flag"><?php echo $m4['menu_name'];?></li>
                                 <?php endforeach;?>
                                 <?php else: ?>
-                         <li data-id="<?php echo $m3['menu_id']?>" data-pid="<?php echo $m3['pid']?>" data-url="<?php echo U($m3['module_name'].'/'.$m3['action_name'])?>?<?php echo $m3['data']?>" data-tabid="<?php echo strtolower($m3['module_name']); ?>-<?php echo $m3['action_name'];?>" data-faicon="caret-right"><?php echo $m3['menu_name'];?></li>
+                         <li data-id="<?php echo $m3['menu_id']?>" data-pid="<?php echo $m3['pid']?>" data-url="<?php echo U($m3['module_name'].'/'.$m3['action_name'])?>?<?php echo $m3['data']?>" data-tabid="<?php echo strtolower($m3['module_name']); ?>-<?php echo $m3['action_name'];?>" class="glyphicon glyphicon-flag"><?php echo $m3['menu_name'];?></li>
 
                                 <?php endif; ?>
                             <?php endforeach;?>
@@ -321,7 +324,7 @@
                     </ul>
                     <div class="navtab-panel tabsPageContent">
                         <div class="navtabPage unitBox">
-                            <div class="bjui-pageContent" style="background:#FFF;">
+                            <div class="bjui-pageContent">
                                 Loading...
                             </div>
                         </div>

@@ -264,47 +264,38 @@ class CompanyController extends CommonController {
         {
             case 4:
                 //返回股权部和分控部老大的adminId
-                $adminList=D()->table('gt_role as r')
-                    ->join("LEFT JOIN __ADMIN__ AS a ON a.role_id=r.role_id")
-                    ->where(array('r.role_id'=>array('in','16,17')))
-                    ->select();
+                $map='16,17';
                 break;
             case 5:
                 //返回风控部所有人的信息
-                $adminList=D()->table('gt_role as r')
-                    ->join("LEFT JOIN __ADMIN__ AS a ON a.role_id=r.role_id")
-                    ->where(array('r.role_id'=>array('in','18,17,21')))
-                    ->select();
+                $map='16,17,18';
                 break;
             case 6:
                 //返回风控部所有人的信息
-                $adminList=D()->table('gt_role as r')
-                    ->join("LEFT JOIN __ADMIN__ AS a ON a.role_id=r.role_id")
-                    ->where(array('r.role_id'=>array('in','16,18,17,21')))
-                    ->select();
+                $map='16,18,17,21';
                 break;
             case 7:
                 //返回风控部所有人的信息
-                $adminList=D()->table('gt_role as r')
-                    ->join("LEFT JOIN __ADMIN__ AS a ON a.role_id=r.role_id")
-                    ->where(array('r.role_id'=>'18'))
-                    ->select();
+                $map='18';
                 break;
             case 8:
-                //返回风控部所有人的信息
-                $adminList=D()->table('gt_role as r')
-                    ->join("LEFT JOIN __ADMIN__ AS a ON a.role_id=r.role_id")
-                    ->where(array('r.role_id'=>array('in','16,18,17,21')))
-                    ->select();
-                break;
             case 9:
-                //返回风控部所有人的信息
-                $adminList=D()->table('gt_role as r')
-                    ->join("LEFT JOIN __ADMIN__ AS a ON a.role_id=r.role_id")
-                    ->where(array('r.role_id'=>array('in','16,18,17,21')))
-                    ->select();
+            case 10:
+                $map='16,18,17,21';
+                break;
+            case '11':
+                //返回股权部和分控部老大的adminId
+                $map='16';
+                break;
+            case '11_3':
+                //返回法务adminId
+                $map='21';
                 break;
         }
+        $adminList=D()->table('gt_role as r')
+            ->join("LEFT JOIN __ADMIN__ AS a ON a.role_id=r.role_id")
+            ->where(array('r.role_id'=>array('in',$map)))
+            ->select();
         $this->assign('adminList',$adminList);
         $this->display();
     }

@@ -11,7 +11,7 @@
     border-radius: 4px;
 }
 </style>
-<div class="bjui-pageHeader" style="background:#fff;">
+<div class="bjui-pageHeader" style="background:none;">
     <div class="alert alert-info" role="alert" style="display:none;">
         <?php foreach($announcement_list as $list):?>
         <p><a href="<?php echo U('Announcement/detail', array('id' => $list['id']))?>" data-toggle="dialog" data-height="900" data-width="1200"><?php echo $list['title']?></a><span class="pull-right"><?php echo date('Y-m-d H:i:s', $list['addtime'])?></span></p>
@@ -25,16 +25,16 @@
         </ul>
     </div>
 </div>
-<div class="bjui-pageContent" id="layout-1" style="min-width:1385px;">
+<div class="bjui-pageContent" id="layout-1" style="padding:0 10px 10px;">
     <div style="float:left;width:50%;">
-        <div class="panel panel-default" style="margin:10px;">
-            <div class="panel-heading"><h3 class="panel-title">待办事项：<span class="pull-right">共<?php echo $backLogCount?>项待办</span></h3></div>
-            <div class="panel-body bjui-doc" style="padding:0; min-height: 400px">
+        <div style="margin:10px 20px 10px 10px;">
+            <div class="panel-heading" style="background:none;"><h3 class="panel-title">待办事项：<span class="pull-right">共<?php echo $backLogCount?>项待办</span></h3></div>
+            <div class="panel-body bjui-doc" style="padding:0;">
                 <ul>
                     <?php foreach($backlog as $list) {?>
-                    <li><a href="<?php echo U('Project/MyAudit',array('pro_id'=>$list['proId'],'authorType'=>$list['authorType'] ,'m'=>'delredis'))?>" data-toggle="navtab" data-id="<?php echo strtolower($list['controller']) .'-'. $list['action']?>" data-title="<?php echo $list['title']?>" style="font-size: 14px;"><?php echo $list['contents']?></a>
-                        <span style="float:right;"><?php echo date('Y-m-d H:i:s', $list['time'])?></span>
+                    <li><a href="<?php echo U('Project/MyAudit',array('pro_id'=>$list['proId'],'authorType'=>$list['authorType'] ,'m'=>'delredis'))?>" data-toggle="navtab" data-id="<?php echo strtolower($list['controller']) .'-'. $list['action']?>" data-title="<?php echo $list['title']?>" title="<?php echo $list['contents']?>" style="font-size: 14px;display:inline-block;vertical-align:middle;/*max-width:295px;*/height:28px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;cursor:pointer;"><?php echo $list['contents']?></a>
                         <span ><empty name="wFMessage['in']"><font style="color:red;">【未读】</font><else/><font style="color:green;">【已读】</font></empty></span>
+                        <span style="float:right;font-size:13px;line-height:28px;"><?php echo date('Y-m-d H:i:s', $list['time'])?></span>
                     </li>
                     <?php }?>
                 </ul>
@@ -43,46 +43,48 @@
         <?php if($admin['dp_id'] == 1) {?>
         <?php }?>
     </div>
-    <div style="float:right;width:50%;">
-        <div class="panel panel-default" style="margin:10px;">
-            <div class="panel-heading"><h3 class="panel-title">消息提醒</h3></div>
-            <div class="panel-body bjui-doc" style="padding:0; min-height:400px">
+    <div style="float:right;width:50%;border-left:1px #c3ced5 solid;">
+        <div style="margin:10px 10px 10px 20px;">
+            <div class="panel-heading" style="background:none;"><h3 class="panel-title">消息提醒</h3></div>
+            <div class="panel-body bjui-doc" style="padding:0;">
                 <fieldset style="padding:10px;">
                 <h5>项目立项</h5>
                 <ul>
                   <?php foreach( $workFlowMessage as $wFMessage):?>
-                    <a class="<?php echo $wFMessage['in']==0?'':'read';?>" data-expand-all="true" onclick="do_open_layout('project-workflowlog','/Admin/Project/workflowlog?pro_id={$wFMessage[proId]}&time={$wFMessage[time]}&type={$wFMessage[Type]}&m=1','流程监控')">
-
-                            {$wFMessage["contents"]}
-                        <span style="float:right;">
-                             <?php echo date('Y-m-d H:i:s',$wFMessage['time'])?>
-                        </span>
+                    <li><a class="<?php echo $wFMessage['in']==0?'':'read';?>" data-expand-all="true" onclick="do_open_layout('project-workflowlog','/Admin/Project/workflowlog?pro_id={$wFMessage[proId]}&time={$wFMessage[time]}&type={$wFMessage[Type]}&m=1','流程监控')" title="{$wFMessage["contents"]}" style="font-size: 14px;display:inline-block;vertical-align:middle;/*max-width:272px;*/height:28px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;cursor:pointer;">{$wFMessage["contents"]}</a>
                         <span ><empty name="wFMessage['in']"><font style="color:red;">【未读】</font><else/><font style="color:green;">【已读】</font></empty></span>
-                    </a><br/>
+                        <span style="float:right;font-size:13px;line-height:28px;"><?php echo date('Y-m-d H:i:s',$wFMessage['time'])?></span>
+                    </li>
                     <?php endforeach;?>
                 </ul>
                 <php>if(count($workFlowMessage)>=5):</php>
-                <a href="{:U('/admin/Index/ajaxMessageMore',array('type'=>'workFlowMessage'))}" style="float: right;" data-toggle="dialog" data-width="800" data-height="400" data-id="dialog-max" data-title="项目立项">
-                    更多.....
-                </a>
+                <div><a href="{:U('/admin/Index/ajaxMessageMore',array('type'=>'workFlowMessage'))}" style="float: right;" data-toggle="dialog" data-width="800" data-height="400" data-id="dialog-max" data-title="项目立项">更多...</a></div>
                 <php>endif;</php>
                 </fieldset>
-                <!--<fieldset style="padding:10px;">
-                <h5>合同签约</h5>
-                <ul>
-                    <li>合同签约消息<span style="float:right;">2016-11-30 19:28:47</span></li>
-                    <li>合同签约消息<span style="float:right;">2016-11-30 19:28:47</span></li>
-                    <li>合同签约消息<span style="float:right;">2016-11-30 19:28:47</span></li>
-                </ul>
-                </fieldset>
                 <fieldset style="padding:10px;">
+                <h5>签约流程</h5>
+                <ul>
+                    <?php foreach( $contractMessage as $conMessage):?>
+                    <li><a class="<?php echo $conMessage['in']==0?'':'read';?>" data-expand-all="true" onclick="do_open_layout('project-workflowlog','/Admin/Project/workflowlog?pro_id={$conMessage[proId]}&time={$conMessage[time]}&type={$conMessage[Type]}&m=1','流程监控')" title="{$conMessage["contents"]}" style="font-size: 14px;display:inline-block;vertical-align:middle;/*max-width:272px;*/height:28px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;cursor:pointer;">{$conMessage["contents"]}</a>
+                        <span ><empty name="conMessage['in']"><font style="color:red;">【未读】</font><else/><font style="color:green;">【已读】</font></empty></span>
+                        <span style="float:right;font-size:13px;line-height:28px;">
+                             <?php echo date('Y-m-d H:i:s',$conMessage['time'])?>
+                        </span>
+                    </li>
+                    <?php endforeach;?>
+                </ul>
+                <php>if(count($contractMessage)>=1):</php>
+                <div><a href="{:U('/admin/Index/ajaxMessageMore',array('type'=>'workFlowMessage','messageType'=>2))}" style="float: right;" data-toggle="dialog" data-width="800" data-height="400" data-id="dialog-max" data-title="签约流程">更多...</a></div>
+                <php>endif;</php>
+            </fieldset>
+            <!-- <fieldset style="padding:10px;">
                 <h5>放款</h5>
                 <ul>
                     <li>放款消息<span style="float:right;">2016-11-30 19:28:47</span></li>
                     <li>放款消息<span style="float:right;">2016-11-30 19:28:47</span></li>
                     <li>放款消息<span style="float:right;">2016-11-30 19:28:47</span></li>
                 </ul>
-                </fieldset>-->
+                </fieldset> -->
             </div>
         </div>
 
@@ -108,6 +110,5 @@
                 }
             });
         },60000);
-        
     });
 </script>

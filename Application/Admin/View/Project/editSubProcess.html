@@ -27,7 +27,6 @@
         <input type="hidden"  name="proRebutterLevel" value="{$proRebutterLevel}">
         <table class="table table-condensed table-hover" width="100%">
             <tbody>
-            <?php if($pre=='7_1'||$pre=='7_2' || $pre=='7_3' || $pre=='6_2' || $pre=='6_3' || $pre=='8_3' || $pre=='8_2' || $pre=='9_3' || $pre=='9_2'):?>
             <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150">已绑定的项目：</label>
@@ -35,23 +34,41 @@
                     <input type="text" name="pro_title" id="p_company" value="{$companyName}" size="30"   readonly>
                 </td>
             </tr>
-            <?php else:?>
-            <tr>
+
+<!--            <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150">请绑定项目：</label>
                     <input type="hidden" name="pro_id" value="{$pro_id}">
                     <input type="text" name="pro_title" id="p_company" value="{$companyName}" size="30" data-toggle="lookup" data-url="<?php echo U('Company/findRelateSubProcess/',array('pre'=>4))?>" data-width="600" data-height="300" readonly>
                 </td>
+            </tr>-->
+            <?php if($pre=='7_1'||$pre=='7_2' || $pre=='7_3' || $pre=='6_2' || $pre=='6_3' || $pre=='8_3' || $pre=='8_2' || $pre=='9_3' || $pre=='9_2' || $pre=='10') :?>
+            <?php elseif($pre=='11_2'  || $pre=='11_4' || $pre=='11_5'):?>
+            <tr>
+                <td>
+                    <label for="j_custom_name" class="control-label x150"><?php echo $is_pre_contract? '点击编辑合同：' : '点击添加合同：'?></label>
+                    <button data-url="/Admin/SignApplyManage/<?php echo $is_pre_contract? 'editContract' : 'addContract'?>.html?pro_id={$pro_id}&company_id={$company_id}" class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $companyName?></button>
+                </td>
             </tr>
+            <?php else:?>
+
+            <?php if($pre=='11' || $pre=='11_3'):?>
+            <tr>
+                <td>
+                    <label for="j_custom_name" class="control-label x150"><?php echo $is_pre_contract? '点击编辑合同：' : '点击添加合同：'?></label>
+                    <button data-url="/Admin/SignApplyManage/<?php echo $is_pre_contract? 'editContract' : 'addContract'?>.html?pro_id={$pro_id}&company_id={$company_id}" class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $companyName?></button>
+                </td>
+            </tr>
+            <?php endif;?>
             <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150">选择通知知情的相关人员：</label>
                     <input type="hidden" name="auditor_id" value='<?php echo $auditorId?>'>
-                    <input type="text" name="auditor_name" id="p_company" value="<?php echo $auditorName?>" size="30" data-toggle="lookup" data-url="<?php echo U('Company/findHeaderToType',array('pre'=>4))?>" data-width="600" data-height="300" readonly>
+                    <input type="text" name="auditor_name" id="p_company" value="<?php echo $auditorName?>" size="30" data-rule="required" data-toggle="lookup" data-url="<?php echo U('Company/findHeaderToType',array('pre'=>$proLevel))?>" data-width="600" data-height="300" readonly>
                 </td>
             </tr>
             <?php endif;?>
-            <?php if($admin['role_name']=='项管部总监'||$pre=='7_2'):?>
+            <?php if($admin['role_name']=='项管部总监'||$pre=='7_2' || $pre=='11_2' || $pre=='11_3' || $pre=='11_4' || $pre=='11_5'):?>
                <tr>
                    <td>
                    <label for='company_id' class='control-label x150'>请选择：</label>

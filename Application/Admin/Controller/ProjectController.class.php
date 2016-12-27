@@ -108,25 +108,19 @@ class ProjectController extends CommonController
         $pro_subprocess_desc = I('get.pro_subprocess_desc');//子流程备注
         $admin = session('admin');
         $xmlfile='process1.xml';
+        $oldProject=true;
         //添加子流程和添加子流程的代理人
         switch ($pro_level)
         {
             case '4':
-                $oldProject=addSubProcessAuditor($pjId,$auditor_id,$auditor_name,$pro_level,$pro_subprocess_desc);
-                break;
             case '5':
-                $oldProject=addSubProcessAuditor($pjId,$auditor_id,$auditor_name,$pro_level,$pro_subprocess_desc);
-                break;
             case '6':
-                $oldProject=addSubProcessAuditor($pjId,$auditor_id,$auditor_name,$pro_level,$pro_subprocess_desc);
-                break;
             case '7':
-                $oldProject=addSubProcessAuditor($pjId,$auditor_id,$auditor_name,$pro_level,$pro_subprocess_desc);
-                break;
             case '8':
-                $oldProject=addSubProcessAuditor($pjId,$auditor_id,$auditor_name,$pro_level,$pro_subprocess_desc);
-                break;
             case '9':
+            case '10':
+            case '11':
+            default:
                 $oldProject=addSubProcessAuditor($pjId,$auditor_id,$auditor_name,$pro_level,$pro_subprocess_desc);
                 break;
         }
@@ -137,7 +131,6 @@ class ProjectController extends CommonController
         } else {
             $this->json_error('创建失败，请联系开发人员查看原因', '/Admin/Project/MyAudit', '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目'),1);
         }
-
     }
     //编辑子流程
     public function editSubProcess()
@@ -154,7 +147,11 @@ class ProjectController extends CommonController
         }
         $data['auditorId']=implode(',',$data['auditorId']);
         $data['auditorName']=implode(',',$data['auditorName']);
-        $this->assign(array('companyName'=>$projectInfo['pro_title'],'pre'=>$proLevel,'admin'=>session('admin'),'pro_subprocess_desc'=>$projectInfo['pro_subprocess'.explode('_',$proLevel)[0].'_desc']));
+        if($proLevel=='11' || $proLevel=='11_2' || $proLevel=='11_3' || $proLevel=='11_4')
+        {
+            $is_pre_contract= D('PrepareContract')->isPreContract($pro_id, $projectInfo['company_id']);
+        }
+        $this->assign(array('companyName'=>$projectInfo['pro_title'],'company_id'=>$projectInfo['company_id'],'is_pre_contract'=>$is_pre_contract,'pre'=>$proLevel,'admin'=>session('admin'),'pro_subprocess_desc'=>$projectInfo['pro_subprocess'.explode('_',$proLevel)[0].'_desc']));
         $this->assign($data);
         $this->assign($_GET);
         $this->display();
@@ -564,7 +561,87 @@ class ProjectController extends CommonController
                 }else{//驳回情况
                 }
                 break;
+            case '11':
+                //合同编辑-项管专员提交合同
+                //$pro_subprocess_desc =I('get.pro_subprocess_desc');//子流程备注
+                $proRoleId=14;//业务类型指定了宋波或者项管总监
+                $auditor_id = I('get.auditor_id');//分配跟进人
+                $auditor_name = I('get.auditor_name');//跟进人的名字
+                $newProLevel=addNewLevel($proLevel);
+                $updataProject=addSubProcessAuditor($proIid,$auditor_id,$auditor_name,$newProLevel,$pro_subprocess_desc);//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                $auditor_id = explode(',', $auditor_id);
+                //告诉项管总监合同知情
+                $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' . projectNameFromId($proIid) . '</code>合同知情事宜';
+                $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,$proRoleId,0,$xmlId,$plId,'one',$contents,-1) && $updataProject;
+                foreach ($auditor_id as $k=>$v) //告诉项目经理编辑合同
+                {
+                    $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' . projectNameFromId($proIid) . '</code>合同编辑事宜';
+                    $return=postNextProcess($wfId,$newProLevel,$proTimes,$admin,$proIid,0,$v,$xmlId,$plId,'one',$content,-1) && $updataProject && $return;//告诉项目经理的时候跨了一个等级，所以用$newProLevel
+                    sleep(1);
+                }
 
+                break;
+            case '11_2':
+                //合同预签约-法务老大审核
+                $proAdminId='24';//业务类型指定了黄惠萍,法务老大，以后可以配成动态;
+                //$pro_subprocess_desc =I('get.pro_subprocess_desc');//子流程备注
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                if($auditType==2) {  //审核通过
+                    $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的合同审核已发出';
+                    $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $proAdminId, $xmlId, $plId, 'one', $contents, -1) && $updataProject;
+                }
+                else
+                {
+                    //驳回
+                }
+                break;
+            case '11_3':
+                //合同预签约-副总裁审核
+                $proAdminId='23';//业务类型指定了副总裁，以后可以配成动态;
+                $auditor_id = I('get.auditor_id');//分配跟进人
+                $auditor_name = I('get.auditor_name');//跟进人的名字
+                $newProLevel=addNewLevel(addNewLevel(addNewLevel($proLevel)));
+                $updataProject=addSubProcessAuditor($proIid,$auditor_id,$auditor_name,$newProLevel,$pro_subprocess_desc);
+                if($auditType==2) { //审核通过
+                    $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的合同审核已发出';
+                    $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $proAdminId, $xmlId, $plId, 'one', $contents, -1) && $updataProject;
+                }
+                else{
+                    //驳回
+                }
+                break;
+            case '11_4':
+                //合同预签约-总裁审核
+                $proAdminId='22';//业务类型指定了总裁，以后可以配成动态;
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                if($auditType==2) {  //审核通过
+                    $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的合同审核已发出';
+                    $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $proAdminId, $xmlId, $plId, 'one', $contents, -1) && $updataProject;
+                }
+                else{
+                    //驳回
+                }
+                break;
+            case '11_5':
+                //合同预签约-总裁审核
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                $newProLevel=addNewLevel($proLevel);
+                if($auditType==2) {  //审核通过
+                    //先通知法务勾选好的人员
+                    $auditor_id=getFinishStatus($newProLevel,$proIid);
+                    foreach ($auditor_id as $k=>$v) //告诉项目经理编辑合同
+                    {
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' . projectNameFromId($proIid) . '</code>合同编辑事宜';
+                        $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$v,$xmlId,$plId,'one',$content,-1) && $updataProject;//告诉项目经理的时候跨了一个等级，所以用$newProLevel
+                        sleep(1);
+                    }
+                    $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的合同审核已发出';
+                    $return = postNextProcess($wfId, $newProLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one', $contents, -1) && $updataProject && $return;
+                }
+                else{
+                    //驳回
+                }
+                break;
 
         }
 
@@ -583,11 +660,11 @@ class ProjectController extends CommonController
         $this->assign($_GET);
         $this->display();
     }
-    //立项会审核6_2风控部查看资料
+
     public function ProjectMeetingCheckFile()
     {
         $admin=session('admin');
-        if(I('post.plId'))//如果是立项会查看知情就改变状态
+        if(I('post.plId'))//如果是查看知情就改变状态
         {
           //  $updateOldPj=D('workflowLog')->data(array('pro_state'=>2))->where("`pl_id`=%d",array(I('post.plId')))->save();
             $updateOldPj=uploadUpdataWorkFlowState('','6_2',1,$admin,I('post.proId'),I('post.plId'),2,0,'',-1);
@@ -595,6 +672,7 @@ class ProjectController extends CommonController
             $this->success('上传成功');
         }
     }
+    //立项会审核6_2风控部查看资料
     public function proSubAllocationMember2()
     {
         $adminModel=D('Admin');
@@ -666,7 +744,7 @@ class ProjectController extends CommonController
         $pre = I('get.pre');
         $this->assign('pre', $pre);
         $this->assign('admin', $admin);
-        if (intval($pre) == 4 || intval($pre) == 5 || intval($pre) == 6 || intval($pre) == 7 || intval($pre) == 8 || intval($pre) == 9) {
+        if (intval($pre) == 4 || intval($pre) == 5 || intval($pre) == 6 || intval($pre) == 7 || intval($pre) == 8 || intval($pre) == 9 || intval($pre) == 10 || intval($pre) == 11) {
             //新建子流程1
             $this->display('subProcess1');
 

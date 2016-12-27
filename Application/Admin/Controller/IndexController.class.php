@@ -123,13 +123,15 @@ class IndexController extends CommonController {
     /**
      * 项目立项消息提醒
      * @param $admin  管理员信息，必须包括admin_id, role_id
+     * @param $type   对应配置文件C('messAuth')中的四个值的depict,$type的值：
+     *          1 ----项目管理流程，2----签约流程，3----放款流程，4----项目完结流程
      * @return 二维数组，从redis中取出的所有项目立项消息提醒记录，按时间从大到小进行排序
      */
-    public function workFlowMessage($admin){
+    public function workFlowMessage($admin,$type){
         $workFlowMessage=[];
         foreach (C('messAuth') as $key=>$value)
         {
-            if($value['depict']=='项目管理流程')
+            if($key==$type)
             {
                 $sType=S()->sMembers('sType:'.$key);//判断如果是项目流程则取出项目流程中的消息集合
                 foreach ($sType as $tkey=>$tvalue)
@@ -176,11 +178,16 @@ class IndexController extends CommonController {
         //消息提醒-我的待办
         $backlog=$this->backlog($admin);
         //消息提醒-项目立项类消息
-        $workFlowMessage=$this->workFlowMessage($admin);
+        $workFlowMessage=$this->workFlowMessage($admin,1);
+        //消息提醒-签约流程消息
+        $contractMessage=$this->workFlowMessage($admin,2);
         //项目立项消息提醒显示5条
         $this->assign('workFlowMessage',array_slice($workFlowMessage,0,5));
         //代办显示10条
         $this->assign('backlog', array_slice($backlog,0,10));
+
+        $this->assign('contractMessage',$contractMessage);
+
         $this->assign('backLogCount', count($backlog));
         $this->assign('admin', $admin);
         if(strcmp(I('post.m'),'ajaxMessage')===0){
@@ -192,13 +199,14 @@ class IndexController extends CommonController {
 
 
     /**
-     * 更多消息连接，的详细内容，
+     * 更多消息连接的详细内容，
      */
     public function ajaxMessageMore(){
         $admin= session('admin');
         //需要显示哪个版块的信息,值为，backlog--代办 , workFlowMessage--项目立项
-        $type=I('get.type');
-        $message=$this->$type($admin);
+        $type=empty(I('get.type'))?'':I('get.type');
+        $messageType=empty(('get.messageType'))?'':I('get.messageType');
+        $message=$this->$type($admin,$messageType);
         $this->assign('message',$message);
         $this->display();
     }

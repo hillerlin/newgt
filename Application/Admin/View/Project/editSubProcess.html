@@ -34,7 +34,6 @@
                     <input type="text" name="pro_title" id="p_company" value="{$companyName}" size="30"   readonly>
                 </td>
             </tr>
-
 <!--            <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150">请绑定项目：</label>
@@ -42,7 +41,7 @@
                     <input type="text" name="pro_title" id="p_company" value="{$companyName}" size="30" data-toggle="lookup" data-url="<?php echo U('Company/findRelateSubProcess/',array('pre'=>4))?>" data-width="600" data-height="300" readonly>
                 </td>
             </tr>-->
-            <?php if($pre=='7_1'||$pre=='7_2' || $pre=='7_3' || $pre=='6_2' || $pre=='6_3' || $pre=='8_3' || $pre=='8_2' || $pre=='9_3' || $pre=='9_2' || $pre=='10') :?>
+            <?php if($pre=='7_1'||$pre=='7_2' || $pre=='7_3' || $pre=='6_2' || $pre=='6_3' || $pre=='8_3' || $pre=='8_2' || $pre=='9_3' || $pre=='9_2' || $pre=='10' || $pre=='14') :?>
             <?php elseif($pre=='11_2'  || $pre=='11_4' || $pre=='11_5'):?>
             <tr>
                 <td>
@@ -57,6 +56,14 @@
                 <td>
                     <label for="j_custom_name" class="control-label x150"><?php echo $is_pre_contract? '点击编辑合同：' : '点击添加合同：'?></label>
                     <button data-url="/Admin/SignApplyManage/<?php echo $is_pre_contract? 'editContract' : 'addContract'?>.html?pro_id={$pro_id}&company_id={$company_id}" class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $companyName?></button>
+                </td>
+            </tr>
+            <?php endif;?>
+            <?php if($pre=='15'):?>
+            <tr>
+                <td>
+                    <label for="j_custom_name" class="control-label x150"><?php echo $is_pre_contract? '点击编辑放款表：' : '点击添加放款表：'?></label>
+                    <button data-url="/Admin/LoanManage/<?php echo $is_pre_contract? 'detail' : 'LoanApplyToAdd'?>.html?loan_id={$is_pre_contract}" class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $companyName?></button>
                 </td>
             </tr>
             <?php endif;?>

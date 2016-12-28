@@ -288,6 +288,7 @@ class AdminController extends CommonController {
     //查找项目跟进人
     public function projectFollow() {
         $real_name = I('post.real_name');
+        $proLevel=I('get.proLevel');
         $isSearch = I('post.isSearch');
         if (!empty($isSearch)) {
             if (!empty($isSearch)) {
@@ -295,7 +296,13 @@ class AdminController extends CommonController {
             }
         }
         $map['status'] = 1;
-        $map['role_id'] = 2;
+        if($proLevel=='0_1')
+        {
+            $map['role_id'] = 2;//项目专员
+        }elseif($proLevel=='13')
+        {
+            $map['role_id']=21;//法务专员
+        }
         $model = D('Admin');
         $list = $model->where($map)->select();
         $total = $model->where($map)->count();

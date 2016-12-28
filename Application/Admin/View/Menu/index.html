@@ -61,11 +61,11 @@
         <tbody>
         <volist name="list" id="row">
             <tr data-id="{$row.menu_id}">
-                <td>{$row.menu_name}</td>
-                <td>{$row['type']?'菜单':'操作'}</td>
-                <td>{$row['status']?'可用':'禁用'}</td>
-                <td><input type="checkbox" name="ids" data-toggle="icheck" value="1"></td>
-                <td>
+                <td align="center">{$row.menu_name}</td>
+                <td align="center">{$row['type']?'菜单':'操作'}</td>
+                <td align="center">{$row['status']?'可用':'禁用'}</td>
+                <td align="center"><input type="checkbox" name="ids" data-toggle="icheck" value="1"></td>
+                <td align="center">
                     <a href="<?php echo U('menu/edit',array('menu_id'=>$row['menu_id']))?>" class="btn btn-green" data-toggle="navtab" data-id="menu-edit" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="编辑菜单-{$row.menu_name}">编辑</a>
                     <a href="<?php echo U('menu/del')?>?menu_id=<?php echo $row['menu_id']?>" class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a>
                 </td>

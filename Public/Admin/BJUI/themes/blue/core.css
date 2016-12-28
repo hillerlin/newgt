@@ -111,7 +111,7 @@ fieldset{border-color:#c3ced5;}
 #bjui-navtab > .tabsPageHeader > .tabsLeft.tabsLeftDisabled:hover,
 #bjui-navtab > .tabsPageHeader > .tabsRight.tabsRightDisabled:hover{background:#f3f8fc;}
 #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent > .nav{border-bottom-color:#c3ced5;}
-#bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent > .nav > li > a{color:#222; background-color:#f3f8fc; border-color:#eee; border-bottom-color:#c3ced5;}
+#bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent > .nav > li > a{color:#222; background-color:#f3f8fc; border-color:#eee;}
 #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent > .nav > li > a:hover{color:#222; background:#d9e7f2; border-color:#c3ced5; border-bottom-color:transparent;}
 #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent > .nav > li.active > a{color:#222; font-weight:bold; background:#fff; border-color:#c3ced5; border-bottom-color:transparent;}
 #bjui-navtab > .tabsMoreList{background:#f3f8fc; border-color:#c3ced5;}

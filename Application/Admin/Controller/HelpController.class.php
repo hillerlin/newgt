@@ -148,15 +148,17 @@ class HelpController extends CommonController
         //处理审批流事宜
         if(in_array($proLevel,C('changeUplodState'))) //要处理的等级做匹配
         {
-            if($proLevel=='4_3')
+            if($proLevel=='4_3'|| $proLevel=='14_2')
             {
                $workFlowUpdata= uploadUpdataWorkFlowState($wfId,$proLevel,$proTimes,$admin,$pro_id,$plId,1,0,'',-1);
+
             }elseif ($proLevel=='6_2' || $proLevel=='8_2' || $proLevel=='9_2')
             {
                 $workFlowUpdata= uploadUpdataWorkFlowState($wfId,$proLevel,$proTimes,$admin,$pro_id,$plId,0,0,'',-1);
             }
+            if($workFlowUpdata)
+                $this->success('上传成功','','',$pro_id);
         }
-       // if($workFlowUpdata)
         $this->success('上传成功','','',$pro_id);
     }
 

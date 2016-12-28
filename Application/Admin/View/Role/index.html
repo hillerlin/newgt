@@ -61,11 +61,11 @@
         <tbody>
         <volist name="list" id="row">
             <tr data-id="{$row.role_id}">
-                <td>{$row.role_name}</td>
-                <td>{$row.status}</td>
-                <td>{$row.role_desc}</td>
-                <td><input type="checkbox" name="ids" data-toggle="icheck" value="1"></td>
-                <td>
+                <td align="center">{$row.role_name}</td>
+                <td align="center">{$row.status}</td>
+                <td align="center">{$row.role_desc}</td>
+                <td align="center"><input type="checkbox" name="ids" data-toggle="icheck" value="1"></td>
+                <td align="center">
                     <a href="<?php echo U('Role/edit',array('role_id'=>$row['role_id']))?>?" class="btn btn-green" data-toggle="navtab" data-id="role-edit" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="编辑-{$row.role_name}">编辑</a>
                     <a href="<?php echo U('Role/dataAuthEdit',array('role_id'=>$row['role_id']))?>?" class="btn btn-green" data-toggle="dialog" data-id="role-edit_data_auth" data-height="500" data-title="编辑-数据权限">数据权限</a>
                     <a href="<?php echo U('Role/del_role')?>?role_id={$row.role_id}" class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a>

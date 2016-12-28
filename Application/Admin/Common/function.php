@@ -480,6 +480,15 @@ function redisCollect($proLevel,$sender,$receive='',$time,$proId,$specialMessage
         case '11':
             $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>预签合同';
             break;
+        case '13':
+            $contents='法务<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>线下签约流程';
+            break;
+        case '14':
+            $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>商票上传流程';
+            break;
+        case '15':
+            $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>放款审核流程';
+            break;
         case -1:
             $contents=$specialMessage;
             break;
@@ -574,6 +583,15 @@ function redisPostAudit($proLevel,$sender,$receive='',$time,$proId,$plId,$specia
             break;
         case '11':
             $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>预签合同';
+            break;
+        case '13':
+            $contents='法务<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>线下签约流程';
+            break;
+        case '14':
+            $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>商票上传流程';
+            break;
+        case '15':
+            $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>放款审核流程';
             break;
         case -1:
             $contents=$specialMessage;
@@ -840,7 +858,7 @@ function uploadUpdataWorkFlowState($wfId,$proLevel,$proTimes,$admin,$proIid,$plI
     $wfModel=D('WorkflowLog');
     $pjModel=D('PjWorkflow');
     $result=true;
-    if($isUploadEnd==0 && $isUpload==0)//下载或者上传就结束
+    if($isUploadEnd==0 && $isUpload==0)//上传就结束
     {
         $updataOldPj=$pjModel->data(array('pro_level_now'=>$newLevel))->where("`wf_id`=%d",array($wfId))->save();
         $updataOldWf=$wfModel->data(array('pro_state'=>'2','pro_last_edit_time'=>time()))->where("`pl_id`=%d",array($plId))->save();
@@ -854,7 +872,7 @@ function uploadUpdataWorkFlowState($wfId,$proLevel,$proTimes,$admin,$proIid,$plI
         $updataOldWf=$wfModel->data(array('pro_state'=>'2','pro_last_edit_time'=>time()))->where("`pl_id`=%d",array($plId))->save();
         $result=$result && $updataOldWf;
     }
-    elseif ($isUploadEnd==0 && $isUpload==1)//上传完成就结束
+    elseif ($isUploadEnd==0 && $isUpload==1)//上传完成还继续
     {
         $oldPjInfo=$wfModel->where("`pj_id`=%d and `pro_level`='%s'",array($proIid,$newLevel))->find();
         if($oldPjInfo)

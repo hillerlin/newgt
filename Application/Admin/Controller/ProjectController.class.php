@@ -120,6 +120,10 @@ class ProjectController extends CommonController
             case '9':
             case '10':
             case '11':
+            case '12':
+            case '13':
+            case '14':
+            case '15':
             default:
                 $oldProject=addSubProcessAuditor($pjId,$auditor_id,$auditor_name,$pro_level,$pro_subprocess_desc);
                 break;
@@ -150,6 +154,10 @@ class ProjectController extends CommonController
         if($proLevel=='11' || $proLevel=='11_2' || $proLevel=='11_3' || $proLevel=='11_4')
         {
             $is_pre_contract= D('PrepareContract')->isPreContract($pro_id, $projectInfo['company_id']);
+        }
+        if($proLevel=='15')
+        {
+            $is_pre_contract=D('PrepareContract')->isLoanManager($pro_id, $projectInfo['company_id']);
         }
         $this->assign(array('companyName'=>$projectInfo['pro_title'],'company_id'=>$projectInfo['company_id'],'is_pre_contract'=>$is_pre_contract,'pre'=>$proLevel,'admin'=>session('admin'),'pro_subprocess_desc'=>$projectInfo['pro_subprocess'.explode('_',$proLevel)[0].'_desc']));
         $this->assign($data);
@@ -340,7 +348,6 @@ class ProjectController extends CommonController
                     /*****驳回*******/
                 //}
                 break;
-
             case '6':
                 //召开立项会-项管专员提交新建项目
                 //$pro_subprocess_desc =I('get.pro_subprocess_desc');//子流程备注
@@ -561,6 +568,21 @@ class ProjectController extends CommonController
                 }else{//驳回情况
                 }
                 break;
+            case '10':
+                //签约流程-风控审核意见，通知项管总监知情
+                //先通知宋波
+                $newProLevel=addNewLevel($proLevel);
+                $auditorids='28';
+                {
+                    $content = $admin['role_name'] . '<code>' . $admin['real_name'] .':<code>向'.adminNameToId($auditorids).'</code>'.'</code>发起知情<code>' . projectNameFromId($proIid) . '</code>合同知情事宜';
+                    $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$auditorids,$xmlId,$plId,'one',$content,-1) && $updataProject;
+                }
+
+                //跳转到风控总监分配任务
+                $auditor_id=I('get.auditor_id');
+                $updataProject=addSubProcessAuditor($proIid,$auditor_id,adminNameToId($auditor_id),$proLevel,$pro_subprocess_desc);
+                $return=postNextProcess($wfId,$newProLevel,$proTimes,$admin,$proIid,0,$auditor_id,$xmlId,$plId,'one',$contents,-1) && $return;
+                break;
             case '11':
                 //合同编辑-项管专员提交合同
                 //$pro_subprocess_desc =I('get.pro_subprocess_desc');//子流程备注
@@ -643,6 +665,55 @@ class ProjectController extends CommonController
                 }
                 break;
 
+            case '13':
+                //线下签约-法务老大分配人手
+                $proAdminId = I('get.admin_id');//风控专员跟进人ID
+                $newProLevel=addNewLevel($proLevel);
+                $updataProject=addSubProcessAuditor($proIid,$proAdminId,adminNameToId($proAdminId),$proLevel,$pro_subprocess_desc);//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                //告知总裁与副总裁
+                $auditor_id=array('22','23');
+                foreach ($auditor_id as $k=>$v) //告诉项目经理编辑合同
+                {
+                    $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'向总裁部:<code>'.adminNameToId($v).'</code>'.'</code>提交项目<code>' . projectNameFromId($proIid) . '</code>线下签约流程知情事宜';
+                    $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$v,$xmlId,$plId,'one',$content,-1) && $updataProject;//告诉项目经理的时候跨了一个等级，所以用$newProLevel
+                    sleep(1);
+                }
+                //直接跳到法务人员提交文档
+                $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' . projectNameFromId($proIid) . '</code>线下签约流程';
+                $return=postNextProcess($wfId,$newProLevel,$proTimes,$admin,$proIid,0,$proAdminId,$xmlId,$plId,'one',$contents,-1) && $updataProject && $return;
+                break;
+            case '13_2':
+                //线下签约-法务专员提交文档后通知知情人员
+                $auditor_id = I('get.auditor_id');//分配跟进人
+                $auditor_name = I('get.auditor_name');//跟进人的名字
+                $newProLevel=addNewLevel($proLevel);
+                $auditor_id = explode(',', $auditor_id);
+                $updataProject=addSubProcessAuditor($proIid,$auditor_id,$auditor_name,$newProLevel,$pro_subprocess_desc);
+                foreach ($auditor_id as $k=>$v) //通知勾选好的项管部人员
+                {
+                    $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>向项管部:<code>'.adminNameToId($v).'</code>'.'</code>提交项目<code>' . projectNameFromId($proIid) . '</code>线下签约文档上传知情';
+                    $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$v,$xmlId,$plId,'one',$content,-1) && $updataProject;
+                    sleep(1);
+                }
+                $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' . projectNameFromId($proIid) . '</code>线下签约文档';
+                $return = postNextProcess($wfId, $newProLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one', $contents, -1) && $updataProject && $return;
+                break;
+            case '14':
+                //放款流程-商票上传流程
+                //通知给财务总监，目前只有丁总和张总
+                $auditor_id=array('33','72');
+                $newProLevel=addNewLevel($proLevel);
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                foreach ($auditor_id as $k=>$v)
+                {
+                    $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>向财务部:<code>'.adminNameToId($v).'</code>'.'</code>提交项目<code>' . projectNameFromId($proIid) . '</code>商票背书知情';
+                    $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$v,$xmlId,$plId,'one',$content,-1) && $updataProject;
+                    sleep(1);
+                }
+                $proAdminId='34';//告诉出纳黄虹上传商票凭证
+                $contents = $admin['role_name'] . '<code>' . $admin['real_name'] .'通知出纳:<code>'.adminNameToId($proAdminId).'</code>'.'</code>上传项目<code>' . projectNameFromId($proIid) . '</code>商票凭证';
+                $return = postNextProcess($wfId, $newProLevel, $proTimes, $admin, $proIid, 0, $proAdminId, $xmlId, $plId, 'one', $contents, -1) && $updataProject && $return;
+                break;
         }
 
         if (!$return) {
@@ -655,7 +726,6 @@ class ProjectController extends CommonController
     //子流程-2风控和项目经理分配人手
     public function proSubAllocation2()
     {
-        //$admin=session('admin');
 
         $this->assign($_GET);
         $this->display();
@@ -744,8 +814,8 @@ class ProjectController extends CommonController
         $pre = I('get.pre');
         $this->assign('pre', $pre);
         $this->assign('admin', $admin);
-        if (intval($pre) == 4 || intval($pre) == 5 || intval($pre) == 6 || intval($pre) == 7 || intval($pre) == 8 || intval($pre) == 9 || intval($pre) == 10 || intval($pre) == 11) {
-            //新建子流程1
+        if (in_array(intval($pre),array(4,5,6,7,8,9,10,11,12,13,14,15))) {
+            //新建子流程
             $this->display('subProcess1');
 
         } else {
@@ -1597,22 +1667,26 @@ class ProjectController extends CommonController
         array_walk($list ,function(&$v,$k){
             if(empty($v['pro_author'])) $v['real_name']=M('Role')->getFieldByRoleId($v['pro_role'],'role_name');
         });
+        $proLevel=C('proLevel'); //等级配置文件信息
         foreach($list as $k=>$v){
             if($v['pro_level']!==null){
                 //判断是否是新建的子流程
                 if(strpos($v['pro_level'],'_')===false){
-                    $list[$k]['content']=$v['real_name'].'&nbsp;&nbsp;新建了&nbsp;&nbsp;【'.C('proLevel')[$v['pro_level']].'】子流程';
+                    $list[$k]['content']=$v['real_name'].'&nbsp;&nbsp;新建了&nbsp;&nbsp;【'.$proLevel[$v['pro_level']].'】子流程';
                 } else {
                         $tmpLevel=$v['pro_level'];
+                        $tmplength=strpos($tmpLevel,'_')+1;
                         //让其自动在配置文件中取下一个元素，判断其是否为空，例如，当前是7_1 ,那么此时我们需要判断C('pro_Level')[7_3]的值是否存在，不存在就表示是最后一个元素了
-                        if(!empty(C('proLevel')[substr($tmpLevel,0,2).(substr($tmpLevel,strpos($tmpLevel,'_')+1,1)+1)])){
+                        $tmpindex=substr($tmpLevel,0,$tmplength).(substr($tmpLevel,$tmplength,1)+1);
+                        if(!empty($proLevel[$tmpindex])){
                             $list[$k]['content']=$v['real_name']."&nbsp;&nbsp;".
                                 ($v['pro_state']==2?'通过':($v['pro_state']==3?'驳回':($v['pro_state']==0?'待操作':'')))."&nbsp;&nbsp;【".
-                                C('proLevel')[$v['pro_level']].'】';
+                                $proLevel[$v['pro_level']].'】';
                         }else{
                             //最后一个则不显示操作的人名字
-                            $list[$k]['content']="【". C('proLevel')[$v['pro_level']] ."】";
+                            $list[$k]['content']="【". $proLevel[$v['pro_level']] ."】";
                         }
+                        $tmpindex='';
                         $tmpLevel='';
                 }
             }

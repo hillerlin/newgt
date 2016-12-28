@@ -132,7 +132,7 @@
             $('#bjui-container').height(iContentH)
             $('#bjui-navtab').width(iContentW)
             $('#bjui-leftside, #bjui-sidebar, #bjui-sidebar-s, #bjui-splitBar, #bjui-splitBarProxy').css({height:'100%'})
-            $('#bjui-navtab .tabsPageContent').height(iContentH - navtabH+25)
+            $('#bjui-navtab .tabsPageContent').height(iContentH - navtabH+30)
             
             /* fixed pageFooter */
             setTimeout(function() {

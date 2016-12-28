@@ -284,7 +284,7 @@ class ProjectModel extends BaseModel {
                 ->field('t.*,l.*,l.pro_level as pro_level_now,pw.wf_id as wfid,pro_title,pro_no,a1.real_name as pmd_name,a2.authpage as authpage,company_name')
                 ->where(array('pro_id'=>array('in',$idList) ,'_string'=>"(l.pro_author='".$adminId."' or l.pro_role='".$roleId."') and (l.pro_state='0' or l.pro_state='3')"))
                 ->page($page, $pageSize)
-                ->group('pro_level_now')
+               // ->group('pro_level_now')
                 ->order($order)
                 ->select();
             foreach ($list as $kk=>$vv)

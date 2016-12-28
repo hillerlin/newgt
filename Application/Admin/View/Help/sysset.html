@@ -1,26 +1,22 @@
 <style>
-    .head{
-        font-size:20px;
-    }
     .lablehead{
-        font-size:16px;
+        font-size:14px;margin:10px;
     }
-    .contenthead , .contentbody{
-        margin-top:20px;
+    .contenthead{
+        margin-top:10px;
     }
     .contentbody span{
-        padding:0 20px 10px;
+        padding:15px 20px 10px;
         display: inline-block;
     }
 </style>
-<div class="bjui-pageContent">
+<div class="bjui-pageContent" style="padding:10px 15px;">
     <form action="" id="j_custom_form121" data-toggle="validate" data-alertmsg="false">
-        <div class="head"> 消息推送权限设置</div>
-        <hr/>
+        <h4><span class="glyphicon glyphicon-cog h4" style="vertical-align:middle;margin:-5px 6px 0 0;"></span>消息推送权限设置</h4>
         <php> foreach(C('messAuth') as $k => $v):</php>
         <fieldset>
         <label class="lablehead" ajax_value="{$k}">{$v['depict']}</label>
-        <div class="contenthead">
+        <span class="contenthead">
             <!--此处两个隐藏域记录用户的id和name-->
             <input type="hidden" name="addbtn.adminId{$k}" class="adminid">
             <input type="hidden" name="addbtn.profession{$k}" class="adduser">
@@ -29,7 +25,7 @@
             <!--multi常量用来在listName页面代表可以多选-->
             <a href="/Admin/Role/listName/multi/1/k/{$k}" data-toggle="lookupbtn" class="btn btn-green" data-group="addbtn" >添加</a>&nbsp;&nbsp;
             <a href="/admin/Help/sysdel/mstatus/{$k}" data-toggle="lookupbtn" class="btn btn-red" data-group="delbtn" >删除</a>
-        </div>
+        </span>
         <div class="contentbody"> {$list[$k]['names']} </div>
         </fieldset>
         <php>endforeach;</php>

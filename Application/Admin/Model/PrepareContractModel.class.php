@@ -46,6 +46,11 @@ class PrepareContractModel extends BaseModel {
         $map['company_id'] = $company_id;
         return $this->where($map)->count();
     }
+    public function isLoanManager($pro_id, $company_id) {
+        $map['pro_id'] = $pro_id;
+        $map['company_id'] = $company_id;
+        return D('loanForm')->where($map)->getField('loan_id');
+    }
     
     public function superviseType() {
         return array(

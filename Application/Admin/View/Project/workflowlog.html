@@ -32,7 +32,7 @@
         </thead>
         <tbody>
         <php>foreach($list as $v):</php>
-        <tr data-id="{$v['pro_id']}" data-title="{$v['pro_title']}" ondblclick="showWorkflow(this)">
+        <tr data-id="{$v['pro_id']}" data-title="{$v['pro_title']}" ondblclick="showWorkflow(this)" title="双击可查看项目详情" style="cursor:pointer;">
             <td align="center">{$v['pro_no']}</td>
             <td align="center">{$v['pro_title']}</td>
             <td align="center">{:date('Y-m-d H:i', $v['addtime'])}</td>

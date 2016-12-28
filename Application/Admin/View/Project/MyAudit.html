@@ -32,7 +32,7 @@
         </thead>
         <tbody>
         <?php foreach($list as $v){?>
-        <tr data-id="<?php echo $v['pro_id']?>" data-title="<?php echo $v['pro_title']?>" ondblclick="showWorkflow(this)">
+        <tr data-id="<?php echo $v['pro_id']?>" data-title="<?php echo $v['pro_title']?>" ondblclick="showWorkflow(this)" title="双击可查看项目详情" style="cursor:pointer;">
             <td align="center"><?php echo $v['pro_no']?></td>
             <td align="center"><?php echo $v['pro_title']?></td>
             <td align="center"><?php echo date('Y-m-d H:i', $v['addtime'])?></td>

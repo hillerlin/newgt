@@ -620,10 +620,10 @@ class ProjectController extends CommonController
             case '11_3':
                 //合同预签约-副总裁审核
                 $proAdminId='23';//业务类型指定了副总裁，以后可以配成动态;
-                $auditor_id = I('get.auditor_id');//分配跟进人
-                $auditor_name = I('get.auditor_name');//跟进人的名字
+              //  $auditor_id = I('get.auditor_id');//分配跟进人
+               // $auditor_name = I('get.auditor_name');//跟进人的名字
                 $newProLevel=addNewLevel(addNewLevel(addNewLevel($proLevel)));
-                $updataProject=addSubProcessAuditor($proIid,$auditor_id,$auditor_name,$newProLevel,$pro_subprocess_desc);
+                $updataProject=addSubProcessAuditor($proIid,null,null,$newProLevel,$pro_subprocess_desc);
                 if($auditType==2) { //审核通过
                     $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的合同审核已发出';
                     $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $proAdminId, $xmlId, $plId, 'one', $contents, -1) && $updataProject;
@@ -707,12 +707,47 @@ class ProjectController extends CommonController
                 foreach ($auditor_id as $k=>$v)
                 {
                     $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>向财务部:<code>'.adminNameToId($v).'</code>'.'</code>提交项目<code>' . projectNameFromId($proIid) . '</code>商票背书知情';
-                    $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$v,$xmlId,$plId,'one',$content,-1) && $updataProject;
+                    $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$v,$xmlId,$plId,'one',$content,-3) && $updataProject;
                     sleep(1);
                 }
                 $proAdminId='34';//告诉出纳黄虹上传商票凭证
                 $contents = $admin['role_name'] . '<code>' . $admin['real_name'] .'通知出纳:<code>'.adminNameToId($proAdminId).'</code>'.'</code>上传项目<code>' . projectNameFromId($proIid) . '</code>商票凭证';
-                $return = postNextProcess($wfId, $newProLevel, $proTimes, $admin, $proIid, 0, $proAdminId, $xmlId, $plId, 'one', $contents, -1) && $updataProject && $return;
+                $return = postNextProcess($wfId, $newProLevel, $proTimes, $admin, $proIid, 0, $proAdminId, $xmlId, $plId, 'one', $contents, -3) && $updataProject && $return;
+                break;
+            case '15':
+                //新建放款审核流程-项管专员
+                 $proAdminId = 28;//传给项管总监知情审核
+                 $auditor_id = I('get.auditor_id');//分配跟进人
+                 $auditor_name = I('get.auditor_name');//跟进人的名字
+                 $newProLevel=addNewLevel($proLevel);
+                 $updataProject=addSubProcessAuditor($proIid,$auditor_id,$auditor_name,$proLevel,$pro_subprocess_desc);
+                 $auditor_id = explode(',', $auditor_id);
+                //通知项管总监知情
+                $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' .projectNameFromId($proIid) . '</code>放款审核流程知情';
+                $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $proAdminId, $xmlId, $plId, 'one', $contents, -3) && $updataProject;
+                //跳到法务人员
+                foreach ($auditor_id as $k=>$v)
+                {
+                    $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' . projectNameFromId($proIid) . '</code>放款审核流程';
+                    $return=postNextProcess($wfId,$newProLevel,$proTimes,$admin,$proIid,0,$v,$xmlId,$plId,'one',$content,-3) && $updataProject;
+                    sleep(1);
+                }
+               break;
+            case '15_2':
+                //新建放款审核流程-法务人员分配给风控A和风控B
+               // $proAdminId = 28;//传给项管总监知情审核
+                $auditor_id = I('get.auditor_id');//分配跟进人
+                $auditor_name = I('get.auditor_name');//跟进人的名字
+                $updataProject=addSubProcessAuditor($proIid,$auditor_id,$auditor_name,$proLevel,$pro_subprocess_desc);
+                $auditor_id = explode(',', $auditor_id);
+                //通知项管总监知情
+                //跳到法务人员
+                foreach ($auditor_id as $k=>$v)
+                {
+                    $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' . projectNameFromId($proIid) . '</code>法务审核事宜';
+                    $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$v,$xmlId,$plId,'one',$content,-3) && $updataProject;
+                    sleep(1);
+                }
                 break;
         }
 

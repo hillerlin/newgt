@@ -489,9 +489,12 @@ function redisCollect($proLevel,$sender,$receive='',$time,$proId,$specialMessage
         case '15':
             $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>放款审核流程';
             break;
-        case -1:
-            $contents=$specialMessage;
-            break;
+        case '-1':
+        case '-2':
+        case '-3':
+        default:
+        $contents=$specialMessage;
+        break;
     }
     $redisValue=array($time=>json_encode(array('contents'=>$contents,'time'=>$time,'proId'=>$proId,'authorType'=>$authorType)));
     return S()->hMset($redisKey,$redisValue);
@@ -593,7 +596,10 @@ function redisPostAudit($proLevel,$sender,$receive='',$time,$proId,$plId,$specia
         case '15':
             $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>放款审核流程';
             break;
-        case -1:
+        case '-1':
+        case '-2':
+        case '-3':
+        default:
             $contents=$specialMessage;
             break;
     }

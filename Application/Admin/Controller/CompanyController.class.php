@@ -297,6 +297,12 @@ class CompanyController extends CommonController {
             case '13_2' :
                 $map='2,14';
                 break;
+            case '15' ://法务所有人
+                $map='21';
+                break;
+            case '15_2' ://风控部所有人
+                $map='17,18,21';
+                break;
         }
         $adminList=D()->table('gt_role as r')
             ->join("LEFT JOIN __ADMIN__ AS a ON a.role_id=r.role_id")

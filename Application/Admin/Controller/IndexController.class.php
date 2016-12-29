@@ -181,8 +181,11 @@ class IndexController extends CommonController {
         $workFlowMessage=$this->workFlowMessage($admin,1);
         //消息提醒-签约流程消息
         $contractMessage=$this->workFlowMessage($admin,2);
+        //消息提醒-放款流程消息
+        $loantMessage=$this->workFlowMessage($admin,3);
         //项目立项消息提醒显示5条
         $this->assign('workFlowMessage',array_slice($workFlowMessage,0,5));
+        $this->assign('loantMessage',array_slice($loantMessage,0,5));
         //代办显示10条
         $this->assign('backlog', array_slice($backlog,0,10));
 

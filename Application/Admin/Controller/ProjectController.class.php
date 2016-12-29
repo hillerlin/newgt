@@ -25,6 +25,10 @@ class ProjectController extends CommonController
         );
     }
 
+    public function flushall()
+    {
+        S()->flushAll();
+    }
 
     /* 保存项目 */
 
@@ -658,10 +662,10 @@ class ProjectController extends CommonController
             case '11_3':
                 //合同预签约-副总裁审核
                 $proAdminId='23';//业务类型指定了副总裁，以后可以配成动态;
-              //  $auditor_id = I('get.auditor_id');//分配跟进人
-               // $auditor_name = I('get.auditor_name');//跟进人的名字
+                $auditor_id = I('get.auditor_id');//分配跟进人
+                $auditor_name = I('get.auditor_name');//跟进人的名字
                 $newProLevel=addNewLevel(addNewLevel(addNewLevel($proLevel)));
-                $updataProject=addSubProcessAuditor($proIid,null,null,$newProLevel,$pro_subprocess_desc);
+                $updataProject=addSubProcessAuditor($proIid,$auditor_id,$auditor_name,$newProLevel,$pro_subprocess_desc);
                 if($auditType==2) { //审核通过
                     $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的合同审核已发出';
                     $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $proAdminId, $xmlId, $plId, 'one', $contents, -1) && $updataProject;

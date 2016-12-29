@@ -76,10 +76,26 @@
                     </li>
                     <?php endforeach;?>
                 </ul>
-                <php>if(count($contractMessage)>=1):</php>
+                <php>if(count($contractMessage)>=5):</php>
                 <div><a href="{:U('/admin/Index/ajaxMessageMore',array('type'=>'workFlowMessage','messageType'=>2))}" style="float: right;" data-toggle="dialog" data-width="800" data-height="400" data-id="dialog-max" data-title="签约流程">更多...</a></div>
                 <php>endif;</php>
             </fieldset>
+                <fieldset style="padding:10px;">
+                    <h5><span class="glyphicon glyphicon-edit h5" style="vertical-align:middle;margin:-4px 4px 0 0;"></span>放款流程</h5>
+                    <ul>
+                        <?php foreach($loantMessage as $lMessage):?>
+                        <li><a class="<?php echo $lMessage['in']==0?'':'read';?>" data-expand-all="true" onclick="do_open_layout('project-workflowlog','/Admin/Project/workflowlog?pro_id={$lMessage[proId]}&time={$lMessage[time]}&type={$lMessage[Type]}&m=1','流程监控')" title="{$lMessage['contents']}" style="font-size: 14px;display:inline-block;vertical-align:middle;/*max-width:272px;*/height:28px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;cursor:pointer;">{$lMessage["contents"]}</a>
+                            <span ><empty name="lMessage['in']"><font style="color:red;">【未读】</font><else/><font style="color:green;">【已读】</font></empty></span>
+                            <span style="float:right;font-size:13px;line-height:28px;">
+                             <?php echo date('Y-m-d H:i:s',$lMessage['time'])?>
+                        </span>
+                        </li>
+                        <?php endforeach;?>
+                    </ul>
+                    <php>if(count($loanMessage)>=5):</php>
+                    <div><a href="{:U('/admin/Index/ajaxMessageMore',array('type'=>'workFlowMessage','messageType'=>2))}" style="float: right;" data-toggle="dialog" data-width="800" data-height="400" data-id="dialog-max" data-title="签约流程">更多...</a></div>
+                    <php>endif;</php>
+                </fieldset>
             </div>
         </div>
 

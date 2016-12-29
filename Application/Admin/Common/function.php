@@ -673,7 +673,7 @@ function postRebutter($wfId,$proIid,$proRebutterLevel,$proTimes,$admin,$proRebut
  * @param $type list 是数组模式回传  one 是bool类型回传
  * @return bool
  */
-function postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,$proRoleId=0,$proAdminId=0,$xmlId,$plId,$type='list',$specialMessage=null,$specialType=null)
+function postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,$proRoleId=0,$proAdminId=0,$xmlId,$plId,$type='list',$specialMessage=null,$specialType=null,$time=null)
 {
     $explodeLevel=explode('_',$proLevel);//拼接审批轮次
     if(!$explodeLevel[1])
@@ -684,18 +684,21 @@ function postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,$proRoleId=0,$
     {
         $modify=$explodeLevel[1]+1;
         $newLevel=$explodeLevel[0].'_'.$modify;
-    }
+    } //记录此项目当前的子流程信息
     $pjWorkFlow = D('PjWorkflow')->where("`wf_id`=%d",array($wfId))->data(array( 'pj_state' => '待审核', 'pro_level_now' => $newLevel, 'pro_times_now' => $proTimes))->save();
+    //将创建当前子流程的人的信息记录到SendProcess中去
     $sendProcess = D('SendProcess')->data(array('wf_id' => $wfId,'sp_message'=>'已提交', 'sp_author' => $admin['admin_id'], 'sp_addtime' => time(), 'sp_role_id' => $admin['role_id']))->add();
+    //将当前子流程执行的信息记录到流程执行日志表workflow_log中
     $workFlowLog = D('WorkflowLog')->data(array(
         'sp_id' => $sendProcess, 'pj_id' => $proIid, 'pro_level' => $newLevel, 'pro_times' => $proTimes, 'pro_state' => 0, 'pro_addtime' => time(),'pro_role'=>$proRoleId,'pro_author'=>$proAdminId,
         'wf_id' => $wfId, 'pro_xml_id' => $xmlId
     ))->add();
-    $oldworkFlowLog=D('WorkflowLog')->where("`pl_id`=%d",array($plId))->data(array('pro_state'=>2))->save();
+    $oldworkFlowLog=D('WorkflowLog')->where("`pl_id`=%d",array($plId))->data(array('pro_state'=>2))->save();//eg ,  此时是10_2子流程，则将10_1的子流程审核状态改变为2 表示已审核状态
     $adminValue=($proRoleId>0)?$proRoleId:$proAdminId;
     $adminType=($proRoleId>0)?'|role':'|admin';
     $noticeType=isset($specialType)?$specialType:$proLevel;
-    $redisPost = redisTotalPost($noticeType, $admin['admin_id'], $adminValue . $adminType, time(), $proIid, $workFlowLog,$specialMessage,$specialType) && $oldworkFlowLog===false?false:true;
+    isset($time)?$time=$time:$time=time();
+    $redisPost = redisTotalPost($noticeType, $admin['admin_id'], $adminValue . $adminType, $time, $proIid, $workFlowLog,$specialMessage,$specialType) && $oldworkFlowLog===false?false:true;
 
     if($type=='list')
     {
@@ -890,6 +893,7 @@ function uploadUpdataWorkFlowState($wfId,$proLevel,$proTimes,$admin,$proIid,$plI
         {
             $updataOldPj=$pjModel->data(array('pro_level_now'=>$newLevel))->where("`wf_id`=%d",array($wfId))->save();
             $updataOldWf=$wfModel->data(array('pro_state'=>'2','pro_last_edit_time'=>time()))->where("`pl_id`=%d",array($plId))->save();
+            //更新项目流程状态，
             $workFlowLog = D('WorkflowLog')->data(array(
                 'sp_id' => '', 'pj_id' => $proIid, 'pro_level' => $newLevel, 'pro_times' => $proTimes, 'pro_state' => 2, 'pro_addtime' => time(),'pro_role'=>'','pro_author'=>'',
                 'wf_id' => $wfId, 'pro_xml_id' => ''

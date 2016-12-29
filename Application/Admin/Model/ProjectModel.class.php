@@ -351,6 +351,19 @@ class ProjectModel extends BaseModel {
             ->select();
         return $result;
     }
+    //获取项目跟进人信息
+    public function formProIdGetInsider($pro_id){
+        return M('Project')->alias('p')
+            ->field('a.admin_id,a.role_id')
+            ->join('LEFT JOIN __ADMIN__ as a ON a.admin_id=p.admin_id')
+            ->where('pro_id = '.$pro_id)
+            ->find();
+    }
+    //根据gt_workflow_log中的pro_id来获取创建项目的人的role_id
+    public function formPjIdGetInsider($pro_id){
+        return M()->query('select a.admin_id from gt_workflow_log as wl LEFT JOIN gt_admin as a on a.admin_id=wl.pro_author where wl.pro_level=0 and wl.pj_id='.$pro_id.' order by wl.pro_times desc limit 1');
+    }
+
     //获取执行人信息,姓名，执行时间，执行的步骤
     public  function executorInfo($map){
         $result=M('WorkflowLog')->query("select re.* from( SELECT wl.pro_level, wl.wf_id, wl.pro_author, wl.pro_role, wl.pro_addtime, a.real_name FROM gt_workflow_log wl LEFT JOIN gt_admin AS a ON a.admin_id = wl.pro_author WHERE ".$map." ORDER BY wf_id ASC ,pro_addtime DESC ) as re GROUP BY re.pro_level,re.wf_id ");

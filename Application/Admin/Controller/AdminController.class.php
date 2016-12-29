@@ -299,9 +299,13 @@ class AdminController extends CommonController {
         if($proLevel=='0_1')
         {
             $map['role_id'] = 2;//项目专员
-        }elseif($proLevel=='13')
+        }elseif($proLevel=='13' || $proLevel=='10_4')
         {
             $map['role_id']=21;//法务专员
+        }elseif($proLevel=='10_2'){
+            $map['role_id']=18;
+        }elseif($proLevel=='12_1'){//
+            $map['role_id']=array('in',array());
         }
         $model = D('Admin');
         $list = $model->where($map)->select();

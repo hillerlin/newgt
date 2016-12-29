@@ -18,27 +18,29 @@
             }
             a:link {color: #285e8e;}
             .main_box {
-                position: absolute; top:50%; left:50%; margin-top:-260px; margin-left: -300px; padding: 30px; width:600px; height:460px;
-                background: #FAFAFA; background: rgba(255,255,255,0.5); border: 1px #DDD solid;
+                position: absolute; top:50%; left:50%; margin-top:-260px; margin-left: -460px; padding: 30px; width:920px; height:460px;
+                background: #fff; /* background: rgba(255,255,255,0.5); */ border: 1px #DDD solid;
                 border-radius: 5px;
                 -webkit-box-shadow: 1px 5px 8px #888888; -moz-box-shadow: 1px 5px 8px #888888; box-shadow: 1px 5px 8px #888888;
             }
+            .main_box .login_bg{position: absolute;top:45px; left:40px;}
             .main_box .setting {position: absolute; top: 5px; right: 10px; width: 10px; height: 10px;}
             .main_box .setting a {color: #FF6600;}
             .main_box .setting a:hover {color: #555;}
-            .login_logo {margin-bottom: 20px; height: 45px; text-align: center;}
+            .login_box{clear: both;overflow: hidden;}
+            .login_logo {margin:10px 80px 10px 0; height: 45px; text-align: right;}
             .login_logo img {height: 45px;}
             .login_msg {text-align: center; font-size: 16px;}
-            .login_form {padding-top: 20px; font-size: 16px;}
+            .login_form {padding: 20px 40px 0 0; font-size: 16px;float: right;}
             .login_box .form-control {display: inline-block; *display: inline; zoom: 1; width: auto; font-size: 18px;}
             .login_box .form-control.x319 {width: 319px;}
             .login_box .form-control.x164 {width: 164px;}
             .login_box .form-group {margin-bottom: 20px;}
             .login_box .form-group label.t {width: 120px; text-align: right; cursor: pointer;}
-            .login_box .form-group.space {padding-top: 15px; border-top: 1px #FFF dotted;}
+            .login_box .form-group.space {padding-top: 5px; border-top: 1px #FFF dotted;}
             .login_box .form-group img {margin-top: 1px; height: 32px; vertical-align: top;}
             .login_box .m {cursor: pointer;}
-            .bottom {text-align: center; font-size: 12px;}
+            .bottom {text-align: center; font-size: 12px;position:relative;z-index:2;margin-top:15px;}
         </style>
         <script type="text/javascript">
             var COOKIE_NAME = 'sys__username';
@@ -136,6 +138,7 @@
         <div id="errorie"><div>您还在使用老掉牙的IE，请升级您的浏览器到 IE8以上版本 <a target="_blank" href="http://windows.microsoft.com/zh-cn/internet-explorer/ie-8-worldwide-languages">点击升级</a>&nbsp;&nbsp;强烈建议您更改换浏览器：<a href="http://down.tech.sina.com.cn/content/40975.html" target="_blank">谷歌 Chrome</a></div></div>
         <![endif]-->
         <div class="main_box">
+            <img src="__ADMIN__/images/bg.png" class="login_bg" width="320" height="400" alt="启步，全新未来">
             <div class="setting"><a href="javascript:;" onclick="choose_bg();" title="更换背景"><span class="glyphicon glyphicon-th-large"></span></a></div>
             <div class="login_box">
                 <div class="login_logo">
@@ -175,7 +178,7 @@
                     </form>
                 </div>
             </div>
-            <div class="bottom">Copyright &copy; 2013 - 2016 <a href="#">深圳国投商业保理有限公司</a></div>
+            <div class="bottom">Copyright &copy; 2013 - 2017 <a href="#">深圳国投商业保理有限公司</a></div>
         </div>
     </body>
 </html>

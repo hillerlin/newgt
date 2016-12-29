@@ -13,6 +13,7 @@
         console.log($form)
     }
 </script>
+<!--此页面用于审核-->
 <div class="bjui-pageContent">
     <form action="<?php echo U('Project/saveMyAudit')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false" method="get">
         <input type="hidden" name="auditType" value="{$pre}">
@@ -41,7 +42,8 @@
                     <input type="text" name="pro_title" id="p_company" value="{$companyName}" size="30" data-toggle="lookup" data-url="<?php echo U('Company/findRelateSubProcess/',array('pre'=>4))?>" data-width="600" data-height="300" readonly>
                 </td>
             </tr>-->
-            <?php if($pre=='7_1'||$pre=='7_2' || $pre=='7_3' || $pre=='6_2' || $pre=='6_3' || $pre=='8_3' || $pre=='8_2' || $pre=='9_3' || $pre=='9_2' || $pre=='10' || $pre=='14') :?>
+ 
+            <?php if(in_array($pre,array('7_1','7_2','7_3','6_2','6_3','8_3','8_2','9_3','9_2',14,'12_1'))): ?>
             <?php elseif($pre=='11_2'  || $pre=='11_4' || $pre=='11_5'):?>
             <tr>
                 <td>
@@ -50,7 +52,6 @@
                 </td>
             </tr>
             <?php else:?>
-
             <?php if($pre=='11' || $pre=='11_3'):?>
             <tr>
                 <td>
@@ -59,7 +60,7 @@
                 </td>
             </tr>
             <?php endif;?>
-            <?php if($pre=='15' || $pre=='15_2'):?>
+            <?php if($pre=='15' || $pre=='15_2' || $pre=='15_3' || $pre=='15_4'|| $pre=='15_5'|| $pre=='15_6' || $pre=='15_7'|| $pre=='15_8' || $pre=='15_9'|| $pre=='15_10'):?>
             <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150"><?php echo $is_pre_contract? '点击编辑放款表：' : '点击添加放款表：'?></label>
@@ -67,6 +68,7 @@
                 </td>
             </tr>
             <?php endif;?>
+            <?php if(!in_array($pre,array('15_4','15_5','15_6','15_7','15_8','15_9','15_10','10_3'))):?>
             <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150">选择通知知情的相关人员：</label>
@@ -75,7 +77,8 @@
                 </td>
             </tr>
             <?php endif;?>
-            <?php if($admin['role_name']=='项管部总监'||$pre=='7_2' || $pre=='11_2' || $pre=='11_3' || $pre=='11_4' || $pre=='11_5'):?>
+            <?php endif;?>
+            <?php if($admin['role_name']=='项管部总监'||$pre=='7_2' || $pre=='11_2' || $pre=='11_3' || $pre=='11_4' || $pre=='11_5' || $pre=='15_2' || $pre=='15_3' || $pre=='15_4'|| $pre=='15_5'|| $pre=='15_6' || $pre=='15_7'|| $pre=='15_8' || $pre=='15_9'||$pre=='12_1'):?>
                <tr>
                    <td>
                    <label for='company_id' class='control-label x150'>请选择：</label>
@@ -87,6 +90,7 @@
                    </td>
                </tr>
             <?php endif;?>
+
             <tr>
                 <td>
                     <label for="pro_desc" class="control-label x150">备注：</label>

@@ -280,8 +280,11 @@ class CompanyController extends CommonController {
                 break;
             case 8:
             case 9:
-            case 10:
                 $map='16,18,17,21';
+                break;
+            case 10:
+                //项管部总监
+                $map='17';
                 break;
             case '11':
                 //返回股权部和分控部老大的adminId
@@ -291,8 +294,8 @@ class CompanyController extends CommonController {
                 //返回法务adminId
                 $map='21';
                 break;
-            case 12 :
-                $map='2,13,14,16,17,29,20';
+            case '12' :
+                $map='21';
                 break;
             case '13_2' :
                 $map='2,14';
@@ -300,8 +303,11 @@ class CompanyController extends CommonController {
             case '15' ://法务所有人
                 $map='21';
                 break;
-            case '15_2' ://风控部所有人
-                $map='17,18,21';
+            case '15_2' ://风控专员
+                $map='18';
+                break;
+            case '15_3' ://风控专员
+                $map='18';
                 break;
         }
         $adminList=D()->table('gt_role as r')

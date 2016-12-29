@@ -100,7 +100,7 @@ class ProjectContractModel extends BaseModel {
         }
         return array('total' => $total, 'list' => $list);
     }
-    
+
     public function formatData($data) {
         foreach ($data as & $val) {
             $val['term_type'] = self::termType($val['term_type']);

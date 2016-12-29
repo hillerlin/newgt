@@ -1,7 +1,7 @@
 <style>
 .quicklink ul{clear: both;overflow: hidden;}
 .quicklink ul li{float: left;width: 60px;margin: 20px 0 20px 80px;}
-.quicklink ul li a{display: block;font-size: 13px;color: #31708f;text-align: center;opacity: 0.8;filter:Alpha(opacity=80);}
+.quicklink ul li a{display: block;font-size: 13px;color: #31708f;text-align: center;opacity: 0.9;filter:Alpha(opacity=90);cursor:pointer;}
 .quicklink ul li a span{display: block;width:50px!important;margin:0 auto 12px;height: 50px;line-height: 50px;text-align: center;color: #31708f;border:1px #c3ced5 solid;border-radius: 100%;transition:All 0.6s ease-in-out;-webkit-transition:All 0.6s ease-in-out;-moz-transition:All 0.6s ease-in-out;-o-transition:All 0.6s ease-in-out;}
 .quicklink ul li:hover a{text-decoration: none;opacity: 1;filter:Alpha(opacity=100);}
 .quicklink ul li:hover span{border-color: #31708f;transform:rotate(360deg);-webkit-transform:rotate(360deg);-moz-transform:rotate(360deg);-o-transform:rotate(360deg);}
@@ -61,14 +61,14 @@
                     <?php endforeach;?>
                 </ul>
                 <php>if(count($workFlowMessage)>=5):</php>
-                <div><a href="{:U('/admin/Index/ajaxMessageMore',array('type'=>'workFlowMessage'))}" style="float: right;" data-toggle="dialog" data-width="800" data-height="400" data-id="dialog-max" data-title="项目立项">更多...</a></div>
+                    <div><a href="{:U('/admin/Index/ajaxMessageMore',array('type'=>'workFlowMessage','messageType'=>1))}"  style="float: right;" data-toggle="dialog" data-width="800" data-height="400" data-id="dialog-ajaxMessage" data-title="项目立项">更多...</a></div>
                 <php>endif;</php>
                 </fieldset>
                 <fieldset style="padding:10px;">
                 <h5><span class="glyphicon glyphicon-edit h5" style="vertical-align:middle;margin:-4px 4px 0 0;"></span>签约流程</h5>
                 <ul>
                     <?php foreach( $contractMessage as $conMessage):?>
-                    <li><a class="<?php echo $conMessage['in']==0?'':'read';?>" data-expand-all="true" onclick="do_open_layout('project-workflowlog','/Admin/Project/workflowlog?pro_id={$conMessage[proId]}&time={$conMessage[time]}&type={$conMessage[Type]}&m=1','流程监控')" title="{$conMessage["contents"]}" style="font-size: 14px;display:inline-block;vertical-align:middle;/*max-width:272px;*/height:28px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;cursor:pointer;">{$conMessage["contents"]}</a>
+                    <li><a class="<?php echo $conMessage['in']==0?'':'read';?>" data-expand-all="true" onclick="do_open_layout('project-workflowlog','/Admin/Project/workflowlog?pro_id={$conMessage[proId]}&time={$conMessage[time]}&type={$conMessage[Type]}&m=1','流程监控')" title="{$conMessage['contents']}" style="font-size: 14px;display:inline-block;vertical-align:middle;/*max-width:272px;*/height:28px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;cursor:pointer;">{$conMessage["contents"]}</a>
                         <span ><empty name="conMessage['in']"><font style="color:red;">【未读】</font><else/><font style="color:green;">【已读】</font></empty></span>
                         <span style="float:right;font-size:13px;line-height:28px;">
                              <?php echo date('Y-m-d H:i:s',$conMessage['time'])?>
@@ -80,14 +80,6 @@
                 <div><a href="{:U('/admin/Index/ajaxMessageMore',array('type'=>'workFlowMessage','messageType'=>2))}" style="float: right;" data-toggle="dialog" data-width="800" data-height="400" data-id="dialog-max" data-title="签约流程">更多...</a></div>
                 <php>endif;</php>
             </fieldset>
-            <!-- <fieldset style="padding:10px;">
-                <h5><span class="glyphicon glyphicon-ok-circle h5" style="vertical-align:middle;margin:-4px 4px 0 0;"></span>放款信息</h5>
-                <ul>
-                    <li>放款消息<span style="float:right;">2016-11-30 19:28:47</span></li>
-                    <li>放款消息<span style="float:right;">2016-11-30 19:28:47</span></li>
-                    <li>放款消息<span style="float:right;">2016-11-30 19:28:47</span></li>
-                </ul>
-            </fieldset> -->
             </div>
         </div>
 

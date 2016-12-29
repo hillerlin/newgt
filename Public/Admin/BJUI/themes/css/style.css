@@ -159,7 +159,7 @@ td[align=right] input{text-align:right;}
 #bjui-header > #bjui-navbar-collapse.in > .bjui-navbar-right > li:last-child a{border-radius:0 0 5px 5px;}
 #bjui-header > #bjui-navbar-collapse > .bjui-navbar-right{float:right;}
 #bjui-header > #bjui-navbar-collapse > .bjui-navbar-right > li{float:left; height:28px;}
-#bjui-header > #bjui-navbar-collapse > .bjui-navbar-right > li:last-child{border-right:none;margin-left: 15px;}
+#bjui-header > #bjui-navbar-collapse > .bjui-navbar-right > li:last-child{border-right:none;}
 #bjui-header > #bjui-navbar-collapse > .bjui-navbar-right > li > div{padding:0 10px; height:28px; line-height:28px; color:#FFF;}
 #bjui-header > #bjui-navbar-collapse > .bjui-navbar-right > li > div > span{}
 #bjui-header > #bjui-navbar-collapse > .bjui-navbar-right > li > a{display:block; padding:0 10px; height:28px; line-height:28px; text-decoration:none; color:#FFF !important; border-radius:5px;}

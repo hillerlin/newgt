@@ -23,6 +23,7 @@ $('#j_custom_issuedate').on('afterchange.bjui.datepicker', function(e, data) {
     $('#j_custom_indate').val(end.formatDate(pattern))
 })
 </script>
+<!--专门用于分配人-->
 <div class="bjui-pageContent">
     <form action="<?php echo U('Project/saveMyAudit')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false" method="get">
         <input type="hidden" name="pro_id" value="{$pro_id}">
@@ -32,13 +33,23 @@ $('#j_custom_issuedate').on('afterchange.bjui.datepicker', function(e, data) {
         <input type="hidden"  name="proLevel" value="{$proLevel}">
         <input type="hidden"  name="proTimes" value="{$proTimes}">
         <div style="margin-top:50px;">
-            <label for="money" class="control-label x150"><?php if($proLevel=='0_1') { echo '项管部跟进人：'; } elseif($proLevel=='13') { echo '法务跟进人：'; } ?></label>
+            <label for="money" class="control-label x150"><?php
+            if($proLevel=='0_1') {
+             echo '项管部跟进人：';
+            } elseif($proLevel=='13') {
+              echo '法务跟进人：';
+            }elseif($proLevel=='10_2'){
+                echo '风控部审核人员';
+            }elseif($proLevel=='10_4'){
+                echo '法务知情人';
+            }
+?></label>
             <input type="hidden" name="admin_id" value="" />
             <input type="text" name="real_name" id="p_company" value="" size="15" readonly
                    data-toggle="lookup" data-url="<?php echo U('Admin/projectFollow',array('proLevel'=>$proLevel))?>" data-width="600" data-height="300">
 
         </div>
-        <?php if($proLevel=='0_1'):?>
+        <?php if($proLevel=='0_1' || $proLevel=='10_4'):?>
         <div style="margin-top: 50px;">
             <label for='company_id' class='control-label x150'>请审核:</label>
             <select name="auditType" class="auditType" data-rule="required" data-toggle="selectpicker">

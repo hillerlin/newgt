@@ -22,7 +22,7 @@
         <?php foreach($list as $v) {?>
         <tr>
             <td><?php echo $v['pro_title']?></td>
-            <td><?php echo $v['addtime']?></td>
+            <td><?php echo date('Y-m-d',$v['addtime'])?></td>
             <td>
                 <a href="javascript:;" data-toggle="lookupback" data-args="{pro_id:'<?php echo $v['pro_id']?>', pro_title:'<?php echo $v['pro_title']?>'}" class="btn btn-blue" title="选择本项" data-icon="check">选择</a>
             </td>

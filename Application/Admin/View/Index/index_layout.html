@@ -36,7 +36,6 @@
                 <ul>
                     <?php foreach($backlog as $list) {?>
                     <li><a href="<?php echo U('Project/MyAudit',array('pro_id'=>$list['proId'],'authorType'=>$list['authorType'] ,'m'=>'delredis'))?>" data-toggle="navtab" data-id="<?php echo strtolower($list['controller']) .'-'. $list['action']?>" data-title="<?php echo $list['title']?>" title="<?php echo $list['contents']?>" style="font-size: 14px;display:inline-block;vertical-align:middle;height:28px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;cursor:pointer;"><?php echo $list['contents']?></a>
-                        <span ><empty name="wFMessage['in']"><font style="color:red;">【未读】</font><else/><font style="color:green;">【已读】</font></empty></span>
                         <span style="float:right;font-size:13px;line-height:28px;"><?php echo date('Y-m-d H:i:s', $list['time'])?></span>
                     </li>
                     <?php }?>
@@ -54,7 +53,7 @@
                 <h5><span class="glyphicon glyphicon-save h5" style="vertical-align:middle;margin:-7px 4px 0 0;"></span>项目立项</h5>
                 <ul>
                   <?php foreach( $workFlowMessage as $wFMessage):?>
-                    <li><a class="<?php echo $wFMessage['in']==0?'':'read';?>" data-expand-all="true" onclick="do_open_layout('project-workflowlog','/Admin/Project/workflowlog?pro_id={$wFMessage[proId]}&time={$wFMessage[time]}&type={$wFMessage[Type]}&m=1','流程监控')" title="{$wFMessage["contents"]}" style="font-size: 14px;display:inline-block;vertical-align:middle;height:28px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;cursor:pointer;">{$wFMessage["contents"]}</a>
+                    <li><a class="<?php echo $wFMessage['in']==0?'':'read';?>" data-expand-all="true" onclick="do_open_layout('project-workflowlog','/Admin/Project/workflowlog?pro_id={$wFMessage[proId]}&time={$wFMessage[time]}&type={$wFMessage[Type]}&m=1','流程监控')" title="{$wFMessage['contents']}" style="font-size: 14px;display:inline-block;vertical-align:middle;height:28px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;cursor:pointer;">{$wFMessage["contents"]}</a>
                         <span ><empty name="wFMessage['in']"><font style="color:red;">【未读】</font><else/><font style="color:green;">【已读】</font></empty></span>
                         <span style="float:right;font-size:13px;line-height:28px;"><?php echo date('Y-m-d H:i:s',$wFMessage['time'])?></span>
                     </li>
@@ -120,6 +119,6 @@
                 error:function(data){
                 }
             });
-        },60000);
+        },600000);
     });
 </script>

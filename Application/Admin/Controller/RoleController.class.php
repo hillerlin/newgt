@@ -196,7 +196,11 @@ class RoleController extends CommonController {
         $pageSize = I('post.pageSize', 30);
         $page = I('post.pageCurrent', 1);
         $where='';
-        if(I('post.real_name')){
+        //判断是否是英文输入的
+        if(preg_match("/^[a-zA-Z]+$/",I('post.real_name'))){
+            $where['a.admin_name']=array('like','%'.I('post.real_name').'%');
+        }elseif(I('post.real_name')){
+            //如果不是英文，则默认为汉字
             $where['a.real_name']=array('like','%'.I('post.real_name').'%');
         }
         //此函数可被系统设置中的消息推送权限设置中的添加调用，因其具备多选的需求，所以在这里添加这个参数判断，以前台显示不同的样式
@@ -205,6 +209,16 @@ class RoleController extends CommonController {
         $list = D('Role')->listName($page,$pageSize,$where);
         $this->assign('list', $list['list']);
         $this->assign('total', $list['total']);
+        $this->display();
+    }
+    //页面权限可用使用的方法
+    public function listPath(){
+        $pageAuth=C('pageAuth');
+        $pageAuthFun=C('pageAuthFun');
+        foreach($pageAuth as $k=>$v){
+            $pageAuth[$k]=$pageAuthFun[$v];
+        }
+        $this->assign('pageAuth',$pageAuth);
         $this->display();
     }
     //页面权限保存

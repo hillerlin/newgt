@@ -14,13 +14,15 @@ class FileTree {
     private $dirs;
     private $paths;
     private $maxId;
+    private $fileId;
     private static $pro_id;
 
 
-    public function __construct($paths, $pro_id, $maxId = 0) {
+    public function __construct($paths, $pro_id, $maxId = 0,$fileId=0) {
         $this->paths = $paths;
         self::$pro_id = $pro_id;
         $this->maxId = $maxId;
+        $this->fileId=$fileId;
     }
     
     //执行生成方法
@@ -38,7 +40,7 @@ class FileTree {
      * @return boolean
      */
     protected function generateLik($path, & $file_id) {
-        if (empty($this->dirs)) {
+        if (empty($this->dirs)){
             $pid = 0;
         }
         //文件路径分组
@@ -70,14 +72,22 @@ class FileTree {
                     $this_pid = $this->dirs[$mode]['file_id'];
                     $val = $val . '_' . $this_pid;
                 }
-                $this->dirs[$val] = array('file_id' => $file_id + 1, 'pid' => $pid);
-                $pid = $file_id + 1;
+                if($this->fileId && empty($this->dirs)) //文件夹里面传文件夹 author：lim ---- writeTime:2017-1-3
+                {
+                    $this->dirs[$val] = array('file_id' => $file_id + 1, 'pid' => $this->fileId);
+                    $pid = $this->fileId;
+                }else
+                {
+                    $this->dirs[$val] = array('file_id' => $file_id + 1, 'pid' => $pid);//普通的模式
+                    $pid = $file_id + 1;
+                }
+
+
                 $file_id++;
                 $current_file_id = $file_id;
             }
         }
         self::$files[$this->key] = array('file_id' => $current_file_id);
-//        var_dump($this->key,self::$files[$this->key] ,$basename);
         return true;
     }
     

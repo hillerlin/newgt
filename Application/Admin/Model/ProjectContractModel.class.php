@@ -72,22 +72,23 @@ class ProjectContractModel extends BaseModel {
     }
     
     public function selectContract($page = 1, $pageSize = 30, $map = '', $order = '') {
-        $map['p.step_pid'] = array('EGT', 4);
+        //$map['p.step_pid'] = array('EGT', 4);
        
         $total = $this
                 ->table('gt_prepare_contract AS prec')
-                ->join('LEFT JOIN __PROJECT_CONTRACT__ AS proc ON prec.pro_id=proc.`pro_id` AND prec.company_id=proc.`company_id`')
+               // ->join('LEFT JOIN __PROJECT_CONTRACT__ AS proc ON prec.pro_id=proc.`pro_id` AND prec.company_id=proc.`company_id`')
                 ->join('LEFT JOIN __PROJECT__ AS p ON p.pro_id=prec.pro_id')
                 ->where($map)
                 ->count();
 //        var_dump($this->_sql());exit;
         $list = $this
                 ->table('gt_prepare_contract AS prec')
-                ->join('LEFT JOIN __PROJECT_CONTRACT__ AS proc ON prec.pro_id=proc.`pro_id` AND prec.company_id=proc.`company_id`')
+               // ->join('LEFT JOIN __PROJECT_CONTRACT__ AS proc ON prec.pro_id=proc.`pro_id` AND prec.company_id=proc.`company_id`')
                 ->join('LEFT JOIN __PROJECT__ AS p ON p.pro_id=prec.pro_id')
                 ->join('LEFT JOIN __COMPANY__ AS c ON c.company_id=prec.`company_id`')
                 ->join('LEFT JOIN __ADMIN__ AS a1 ON a1.admin_id=p.admin_id')
-                ->field('proc.*,prec.pro_id,prec.company_id,pro_title,pro_no,company_name,real_name')
+               // ->field('proc.*,prec.pro_id,prec.company_id,pro_title,pro_no,company_name,real_name')
+               ->field('prec.*,prec.pro_id,prec.company_id,pro_title,pro_no,company_name,real_name')
                 ->where($map)
                 ->group('prec.pre_contract_id')
                 ->page($page, $pageSize)

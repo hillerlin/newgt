@@ -49,7 +49,11 @@
                     <td>
                         <label for="company_id" class="control-label x85">项目名称：</label>
                         <input type="hidden" name="pro_id" value=''>
-                        <input type="text" name="pro_title" id="p_company" value="" size="20" data-width="600" data-height="300" >
+                        <input type="text" name="pro_title" id="p_company" value="" size="20" data-toggle="lookup" data-url="<?php echo U('LoanManage/couldApplyList')?>" data-width="900" data-height="500" readonly>
+
+                        <!--
+                                                <input type="text" name="pro_title" id="p_company" value="" size="20" data-width="600" data-height="300" >
+                        -->
                     </td>
                     <td>
                         <label for="company_id" class="control-label x85">项目编号：</label>

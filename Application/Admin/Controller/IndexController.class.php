@@ -110,9 +110,12 @@ class IndexController extends CommonController {
         {
             foreach ($redisTotalKeys as $k=>$v)
             {
-                $getAdminRedis=$redisAdminKeys ? S()->hMGet('admin:'.$admin['admin_id'],array($v)):array();
-                $getRoleRedis=$redisRoleKeys ? S()->hMGet('role:'.$admin['role_id'],array($v)):array();
+                //根据类型admin或者role以及登录用户的admin_id来获取redis中详细的信息
+                $getAdminRedis=  $redisAdminKeys?S()->hMGet('admin:'.$admin['admin_id'],array($v)):array();
+                $getRoleRedis=  $redisRoleKeys?S()->hMGet('role:'.$admin['role_id'],array($v)):array();
+
                 $getTotalRedis=$getAdminRedis+$getRoleRedis;//数组合并并保留索引
+
                 krsort($getTotalRedis);
                 array_push($backlog,json_decode($getTotalRedis[$v],true));
             }

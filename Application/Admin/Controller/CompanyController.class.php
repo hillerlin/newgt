@@ -259,62 +259,100 @@ class CompanyController extends CommonController {
     // 根据不同类型返回不同的相关部门人员
     public function findHeaderToType()
     {
+        $roleList=I('post.roleList');
+        //默认选择的是“全部” ，如果选择了其它选项如项目经理类，则把全部去掉，即$roleList['0']去掉
+        if(count($roleList)>=2 && strpos($roleList[0],',')!==false) array_shift($roleList);
         $type=I('get.pre');
         switch ($type)
         {
             case 4:
                 //返回股权部和分控部老大的adminId
-                $map='16,17';
+                $map['r.role_id']=array('in',array('16','17'));
                 break;
             case 5:
                 //返回风控部所有人的信息
-                $map='16,17,18';
+                $map['r.role_id']=array('in',array('16','17','18'));
                 break;
             case 6:
                 //返回风控部所有人的信息
-                $map='16,18,17,21';
+                $map['r.role_id']=array('in',array('16','18','17','21'));
                 break;
             case 7:
                 //返回风控部所有人的信息
-                $map='18';
+                $map['r.role_id']='18';
                 break;
             case 8:
             case 9:
-                $map='16,18,17,21';
+                $map['r.role_id']=array('in',array('16','18','17','21'));
                 break;
             case 10:
                 //项管部总监
-                $map='17';
+                $map['r.role_id']='17';
                 break;
             case '11':
                 //返回股权部和分控部老大的adminId
-                $map='16';
+                $map['r.role_id']='16';
                 break;
             case '11_3':
                 //返回法务adminId
-                $map='21';
+                $map['r.role_id']='21';
                 break;
             case '12' :
-                $map='21';
+                $map['r.role_id']='21';
                 break;
             case '13_2' :
-                $map='2,14';
+                $map['r.role_id']=array('in',array('2','14'));
                 break;
             case '15' ://法务所有人
-                $map='21';
+                $map['r.role_id']='21';
                 break;
             case '15_2' ://风控专员
-                $map='18';
+                $map['r.role_id']='18';
                 break;
             case '15_3' ://风控专员
-                $map='18';
+                $map['r.role_id']='18';
+                break;
+            case '17' ://法务所有人
+                $map['r.role_id']='21';
+                break;
+            case '17_2' ://风控专员
+                $map['r.role_id']='18';
+                break;
+            case '17_3' ://风控专员
+                $map['r.role_id']='18';
                 break;
         }
+        if(!empty($roleList)){
+            //如何角色列表不为空，则覆盖默认的switch定义的角色列表
+            $map['r.role_id']=array('in',$roleList);
+        }
+        // 找出所需的角色id对应的列表
+        $roles=M('Role as r')->field('role_id,role_name')->where($map)->select();
+
+        //按名字查找，则采用模糊查询
+        if(!empty(I('post.real_name'))){
+            $map['a.reaL_name']=array('like','%'.I('post.real_name').'%');
+        }
+        //指定角色所对应的所有人的列表
         $adminList=D()->table('gt_role as r')
             ->join("LEFT JOIN __ADMIN__ AS a ON a.role_id=r.role_id")
-            ->where(array('r.role_id'=>array('in',$map)))
+            ->where($map)
             ->select();
-        $this->assign('adminList',$adminList);
+        //最初的角色数据传递到前台首页
+        if(I('post.hroleIds') || I('post.hroleVals')){
+            //前台已存在知情人的角色类型信息，则直接使用已存在的角色信息，来作为可供选择的角色列表
+            $hroleIds=I('post.hroleIds');
+            $hroleVals=I('post.hroleVals');
+            $roles=array_map(function($role_id,$role_name){
+                //将前台传递过来的role_id字符串和role_name字符串组合起来，并且其下标对应着role_id和role_name
+                return array('role_id'=>$role_id,'role_name'=>$role_name);
+            },explode(',',$hroleIds),explode(',',$hroleVals));
+        }else{
+            $hroleIds=implode(',',array_column($roles,'role_id'));
+            $hroleVals=implode(',',array_column($roles,'role_name'));
+        }
+
+        $this->assign(array('roles'=>$roles,'hroleIds'=>$hroleIds,'hroleVals'=>$hroleVals,'adminList'=>$adminList));
         $this->display();
     }
 }

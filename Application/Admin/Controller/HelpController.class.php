@@ -96,6 +96,7 @@ class HelpController extends CommonController
         $proLevel = I('post.proLevel');//当前审批级别
         $proTimes = I('post.proTimes');//当前审批轮次
         $pro_id = I('post.pro_id');
+        $fieId=I('post.fileId');
         if (empty($pro_id)) {
             $this->error('非法操作');
         }
@@ -116,7 +117,7 @@ class HelpController extends CommonController
         //获取文件的数量
         $maxId = $file_model->getMaxId($pro_id);
 
-        $fileTree = new \Admin\Lib\FileTree($paths, $pro_id, $maxId);
+        $fileTree = new \Admin\Lib\FileTree($paths, $pro_id, $maxId,$fieId);
         //生成相关的路径
         $fileTree->mkdir();
         //获取目录信息
@@ -285,12 +286,26 @@ class HelpController extends CommonController
     {
         $pro_id = I('get.pro_id', 0);
         $file_id = I('get.file_id', 0);
+        $proLevel=I('get.proLevel',0);
+        $plId=I('get.plId',0);
+        $wfId=I('get.wfId',0);
+        $proTimes=I('get.proTimes',0);
 //        var_dump($file);
         $admin = session('admin');
-        if ($this->checkDownloadAuth($pro_id, $admin['role_id'], $admin['admin_id']) === false) {
+/*        if ($this->checkDownloadAuth($pro_id, $admin['role_id'], $admin['admin_id']) === false) {
             echo json_encode(array('statusCode' => 300, 'message' => '非法操作！'));
             exit();
+        }*/
+        //处理审批流事宜
+        if(in_array($proLevel,C('changeDodownState'))) //要处理的等级做匹配
+        {
+            $workFlowUpdata= uploadUpdataWorkFlowState($wfId,$proLevel,$proTimes,$admin,$pro_id,$plId,0,0,'',-1);
+          //  if($workFlowUpdata)
+               // $this->success('下载成功','','',$pro_id);
         }
+
+
+
         $pro_info = D('Project')->findByPk($pro_id);
         $document_root = $_SERVER["DOCUMENT_ROOT"];
         $uniqid = uniqid();
@@ -314,6 +329,7 @@ class HelpController extends CommonController
         //apache  mod_xsendfile 让Xsendfile发送文件
 //        header("X-Sendfile: $file");
         //nginx
+
         header('X-Accel-Redirect: ' . $filePath);
     }
 

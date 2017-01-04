@@ -1,0 +1,52 @@
+<style> .table td{ text-align:center; } .table td.fleft{text-align:left;} </style>
+<div class="bjui-pageHeader">
+    <form id="pagerForm" data-toggle="ajaxsearch" action="/admin/Role/listPath" method="post">
+        <input type="hidden" name="pageCurrent" value="1">
+        <input type="hidden" name="pageSize" value="${model.pageSize}">
+        <input type="hidden" name="orderField" value="${param.orderField}">
+        <div class="bjui-searchBar">
+            <label>名称：</label><input type="text" value="" name="real_name" size="10">&nbsp;
+            <button type="submit" class="btn-default" data-icon="search">查询</button>&nbsp;
+            <a class="btn btn-orange" href="javascript:;" data-toggle="reloadsearch" data-clear-query="true" data-icon="undo">清空查询</a></li>
+        </div>
+    </form>
+</div>
+<div class="bjui-pageContent tableContent">
+    <table data-toggle="tablefixed" data-width="100%">
+        <thead>
+        <tr>
+            <th data-order-field="name">按钮名称</th>
+            <th data-order-field="note">路径</th>
+            <th width="74">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <foreach name="pageAuth" item="v">
+            <tr>
+                <td>{$key}</td>
+                <td class="fleft">{$v}</td>
+                <td>
+                    <a href="javascript:;" data-toggle="lookupback" data-args="{actionname:'<?php  echo $key ;?>',actionpath:'<?php echo $v;?>'}" class="btn btn-blue" title="选择本项" data-icon="check">选择</a>
+                </td>
+            </tr>
+        </foreach>
+        </tbody>
+    </table>
+</div>
+<!--
+<div class="bjui-pageFooter">
+    <div class="pages">
+        <span>每页&nbsp;</span>
+        <div class="selectPagesize">
+            <select data-toggle="selectpicker" data-toggle-change="changepagesize">
+                <option value="30">30</option>
+                <option value="60">60</option>
+                <option value="120">120</option>
+                <option value="150">150</option>
+            </select>
+        </div>
+        <span>&nbsp;条，共 {$total} 条</span>
+    </div>
+    <div class="pagination-box" data-toggle="pagination" data-total="{$total}" data-page-size="30" data-page-current="1">
+    </div>
+</div>-->

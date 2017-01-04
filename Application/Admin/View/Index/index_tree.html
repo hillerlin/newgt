@@ -133,7 +133,7 @@
                 $('#bjui-accordionmenu')
                         .collapse()
                         .on('hidden.bs.collapse', function (e) {
-                            $(this).find('> .panel > .panel-heading').each(function () {
+                            $(this).find('> .panel > .panel-heading').css({'display':'none'}).each(function () {
                                 var $heading = $(this), $a = $heading.find('> h4 > a')
 
                                 if ($a.hasClass('collapsed'))
@@ -141,7 +141,7 @@
                             })
                         })
                         .on('shown.bs.collapse', function (e) {
-                            $(this).find('> .panel > .panel-heading').each(function () {
+                            $(this).find('> .panel > .panel-heading').css({'display':'none'}).each(function () {
                                 var $heading = $(this), $a = $heading.find('> h4 > a')
 
                                 if (!$a.hasClass('collapsed'))

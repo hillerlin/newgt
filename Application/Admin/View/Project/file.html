@@ -21,31 +21,28 @@
                 <button type="button" class="btn-default dropdown-toggle" data-toggle="dropdown" data-icon="copy">下载<span class="caret"></span></button>
                 <ul class="dropdown-menu right" role="menu">
                     <li><a href="/Admin/Help/download.html?pro_id=<?php echo $pro_id?>" onclick="doc_filedownload1(this); return false;">下载<span style="color: green;">全部</span></a></li>
-                    <li><a href="/Admin/Help/downloadChecked.html?pro_id=<?php echo $pro_id?>" onclick="doc_filedownload2(this); return false;">下载<span style="color: red;">选中</span></a></li>
+                    <li><a href="/Admin/Help/downloadChecked.html?pro_id=<?php echo $pro_id?>&plId=<?php echo $plId;?>&proLevel=<?php echo $proLevel;?>&wfId=<?php echo $wfId;?>&proTimes=<?php echo $proTimes;?>" onclick="doc_filedownload2(this); return false;">下载<span style="color: red;">选中</span></a></li>
                 </ul>
             </div>
         </div>
         <ul id="layout-tree" class="ztree" data-toggle="ztree" data-expand-all="false" data-check-enable='true' data-on-click="do_open_layout">
-            <volist name="file_tree" id="m1">
-                <input type="checkbox" name="" id="reback_tax" data-toggle="icheck" data-label="" value="1">
-                <li data-id="{$m1.file_id}" data-pid="{$m1.pid}" data-url="<?php echo U('project/upload',array('pro_id'=>$pro_id,'file_id'=>$m1['file_id']))?>" data-divid="#layout-01">{$m1.file_name}</li>
-                <volist name="m1.sub" id="m2">
-                    <li data-id="{$m2.file_id}" data-pid="{$m2.pid}" data-url="<?php echo U('project/upload',array('pro_id'=>$pro_id,'file_id'=>$m2['file_id']))?>" data-divid="#layout-01">{$m2.file_name}</li>
-                    <volist name="m2.sub" id="m3">
-                        <li data-id="{$m3.file_id}" data-pid="{$m3.pid}" data-url="<?php echo U('project/upload',array('pro_id'=>$pro_id,'file_id'=>$m3['file_id']))?>" data-divid="#layout-01">{$m3.file_name}</li>
-                        <?php if(isset($m3['sub'])): ?>
-                        <?php foreach($m3['sub'] as $m4):?>
-                        <li data-id="{$m4.file_id}" data-pid="{$m4.pid}" data-url="<?php echo U('project/upload',array('pro_id'=>$pro_id,'file_id'=>$m4['file_id']))?>" data-divid="#layout-01">{$m4.file_name}</li>
-                        <?php if(isset($m4['sub'])): ?>
-                        <?php foreach($m4['sub'] as $m5):?>
-                        <li data-id="{$m5.file_id}" data-pid="{$m5.pid}" data-url="<?php echo U('project/upload',array('pro_id'=>$pro_id,'file_id'=>$m5['file_id']))?>" data-divid="#layout-01">{$m5.file_name}</li>
-                        <?php endforeach;?>
-                        <?php endif; ?>
-                        <?php endforeach;?>
-                        <?php endif; ?>
-                    </volist>
-                </volist>
-            </volist>
+            <?php
+            function fun($arr)
+            {
+              foreach($arr as $key=>$value)
+               {?>
+                <li data-id="<?php echo $value['file_id']; ?>" data-pid="<?php echo $value['pid']?>" data-url="<?php echo U('project/upload',array('pro_id'=>$value['pro_id'],'file_id'=>$value['file_id']))?>" data-divid="#layout-01"><?php echo $value['file_name']?></li>
+            <?php if(is_array($value['sub']))
+               {
+                  fun($value['sub']);
+               }
+                else
+              {
+               }
+               }
+            }
+            fun($file_tree);
+            ?>
         </ul>
     </div>
     <div style="margin:0 0 28px 210px; height:99.9%; width: 50%; overflow:hidden;">

@@ -128,6 +128,9 @@ class ProjectController extends CommonController
             case '13':
             case '14':
             case '15':
+            case '16':
+            case '17':
+            case '18':
             default:
                 $oldProject=addSubProcessAuditor($pjId,$auditor_id,$auditor_name,$pro_level,$pro_subprocess_desc);
                 break;
@@ -180,20 +183,6 @@ class ProjectController extends CommonController
         $model = D('project');
         $pageSize = I('post.pageSize', 30);
         $page = I('post.pageCurrent', 1);
-        // $bb=S()->hMset('adminId:29',array('type'=>2,'contents'=>'宋波分配任121212啦','time'=>time(),'proId'=>'2'));
-        //$aa=S()->hMget('adminId:28',array('type','contents','time','proId'));
-        if (I('get.m') == 'delredis') {
-            $pro_id = I('get.pro_id');//项目id
-            $authorType = I('get.authorType');//区分通知是按具体的人还是角色进行通知区分
-            $redisdata = S()->hGetAll($authorType . ':' . $admin[$authorType . '_id']);
-            foreach ($redisdata as $k => $v) {
-                $tmp = json_decode($v, true);
-                if ($tmp['proId'] == $pro_id) {
-                    //删除对应的redis值
-                    S()->hDel($authorType . ':' . $admin[$authorType . '_id'], $k);
-                }
-            }
-        }
         $list = $model->isAudit($page, $pageSize, 't.addtime DESC', $admin['admin_id'], $admin['role_id'], 0);
         $this->assign(array('name' => $admin['real_name'], 'list' => $list['list'], 'total' => $list['total'], 'pageCurrent' => $page));
         $this->display();
@@ -886,6 +875,108 @@ class ProjectController extends CommonController
                 $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>向出纳:<code>'.adminNameToId($auditor_id).'</code>'.'提交项目<code>' . projectNameFromId($proIid) . '</code>放款审核事宜';
                 $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$auditor_id,$xmlId,$plId,'one',$content,-3) && $updataProject;
                 break;
+
+            //商票退票流程
+            case '17':
+                //新建商票审核流程-项管专员
+                $proAdminId = 28;//传给项管总监知情审核
+                $auditor_id = I('get.auditor_id');//分配跟进人
+                $auditor_name = I('get.auditor_name');//跟进人的名字
+                $newProLevel=addNewLevel($proLevel);
+                $updataProject=addSubProcessAuditor($proIid,$auditor_id,$auditor_name,$proLevel,$pro_subprocess_desc);
+                $auditor_id = explode(',', $auditor_id);
+                //通知项管总监知情
+                $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' .projectNameFromId($proIid) . '</code>商票审核流程知情';
+                $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $proAdminId, $xmlId, $plId, 'one', $contents, -3) && $updataProject;
+                //跳到法务人员
+                foreach ($auditor_id as $k=>$v)
+                {
+                    $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' . projectNameFromId($proIid) . '</code>商票审核流程';
+                    $return=postNextProcess($wfId,$newProLevel,$proTimes,$admin,$proIid,0,$v,$xmlId,$plId,'one',$content,-3) && $updataProject;
+                    sleep(1);
+                }
+                break;
+            case '17_2':
+                //新建商票审核流程-法务人员分配给风控A和风控B
+                // $proAdminId = 28;//传给项管总监知情审核
+                $auditor_id = I('get.auditor_id');//分配跟进人
+                $auditor_name = I('get.auditor_name');//跟进人的名字
+                $updataProject=addSubProcessAuditor($proIid,$auditor_id,$auditor_name,$proLevel,$pro_subprocess_desc);
+                $auditor_id = explode(',', $auditor_id);
+                //通知项管总监知情
+                //跳到法务人员
+                foreach ($auditor_id as $k=>$v)
+                {
+                    $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' . projectNameFromId($proIid) . '</code>商票法务审核事宜';
+                    $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$v,$xmlId,$plId,'one',$content,-3) && $updataProject;
+                    sleep(1);
+                }
+                break;
+            case '17_3':
+                // 商票风控A轮初审
+                $auditor_id = I('get.auditor_id');//分配跟进人
+                $auditor_name = I('get.auditor_name');//跟进人的名字
+                $updataProject=addSubProcessAuditor($proIid,$auditor_id,$auditor_name,$proLevel,$pro_subprocess_desc);
+                $auditor_id = explode(',', $auditor_id);
+                //通知项管总监知情
+                //跳到法务人员
+                foreach ($auditor_id as $k=>$v)
+                {
+                    $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' . projectNameFromId($proIid) . '</code>商票A轮审核事宜';
+                    $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$v,$xmlId,$plId,'one',$content,-3) && $updataProject;
+                    sleep(1);
+                }
+                break;
+            case '17_4':
+                // 商票风控B轮初审----风控张总知情，黄总审批
+                $auditor_id = array('10','24');//分配跟进人
+                $newProLevel=addNewLevel($proLevel);
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                $return=true;
+                foreach ($auditor_id as $k=>$v)
+                {
+
+                    if($v=='10')//张总知情
+                    {
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>向风控部:<code>'.adminNameToId($v).'</code>'.'提交项目<code>' . projectNameFromId($proIid) . '</code>商票B轮审核知情事宜';
+                        $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$v,$xmlId,$plId,'one',$content,-3) && $updataProject && $return;
+                    }elseif ($v=='24')
+                    {
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>向风控部:<code>'.adminNameToId($v).'</code>'.'提交项目<code>' . projectNameFromId($proIid) . '</code>商票B轮审核事宜';
+                        $return=postNextProcess($wfId,$newProLevel,$proTimes,$admin,$proIid,0,$v,$xmlId,$plId,'one',$content,-3) && $updataProject && $return;
+                    }
+                    sleep(1);
+                }
+                break;
+            case '17_6':
+                // 商票风控黄总审批
+                $auditor_id='23';//副总裁
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>向总裁办:<code>'.adminNameToId($auditor_id).'</code>'.'提交项目<code>' . projectNameFromId($proIid) . '</code>商票风控审核事宜';
+                $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$auditor_id,$xmlId,$plId,'one',$content,-3) && $updataProject;
+                break;
+            case '17_7':
+                // 商票副总裁孙总审批
+                $auditor_id='22';//总裁
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>向总裁办:<code>'.adminNameToId($auditor_id).'</code>'.'提交项目<code>' . projectNameFromId($proIid) . '</code>商票审核事宜';
+                $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$auditor_id,$xmlId,$plId,'one',$content,-3) && $updataProject;
+                break;
+            case '17_8':
+                // 商票副总裁佟总审批
+                $auditor_id='33';//财务总监丁总
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>向财务总监:<code>'.adminNameToId($auditor_id).'</code>'.'提交项目<code>' . projectNameFromId($proIid) . '</code>商票审核事宜';
+                $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$auditor_id,$xmlId,$plId,'one',$content,-3) && $updataProject;
+                break;
+            case '17_9':
+                // 商票财务总监审批
+                $auditor_id='34';//出纳
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>向出纳:<code>'.adminNameToId($auditor_id).'</code>'.'提交项目<code>' . projectNameFromId($proIid) . '</code>商票审核事宜';
+                $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$auditor_id,$xmlId,$plId,'one',$content,-3) && $updataProject;
+                break;
+
         }
 
         if (!$return) {
@@ -986,7 +1077,7 @@ class ProjectController extends CommonController
         $pre = I('get.pre');
         $this->assign('pre', $pre);
         $this->assign('admin', $admin);
-        if (in_array(intval($pre),array(4,5,6,7,8,9,10,11,12,13,14,15))) {
+        if (in_array(intval($pre),array(4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20))) {
             //新建子流程
             $this->display('subProcess1');
 
@@ -1179,6 +1270,10 @@ class ProjectController extends CommonController
 
     public function cancel()
     {
+        $roles=array(
+            array('role_id'=>'2,3,4,5','role_name'=>'lisi2,lisi3,lisi4,lisi5'),
+      
+        );
         $pro_id = I('get.pro_id');
         $model = D('Project');
         $pro_info = $model->where('pro_id=' . $pro_id)->find();
@@ -1214,19 +1309,28 @@ class ProjectController extends CommonController
         $map['pro_id'] = I('get.pro_id');
         $file_tree = D('ProjectFile')->where($map)->select();
         $file_tree = array_reverse($file_tree);
-//        var_dump($file_tree);exit;
-        foreach ($file_tree as $v) {
+        $admin=$_SESSION['admin'];
+        $fileLevel=C('fileLevel');
+        foreach ($file_tree as $k=> $v) {
+            if($v['secret']>1){
+                //如果文件的机密等级大于1，则代表此文件夹是机密的，需要与配置中的fileLevel进行比对，查看此人的角色是否在对应的role_id中，在则可以查，
+                //不在，则需要进一步判断，此人的是否是特批查看此文件的用户，即：此文件夹中的 allow_adminid 是否包含了此人的id号
+                if(strpos($fileLevel[$v['secret']]['role_id'],$admin['role_id'])===false && strpos($v['allow_adminid'],$admin['admin_id'])===false){
+                    unset($file_tree[$k]);
+                    continue;
+                }
+            }
             $array[$v['file_id']] = $v;
         }
         $tree = new \Admin\Lib\Tree;
         $tree->init($array);
         $file_tree = $tree->get_array(0);
-//        var_dump($file_tree[1]['sub'][7]['sub']);exit;
         $this->assign('file_tree', $file_tree);
         $this->assign($map);
         $this->assign($_GET);
         $this->display();
     }
+
 
     //上传页面
     public function upload()

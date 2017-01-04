@@ -489,6 +489,9 @@ function redisCollect($proLevel,$sender,$receive='',$time,$proId,$specialMessage
         case '15':
             $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>放款审核流程';
             break;
+        case '17':
+            $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>商票流程';
+            break;
         case '-1':
         case '-2':
         case '-3':
@@ -596,6 +599,9 @@ function redisPostAudit($proLevel,$sender,$receive='',$time,$proId,$plId,$specia
         case '15':
             $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>放款审核流程';
             break;
+        case '17':
+            $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>商票流程';
+            break;
         case '-1':
         case '-2':
         case '-3':
@@ -661,7 +667,7 @@ function postRebutter($wfId,$proIid,$proRebutterLevel,$proTimes,$admin,$proRebut
 }
 //返回执行完下一步的流程模块
 /******
- * @param $wfId
+ * @param $wfId gt_pj_workflow id
  * @param $proLevel
  * @param $proTimes
  * @param $admin
@@ -694,6 +700,10 @@ function postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,$proRoleId=0,$
         'wf_id' => $wfId, 'pro_xml_id' => $xmlId
     ))->add();
     $oldworkFlowLog=D('WorkflowLog')->where("`pl_id`=%d",array($plId))->data(array('pro_state'=>2))->save();//eg ,  此时是10_2子流程，则将10_1的子流程审核状态改变为2 表示已审核状态
+
+    if($oldworkFlowLog){
+            delredis($plId); //删除对应的redis记录
+    }
     $adminValue=($proRoleId>0)?$proRoleId:$proAdminId;
     $adminType=($proRoleId>0)?'|role':'|admin';
     $noticeType=isset($specialType)?$specialType:$proLevel;
@@ -843,8 +853,6 @@ function createFolder($proId)
  * @param $proTimes
  * @param $admin
  * @param $proIid
- * @param int $proRoleId
- * @param int $proAdminId
  * @param $plId
  * @param int $isUpload //0是下载 1是上传 2是查看
  * @param $isUploadEnd //下载或者上传是否就结束项目 0是结束 1是继续流程
@@ -869,13 +877,23 @@ function uploadUpdataWorkFlowState($wfId,$proLevel,$proTimes,$admin,$proIid,$plI
     $result=true;
     if($isUploadEnd==0 && $isUpload==0)//上传就结束
     {
-        $updataOldPj=$pjModel->data(array('pro_level_now'=>$newLevel))->where("`wf_id`=%d",array($wfId))->save();
-        $updataOldWf=$wfModel->data(array('pro_state'=>'2','pro_last_edit_time'=>time()))->where("`pl_id`=%d",array($plId))->save();
-        $workFlowLog = D('WorkflowLog')->data(array(
-            'sp_id' => '', 'pj_id' => $proIid, 'pro_level' => $newLevel, 'pro_times' => $proTimes, 'pro_state' => 2, 'pro_addtime' => time(),'pro_role'=>'','pro_author'=>'',
-            'wf_id' => $wfId, 'pro_xml_id' => ''
-        ))->add();
-        $result=$result && $updataOldPj && $workFlowLog && $updataOldWf;
+        $oldPjInfo=$wfModel->where("`pj_id`=%d and `pro_level`='%s'",array($proIid,$newLevel))->find();
+        if($oldPjInfo)
+        {
+            $updataOldWf=$wfModel->data(array('pro_state'=>'2','pro_last_edit_time'=>time()))->where("`pl_id`=%d",array($plId))->save();
+            $result=$result && $updataOldWf;
+        }
+        else{
+            $updataOldPj=$pjModel->data(array('pro_level_now'=>$newLevel))->where("`wf_id`=%d",array($wfId))->save();
+            $updataOldWf=$wfModel->data(array('pro_state'=>'2','pro_last_edit_time'=>time()))->where("`pl_id`=%d",array($plId))->save();
+            $workFlowLog = $wfModel->data(array(
+                'sp_id' => '', 'pj_id' => $proIid, 'pro_level' => $newLevel, 'pro_times' => $proTimes, 'pro_state' => 2, 'pro_addtime' => time(),'pro_role'=>'','pro_author'=>'',
+                'wf_id' => $wfId, 'pro_xml_id' => ''
+            ))->add();
+            $result=$result && $updataOldPj && $workFlowLog && $updataOldWf;
+            
+        }
+
     }elseif ($isUploadEnd==1 && $isUpload==0)
     {
         $updataOldWf=$wfModel->data(array('pro_state'=>'2','pro_last_edit_time'=>time()))->where("`pl_id`=%d",array($plId))->save();
@@ -889,8 +907,7 @@ function uploadUpdataWorkFlowState($wfId,$proLevel,$proTimes,$admin,$proIid,$plI
         {
             $updataOldWf=$wfModel->data(array('pro_state'=>'2','pro_last_edit_time'=>time()))->where("`pl_id`=%d",array($plId))->save();
             $result=$result && $updataOldWf;
-        }else
-        {
+        }else {
             $updataOldPj=$pjModel->data(array('pro_level_now'=>$newLevel))->where("`wf_id`=%d",array($wfId))->save();
             $updataOldWf=$wfModel->data(array('pro_state'=>'2','pro_last_edit_time'=>time()))->where("`pl_id`=%d",array($plId))->save();
             //更新项目流程状态，
@@ -905,9 +922,10 @@ function uploadUpdataWorkFlowState($wfId,$proLevel,$proTimes,$admin,$proIid,$plI
     {
         $updataOldPj=$wfModel->data(array('pro_state'=>2))->where("`pl_id`=%d",array($plId))->save();
         $result=$result && $updataOldPj;
+         if($updataOldPj)delredis($plId);
     }
-
-
+    //如果更新的workFlowLog表正确执行，则删除对应plId的redis记录
+    if($updataOldWf)delredis($plId);
     $noticeType=isset($specialType)?$specialType:$proLevel;
     $isUpload==0?$action='下载':($isUpload==2?$action='已查看':$action='上传');
     $specialMessage=$contents= $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>'.$action.'项目<code>' . projectNameFromId($proIid) . '</code>资料';
@@ -930,6 +948,19 @@ function getFinishStatus($proLevel,$proId)
     
 }
 
+/**
+ * 删除redis中对应的代办信息记录
+ * @param $plid  workflow_log  的 id号
+ */
+function delredis($plid){
+    //查找出对应的workflog的id号的记录
+    $pro_author=D('WorkflowLog')->field('pro_author,pro_role')->where('pl_id ='.$plid)->find();
+    //如果pro_author的优先级大于pro_role,所以，如果pro_author存在，则表示采用的是admin方式存储于redis中的，否则是role方式
+    $authorType=$pro_author['pro_author']?'admin':'role';
+    //redis中对应的键
+    $authorId=$pro_author['pro_author']?$pro_author['pro_author']:$pro_author['pro_role'];
+    return  S()->hDel($authorType . ':'.$authorId, $plid);
+}
 
 
 

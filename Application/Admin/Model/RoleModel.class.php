@@ -87,4 +87,25 @@ class RoleModel extends BaseModel {
             ->select();
         return array('total' => $total, 'list' => $list);
     }
+    //列出所有的项目中的文件夹
+    public  function listProject($page=1,$pageSize=30,$map=''){
+        $total =M('ProjectFile')
+            ->alias('pf')
+            ->field(array('pf.pro_id'))
+            ->join('LEFT JOIN __PROJECT__ AS p ON pf.pro_id=p.pro_id')
+            ->where($map)
+            ->group('pf.pro_id')
+            ->select();
+        //统计的时候不能使用count,因为count是只针对行，不会针对group组合后的结果，即，count先统计完行后，group才会再去组合。
+        $total=count($total);
+        $list = M('ProjectFile')
+            ->alias('pf')
+            ->field(array('pf.pro_id,p.pro_title'))
+            ->join('LEFT JOIN __PROJECT__ AS p ON pf.pro_id=p.pro_id')
+            ->where($map)
+            ->group('pf.pro_id')
+            ->page($page,$pageSize)
+            ->select();
+        return array('total' => $total, 'list' => $list);
+    }
 }

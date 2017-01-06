@@ -1,0 +1,93 @@
+<script type="text/javascript">
+    function do_open_layout(event, treeId, treeNode) {
+        $(event.target).bjuiajax('doLoad', {url:treeNode.url, target:treeNode.divid})
+
+        event.preventDefault()
+    }
+    $('#pro_id').on('afterchange.bjui.lookup',function(e,t){
+        $('#j_custom_form').submit();
+    })
+</script>
+<form action="<?php echo U('Role/fileRole')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false" method="get">
+    <div class="bjui-pageContent">
+
+        <table class="table table-bordered table-hover table-striped table-top" data-selected-multi="true">
+            <tr>
+                <th>项目名称:</th>
+                <td>
+                    <input type="text" name="custom.pro_title" id="project" value="" readonly size="30" data-toggle="lookup" data-url="{:U('/Admin/Role/listProject')}" data-group="custom" data-width="600" data-height="300" >
+                    <input type="hidden" name="custom.pro_id" id="pro_id" >
+                </td>
+            </tr>
+        </table>
+
+        <div style="float:left; width:250px;">
+            <ul id="layout-tree" class="ztree" data-toggle="ztree" data-expand-all="false" data-check-enable='true' data-on-click="do_open_layout" data-chk-style="radio">
+                <?php
+            function fun($arr)
+            {
+              foreach($arr as $key=>$value)
+                {?>
+                <li data-id="<?php echo $value['file_id']; ?>" data-pid="<?php echo $value['pid']?>" data-url="<?php echo U('project/upload',array('pro_id'=>$value['pro_id'],'file_id'=>$value['file_id'],'methodname'=>'listFile'))?>" data-divid="#layout-01"><?php echo $value['file_name']?></li>
+                <?php if(is_array($value['sub']))
+               {
+                  fun($value['sub']);
+               }
+                else
+              {
+               }
+               }
+            }
+            fun($file_tree);
+            ?>
+            </ul>
+        </div>
+        <div style="margin:0 0 28px 210px; height:99.9%; width: 50%; overflow:hidden;">
+            <div style="height:100%; overflow:hidden;">
+                <fieldset style="height:100%;">
+                    <legend>文件</legend>
+                    <div id="layout-01" style="height:94%; overflow:hidden;">
+
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    function doc_filedownload1(a) {
+        $.fileDownload($(a).attr('href'), {
+            failCallback: function(responseHtml, url) {
+                if (responseHtml.trim().startsWith('{')) responseHtml = responseHtml.toObj()
+                $(a).bjuiajax('ajaxDone', responseHtml)
+            }
+        })
+    }
+
+    function doc_filedownload2(a) {
+        var tree = $.fn.zTree.getZTreeObj("layout-tree");
+        var menus = tree.getCheckedNodes();
+//        var checkedNodes = menus.getCheckedNodes();
+        var file_id = '';
+
+        for (var i = 0; i < menus.length; i++) {
+            if (menus[i].checked === true) {
+                file_id += menus[i].id + ',';
+            }
+        }
+        if (file_id === '') {
+            $(a).alertmsg('warn', '请选择要下载的文件包！');
+            return false;
+        }
+        var url = $(a).attr('href');
+        url = url + '&file_id=' + file_id.substr(0, file_id.length - 1);
+//            debugger;
+//            return false;
+        $.fileDownload(url, {
+            failCallback: function(responseHtml, url) {
+                if (responseHtml.trim().startsWith('{')) responseHtml = responseHtml.toObj()
+                $(a).bjuiajax('ajaxDone', responseHtml)
+            }
+        })
+    }
+</script>

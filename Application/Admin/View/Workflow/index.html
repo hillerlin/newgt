@@ -9,39 +9,52 @@
 .cate ul li:hover span{border-color: #31708f;transform:rotate(360deg);-webkit-transform:rotate(360deg);-moz-transform:rotate(360deg);-o-transform:rotate(360deg);}
 </style>
 <div class="bjui-pageContent" id="layout-1" style="padding:10px 20px;">
+    <?php if($project):?>
     <div class="cate">
         <h5><span class="glyphicon glyphicon-save"></span>项目流程立项</h5>
         <ul>
-            <li><a data-url="/Admin/Project/add/pre/0.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-list-alt h3"></span>立项</a></li>
-            <li><a data-url="/Admin/Project/add/pre/4.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-list-alt h3"></span>知情子流程</a></li>
+            <?php foreach($project as $k=>$v):?>
+            <li><a data-url="/Admin/Project/add/pre/<?php echo $v['data']?>.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-list-alt h3"></span><?php echo $v['menu_name']?></a></li>
+           <!-- <li><a data-url="/Admin/Project/add/pre/4.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-list-alt h3"></span>知情子流程</a></li>
             <li><a data-url="/Admin/Project/add/pre/5.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-list-alt h3"></span>风控审核子流程</a></li>
             <li><a data-url="/Admin/Project/add/pre/6.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-list-alt h3"></span>立项会子流程</a></li>
             <li><a data-url="/Admin/Project/add/pre/7.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-list-alt h3"></span>风控报告子流程</a></li>
             <li><a data-url="/Admin/Project/add/pre/8.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-list-alt h3"></span>风控会子流程</a></li>
-            <li><a data-url="/Admin/Project/add/pre/9.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-list-alt h3"></span>投委会子流程</a></li>
+            <li><a data-url="/Admin/Project/add/pre/9.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-list-alt h3"></span>投委会子流程</a></li>-->
+            <?php endforeach;?>
         </ul>
     </div>
+    <?php endif;?>
 
+
+    <?php if($contract):?>
     <hr />
     <div class="cate">
         <h5><span class="glyphicon glyphicon-edit"></span>签约流程</h5>
         <ul>
-            <li><a data-url="/Admin/Project/add/pre/10.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-briefcase h3"></span>风控审核意见</a></li>
-            <li><a data-url="/Admin/Project/add/pre/11.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-briefcase h3"></span>合同预签</a></li>
+            <?php foreach($contract as $kk=>$vv):?>
+            <li><a data-url="/Admin/Project/add/pre/<?php echo $vv['data']?>.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-briefcase h3"></span><?php echo $vv['menu_name']?></a></li>
+          <!--  <li><a data-url="/Admin/Project/add/pre/11.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-briefcase h3"></span>合同预签</a></li>
            <li><a data-url="/Admin/Project/add/pre/12.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-briefcase h3"></span>合同审批</a></li>
-           <li><a data-url="/Admin/Project/add/pre/13.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-briefcase h3"></span>线下签约</a></li>
+           <li><a data-url="/Admin/Project/add/pre/13.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-briefcase h3"></span>线下签约</a></li>-->
+            <?php endforeach;?>
         </ul>
     </div>
+    <?php endif;?>
+
+    <?php if($loan):?>
     <hr />
     <div class="cate">
         <h5><span class="glyphicon glyphicon-ok-circle"></span>放款流程</h5>
         <ul>
-            <li><a data-url="/Admin/Project/add/pre/14.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-link h3"></span>商票上传</a></li>
-            <li><a data-url="/Admin/Project/add/pre/15.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-link h3"></span>放款审核</a></li>
-            <li><a data-url="/Admin/Project/add/pre/16.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-link h3"></span>日常利息归还</a></li>
+            <?php foreach($loan as $kkk=>$vvv):?>
+            <li><a data-url="/Admin/Project/add/pre/<?php echo $vvv['data']?>.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-link h3"></span><?php echo $vvv['menu_name']?></a></li>
+          <!--  <li><a data-url="/Admin/Project/add/pre/15.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-link h3"></span>放款审核</a></li><li><a data-url="/Admin/Project/add/pre/16.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-link h3"></span>日常利息归还</a></li>
             <li><a data-url="/Admin/Project/add/pre/17.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-link h3"></span>商票退票流程</a></li>
+          -->  <?php endforeach;?>
         </ul>
     </div>
+    <?php endif;?>
     <hr />
   <!-- <div class="cate">
         <h5><span class="glyphicon glyphicon-tags"></span>考勤类</h5>

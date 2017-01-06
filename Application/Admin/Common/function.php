@@ -962,6 +962,20 @@ function delredis($plid){
     return  S()->hDel($authorType . ':'.$authorId, $plid);
 }
 
+/**
+ * 获取文件夹的父级文件夹
+ */
+function pidfile($fileid){
+    static $countfile=[];
+    $tmp=M('ProjectFile')->getFieldByFileId($fileid,'pid');
+    array_push($countfile,$tmp);
+    if($tmp===0){
+        return $countfile;
+    }else{
+        pidfile($tmp);
+    }
+}
+
 
 
 

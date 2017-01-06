@@ -1,0 +1,36 @@
+<script type="text/javascript">
+    function do_open_layout(event, treeId, treeNode) {
+//    if (treeNode.isParent) {
+//        var zTree = $.fn.zTree.getZTreeObj(treeId)
+//
+//        zTree.expandNode(treeNode)
+//        return
+//    }
+        $(event.target).bjuiajax('doLoad', {url:treeNode.url, target:treeNode.divid})
+        event.preventDefault()
+    }
+
+</script>
+<div style="float:left; width:250px;">
+    <!--<a href="/Admin/Help/download.html?pro_id=<?php echo $pro_id?>" class="btn btn-blue" onclick="doc_filedownload1(this); return false;">打包下载</a>-->
+
+    <ul id="layout-tree" class="ztree" data-toggle="ztree" data-expand-all="false" data-check-enable='true' data-on-click="do_open_layout">
+        <?php
+            function fun($arr)
+            {
+              foreach($arr as $key=>$value)
+        {?>
+        <li data-id="<?php echo $value['file_id']; ?>" data-pid="<?php echo $value['pid']?>" data-url="<?php echo U('project/upload',array('pro_id'=>$value['pro_id'],'file_id'=>$value['file_id']))?>" data-divid="#layout-01"><?php echo $value['file_name']?></li>
+        <?php if(is_array($value['sub']))
+               {
+                  fun($value['sub']);
+               }
+                else
+              {
+               }
+               }
+            }
+            fun($file_tree);
+            ?>
+    </ul>
+</div>

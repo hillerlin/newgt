@@ -1306,7 +1306,7 @@ class ProjectController extends CommonController
     //文件树
     public function file()
     {
-        $map['pro_id'] = I('get.pro_id');
+        $map['pro_id'] = I('get.pro_id')?I('get.pro_id'):I('get.custom_pro_id');
         $file_tree = D('ProjectFile')->where($map)->select();
         $file_tree = array_reverse($file_tree);
         $admin=$_SESSION['admin'];
@@ -1328,7 +1328,13 @@ class ProjectController extends CommonController
         $this->assign('file_tree', $file_tree);
         $this->assign($map);
         $this->assign($_GET);
-        $this->display();
+        if(I('get.actionname') || I('get.custom_pro_id')){
+           $html=$this->fetch(I('get.actionname'));
+           $this->json_success($html);
+
+        }else{
+            $this->display();
+        }
     }
 
 
@@ -1343,7 +1349,11 @@ class ProjectController extends CommonController
         $this->assign('exts', $exts);
         $this->assign('list', $list);
         $this->assign($map);
-        $this->display();
+        if(I('get.methodname')){
+            $this->display(I('get.methodname'));
+        }else{
+            $this->display();
+        }
     }
 
     //上传附件

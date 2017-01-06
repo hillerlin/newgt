@@ -3,7 +3,6 @@
 namespace Admin\Controller;
 
 class RoleController extends CommonController {
-
     public function __construct() {
         parent::__construct();
     }
@@ -275,5 +274,59 @@ class RoleController extends CommonController {
         }else{//失败
             $this->json_error('删除失败');
         }
+    }
+    /**
+     * 文件夹权限
+     */
+    public function fileRole(){
+        $map['pro_id'] = I('get.pro_id')?I('get.pro_id'):I('get.custom_pro_id');
+        $file_tree = D('ProjectFile')->where($map)->select();
+        $file_tree = array_reverse($file_tree);
+        $admin=$_SESSION['admin'];
+        $fileLevel=C('fileLevel');
+        foreach ($file_tree as $k=> $v) {
+            if($v['secret']>1){
+                //如果文件的机密等级大于1，则代表此文件夹是机密的，需要与配置中的fileLevel进行比对，查看此人的角色是否在对应的role_id中，在则可以查，
+                //不在，则需要进一步判断，此人的是否是特批查看此文件的用户，即：此文件夹中的 allow_adminid 是否包含了此人的id号
+                if(strpos($fileLevel[$v['secret']]['role_id'],$admin['role_id'])===false && strpos($v['allow_adminid'],$admin['admin_id'])===false){
+                    unset($file_tree[$k]);
+                    continue;
+                }
+            }
+            $array[$v['file_id']] = $v;
+        }
+        $tree = new \Admin\Lib\Tree;
+        $tree->init($array);
+        $file_tree = $tree->get_array(0);
+        $this->assign('file_tree', $file_tree);
+        $this->assign($map);
+        $this->assign($_GET);
+        if(I('get.actionname') || I('get.custom_pro_id')){
+            $this->json_success('新建成功', '/Admin/Role/fileRole/pro_id/'.$map['pro_id'], '', true, array('tabid' => 'project-subwidows','tabName'=>'project-submit','tabTitle'=>'资料包'),1);
+        }else{
+            $this->display();
+        }
+    }
+    //具有文件夹的项目列表
+    public function listProject(){
+        $pageSize = I('post.pageSize', 30);
+        $page = I('post.pageCurrent', 1);
+        $where='';
+        if(I('post.pro_title'))$where['p.pro_title']=array('like','%'.I('post.pro_title').'%');
+        $list = D('Role')->listProject($page,$pageSize,$where);
+        $this->assign('list',$list['list']);
+        $this->assign('total', $list['total']);
+        $this->display();
+    }
+    public function saveFileAuth(){
+        $fields=I('post.fileids');
+        $pfileid=M('ProjectAttachment')->getFieldById(end($fields),'file_id');
+        //获取父文件夹集合
+        $files=array_push(pidfile($pfileid),$pfileid);
+        //将权限写入到文件夹中
+
+        //将权限写入到文件中
+
+        $this->json_success('保存成功');
     }
 }

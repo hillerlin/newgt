@@ -267,7 +267,7 @@ return array(
         5=>'/Admin/Project/remark',
         6=>'/Admin/Project/ProjectMeetingCheckFile',
     ),
-    //页面权限按钮池，键是页面中，每个按钮操作的名称，值对也页面权限，方法池中的链接
+    //页面权限按钮池，键是页面中每个按钮操作的名称，值对应页面权限，方法池中的链接
     'pageAuth'=>array(
         '提交'=>1,
         '编辑'=>1,

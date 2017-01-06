@@ -9,11 +9,52 @@ class WorkflowController extends CommonController {
     }
     
     public function index() {
-        $workflow = D('Workflow')->getWorkFlow();
+        $menuModel=D('menu');
+        $authMode=D('auth');
+        $menuInfo=$menuModel->select();
+        $authInfo=$authMode->where("`role_id`=%d",array(session('admin')['role_id']))->select();
 
-        $this->assign('list', $workflow);
-        $this->assign('workflow', $workflow);
+        foreach ($menuInfo as $k=>$v) {
+            //立项流程
+            if ($v['menu_name'] == '立项流程') {
+                $project = $this->menuRec($menuInfo, $v['menu_id']);
+                $project=$this->authRec($authInfo,$project);
+            } elseif ($v['menu_name'] == '签约流程') {
+                $contract = $this->menuRec($menuInfo, $v['menu_id']);
+                $contract=$this->authRec($authInfo,$contract);
+            } elseif ($v['menu_name'] == '放款流程')
+            {
+                $loan=$this->menuRec($menuInfo,$v['menu_id']);
+                $loan=$this->authRec($authInfo,$loan);
+            }
+        }
+        $this->assign(array('project'=>$project,'contract'=>$contract,'loan'=>$loan));
         $this->display();
+    }
+
+    public function menuRec($arr,$id)
+    {
+        $recAttr=array();
+        foreach ($arr as $k=>$v)
+        {
+            if($v['pid']==$id)
+            {
+               $recAttr[$v['menu_id']]=$v;
+            }
+        }
+        return $recAttr;
+    }
+    public function authRec($authInfo,$menuInfo)
+    {
+        $realObj=array();
+        foreach ($authInfo as $k=>$v)
+        {
+            if(array_key_exists($v['menu_id'],$menuInfo))
+            {
+                 $realObj[$v['menu_id']]=$menuInfo[$v['menu_id']];
+            }
+        }
+        return $realObj;
     }
     
     /* 添加管理员 */

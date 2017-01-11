@@ -94,7 +94,11 @@
             <tr>
                 <td>
                     <label for="pro_desc" class="control-label x150">备注：</label>
-                    <textarea name="pro_subprocess_desc"   id="j_custom_note_1" data-toggle="autoheight" cols="30" rows="3">{$pro_subprocess_desc}</textarea>
+                    <input type="hidden" name="old_pro_subprocess_desc" value="{$pro_subprocess_desc}">
+                    <div style="display: inline-block; border: 1px solid #ccc;">
+                        <span style="display: block; margin-bottom: 10px; padding: 5px 0 0 5px;">{$pro_subprocess_desc}</span>
+                        <textarea name="pro_subprocess_desc" style="border:none;" id="j_custom_note_1" data-toggle="autoheight" cols="30" rows="3"></textarea>
+                    </div>
                 </td>
             </tr>
             </tbody>

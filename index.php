@@ -23,6 +23,7 @@ define('APP_PATH','./Application/');
 //配置文件
 define('APP_STATUS','dev');
 
+define('TMP_PATH', './Tmp/');
 // 引入ThinkPHP入口文件
 require './ThinkPHP/ThinkPHP.php';
 

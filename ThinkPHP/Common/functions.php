@@ -20,12 +20,13 @@
  * @param mixed $default 默认值
  * @return mixed
  */
-function C($name=null, $value=null,$default=null) {
+function C($name=null, $value=null,$default=null,$path=null) {
     static $_config = array();
     // 无参数时获取所有
     if (empty($name)) {
         return $_config;
     }
+
     // 优先执行设置获取或赋值
     if (is_string($name)) {
         if (!strpos($name, '.')) {
@@ -41,6 +42,14 @@ function C($name=null, $value=null,$default=null) {
         if (is_null($value))
             return isset($_config[$name[0]][$name[1]]) ? $_config[$name[0]][$name[1]] : $default;
         $_config[$name[0]][$name[1]] = $value;
+        if(is_array($name)&&!empty($path))
+        {
+            $incl=include $path;
+            $incl[$name[1]]=$value;
+            $html="<?php return ".var_export($incl,true)."?>";
+            $rel=file_put_contents($path,$html);
+            return $rel;
+        }
         return null;
     }
     // 批量设置

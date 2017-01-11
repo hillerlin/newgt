@@ -33,7 +33,7 @@
         <h5><span class="glyphicon glyphicon-edit"></span>签约流程</h5>
         <ul>
             <?php foreach($contract as $kk=>$vv):?>
-            <li><a data-url="/Admin/Project/add/pre/<?php echo $vv['data']?>.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-briefcase h3"></span><?php echo $vv['menu_name']?></a></li>
+            <li><a data-url="/Admin/Project/add/pre/<?php echo $vv['data']?>.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add" ><span class="glyphicon glyphicon-briefcase h3"></span><?php echo $vv['menu_name']?></a></li>
           <!--  <li><a data-url="/Admin/Project/add/pre/11.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-briefcase h3"></span>合同预签</a></li>
            <li><a data-url="/Admin/Project/add/pre/12.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-briefcase h3"></span>合同审批</a></li>
            <li><a data-url="/Admin/Project/add/pre/13.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-briefcase h3"></span>线下签约</a></li>-->
@@ -55,6 +55,20 @@
         </ul>
     </div>
     <?php endif;?>
+
+<?php if($nonFlow):?>
+    <hr />
+    <div class="cate">
+        <h5><span class="glyphicon glyphicon-ok-circle"></span>非流程操作</h5>
+        <ul>
+            <?php foreach($nonFlow as $kkkk=>$vvvv):?>
+            <li><a data-url="/Admin/SignApplyManage/<?php echo $vvvv['action_name']?>.html" data-toggle="dialog" data-width='1200' data-height="900" data-mask='true' data-id="project-checkcontract" ><span class="glyphicon glyphicon-link h3"></span><?php echo $vvvv['menu_name']?></a></li>
+            <!--  <li><a data-url="/Admin/Project/add/pre/15.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-link h3"></span>放款审核</a></li><li><a data-url="/Admin/Project/add/pre/16.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-link h3"></span>日常利息归还</a></li>
+              <li><a data-url="/Admin/Project/add/pre/17.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-link h3"></span>商票退票流程</a></li>
+            -->  <?php endforeach;?>
+        </ul>
+    </div>
+        <?php endif;?>
     <hr />
   <!-- <div class="cate">
         <h5><span class="glyphicon glyphicon-tags"></span>考勤类</h5>

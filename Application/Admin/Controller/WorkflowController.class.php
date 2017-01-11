@@ -26,9 +26,13 @@ class WorkflowController extends CommonController {
             {
                 $loan=$this->menuRec($menuInfo,$v['menu_id']);
                 $loan=$this->authRec($authInfo,$loan);
+            }elseif ($v['menu_name']=='非流程操作')
+            {
+                $nonFlow=$this->menuRec($menuInfo,$v['menu_id']);
+                $nonFlow=$this->authRec($authInfo,$nonFlow);
             }
         }
-        $this->assign(array('project'=>$project,'contract'=>$contract,'loan'=>$loan));
+        $this->assign(array('project'=>$project,'contract'=>$contract,'loan'=>$loan,'nonFlow'=>$nonFlow));
         $this->display();
     }
 

@@ -526,7 +526,7 @@ class SignApplyManageController extends CommonController {
         
         $result = $model->projectContract(1, 30, $map);
         $total = $result['total'];
-        $list = $model->formatData($result['list']);
+        $list = $model->formatData($result['list']);//格式化期限显示类型。比如 m,格式化后显示 月
         $workflow = D('Workflow')->getWorkFlow();
 
         $this->assign('workflow', $workflow);
@@ -590,7 +590,7 @@ class SignApplyManageController extends CommonController {
             if ($result === false) {
                 $this->json_error('保存失败'.$model->_sql());
             } else {
-                $this->json_success('保存成功', '', '', true, array('tabid' => 'signapplymanage-index'));
+                $this->json_success('保存成功', '', '', true, array('dialogid' => 'project-checkcontract'));
             }
         }
     }
@@ -711,7 +711,9 @@ class SignApplyManageController extends CommonController {
         $map1['t.context_id'] = $pro_id;
         $map1['t.context_type'] = 'pro_id';
         $map1['t.step_pid'] = 3;
-        $process_list = D('ProcessLog')->getList(1, 30, $map1);  //审核意见
+       // $process_list = D('ProcessLog')->getList(1, 30, $map1);  //审核意见
+        $process_list = D('Project')->where('`pro_id`=%d',array($pro_id))->field('pro_subprocess11_desc')->find();  //审核意见
+        $process_list=explode('<br/>',$process_list['pro_subprocess11_desc']);
         $ar = array(
             'A2' => $pro_linker_info['department'],   //业务部门
             'C2' => $pro_linker_info['real_name'],   //项目经理
@@ -725,12 +727,12 @@ class SignApplyManageController extends CommonController {
             'C8' => "￥{$contract_info['cash_deposit']}%",                               //保证金费率
             'C9' => $contract_info['purpose'],
             'E7' => sprintf('共计：   %d   %%（年化）%s%s费率明细：%s回购费率  %d  %%%s%s手续费率  %d %%',$total_fee, $enter, $enter, $enter, $contract_info['repurchase_rate'], $enter, $enter, $contract_info['handling_charge'], $enter, $contract_info['handling_charge']),
-            'B10' => sprintf($str_bank.'%s户名：%s%s%s户行：%s%s%s帐号：%s',$enter, $contract_info['supervise_account'], $enter, $enter, $contract_info['supervise_bank'], $enter, $enter, $contract_info['supervise_num']),
+            'B10' => sprintf($str_bank.'%s户名：%s%s%s户行：%s%s%s帐号：%s',$enter, $contract_info['supervise_account'],$enter, $enter, $contract_info['supervise_bank'], $enter, $enter, $contract_info['supervise_num']),
             'B11' => sprintf($assure_str . '%s%s', $enter, $contract_info['assure_detail']),
             'B12' => sprintf('放款账户:%s户名：%s%s开户行：%s%s账号：%s', $enter, $bank['account_name'], $enter, $bank['bank_name'], $enter, $bank['bank_no']),
-            'B13' => $process_list['list'][1]['opinion'],
-            'B14' => $process_list['list'][2]['opinion'],
-            'B15' => $process_list['list'][3]['opinion'],
+            'B13' => explode('::',$process_list[2])[1],//风控部意见
+            'B14' => explode('::',$process_list[1])[1],//副总裁意见
+            'B15' => explode('::',$process_list[0])[1],//总裁意见
             'D16' => '申请日期：' . date('Y', $contract_info['addtime']) . '年' .date('n', $contract_info['addtime']) .'月' . date('d', $contract_info['addtime']) .'日',
         );
         $file = TMP_PATH.'excel/20160810_pre_contract.xls';

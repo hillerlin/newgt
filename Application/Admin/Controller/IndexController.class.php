@@ -9,12 +9,14 @@ class IndexController extends CommonController {
 
     public function index() {
      /*   $xmlClass=logic('xml');
-        $xmlClass->file='process1.xml';
-        $xmlInfo = logic('xml')->index()[xmlIdToInfo('el_292541503583fc0a60758b7036469204')['TARGETREF']];//获取即将审核人的xml信息*/
+          $xmlClass->file='process1.xml';
+          $xmlInfo = logic('xml')->index()[xmlIdToInfo('el_292541503583fc0a60758b7036469204')['TARGETREF']];//获取即将审核人的xml信息*/
         //$xmlInfo = logic('xml')->index();
         //el_292541503583fc0a60758b7036469204
-        $admin = session('admin');
-        if ($admin['is_supper'] == 0) {
+        $fileLevel=C('Pro.aaaa');
+       //  $fileLevel=C('Pro.aaaa','999999','','./Application/Admin/Conf/process.php');  //封装了C方法的写入
+         $admin = session('admin');
+         if ($admin['is_supper'] == 0) {
             $model = D('Role');
             $menu = $model->get_auth_menu(0);
         } else {

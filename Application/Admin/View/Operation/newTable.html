@@ -1,0 +1,34 @@
+<style>
+    .quicklink ul{clear: both;overflow: hidden;}
+    .quicklink ul li{float: left;width: 60px;margin: 20px 0 20px 80px;}
+    .quicklink ul li a{display: block;font-size: 13px;color: #31708f;text-align: center;opacity: 0.9;filter:Alpha(opacity=90);cursor:pointer;}
+    .quicklink ul li a span{display: block;width:50px!important;margin:0 auto 12px;height: 50px;line-height: 50px;text-align: center;color: #31708f;border:1px #c3ced5 solid;border-radius: 100%;transition:All 0.6s ease-in-out;-webkit-transition:All 0.6s ease-in-out;-moz-transition:All 0.6s ease-in-out;-o-transition:All 0.6s ease-in-out;}
+    .quicklink ul li:hover a{text-decoration: none;opacity: 1;filter:Alpha(opacity=100);}
+    .quicklink ul li:hover span{border-color: #31708f;transform:rotate(360deg);-webkit-transform:rotate(360deg);-moz-transform:rotate(360deg);-o-transform:rotate(360deg);}
+    .read code{color:#999;white-space:normal;background:none;border-radius:4px;}
+    @media screen and (max-width:1680px){
+        .tabsPageContent{overflow-x: scroll!important;}
+        .mcont{min-width:1164px;}
+        .task ul li a{max-width:295px;}
+        .msg ul li a{max-width:272px;}
+    }
+</style>
+<div class="bjui-pageHeader" style="background:none;">
+    <div class="alert alert-info" role="alert" style="display:none;">
+        <?php foreach($announcement_list as $list):?>
+        <p><a href="<?php echo U('Announcement/detail', array('id' => $list['id']))?>" data-toggle="dialog" data-height="900" data-width="1200"><?php echo $list['title']?></a><span class="pull-right"><?php echo date('Y-m-d H:i:s', $list['addtime'])?></span></p>
+        <?php endforeach;?>
+    </div>
+    <div class="quicklink">
+        <ul>
+            <li><a data-url="<?php echo U('Announcement/detail', array('type' => $list['id']))?>" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-calendar h3"></span>大麦理财委托国学</a></li>
+            <li><a data-url="" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-search h3"></span>流程查询</a></li>
+            <li><a data-url="" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-hdd h3"></span>报表中心</a></li>
+            <li><a data-url="" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-download h3"></span>资料中心</a></li>
+        </ul>
+    </div>
+</div>
+<div class="bjui-pageContent mcont" id="layout-1" style="padding:0 10px 10px;">
+
+
+</div>

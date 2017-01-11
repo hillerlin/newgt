@@ -210,6 +210,102 @@ class RoleController extends CommonController {
         $this->assign('total', $list['total']);
         $this->display();
     }
+
+    /**
+     * 文件夹中可以访问人员列表
+     */
+    public function listAllowName(){
+        //显示人的类型，file:列举文件所能访问的人，folder:列举文件夹所能访问的人
+        $type=empty(I('get.type'))?I('post.type'):I('get.type');
+        //文件或者文件夹的id号，来源有两个，一个是从a标签中以get方式提交过来，还有一个以post方式从表单过来
+        $comId=empty(I('post.comid'))?(empty(I('get.fileId'))?I('get.folderId'):I('get.fileId')):I('post.comid');
+        //判断是可以访问的人员，1：可访问的人员，2：新增可访问的人员
+        $personType=I('post.personType');
+        $pageSize = I('post.pageSize', 30);
+        $page = I('post.pageCurrent', 1);
+        $where='';
+        if($type=='file'){
+            $allow=M('ProjectAttachment')->field('id,allow_adminid')->where(array('id'=>$comId))->find();
+        }elseif($type=='folder'){
+            $allow=M('ProjectFile')->field('file_id,allow_adminid,secret')->where(array('file_id'=>$comId))->find();
+        }
+        //找出可以访问此人
+       if($allow['allow_adminid']||I('post.allow_adminid')){
+           //运行可以访问的人的id号
+           $allowerid=empty($allow['allow_adminid'])?I('post.allow_adminid'):$allow['allow_adminid'];
+           if($personType){
+                $where['a.admin_id']= array('not in',explode(',',$allowerid));
+           }else{
+               $where['a.admin_id']= array('in',explode(',',$allowerid));
+           }
+           if(I('post.real_name'))$where['a.real_name']=array('like','%'.I('post.real_name').'%');
+           $list=D('Role')->listName($page,$pageSize,$where);
+           $this->assign(array('list'=>$list['list'],'total'=>$list['total'],'allow_adminid'=>$allowerid));
+       }
+       $this->assign(array('comId'=>$comId,'type'=>$type,'personType'=>$personType));
+        $this->display();
+    }
+    //删除已存在的用户id号
+    public function delAdmin(){
+        //需要删除的人物id号
+        $adminId=I('get.adminId');
+        //操作的类型，file：文件，folder:文件夹
+        $type=I('get.type');
+        //文件或者文件夹的id
+        $fid=I('get.comId');
+        $model=$where='';
+        if($type=='file'){
+            //指定文件夹可以访问的人员
+            $model=M('ProjectAttachment');
+            $where['id']=array('eq',$fid);
+        }elseif($type=='folder'){
+            //文件夹
+            $model=M('ProjectFile');
+            $where['file_id']=array('eq',$fid);
+        }
+        $persons=$model->field('allow_adminid')->where($where)->find();
+        $tmp=explode(',',$persons['allow_adminid']);
+        //查找出要删除的人的id在$tmp中的下标
+        $index=array_search($adminId,$tmp);
+        if($index)unset($tmp[$index]);
+        //将删除指定人的id后的数组，用‘，’拼接为字符串
+        $tmp=implode(',',$tmp);
+
+        $result=$model->where($where)->save(array('allow_adminid'=>$tmp));
+        if($result){
+            $this->json_success('成功');
+        }else{
+            $this->json_error('失败');
+        }
+    }
+
+    /**
+     * 添加新用户
+     */
+    public function addAdmin(){
+        $folderId=$fileId='';
+        //获取类型
+        $type=I('get.type');
+        if($type=='file'){
+            //获取文件的id号
+            $fileId=I('get.comId');
+            //获取文件所在的文件夹的id号
+            $folderId=M('ProjectAttachment')->getFieldById($fileId,'file_id');
+        }else{
+            //获取文件夹的id号
+            $folderId=I('get.comId');
+        }
+        //获取运行访问的人员id号
+        $persons=I('get.adminId');
+        //保存权限
+        $result=$this->saveFileComAuth($folderId,$fileId,$persons);
+        if($result){
+            $this->json_success('保存成功');
+        }else{
+            $this->json_error('保存失败');
+        }
+        //退出
+    }
     //页面权限可用使用的方法
     public function listPath(){
         $pageAuth=C('pageAuth');
@@ -300,7 +396,7 @@ class RoleController extends CommonController {
         $file_tree = $tree->get_array(0);
         $this->assign('file_tree', $file_tree);
         $this->assign($map);
-        $this->assign($_GET);
+        $this->assign('pro_title',I('get.custom_pro_title'));
         if(I('get.actionname') || I('get.custom_pro_id')){
             $this->json_success('新建成功', '/Admin/Role/fileRole/pro_id/'.$map['pro_id'], '', true, array('tabid' => 'project-subwidows','tabName'=>'project-submit','tabTitle'=>'资料包'),1);
         }else{
@@ -319,14 +415,42 @@ class RoleController extends CommonController {
         $this->display();
     }
     public function saveFileAuth(){
-        $fields=I('post.fileids');
-        $pfileid=M('ProjectAttachment')->getFieldById(end($fields),'file_id');
-        //获取父文件夹集合
-        $files=array_push(pidfile($pfileid),$pfileid);
+        //可访问的文件id集合
+        $fileId=I('post.fileids');
+        //需要操作的文件夹id
+        $folderId=I('post.file_id');
+        //允许人id
+        $personId=I('post.person_adminId');
+        //保存权限
+        $result=$this->saveFileComAuth($folderId,$fileId,$personId);
+        if($result){
+            $this->json_success('保存成功');
+        }else{
+            $this->json_success('保存失败');
+        }
+    }
+
+    /**
+     * 保存文件或者文件夹权限
+     * @param $folderId 文件夹id号
+     * @param $fileid  文件id号
+     * @param $persons 允许访问的人员集合
+     */
+    public function saveFileComAuth($folderId='',$fileId='',$personId=''){
+        if(empty($folderId) || empty($personId)) return false;
+        //获取pfileid的祖先级id集合
+        $parentFolder=pidfile($folderId);
+        array_push($parentFolder,$folderId);
+        $folders=array_unique($parentFolder);
+        if($fileId){
+            //将权限写入到文件中
+            $oldFiles=M('ProjectAttachment')->field('id,allow_adminid')->where(array('id'=>array('in',$fileId)))->select();
+            //将需要添加的$personId在每条记录的allow_adminid中添加，并且去重
+            $result=saveAll('ProjectAttachment','allow_adminid',$personId,$oldFiles,'id',array('id'=>array('in',$fileId)));
+        }
         //将权限写入到文件夹中
-
-        //将权限写入到文件中
-
-        $this->json_success('保存成功');
+        $oldFolders=M('ProjectFile')->field('file_id,allow_adminid')->where(array('file_id'=>array('in',$folders)))->select();
+        $result=saveAll('ProjectFile','allow_adminid',$personId,$oldFolders,'file_id',array('file_id'=>array('in',$folders))) || $result;
+        return $result;
     }
 }

@@ -80,11 +80,11 @@ class LoanFormModel extends BaseModel {
                 ->table($this->trueTableName . ' AS t')
                 ->join('LEFT JOIN __PROJECT__ AS p ON p.pro_id=t.pro_id')
                 ->join('LEFT JOIN __ADMIN__ AS a ON a.admin_id=p.admin_id')
-               // ->join('LEFT JOIN __PROJECT_CONTRACT__ AS pc ON pc.contract_id=t.contract_id')
+                ->join('LEFT JOIN __PROJECT_CONTRACT__ AS pc ON pc.contract_id=t.contract_id')
                 ->join('LEFT JOIN __COMPANY__ AS c ON c.company_id=t.company_id')
                 ->join('LEFT JOIN __WORKFLOW_PROCESS__ AS wp ON wp.context=t.loan_id')
-               // ->field('t.*,pro_title,company_name,pro_account,pro_real_money,pro_no,wp.*,pc.*,a.real_name as pmd_name')
-                ->field('t.*,pro_title,company_name,pro_account,pro_real_money,pro_no,wp.*,a.real_name as pmd_name')
+                ->field('t.*,pro_title,company_name,pro_account,pro_real_money,pro_no,wp.*,pc.*,a.real_name as pmd_name') //第一版
+                //->field('t.*,pro_title,company_name,pro_account,pro_real_money,pro_no,wp.*,a.real_name as pmd_name') //第二版
                 ->where($map)
                 ->find();
         $list['handling_charge_bank'] = D('Bank')->getBank($list['handling_charge_bank_id']);

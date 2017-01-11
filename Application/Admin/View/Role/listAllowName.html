@@ -1,0 +1,72 @@
+<style> .table td{ text-align:center; } </style>
+<div class="bjui-pageHeader">
+    <form id="pagerForm" data-toggle="ajaxsearch" action="/admin/Role/listAllowName" method="post">
+        <input type="hidden" name="pageCurrent" value="1">
+        <input type="hidden" name="pageSize" value="${model.pageSize}">
+        <input type="hidden" name="orderField" value="${param.orderField}">
+        <input type="hidden" name="allow_adminid" value="{$allow_adminid}">
+        <input type="hidden" name="type" value="{$type}">
+        <input type="hidden" name="comid" value="{$comId}">
+        <div class="bjui-searchBar">
+            <label>名称：</label><input type="text" value="" name="real_name" size="10">&nbsp;
+
+            <label></label>
+            <select data-toggle="selectpicker" data-width="200" name="personType">
+                <option value="">可访问人员</option>
+                <option value="1" <php> if($personType) echo 'selected';</php> >新增访问人员</option>
+            </select>
+            <button type="submit" class="btn-default" data-icon="search">查询</button>&nbsp;
+        </div>
+    </form>
+</div>
+<div class="bjui-pageContent tableContent">
+    <table data-toggle="tablefixed" data-width="100%">
+        <thead>
+        <tr>
+            <th data-order-field="name">姓名</th>
+            <th data-order-field="note">角色</th>
+            <th width="74">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <foreach name="list" item="v">
+            <tr>
+                <td>{$v['real_name']}</td>
+                <td>{$v['role_name']}</td>
+                <td>
+                    <php>if($personType):</php>
+                    <a href="{:U('/Admin/Role/addAdmin',array('adminId'=>$v['admin_id'],'type'=>$type,'comId'=>$comId))}" class="btn btn-green" data-toggle="doajax" data-confirm-msg="确定要添加--{$v['real_name']}？">添加</a>
+                    <php>else:</php>
+                    <a href="{:U('/Admin/Role/delAdmin',array('adminId'=>$v['admin_id'],'type'=>$type,'comId'=>$comId))}" class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除--{$v['real_name']}？">删除</a>
+                    <php>endif;</php>
+                </td>
+            </tr>
+        </foreach>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+    <div class="pages">
+        <span>每页&nbsp;</span>
+        <div class="selectPagesize">
+            <select data-toggle="selectpicker" data-toggle-change="changepagesize">
+                <option value="30">30</option>
+                <option value="60">60</option>
+                <option value="120">120</option>
+                <option value="150">150</option>
+            </select>
+        </div>
+        <span>&nbsp;条，共 {$total} 条</span>
+    </div>
+    <div class="pagination-box" data-toggle="pagination" data-total="{$total}" data-page-size="30" data-page-current="1">
+    </div>
+</div>
+<script type="text/javascript">
+    function del(e){
+        console.log(e);
+//        $.ajax({
+//            url:'/Admin/Role/delAdmin'
+//
+//        });
+    }
+</script>

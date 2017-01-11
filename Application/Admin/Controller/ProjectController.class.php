@@ -222,7 +222,7 @@ class ProjectController extends CommonController
         $proLevel = I('get.proLevel');//当前审批级别
         $proTimes = I('get.proTimes');//当前审批轮次
         $spId=I('get.spId');
-        $pro_subprocess_desc =I('get.pro_subprocess_desc');//子流程备注
+        $pro_subprocess_desc =$_GET['pro_subprocess_desc'];//子流程备注
         $admin = session('admin');
         $xmlfile='process1.xml';
         // $aa=xmlIdToInfo($xmlId);
@@ -1345,23 +1345,34 @@ class ProjectController extends CommonController
         $map['file_id'] = I('get.file_id');
         $list = D('ProjectAttachment')->where($map)->select();
         $exts = getFormerExts();
-
         $this->assign('exts', $exts);
-        $this->assign('list', $list);
         $this->assign($map);
         if(I('get.methodname')){
+            $this->assign('list', $list);
             $this->display(I('get.methodname'));
         }else{
+            $secret=M('ProjectFile')->getFieldByFileId($map['file_id'],'secret');
+            //可以访问这些文件的角色
+            $allow_role= C('fileLevel')[$secret]['role_id'];
+            $admin=session('admin');
+            //当此人的角色id不在secret对应的fileLevel下中的fole_id中并且secret大于1【1代表所有人都可以看到，不需要判断】，就需要判断此人的id是否在文件的allow_adminid中，在则运行访问，否则不允许访问
+            if(strpos($allow_role,$admin['role_id'])===false && $secret>1){
+                foreach($list as $k=>$v){
+                    //此人的id不在此文件中的allow_adminid中，则不让其看见这个文件
+                    if(strpos($v['allow_adminid'],$admin['admin_id'])===false){
+                        unset($list[$k]);
+                    }
+                }
+            }
+            $this->assign('list', $list);
             $this->display();
         }
     }
-
     //上传附件
     public function upload_attachment()
     {
         $pro_id = I('request.pro_id');
         $file_id = I('request.file_id');
-//        var_dump($_POST);exit;
         $admin = session('admin');
         $role_id = $admin['role_id'];
         if (!$this->checkAuthUpload($pro_id, $file_id, $role_id)) {

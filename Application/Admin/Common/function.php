@@ -751,6 +751,7 @@ function addSubProcess($result,$pro_level,$admin,$xmlfile)
 function addSubProcessAuditor($pjId,$auditor_id,$auditor_name,$pro_level,$pro_subprocess_desc)
 {
     $projectModel = D('Project');
+    $admin=session('admin');
     //因为是新建子流程  还有个提交的流程  所以不能做拼接
     //$explodeLevel=explode('_',$pro_level);//拼接审批轮次
 /*    if(!$explodeLevel[1])
@@ -762,8 +763,9 @@ function addSubProcessAuditor($pjId,$auditor_id,$auditor_name,$pro_level,$pro_su
         $modify=$explodeLevel[1]+1;
         $newLevel=$explodeLevel[0].'_'.$modify;
     }*/
+    $proSubprocessDesc='pro_subprocess'.explode('_',$pro_level)[0].'_desc'; //如果4_1 4_2 4_3 还原成4
     //往project表添加状态
-    $finishStatusJson = $projectModel->where("`pro_id`=%d", array($pjId))->field('finish_status')->find();
+    $finishStatusJson = $projectModel->where("`pro_id`=%d", array($pjId))->field("finish_status,$proSubprocessDesc")->find();
     //将adminid和adminname转数组
     $auditor_id = explode(',', $auditor_id);
     $auditor_name = explode(',', $auditor_name);
@@ -774,7 +776,8 @@ function addSubProcessAuditor($pjId,$auditor_id,$auditor_name,$pro_level,$pro_su
         $finish_status[$pro_level][$k]['adminName'] = $auditor_name[$k];
     }
     $finish_enjson = json_encode($finish_status);
-    $proSubprocessDesc='pro_subprocess'.explode('_',$pro_level)[0].'_desc'; //如果4_1 4_2 4_3 还原成4
+    $old_subprocess_desc =$finishStatusJson[$proSubprocessDesc];//子流程老数据备注
+    $pro_subprocess_desc=$admin['real_name'].'::'.$pro_subprocess_desc.'<br/>'.$old_subprocess_desc;
     if(!$auditor_id || !$auditor_name)
     {
         $oldProject = $projectModel->where("`pro_id`=%d", array($pjId))->data(array($proSubprocessDesc => $pro_subprocess_desc))->save();
@@ -963,17 +966,47 @@ function delredis($plid){
 }
 
 /**
- * 获取文件夹的父级文件夹
+ * @param  $folder  文件夹的id号
+ * @return 返回$folder所标记的祖先文件夹集合
  */
-function pidfile($fileid){
-    static $countfile=[];
-    $tmp=M('ProjectFile')->getFieldByFileId($fileid,'pid');
-    array_push($countfile,$tmp);
-    if($tmp===0){
-        return $countfile;
+function pidfile($folder){
+    static $countFolder=[];
+    $tmp=M('ProjectFile')->getFieldByFileId($folder,'pid');
+    if($tmp==0){
+        return $countFolder;
     }else{
+        array_push($countFolder,$tmp);
         pidfile($tmp);
     }
+}
+/**
+ * 一次性更新多条记录
+ * @param $table    操作的标
+ * @param $index    需要更新的字段下标
+ * @param $addData  新增的数据
+ * @param $data     旧数据
+ * @param $referer  参考用于更新数据的字段
+ * @param $where    更新的条件
+ * @return          返回被更新的记录条数
+ */
+function saveAll($table,$index,$addData,$data,$referer,$where){
+    //将需要插入的新人添加到原先已经存在的人的id集合中即，插入到allow_adminid中
+    foreach($data as $k=>$v){
+        //将旧数据，和要插入的数据都转换为数组，然后合并，组合成新的要插入的数据
+        $tmp=array_merge(explode(',',$v[$index]),explode(',',$addData));
+        //合并数组的时候保证数组唯一，并且去除空值
+        $tmp=array_filter(array_unique($tmp));
+        $data[$k]['allow_adminid']=implode(',',$tmp);
+    }
+    $whencase='';
+    //拼接whencase 字段
+    foreach($data as $k=>$v){
+        $whencase.=' when '.$v[$referer].' then \''.$v[$index].'\'';
+    }
+    $whencase.=' END';
+    $sql="update %TABLE% SET $index = case $referer $whencase  %WHERE%";
+    //执行更新操作,execute第二个参数用于标记需要解析sql中的%TABLE%和%WHERE%的
+    return M($table)->where($where)->execute($sql,true);
 }
 
 

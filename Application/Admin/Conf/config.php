@@ -28,7 +28,7 @@ return array(
         'fp_id' => 11,
         'mid' => 1
     ),
-    'LOAD_EXT_CONFIG' => 'process,industries',
+    'LOAD_EXT_CONFIG' => array('Pro'=>'process','Ind'=>'industries'),
     'assure_type' => array(
         1 => '个人担保',
         2 => '企业担保',
@@ -279,5 +279,6 @@ return array(
         '审核'=>4,
         '备注'=>5,
         '查看流程'=>6,
-    )
+    ),
+    'process'=>'22222'
 );

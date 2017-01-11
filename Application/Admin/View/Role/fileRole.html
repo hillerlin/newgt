@@ -15,7 +15,7 @@
             <tr>
                 <th>项目名称:</th>
                 <td>
-                    <input type="text" name="custom.pro_title" id="project" value="" readonly size="30" data-toggle="lookup" data-url="{:U('/Admin/Role/listProject')}" data-group="custom" data-width="600" data-height="300" >
+                    <input type="text" name="custom.pro_title" id="project" value="{$pro_title}" readonly size="30" data-toggle="lookup" data-url="{:U('/Admin/Role/listProject')}" data-group="custom" data-width="600" data-height="300" >
                     <input type="hidden" name="custom.pro_id" id="pro_id" >
                 </td>
             </tr>
@@ -42,7 +42,7 @@
             ?>
             </ul>
         </div>
-        <div style="margin:0 0 28px 210px; height:99.9%; width: 50%; overflow:hidden;">
+        <div style="margin:0 0 28px 210px; height:99.9%; width: 50%; float:left;overflow:hidden;">
             <div style="height:100%; overflow:hidden;">
                 <fieldset style="height:100%;">
                     <legend>文件</legend>

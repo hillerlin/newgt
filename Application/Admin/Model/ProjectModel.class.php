@@ -262,8 +262,8 @@ class ProjectModel extends BaseModel {
         $idList=array();
         //isset($adminId)?$map['pro_author']=$adminId:$map['pro_role']=$roleId;
         $list=D('WorkflowLog')
-            ->union("select `pj_id` from`gt_workflow_log` where `pro_role`='".$roleId."'and `pro_author`='0' and (`pro_state`='".$auditType."' or `pro_state`='3') ")
-            ->where(array('pro_author'=>$adminId,'_string'=>"`pro_state`='".$auditType."' or `pro_state`='3'"))
+            ->union("select `pj_id` from`gt_workflow_log` where `pro_role`='".$roleId."'and `pro_author`='0' and (`pro_state`='".$auditType."' or `pro_state`='3') and 'pj_type'=0")
+            ->where(array('pro_author'=>$adminId,'_string'=>"`pro_state`='".$auditType."' or `pro_state`='3'",'pj_type'=>0))
             ->field('pj_id')
             ->select();//查出不同状态的项目id
        if($list)
@@ -282,7 +282,7 @@ class ProjectModel extends BaseModel {
                 ->join('LEFT JOIN __WORKFLOW_LOG__ as l ON l.wf_id=pw.wf_id')
                 ->join('__COMPANY__ AS cp ON t.company_id=cp.company_id')
                 ->field('t.*,l.*,l.pro_level as pro_level_now,pw.wf_id as wfid,pro_title,pro_no,a1.real_name as pmd_name,a2.authpage as authpage,company_name')
-                ->where(array('pro_id'=>array('in',$idList) ,'_string'=>"(l.pro_author='".$adminId."' or l.pro_role='".$roleId."') and (l.pro_state='0' or l.pro_state='3')"))
+                ->where(array('pro_id'=>array('in',$idList) ,'_string'=>"(l.pro_author='".$adminId."' or l.pro_role='".$roleId."') and (l.pro_state='0' or l.pro_state='3')",'l.pj_type'=>array('eq',0)))
                 ->page($page, $pageSize)
                // ->group('pro_level_now')
                 ->order($order)

@@ -291,7 +291,7 @@ class LoanManageController extends CommonController {
 //        var_dump($data);exit;
         $workflow = D('Workflow')->getWorkFlow();   //工作流
         $data['assure_type'] = explode(',', $data['assure_type']);
-//        var_dump($data['assure_type']);exit;
+//      var_dump($data['assure_type']);exit;
         $exts = getFormerExts();
         $assure_type = C('assure_type');
         $contract_pay_type = C('contract_pay_type');

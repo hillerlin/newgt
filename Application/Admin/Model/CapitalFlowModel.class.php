@@ -24,7 +24,7 @@ class CapitalFlowModel extends BaseModel {
         array('addtime', 'time', 1, 'function'),
     );
 
-    public function addFlow($pro_id, $company_id, $debt_all_id, $money, $type, $bank_id, $real_time, $remark = '') {
+    public function addFlow($pro_id, $company_id, $debt_all_id, $money, $type, $bank_id, $real_time, $remark = '',$fid) {
         $data = array(
             'pro_id' => $pro_id,
             'money' => $money,
@@ -34,7 +34,7 @@ class CapitalFlowModel extends BaseModel {
             'bank_id' => $bank_id,
             'remark' => $remark,
             'pay_time' => $real_time,
-            'fid' => 0
+            'fid' => $fid
         );
         if ($this->create($data) && $this->add()) {
             return true;

@@ -1,9 +1,9 @@
 <script type="text/javascript" src="__ADMIN__/js/screenshot-paste.js"></script>
 <script type="text/javascript">
-$('#hove'+'rtreedemo').screenshotPaste({
-imgContainer: '#imgPreviewHoverTree',
-uploadUrl: '/Admin/ElectronicBill/uploadBase64',
-delUrl: '/Admin/ElectronicBill/remove'
+$('#hovertreedemo').screenshotPaste({
+    imgContainer: '#imgPreviewHoverTree',
+    uploadUrl: '/Admin/ElectronicBill/uploadBase64',
+    delUrl: '/Admin/ElectronicBill/remove'
 });
 </script>
 <div class="bjui-pageContent">
@@ -11,6 +11,7 @@ delUrl: '/Admin/ElectronicBill/remove'
         <input type="hidden" name="out_company_id" value="" >
         <input type="hidden" name="recevier_company_id" value="" >
         <input type="hidden" name="before_company_id" value="" >
+        <input type="hidden" name="pro_id" value="{$pro_id}">
         <table class="table table-condensed table-hover" width="100%">
             <tbody>
                 <tr>
@@ -76,10 +77,6 @@ delUrl: '/Admin/ElectronicBill/remove'
                 </tr>
                 <tr>
                     <td id="aaa">
-<!--                        <div style="width:375px;height:100px;border-style: solid" class="form-control ncap-thumb-list" >
-                            截屏，然后点击这里，ctrl+v 粘帖，图片将在下方显示
-                            <ul></ul>
-                        </div>-->
                     <label for="remark" class="control-label x120">凭证：</label>
                     <textarea id="hovertreedemo"  placeholder="截屏，然后点击这里，ctrl+v 粘帖，图片将在下方显示" style="width:275px;height:100px;"></textarea>
                     <div>

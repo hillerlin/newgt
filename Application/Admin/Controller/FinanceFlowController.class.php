@@ -68,6 +68,7 @@ class FinanceFlowController extends CommonController {
         $this->assign('type_dsc', $type_dsc);
         $this->assign('exts', $exts);
         $this->assign('banks', $banks);
+        $this->assign('pro_id', I('get.pro_id'));
         $this->display();
     }
 
@@ -86,7 +87,7 @@ class FinanceFlowController extends CommonController {
             $result = $model->save();
         } else {
             $result = $model->add();
-            D('Message')->fininaceFlow($data['counterparty'], $data['money'], $data['type']);
+           // D('Message')->fininaceFlow($data['counterparty'], $data['money'], $data['type']);
         }
         
         if ($result === false) {
@@ -107,7 +108,7 @@ class FinanceFlowController extends CommonController {
         }
         
         $model->commit();
-        $this->json_success('保存成功');
+        $this->json_success('保存成功', '', '', true, array('dialogid' => 'project-submit'));
     }
     
     //编辑后
@@ -149,7 +150,7 @@ class FinanceFlowController extends CommonController {
             }
         }
         $model->commit();
-        $this->json_success('保存成功'.$a);
+        $this->json_success('保存成功', '', '', true, array('dialogid' => 'project-submit'));
     }
     
     //上传审核资料

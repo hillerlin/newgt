@@ -43,11 +43,11 @@
                 </td>
             </tr>-->
  
-            <?php if(in_array($pre,array('7_1','7_2','7_3','6_2','6_3','8_3','8_2','9_3','9_2',14,'12_1'))): ?>
+            <?php if(in_array($pre,array('7_1','7_2','7_3','6_2','6_3','8_3','8_2','9_3','9_2','14','12_1'))): ?>
             <?php elseif($pre=='11_2'  || $pre=='11_4' || $pre=='11_5'):?>
             <tr>
                 <td>
-                    <label for="j_custom_name" class="control-label x150"><?php echo $is_pre_contract? '点击编辑合同：' : '点击添加合同：'?></label>
+                    <label for="j_custom_name" class="control-label x150"><?php echo $is_pre_contract? '查看合同：' : '点击添加合同：'?></label>
                     <button data-url="/Admin/SignApplyManage/<?php echo $is_pre_contract? 'editContract' : 'addContract'?>.html?pro_id={$pro_id}&company_id={$company_id}" class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $companyName?></button>
                 </td>
             </tr>
@@ -55,20 +55,55 @@
             <?php if($pre=='11' || $pre=='11_3'):?>
             <tr>
                 <td>
-                    <label for="j_custom_name" class="control-label x150"><?php echo $is_pre_contract? '点击编辑合同：' : '点击添加合同：'?></label>
-                    <button data-url="/Admin/SignApplyManage/<?php echo $is_pre_contract? 'editContract' : 'addContract'?>.html?pro_id={$pro_id}&company_id={$company_id}" class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $companyName?></button>
+                    <label for="j_custom_name" class="control-label x150"><?php echo $is_pre_contract? '查看合同：' : '点击添加合同：'?></label>
+                    <button data-url="/Admin/SignApplyManage/<?php echo $is_pre_contract? 'editContract' : 'addContract'?>.html?pro_id={$pro_id}&company_id={$company_id}" class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $companyName.'的合同'?></button>
                 </td>
             </tr>
             <?php endif;?>
             <?php if($pre=='15' || $pre=='15_2' || $pre=='15_3' || $pre=='15_4'|| $pre=='15_5'|| $pre=='15_6' || $pre=='15_7'|| $pre=='15_8' || $pre=='15_9'|| $pre=='15_10'):?>
             <tr>
                 <td>
-                    <label for="j_custom_name" class="control-label x150"><?php echo $is_pre_contract? '点击编辑放款表：' : '点击添加放款表：'?></label>
-                    <button data-url="/Admin/LoanManage/<?php echo $is_pre_contract? 'detail' : 'LoanApplyToAdd'?>.html?loan_id={$is_pre_contract}" class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $companyName?></button>
+                    <label for="j_custom_name" class="control-label x150"><?php echo $is_pre_contract? '查看放款表：' : '点击添加放款表：'?></label>
+                    <button data-url="/Admin/LoanManage/<?php echo $is_pre_contract? 'detail' : 'LoanApplyToAdd'?>.html?loan_id={$is_pre_contract}" class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $companyName.'的放款'?></button>
                 </td>
             </tr>
             <?php endif;?>
-            <?php if(!in_array($pre,array('15_4','15_5','15_6','15_7','15_8','15_9','15_10','10_3','17_4','17_7','17_6','17_7','17_8','17_9','17_10'))):?>
+
+            <?php if($pre=='15_10'):?>
+            <tr>
+                <td>
+                    <label for="j_custom_name" class="control-label x150"><?php echo $Ffid? '查看放款流水：' : '点击添加放款流水表：'?></label>
+                    <button data-url="/Admin/FinanceFlow/<?php echo $Ffid? 'edit' : 'add'?>.html?fid={$Ffid}&pro_id={$pro_id}" class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $companyName.'的流水'?></button>
+                </td>
+            </tr>
+            <?php endif;?>
+            <?php if($pre=='16_2'):?>
+            <tr>
+                <td>
+                    <label for="j_custom_name" class="control-label x150"><?php echo $is_finance_flow_in? '查看还款流水：' : '点击添加还款流水表：'?></label>
+                    <button data-url="/Admin/FinanceFlow/<?php echo $is_finance_flow_in? 'edit' : 'add'?>.html?fid={$is_finance_flow_in}&pro_id={$pro_id}" class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $companyName.'的流水'?></button>
+                </td>
+            </tr>
+            <?php endif;?>
+            <?php if($pre=='16_3'):?>
+            <tr>
+                <td>
+                    <label for="j_custom_name" class="control-label x150">绑定还款流水</label>
+                    <button data-url="/Admin/ProjectDebt/index.html?fid={$Ffid}&pro_id={$pro_id}" class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $companyName.'的流水'?></button>
+                </td>
+            </tr>
+            <?php endif;?>
+
+            <?php if($pre=='14_2'):?>
+            <tr>
+                <td>
+                    <label for="j_custom_name" class="control-label x150"><?php echo $is_electronicBill? '查看商票：' : '点击添加商票：'?></label>
+                    <button data-url="/Admin/ElectronicBill/<?php echo $is_electronicBill? 'editStatus' : 'add'?>.html?eb_id={$is_electronicBill}&pro_id={$pro_id}" class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $companyName.'的流水'?></button>
+                </td>
+            </tr>
+            <?php endif;?>
+
+            <?php if(!in_array($pre,array('15_4','15_5','15_6','15_7','15_8','15_9','15_10','10_3','17_4','17_7','17_6','17_7','17_8','17_9','17_10','14_2','16','16_1','16_2','16_3','16_4'))):?>
             <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150">选择通知知情的相关人员：</label>

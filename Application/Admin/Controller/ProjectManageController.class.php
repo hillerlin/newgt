@@ -80,15 +80,15 @@ class ProjectManageController extends CommonController {
 
         $admin = session('admin');
 //        $map['role_id'] = array('in', $admin['role_id']);
-        if (!isSupper()) {
+/*        if (!isSupper()) {
             $map['p.admin_id'] = $admin['admin_id'];
-        }
+        }*/
         $result = $model->unloan($map);
         $total = $result['total'];
         $list = $result['list'];
         $workflow = D('Workflow')->getWorkFlow();
 
-        $this->assign('workflow', $workflow);
+       // $this->assign('workflow', $workflow);
         $this->assign(array('total' => $total, 'pageCurrent' => $page, 'list' => $list));
         $this->display();
     }
@@ -106,6 +106,7 @@ class ProjectManageController extends CommonController {
         $is_day_interest = I('post.is_day_interest');
         $begin_interest_time = I('post.begin_interest_time');
         $pay_interest_day = I('post.pay_interest_day');
+        $fid=I('post.fid');
         if (empty($pro_id)) {
             $this->json_error('非法请求');
         }
@@ -157,7 +158,7 @@ class ProjectManageController extends CommonController {
             $this->json_error('还款列表生成失败');
         }
         //新增资金流水
-        if (!D('CapitalFlow')->addFlow($pro_id, $company_id, $debt_all_id, $loan_money, CapitalFlowModel::FINANCING, $bank_id, $real_time, $remark)) {
+        if (!D('CapitalFlow')->addFlow($pro_id, $company_id, $debt_all_id, $loan_money, CapitalFlowModel::FINANCING, $bank_id, $real_time, $remark,$fid)) {
             $model->rollback();
             $this->json_error('流水记录失败');
         }

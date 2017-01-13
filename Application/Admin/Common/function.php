@@ -777,7 +777,7 @@ function addSubProcessAuditor($pjId,$auditor_id,$auditor_name,$pro_level,$pro_su
     }
     $finish_enjson = json_encode($finish_status);
     $old_subprocess_desc =$finishStatusJson[$proSubprocessDesc];//子流程老数据备注
-    $pro_subprocess_desc=$admin['real_name'].'::'.$pro_subprocess_desc.'<br/>'.$old_subprocess_desc;
+    $pro_subprocess_desc=$admin['real_name'].'::'.$pro_subprocess_desc=!empty($pro_subprocess_desc)?$pro_subprocess_desc.'<br/>'.$old_subprocess_desc:'无意见！'.'<br/>'.$old_subprocess_desc;
     if(!$auditor_id || !$auditor_name)
     {
         $oldProject = $projectModel->where("`pro_id`=%d", array($pjId))->data(array($proSubprocessDesc => $pro_subprocess_desc))->save();

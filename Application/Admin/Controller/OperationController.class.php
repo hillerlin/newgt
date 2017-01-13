@@ -24,5 +24,14 @@ class OperationController extends CommonController
     public function newTable(){
         $this->display();
     }
+
+    /**
+     * 添加申请
+     */
+    public function addApplication(){
+        $type=I('get.type');
+        $this->assign(array('type'=>$type));
+        $this->display();
+    }
 }
 ?>

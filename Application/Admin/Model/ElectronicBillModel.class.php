@@ -50,7 +50,6 @@ class ElectronicBillModel extends BaseModel {
             $v['admin_id'] = $admin_id;
             $dataList[] = $v;
         }
-//        var_dump($dataList);exit;
         return D('EbillVoucher')->addAll($dataList);
     }
 
@@ -158,6 +157,11 @@ class ElectronicBillModel extends BaseModel {
      */
     public function linkPro($eb_id, $pro_id) {
         return $this->where('eb_id=' . $eb_id)->save(array('pro_id' => $pro_id));
+    }
+
+    public function isElectronicBill($proId)
+    {
+        return $this->where("`pro_id`=%d",array($proId))->getField('eb_id');
     }
 
 }

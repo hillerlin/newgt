@@ -14,31 +14,32 @@ class ElectronicBillController extends CommonController {
         $page = I('post.pageCurrent', 1);
         $pro_id = I('get.pro_id');
         $isSearch = I('post.isSearch');
-        $type = I('post.type');
-
+        //状态类型
+        $type = I('post.status');
+        //搜索时间类型
+        $timeType=I('post.type');
         $begin_time = I('post.begin_time');
         $end_time = I('post.end_time');
         $model = D('ElectronicBill');
 
         if ($isSearch) {
             if ($type !== '') {
-                $map['t.type'] = $type;
+                $map['t.status'] = $type;
             }
-
             if (!empty($begin_time)) {
                 $begin_time = strtotime($begin_time);
-                $map['t.pay_time'][] = array('EGT', $begin_time);
+                $map['t.'.$timeType][] = array('EGT', $begin_time);
             }
             if (!empty($end_time)) {
                 $end_time = strtotime($end_time);
-                $map['t.pay_time'][] = array('ELT', $end_time);
+                $map['t.'.$timeType][] = array('ELT', $end_time);
             }
         }
         if (!empty($pro_id)) {
             $map['t.pro_id'] = $pro_id;
             $this->assign('pro_id', $pro_id);
         }
-        $result = $model->getList($page, $pageSize, $map);
+        $result = $model->getListPro($page, $pageSize, $map);
         $type_describe = $model->getTypeDescribe();
         
         $this->assign('type_describe', $type_describe);
@@ -55,6 +56,7 @@ class ElectronicBillController extends CommonController {
         $this->assign('type_dsc', $type_dsc);
         $this->assign('exts', $exts);
         $this->assign('banks', $banks);
+        $this->assign($_GET);
         $this->display();
     }
 
@@ -82,7 +84,6 @@ class ElectronicBillController extends CommonController {
             $model->rollback();
             $this->json_error('保存失败1');
         }
-        
         //保存凭证
         if (!empty($voucher)) {
             if ($data['eb_id']) {
@@ -91,17 +92,14 @@ class ElectronicBillController extends CommonController {
                 $eb_id = $result;
             }
             $add_result = $model->addVoucher($eb_id, $voucher, $admin['admin_id']);
-//            var_dump($add_result);
             if ($add_result === false) {
-//                var_dump($add_result === false);
                 $model->rollback();
                 $this->json_error('保存失败2');
             }
-            
-//        var_dump($voucher);exit;
         }
         $model->commit();
-        $this->json_success('保存成功');
+        //$this->json_success('保存成功');
+        $this->json_success('保存成功', '', '', true, array('dialogid' => 'project-submit'));
     }
     
     //上传审核资料

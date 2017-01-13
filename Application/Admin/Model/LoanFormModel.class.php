@@ -143,12 +143,14 @@ class LoanFormModel extends BaseModel {
     }
     
     public function unloan($map) {
-        $map['wp.current_node_index'] = 10;
+        //$map['wp.current_node_index'] = 10;
 //        $map['t.loan_type'] = 1;
+        $map['pj.pro_level_now']='15_10';
         $total = $this
                 ->table($this->trueTableName . ' AS t')
-                ->join('__WORKFLOW_PROCESS__ AS wp ON wp.context=t.loan_id')
+                //->join('__WORKFLOW_PROCESS__ AS wp ON wp.context=t.loan_id')
                 ->join('LEFT JOIN __PROJECT__ AS p ON p.pro_id=t.pro_id')
+                ->join('LEFT JOIN __PJ_WORKFLOW__ AS pj ON pj.pj_id=t.pro_id')
                 ->where($map)
                 ->count();
         $list = $this
@@ -156,8 +158,10 @@ class LoanFormModel extends BaseModel {
                 ->join('LEFT JOIN __PROJECT__ AS p ON p.pro_id=t.pro_id')
                 ->join('__COMPANY__ AS c ON c.company_id=t.company_id')
                 ->join('__ADMIN__ AS a ON a.admin_id=p.admin_id')
-                ->join('__WORKFLOW_PROCESS__ AS wp ON wp.context=t.loan_id')
-                ->field('t.*,pro_title,company_name,pro_no,pro_real_money,pro_account,wp.*,a.real_name as pmd_name')
+                ->join('LEFT JOIN __PJ_WORKFLOW__ AS pj ON pj.pj_id=t.pro_id')
+               // ->join('__WORKFLOW_PROCESS__ AS wp ON wp.context=t.loan_id')
+                //->field('t.*,pro_title,company_name,pro_no,pro_real_money,pro_account,wp.*,a.real_name as pmd_name')
+                ->field('t.*,pro_title,company_name,pro_no,pro_real_money,pro_account,a.real_name as pmd_name')
                 ->where($map)
                 ->select();
         return array('total' => $total, 'list' => $list);

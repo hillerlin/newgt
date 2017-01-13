@@ -129,6 +129,7 @@ class ProjectController extends CommonController
             case '14':
             case '15':
             case '16':
+                break;
             case '17':
             case '18':
             default:
@@ -151,10 +152,8 @@ class ProjectController extends CommonController
         $projectInfo=D('Project')->where("`pro_id`=%d",array($pro_id))->find();
         foreach (json_decode($projectInfo['finish_status'],true)[$proLevel] as $k=>$v)
         {
-
             $data['auditorId'][]=$v['adminId'];
             $data['auditorName'][]=$v['adminName'];
-
         }
         $data['auditorId']=implode(',',$data['auditorId']);
         $data['auditorName']=implode(',',$data['auditorName']);
@@ -162,11 +161,20 @@ class ProjectController extends CommonController
         {
             $is_pre_contract= D('PrepareContract')->isPreContract($pro_id, $projectInfo['company_id']);
         }
-        if($proLevel=='15')
+        if(explode('_',$proLevel)[0]=='15') //放款流水
         {
             $is_pre_contract=D('PrepareContract')->isLoanManager($pro_id, $projectInfo['company_id']);
+            $is_finance_flow=D('FinanceFlow')->getProid($pro_id,'out');
         }
-        $this->assign(array('companyName'=>$projectInfo['pro_title'],'company_id'=>$projectInfo['company_id'],'is_pre_contract'=>$is_pre_contract,'pre'=>$proLevel,'admin'=>session('admin'),'pro_subprocess_desc'=>$projectInfo['pro_subprocess'.explode('_',$proLevel)[0].'_desc']));
+        if($proLevel=='14_2')
+        {
+            $is_electronicBill=D('ElectronicBill')->isElectronicBill($pro_id);
+        }
+        if($proLevel=='16_2') //还款流水
+        {
+            $is_finance_flow_in=D('FinanceFlow')->getProid($pro_id,'in');
+        }
+        $this->assign(array('companyName'=>$projectInfo['pro_title'],'company_id'=>$projectInfo['company_id'],'is_finance_flow_in'=>$is_finance_flow_in['fid'],'is_pre_contract'=>$is_pre_contract,'Ffid'=>$is_finance_flow['fid'],'is_electronicBill'=>$is_electronicBill,'pre'=>$proLevel,'admin'=>session('admin'),'pro_subprocess_desc'=>$projectInfo['pro_subprocess'.explode('_',$proLevel)[0].'_desc']));
         $this->assign($data);
         $this->assign($_GET);
         $this->display();
@@ -776,6 +784,16 @@ class ProjectController extends CommonController
                 $contents = $admin['role_name'] . '<code>' . $admin['real_name'] .'通知出纳:<code>'.adminNameToId($proAdminId).'</code>'.'</code>上传项目<code>' . projectNameFromId($proIid) . '</code>商票凭证';
                 $return = postNextProcess($wfId, $newProLevel, $proTimes, $admin, $proIid, 0, $proAdminId, $xmlId, $plId, 'one', $contents, -3) && $updataProject && $return;
                 break;
+            case '14_2':
+                //出纳上传完资料后，结束子流程
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+               // $newProLevel=addNewLevel($proLevel);
+                $return=true;
+                //直接结束
+                $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的商票已上传';
+                $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one', $contents, -1) && $updataProject && $return;
+
+                break;
             case '15':
                 //新建放款审核流程-项管专员
                  $proAdminId = 28;//传给项管总监知情审核
@@ -875,7 +893,50 @@ class ProjectController extends CommonController
                 $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>向出纳:<code>'.adminNameToId($auditor_id).'</code>'.'提交项目<code>' . projectNameFromId($proIid) . '</code>放款审核事宜';
                 $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$auditor_id,$xmlId,$plId,'one',$content,-3) && $updataProject;
                 break;
+            case '15_10':
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+               // $newProLevel=addNewLevel($proLevel);
+                $return=true;
+                    //直接结束
+                    $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的放款资料已上传';
+                    $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one', $contents, -1) && $updataProject && $return;
 
+                break;
+            case '16':
+                //日常利息归还
+                //通知给财务总监，目前只有丁总和张总
+                $auditor_id=array('33','72');
+                $newProLevel=addNewLevel($proLevel);
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                foreach ($auditor_id as $k=>$v)
+                {
+                    $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>向财务部:<code>'.adminNameToId($v).'</code>'.'</code>提交项目<code>' . projectNameFromId($proIid) . '</code>利息流水知情';
+                    $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$v,$xmlId,$plId,'one',$content,-3) && $updataProject;
+                    sleep(1);
+                }
+                $proAdminId='34';//告诉出纳黄虹上传流水凭证
+                $contents = $admin['role_name'] . '<code>' . $admin['real_name'] .'通知出纳:<code>'.adminNameToId($proAdminId).'</code>'.'</code>上传项目<code>' . projectNameFromId($proIid) . '</code>利息流水凭证';
+                $return = postNextProcess($wfId, $newProLevel, $proTimes, $admin, $proIid, 0, $proAdminId, $xmlId, $plId, 'one', $contents, -3) && $updataProject && $return;
+                break;
+            case '16_2':
+                //添加还款流水
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                $allocationId=ProjectSubmitter($spId);//返回给发起的项管专员
+                $return=true;
+                $contents = $admin['role_name'] . '<code>' . $admin['real_name'] .'通知项管专员:<code>'.adminNameToId($allocationId).'</code>'.'</code>挑拣项目<code>' . projectNameFromId($proIid) . '</code>利息流水凭证';
+                $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $allocationId, $xmlId, $plId, 'one', $contents, -3) && $updataProject && $return;
+                break;
+            case '16_3':
+                //项管专员挑拣还款流水
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                $allocationId=28;//ProjectSubmitter($spId);//通知项管总监知情
+                $return=true;
+                $contents = $admin['role_name'] . '<code>' . $admin['real_name'] .'通知项管总监:<code>'.adminNameToId($allocationId).'</code>'.'</code>挑拣项目<code>' . projectNameFromId($proIid) . '</code>利息流水凭证知情';
+                $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $allocationId, $xmlId, $plId, 'one', $contents, -3) && $updataProject && $return;
+                //同时结束子流程
+                $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的还款流水已上传';
+                $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one', $contents, -1) && $updataProject && $return;
+                break;
             //商票退票流程
             case '17':
                 //新建商票审核流程-项管专员
@@ -975,6 +1036,15 @@ class ProjectController extends CommonController
                 $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
                 $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>向出纳:<code>'.adminNameToId($auditor_id).'</code>'.'提交项目<code>' . projectNameFromId($proIid) . '</code>商票审核事宜';
                 $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$auditor_id,$xmlId,$plId,'one',$content,-3) && $updataProject;
+                break;
+            case '17_10':
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                // $newProLevel=addNewLevel($proLevel);
+                $return=true;
+                //直接结束
+                $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的商票流水已上传';
+                $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one', $contents, -1) && $updataProject && $return;
+
                 break;
 
         }
@@ -1080,7 +1150,6 @@ class ProjectController extends CommonController
         if (in_array(intval($pre),array(4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20))) {
             //新建子流程
             $this->display('subProcess1');
-
         } else {
             $this->display();//新建立项
         }
@@ -1910,8 +1979,23 @@ class ProjectController extends CommonController
         foreach($result as $v){
             foreach($tmpexecutor as $ev){
                 //项目处于同一个进程下，且其在此进程中的执行步骤不能大于等于用$v['current']表示现在正在执行的步骤
-                if($v['wfid']==$ev['wf_id'] && strcmp($v['current'],$ev['pro_level'])>=0){
-                    $executor[$ev['wf_id']][$ev['pro_level']]=$ev;
+                if($v['wfid']==$ev['wf_id']){
+                    $tmp=$tmpCurrent='';
+                    if(strpos($v['current'],'_')===false){
+                        //当前状态值为起始状态的时候，则直接结束循环，并赋予起始值
+                        $executor[$ev['wf_id']][$ev['pro_level']]=$ev;
+                        break;
+                    }
+                    //获取当前状态的值，如果值有下标‘_’，则取下标后面的数值。
+                    $tmpCurrent= trim(strstr($v['current'],'_'),'_');
+                    $tmp=explode('_',$ev['pro_level']);
+                    //如果状态值中，包含有‘_’，则去后面的值进行比较
+                    if(count($tmp)>1){
+                        if($tmpCurrent>=$tmp[1]) $executor[$ev['wf_id']][$ev['pro_level']]=$ev;
+                    }else{
+                        $executor[$ev['wf_id']][$ev['pro_level']]=$ev;
+                        continue;
+                    }
                 }
             }
         }

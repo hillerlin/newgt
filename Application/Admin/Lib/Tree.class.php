@@ -38,7 +38,7 @@ class Tree {
      *      7 => array($this->master_id=>'7','parentid'=>3,'name'=>'三级栏目二')
      *      )
      */
-    public function init($arr = array(), $master_id = 'id', $parent_id = 'pid') {
+    public function init($arr = array(), $master_id = 'id', $parent_id = 'pid'){
         $this->arr = $arr;
         $this->ret = '';
         $this->master_id = $master_id;
@@ -51,14 +51,14 @@ class Tree {
      * @param int
      * @return array
      */
-    public function get_parent($myid) {
+    public function get_parent($myid){
         $newarr = array();
         if (!isset($this->arr[$myid]))
             return false;
         $pid = $this->arr[$myid][$this->parent_id];
         $pid = $this->arr[$pid][$this->parent_id];
-        if (is_array($this->arr)) {
-            foreach ($this->arr as $id => $a) {
+        if (is_array($this->arr)){
+            foreach ($this->arr as $id => $a){
                 if ($a[$this->parent_id] == $pid)
                     $newarr[$id] = $a;
             }

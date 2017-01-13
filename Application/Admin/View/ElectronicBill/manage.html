@@ -8,14 +8,20 @@
         <div class="bjui-searchBar">
             <button data-url="{:U('ElectronicBill/add')}" class="btn btn-blue" data-toggle="dialog" data-icon="plus" data-mask='true' data-height='500' data-id="finance-bill-add">新增商票</button>&nbsp;
             <label>状态:</label>
-            <select name="type" data-toggle="selectpicker" id="select_status">
+            <select name="status" data-toggle="selectpicker" id="select_status">
                 <option value="">全部</option>
                 <?php foreach($type_describe as $key => $val):?>
                 <option value="<?php echo $key?>"><?php echo $val?></option>
                 <?php endforeach;?>
             </select>&nbsp;
-            <label>起始时间：</label><input type="text" value="{$post.begin_time}" data-toggle="datepicker" name="begin_time" class="form-control" size="12">&nbsp;
-            <label>结束时间：</label><input type="text" value="{$post.end_time}" data-toggle="datepicker" name="end_time" class="form-control" size="12">&nbsp;
+            <label>搜索日期类型:</label>
+            <select name="type" data-toggle="selectpicker" id="select_type">
+                <option value="due_time">汇票到期日</option>
+                <option value="out_time">出票日期</option>
+                <option value="receive_time">收票日期</option>
+            </select>&nbsp;
+            <input type="text" value="{$post.begin_time}" data-toggle="datepicker" name="begin_time" class="form-control" placeholder="起始时间" size="12">&nbsp;
+            <input type="text" value="{$post.end_time}" data-toggle="datepicker" name="end_time" class="form-control" placeholder="结束时间" size="12">&nbsp;
             <button type="submit" class="btn-default" data-icon="search">查询</button>&nbsp;
             <a class="btn btn-orange" href="javascript:;" data-toggle="reloadsearch" data-clear-query="true" data-icon="undo">清空查询</a>
 <!--            <div class="pull-right">
@@ -36,6 +42,7 @@
     <table class="table table-bordered table-hover table-top">
         <thead>
             <tr>
+                <th data-order-field="pro_no" align="center" width="100">项目名称</th>
                 <th data-order-field="pro_no" align="center" width="100">收票日期</th>
                 <th data-order-field="principal" align="center" width="100">出票日期</th>
                 <th data-order-field="principal" align="center" width="100">汇票到期日</th>
@@ -45,13 +52,14 @@
                 <th data-order-field="interest"  align="center" width="150">前手</th>
                 <th data-order-field="interest"  align="center" width="80">票据金额</th>
                 <th data-order-field="status"  align="center" width="80">状态</th>
-                <th align="center" width="26"><input type="checkbox" class="checkboxCtrl" data-group="ids" data-toggle="icheck"></th>
+                <!--<th align="center" width="26"><input type="checkbox" class="checkboxCtrl" data-group="ids" data-toggle="icheck"></th>-->
                 <th align="center" width="80">操作</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach($list as $v){?>
             <tr data-id="<?php echo $v['eb_id']?>" class="<?php echo debt_tr_class(1,$v['due_time'])?>" >
+                <td align="center"><?php echo $v['pro_title']?></td>
                 <td align="center"><?php echo date('Y-m-d',$v['receive_time'])?></td>
                 <td align="center"><?php echo date('Y-m-d',$v['out_time'])?></td>
                 <td align="center"><?php echo date('Y-m-d',$v['due_time'])?></td>
@@ -61,11 +69,13 @@
                 <td align="center"><?php echo $v['before_company']?></td>
                 <td align="center"><?php echo number_format($v['money'], 2)?></td>
                 <td align="center"><?php echo $type_describe[$v['status']]?></td>
-                <td align="center"><input type="checkbox" name="ids" data-toggle="icheck" value="<?php echo $v['fid']?>"></td>
+                <!--<td align="center"><input type="checkbox" name="ids" data-toggle="icheck" value="<?php echo $v['fid']?>"></td>-->
                 <td align="center">
                     <a href="<?php echo U('ElectronicBill/voucher', array('eb_id'=>$v['eb_id']))?>" class="btn btn-green" data-toggle="dialog" data-mask="true" data-height="600" data-width="600" data-id="ebill-flow-vourcher" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="凭证">凭证</a>
-                    <!--<a href="<?php echo U('ElectronicBill/edit', array('fid'=>$v['fid']))?>" class="btn btn-green" data-toggle="dialog" data-mask="true" data-height="900" data-width="600" data-id="finance-flow-edit" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="编辑">编辑</a>-->
                     <a href="<?php echo U('ElectronicBill/editStatus', array('eb_id'=>$v['eb_id']))?>" class="btn btn-green" data-toggle="dialog" data-mask="true" data-height="450" data-width="600" data-id="electronicbill-editstatus" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="修改状态">修改状态</a>
+                    <a href="<?php echo U('ElectronicBill/linkPro', array('eb_id'=>$v['eb_id']))?>" class="btn btn-<?php if(empty($v['pro_title'])) { echo 'green';}else{ echo 'red';} ?>" data-toggle="dialog" data-mask="true" data-height="400" data-width="600" data-id="ebill-flow-link" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="选择关联项目">
+                        <?php if(empty($v['pro_title'])) { echo '关联项目';}else{ echo '更改关联项目';} ?>
+                    </a>
                     <!--<a href="<?php echo U('ElectronicBill/del', array('fid'=>$v['fid']))?>" class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？删除过后将不能恢复本条数据">删</a>-->
                 </td>
             </tr>

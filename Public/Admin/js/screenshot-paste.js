@@ -1,9 +1,9 @@
 (function ($) {
-
     $.fn.screenshotPaste = function (options) {
         var me = this;
-
+        debugger
         if (typeof options == 'string') {
+
             var method = $.fn.screenshotPaste.methods[options];
 
             if (method) {
@@ -25,6 +25,7 @@
         options = $.extend(defaults, options);
 
         var imgReader = function (item) {
+            debugger
             var file = item.getAsFile();
             var reader = new FileReader();
 
@@ -40,14 +41,20 @@
                 {
                     if (options.uploadSuccess == '') {
                         var img = new Image();
-
                         $(img).css({height: options.imgHeight});
                         var src = JSON.parse(xhr.responseText);
-                        var i = $(options.imgContainer + '> li').length + 1;
-                        //document.getElementById("img_puth").value = img.src;
-                        var newImg = '<li id="1"><input type="hidden" name="voucher[][path]" value="' + src + '" /><div class="thumb-list-pics"><a href="javascript:void(0);"><img src="' + src + '" alt=""/></a></div>\n\
-                        <a href="'+ options.delUrl +'" data-data=\'' + src + '\' class="del" title="删除">X</a></li>';
-                        $(document).find(options.imgContainer).prepend(newImg);
+                        if(src.statusCode==200)
+                        {
+                            add_uploadedfile(src.content);
+                        }else
+                        {
+                            var i = $(options.imgContainer + '> li').length + 1;
+                            //document.getElementById("img_puth").value = img.src;
+                            var newImg = '<li id="1"><input type="hidden" name="voucher[][path]" value="' + src + '" /><div class="thumb-list-pics"><a href="javascript:void(0);"><img src="' + src + '" alt=""/></a></div>\n\
+                            <a href="'+ options.delUrl +'" data-data=\'' + src + '\' class="del" title="删除">X</a></li>';
+                            $(document).find(options.imgContainer).prepend(newImg);
+                        }
+
                     } else {
                         options.uploadSuccess.toFunc()(me, xhr.responseText);
                     }

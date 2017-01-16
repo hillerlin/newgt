@@ -204,6 +204,7 @@ class RoleController extends CommonController {
         }
         //此函数可被系统设置中的消息推送权限设置中的添加调用，因其具备多选的需求，所以在这里添加这个参数判断，以前台显示不同的样式
         if(I('get.multi')) $this->assign('multi',I('get.multi'));
+        //编号数字
         if(I('get.k')) $this->assign('k',I('get.k'));
         $list = D('Role')->listName($page,$pageSize,$where);
         $this->assign('list', $list['list']);
@@ -452,5 +453,64 @@ class RoleController extends CommonController {
         $oldFolders=M('ProjectFile')->field('file_id,allow_adminid')->where(array('file_id'=>array('in',$folders)))->select();
         $result=saveAll('ProjectFile','allow_adminid',$personId,$oldFolders,'file_id',array('file_id'=>array('in',$folders))) || $result;
         return $result;
+    }
+
+    /**
+     * 子流程审核人员选择
+     */
+    public function checkSubLevel(){
+        //获取子流程分类配置信息
+        $listLevel= C('proLevelClass');
+        //获取选中的子流程
+        $subLevel=I('post.subLevel');
+        if(empty($subLevel))
+            goto checkSubLevelDisplay;
+        $this->json_success('成功');
+        checkSubLevelDisplay:
+        $this->assign('listLevel',$listLevel);
+        $this->display();
+    }
+    public function showSubLevel(){
+        $subLevel=I('get.subLevel');
+        $subLevel=C('proLevelClass')[$subLevel];
+        $proLevel=C('proLevel');
+        foreach($proLevel as $k => $v){
+            //只获取选中的子流程所获取的信息
+            if(!in_array($k,$subLevel)) unset($proLevel[$k]);
+        }
+        $this->assign('proLevel',$proLevel);
+        $this->display();
+    }
+    public function saveSubLevel(){
+        $content=I('post.');
+        $result=[];
+        $re=true;
+        foreach($content as $k=>$v){
+            if(strpos($k,'adminId')===false) continue;
+            $result[]=array(
+
+               'wf_id'=> end(explode('adminId',$k)),
+                'admin_ids'=>$v,
+            );
+        }
+        //如果$result中的任意一个元素中的key存在，则说明此子流程已经添加过默认审核人了,此处取数组最后一个元素来作为检查对象
+        if(M('SublevelCheck')->getFieldByWfId(end($result)['wf_id'],'id')){
+            //更新
+            foreach($result as $k=>$v){
+                $re=M('SublevelCheck')->where('wf_ids = '.$k)->save($v) && $re;
+            }
+            if($re){
+                $this->success('添加成功');
+            }else{
+                $this->error('添加失败');
+            }
+        }else{
+            //新增
+            if(M('SublevelCheck')->addAll($result)){
+                $this->success('添加成功');
+            }else{
+                $this->error('添加失败');
+            }
+        }
     }
 }

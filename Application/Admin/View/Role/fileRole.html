@@ -67,7 +67,7 @@
     function doc_filedownload2(a) {
         var tree = $.fn.zTree.getZTreeObj("layout-tree");
         var menus = tree.getCheckedNodes();
-//        var checkedNodes = menus.getCheckedNodes();
+
         var file_id = '';
 
         for (var i = 0; i < menus.length; i++) {
@@ -81,8 +81,7 @@
         }
         var url = $(a).attr('href');
         url = url + '&file_id=' + file_id.substr(0, file_id.length - 1);
-//            debugger;
-//            return false;
+
         $.fileDownload(url, {
             failCallback: function(responseHtml, url) {
                 if (responseHtml.trim().startsWith('{')) responseHtml = responseHtml.toObj()

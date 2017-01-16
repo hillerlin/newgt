@@ -80,7 +80,7 @@ function doUpload() {
     }
     console.debug(PENDING_FILES);
 
-    // Inform the back-end that we're doing this over ajax.
+    //  Inform the back-end that we're doing this over ajax.
 //    fd.append("__ajax", "true");
     fd.append('paths', paths);
     var url = $("#upload-form").attr('action');

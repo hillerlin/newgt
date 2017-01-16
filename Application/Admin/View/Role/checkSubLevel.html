@@ -1,0 +1,50 @@
+<style>
+    .table th {
+        text-align: center;
+    }
+
+    .content {
+        margin-top: 20px;
+    }
+    .content fieldset{
+        width: 30%;
+        float: left;
+        margin-left: 42px;
+    }
+    #content ul li{
+        margin:0 0 10px 0;
+    }
+</style>
+<div class="bjui-pageContent tableContent">
+    <table class="table table-bordered table-hover table-striped table-top" data-selected-multi="true">
+        <tr>
+            <th>选择子流程:</th>
+            <td colspan="5">
+                <select data-toggle="selectpicker" data-width="400" name="checkSubLevel" onchange="checkSubLevel(this)">
+                    <option value="">请选择</option>
+                    <foreach name="listLevel" item="v">
+                        <option value="{$key}">{$key}</option>
+                    </foreach>
+                </select>
+            </td>
+        </tr>
+    </table>
+    <div id="content"></div>
+</div>
+<script type="text/javascript">
+    function checkSubLevel(e){
+        //子流程的值
+        var subLevel=$(e).val();
+        $.ajax({
+            url: '/admin/Role/checkSubLevel',
+            type: 'POST',
+            dataType: 'JSON',
+            data: {'subLevel': subLevel},
+            success: function (data){
+                $(this).bjuiajax('refreshLayout',{target:'#content',url:'/Admin/Role/showSubLevel',data:{'subLevel':subLevel}})
+            },
+            error:function(){ }
+        });
+    }
+
+</script>

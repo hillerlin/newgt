@@ -930,12 +930,13 @@ class ProjectController extends CommonController
                 //项管专员挑拣还款流水
                 $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
                 $allocationId=28;//ProjectSubmitter($spId);//通知项管总监知情
+                $newProLevel=addNewLevel($proLevel);
                 $return=true;
                 $contents = $admin['role_name'] . '<code>' . $admin['real_name'] .'通知项管总监:<code>'.adminNameToId($allocationId).'</code>'.'</code>挑拣项目<code>' . projectNameFromId($proIid) . '</code>利息流水凭证知情';
                 $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $allocationId, $xmlId, $plId, 'one', $contents, -3) && $updataProject && $return;
                 //同时结束子流程
                 $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的还款流水已上传';
-                $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one', $contents, -1) && $updataProject && $return;
+                $return = postNextProcess($wfId, $newProLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one', $contents, -1) && $updataProject && $return;
                 break;
             //商票退票流程
             case '17':
@@ -1139,6 +1140,11 @@ class ProjectController extends CommonController
         $this->display();
     }
 
+//项目截图上传
+ public  function uploadBase64()
+{
+    
+}
 
     /* 项目立项 */
     public function add()
@@ -1442,15 +1448,41 @@ class ProjectController extends CommonController
     {
         $pro_id = I('request.pro_id');
         $file_id = I('request.file_id');
+        $file=I('post.file');
         $admin = session('admin');
-        $role_id = $admin['role_id'];
-        if (!$this->checkAuthUpload($pro_id, $file_id, $role_id)) {
+       // $role_id = $admin['role_id'];
+/*        if (!$this->checkAuthUpload($pro_id, $file_id, $role_id)) {
             $this->json_error('您没有上传的权限');
-        }
+        }*/
         session('pro_id', $pro_id);
         $field = 'pro-' . $pro_id;
         $short_name = D('ProjectFile')->where('file_id=' . $file_id)->getField('short_name');
-        $upload_info = upload_file('/project/attachment/', $field, $short_name . '-');
+        if($file)
+        {
+            if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $file, $result)) {//base64上传
+                $data = base64_decode(str_replace($result[1], '', $file));
+                $save_path = './Uploads/project/attachment/' . $field ;
+                $fileName=uniqid() . '.' . $result[2];
+                $file_path = $save_path . '/' . uniqid() . '.' . $result[2];
+                $upload = new \Think\Upload\Driver\Local();
+                if ($upload->checkSavePath($save_path) === false) {
+                    $this->json_error('上传出错');
+                }
+//            var_dump(file_put_contents($dataname, $data));
+                if (file_put_contents($file_path, $data)) {
+                    $upload_info['file_path']=substr($file_path,strpos($file_path,'.')+1);
+                    $upload_info['name']=$fileName;
+                    $upload_info['sha1']=uniqid();
+                }else{
+                    $this->json_error('上传出错');
+                }
+            }
+
+        }else
+        {
+            $upload_info = upload_file('/project/attachment/', $field, $short_name . '-');
+
+        }
         if (isset($upload_info['file_path'])) {
             $save_data['file_id'] = $file_id;
             $save_data['pro_id'] = $pro_id;
@@ -1467,6 +1499,7 @@ class ProjectController extends CommonController
             $this->ajaxReturn(array('statusCode' => 200, 'content' => $content, 'message' => '上传成功'));
         }
         $this->json_error('上传失败,' . $upload_info);
+
     }
 
 
@@ -1969,7 +2002,7 @@ class ProjectController extends CommonController
             $tmpindex='';
         }
         //执行人的名字和执行的时间
-        $wfids=array_column($proWorkflow,'wf_id');
+         $wfids=array_column($proWorkflow,'wf_id');
          $tmpexecutor=D('Project')->executorInfo('wf_id in ('.implode(',',$wfids).')');
         //补全按用户角色来区分的用户信息
         array_walk($tmpexecutor ,function(&$v,$k){

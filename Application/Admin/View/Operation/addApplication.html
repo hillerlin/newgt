@@ -65,17 +65,19 @@
                     <php> }</php>
                 </td>
             </tr>
+            <if>
             <tr class="requestMoney" >
                 <td  class="conth"> 请款说明</td>
                 <td align="center"> 居间服务费:</td>
                 <td colspan="4">费率: <input type="text" name="charge_rate"> 融资金额: <input type="text" name="collect_money"></td>
             </tr>
+            </if>
             <tr>
                 <td rowspan="6" class="conth"> 收款方信息</td>
                 <td class="conth"> 是否监管账户:</td>
                 <td>
-                    <input type="radio" name="supervise" id="" data-rule="checked" value="1" data-toggle="icheck" data-label="是" >
-                    <input type="radio" name="supervise" id="" data-rule="checked" value="2" data-toggle="icheck" data-label="否">
+                    <input type="radio" name="supervise" id="" data-rule="checked" value="{$content['supervise']}" data-toggle="icheck" data-label="是" >
+                    <input type="radio" name="supervise" id="" data-rule="checked" value="2" data-toggle="icheck" data-label="否" >
                 </td>
             </tr>
             <tr>

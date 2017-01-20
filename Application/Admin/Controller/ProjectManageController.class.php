@@ -86,7 +86,7 @@ class ProjectManageController extends CommonController {
         $result = $model->unloan($map);
         $total = $result['total'];
         $list = $result['list'];
-        $workflow = D('Workflow')->getWorkFlow();
+       // $workflow = D('Workflow')->getWorkFlow();
 
        // $this->assign('workflow', $workflow);
         $this->assign(array('total' => $total, 'pageCurrent' => $page, 'list' => $list));
@@ -175,7 +175,8 @@ class ProjectManageController extends CommonController {
         }
         $model->commit();
         self::log('add', "放款操作:pro_id-$pro_id");
-        $this->json_success('保存成功');
+       // $this->json_success('保存成功');
+        $this->json_success('保存成功', '', '', true, array('dialogid' => 'project-add'));
     }
     
     public function test() {

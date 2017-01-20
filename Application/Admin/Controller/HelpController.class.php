@@ -110,7 +110,7 @@ class HelpController extends CommonController
         //切割路径
         $paths = explode("###", rtrim($_POST['paths'], "###"));
         //操作结果存入到日志中
-        upload_log($pro_id, json_encode($paths));
+      //  upload_log($pro_id, json_encode($paths));
 
         //获取项目文件的相关信息
         $file_model = D('ProjectFile');

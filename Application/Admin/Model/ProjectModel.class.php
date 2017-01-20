@@ -262,8 +262,10 @@ class ProjectModel extends BaseModel {
         $idList=array();
         //isset($adminId)?$map['pro_author']=$adminId:$map['pro_role']=$roleId;
         $list=D('WorkflowLog')
-            ->union("select `pj_id` from`gt_workflow_log` where `pro_role`='".$roleId."'and `pro_author`='0' and (`pro_state`='".$auditType."' or `pro_state`='3') and 'pj_type'=0")
-            ->where(array('pro_author'=>$adminId,'_string'=>"`pro_state`='".$auditType."' or `pro_state`='3'",'pj_type'=>0))
+            //->union("select `pj_id` from`gt_workflow_log` where `pro_role`='".$roleId."'and `pro_author`='0' and (`pro_state`='".$auditType."' or `pro_state`='3') and 'pj_type'=0")
+            ->union("select `pj_id` from`gt_workflow_log` where `pro_role`='".$roleId."'and `pro_author`='0' and (`pro_state`='".$auditType."' or `pro_state`='3')")
+            //->where(array('pro_author'=>$adminId,'_string'=>"`pro_state`='".$auditType."' or `pro_state`='3'",'pj_type'=>0))
+            ->where(array('pro_author'=>$adminId,'_string'=>"`pro_state`='".$auditType."' or `pro_state`='3'"))
             ->field('pj_id')
             ->select();//查出不同状态的项目id
        if($list)
@@ -280,9 +282,10 @@ class ProjectModel extends BaseModel {
                 ->join("LEFT JOIN __ADMIN__ AS a2 ON a2.admin_id='".$adminId."'")
                 ->join('LEFT JOIN __PJ_WORKFLOW__ AS pw ON t.pro_id=pw.pj_id')
                 ->join('LEFT JOIN __WORKFLOW_LOG__ as l ON l.wf_id=pw.wf_id')
-                ->join('__COMPANY__ AS cp ON t.company_id=cp.company_id')
+                ->join('LEFT JOIN __COMPANY__ AS cp ON t.company_id=cp.company_id')
                 ->field('t.*,l.*,l.pro_level as pro_level_now,pw.wf_id as wfid,pro_title,pro_no,a1.real_name as pmd_name,a2.authpage as authpage,company_name')
-                ->where(array('pro_id'=>array('in',$idList) ,'_string'=>"(l.pro_author='".$adminId."' or l.pro_role='".$roleId."') and (l.pro_state='0' or l.pro_state='3')",'l.pj_type'=>array('eq',0)))
+                //->where(array('pro_id'=>array('in',$idList) ,'_string'=>"(l.pro_author='".$adminId."' or l.pro_role='".$roleId."') and (l.pro_state='0' or l.pro_state='3')",'l.pj_type'=>array('eq',0)))
+                ->where(array('pro_id'=>array('in',$idList) ,'_string'=>"(l.pro_author='".$adminId."' or l.pro_role='".$roleId."') and (l.pro_state='0' or l.pro_state='3')"))
                 ->page($page, $pageSize)
                // ->group('pro_level_now')
                 ->order($order)
@@ -324,7 +327,7 @@ class ProjectModel extends BaseModel {
         $list = $this
             ->table($this->trueTableName . ' AS p')
             ->join('LEFT JOIN __COMPANY__ AS c ON c.company_id = p.company_id')
-            ->field('p.pro_id,p.pro_no,p.admin_id,p.pro_title,p.addtime,c.company_name,p.is_all_finish')
+            ->field('p.pro_id,p.pro_no,p.admin_id,p.pro_title,p.addtime,c.company_name,p.is_all_finish,p.binding_oa')
             ->where($map)
             ->page($page, $pageSize)
             ->order($order)
@@ -376,6 +379,13 @@ class ProjectModel extends BaseModel {
             ->where($map)
             ->find();
         return $content;
+    }
+    //返回OA事项对应的id
+    public function returnRequestInfo($proId)
+    {
+        $projectInfo=$this->where("`pro_id`=%d",array($proId))->field('binding_oa')->find();
+        return array('oaType'=>explode('_',$projectInfo['binding_oa'])[0],'oaId'=>explode('_',$projectInfo['binding_oa'])[1]);
+
     }
 }
 

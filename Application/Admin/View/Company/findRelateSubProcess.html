@@ -1,5 +1,5 @@
 <div class="bjui-pageHeader">
-    <form id="pagerForm" data-toggle="ajaxsearch" action="<?php echo U('Company/findRelateSubProcess');?>" method="post">
+    <form id="pagerForm" data-toggle="ajaxsearch" action="{:U('Company/findRelateSubProcess/',array('pre'=>$type))}" method="post">
         <input type='hidden' name='isSearch' value='1'>
         <div class="bjui-searchBar">
             <label>项目名称：</label><input type="text" value="" name="company_name" size="10" />&nbsp;

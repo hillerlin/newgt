@@ -91,11 +91,21 @@ class RequestFoundController extends CommonController {
         }
        	$rf=D('RequestFound');
        	if($rf->createQequest()){
-            $this->json_success('添加成功');
+           // $this->json_success('添加成功');
+            $this->json_success('添加成功', '', '', true, array('dialogid' => 'project-oaFlow'));
         }else{
             $this->json_error('添加失败');
         }
     }
+    //编辑
+    public function editRequestFound()
+    {
+        $proId=I('get.proId');
+        $list=D('RequestFound')->returnOaInfoFromProId($proId);
+        $this->assign('list',$list);
+        $this->display();
+    }
+
     /**
      * 编辑请款申请
      */

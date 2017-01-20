@@ -4,36 +4,38 @@ namespace Admin\Model;
 use Admin\Model\BaseModel;
 class RequestFoundModel extends BaseModel {
 	public function createQequest(){
+		//同时在project表里面增加一条新数据
+		$admin=session('admin');
+		$projectModel=D('Project');
+		if(!$_POST['id']) $projectModel->create();
+		$projectModel->pro_title=I('post.product_name');
+		$projectModel->pro_account=I('post.collect_money');
+		$projectModel->admin_id=$admin['admin_id'];
 		foreach ($_POST as $k => $v) {
-			if(!is_array($v)){
-				$_POST[$k]=trim($v);
+			if(is_array($v)){ //把数组装成字符串
+				$_POST[$k]=trim($v[0]);
 			}
-			if(strpos($k,'time')){
-				$v=$_POST[$k]=strtotime($v);
-			}
-			$suffix=$this->getSufFix($k);
-			if(!empty($suffix)&in_array($suffix['0'],array('s','q','z'))){
-				switch ($suffix[0]){
-					case 's': $sdetail[$suffix[1]]=$v;unset($_POST[$k]);break;
-					case 'q': $qdetail[$suffix[1]]=$v;unset($_POST[$k]);break;
-					case 'z': $zdetail[$suffix[1]]=$v;unset($_POST[$k]);break;
-				}
+			if($k=='addtime'){
+				$_POST[$k]=strtotime($v);
 			}
 		}
-		if(is_array($_POST['guarantee_way'])){
-			$gt='';
-			foreach ($_POST['guarantee_way'] as $v){
-				$gt.=$v.'-';
-			}
-			$_POST['guarantee_way']=$gt;
-		}
-		$_POST['sdetail']=json_encode($sdetail);
-		$_POST['qdetail']=json_encode($qdetail);
-		$_POST['zdetail']=json_encode($zdetail);
-		$RequestFound=D('RequestFound');
+
+		$RequestFound=D('RequestApply');
 		$RequestFound->startTrans();
-		$result=$RequestFound->add($_POST);
-		
+		if($_POST['id'])
+		{
+			$result=$RequestFound->where("`id`=%d",array($_POST['id']))->save($_POST);
+			$resultProject=$projectModel->where("`binding_oa`='%s'",array('1_'.$_POST['id']))->save();
+		}
+		else
+		{
+			$result=$RequestFound->add($_POST);
+			$projectModel->binding_oa='1_'.$result;//定义project表中的bingding_oa字段的数值
+			$resultProject=$projectModel->add();
+		}
+
+
+		$result=$result===false?$result=false:$result=true && $resultProject===false?$resultProject=false:$resultProject=true;
 		if(empty($result)){
 			//失败
 			$RequestFound->rollback();
@@ -174,5 +176,13 @@ class RequestFoundModel extends BaseModel {
 			$sql.='gt_project as p on p.pro_id=rf.project_id left join gt_admin as a on a.admin_id=rf.user_id order by '.I('orderField').' '.I('orderDirection');
 			return $this->query($sql);
 		}
+	}
+
+	//通过proId返回OA的信息
+	public function returnOaInfoFromProId($proId)
+	{
+		$bindOA=D('Project')->where("`pro_id`=%d",array($proId))->field('binding_oa')->find();
+        $list=D('RequestApply')->where("`id`=%d",array(explode('_',$bindOA['binding_oa'])[1]))->find();
+		return $list;
 	}
 }

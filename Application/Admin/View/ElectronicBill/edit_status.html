@@ -91,6 +91,22 @@ delUrl: '/Admin/ElectronicBill/remove'
             </tbody>
         </table>
     </form>
+    <table id='file-list' class="table table-condensed table-hover" width="100%">
+        <thead>
+        <tr>
+            <th align="center" width="300">凭证</th>
+            <th align="center" width="100">上传日期</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach($attachment as $v){?>
+        <tr>
+            <td align="center"><a target="_blank" href="<?php echo $v["path"]?>"><img src="<?php echo $v['path']?>" style="max-width: 550px; max-height: 450px;"></a></td>
+            <td align="center"><?php echo date('Y-m-d', $v['addtime']) ?></td>
+        </tr>
+        <?php }?>
+        </tbody>
+    </table>
 </div>
 <div class="bjui-pageFooter">
     <ul>

@@ -6,11 +6,33 @@
             add_uploadedfile(json.content);
         }
     }
+    var flag="<?php echo $flag;?>"
+    $("select[name='fileType']").find("option[value='"+flag+"']").attr('selected',true)
 </script>
 <div class="bjui-pageContent">
-    <input id="pro_id" type="hidden" name="pro_id" value="<?php echo $pro_id?>">
+    <form action="/Admin/Role/saveFileDepart" name="fileAuthDepart" id="j_form" data-toggle="validate" data-alertmsg="false">
+        <input type="hidden" name="file_id" value="{$file_id}"/>
+        <input id="pro_id" type="hidden" name="pro_id" value="<?php echo $pro_id?>">
+    <table id='file-list_2' class="table table-condensed table-hover" width="100%">
+        <thead>
+        <tr>
+            <th colspan="4" style="text-align:left;">设置文件机密类型 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <select name="fileType" data-toggle="selectpicker">
+                    <option value="1">开放</option>
+                    <?php foreach($departSecretFile as $dkey=>$dvalue):?>
+                    <option value="<?php echo $dkey;?>"><?php echo $dvalue['name'];?></option>
+                    <?php endforeach;?>
+                </select>
+                <button type="submit" class="btn btn-green" data-icon="save">保存</button>
+            </th>
+        </tr>
+        </thead>
+        </table>
+        </form>
+
     <form action="/Admin/Role/saveFileAuth" name="fileAuth" id="j_form" data-toggle="validate" data-alertmsg="false">
         <input type="hidden" name="file_id" value="{$file_id}"/>
+        <input id="pro_id" type="hidden" name="pro_id" value="<?php echo $pro_id?>">
     <table id='file-list' class="table table-condensed table-hover" width="100%">
         <thead>
       <!--  <tr>

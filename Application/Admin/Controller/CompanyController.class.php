@@ -35,7 +35,7 @@ class CompanyController extends CommonController {
         $total = $this->mainModel->where($map)->relation('admin')->count();
         $list = $this->mainModel->where($map)->order('addtime desc')->relation('admin')->page($page, $pageSize)->select();
         
-        $industries = C('industries');
+        $industries = C('Ind.industries');
         $this->assign('industries', $industries);
         $this->assign(array('total'=>$total, 'pageCurrent'=>$page, 'list'=>$list));
         $this->display();
@@ -43,7 +43,7 @@ class CompanyController extends CommonController {
 
     /* 添加管理员 */
     public function add() {
-        $industries = C('industries');
+        $industries = C('Ind.industries');
         $type = I('get.type', 0);
         $this->assign('type', $type);
         $this->assign('industries', $industries);
@@ -231,10 +231,11 @@ class CompanyController extends CommonController {
     //查找符合子流程的项目
     public function findRelateSubProcess()
     {
-        $pre=I('get.pre');
-        $projectList=array();
-        $pjInfo=D('PjWorkflow')->select();
-        $proIdString='';
+        $pre=I('get.pre')?I('get.pre'):I('post.pre');
+        $proTitle=I('post.company_name');
+        //$projectList=array();
+       // $pjInfo=D('PjWorkflow')->select();
+        //$proIdString='';
 /*        foreach ($pjInfo as $kk=>$vv)
         {
             if(explode('_',$vv['pro_level_now'])[0]==$pre)
@@ -243,17 +244,19 @@ class CompanyController extends CommonController {
             }
         }*/
         //$mapStripTags =rtrim($proIdString,',');
-        isset($proIdString)?$map=" and `pro_id`":$map='';
-        $projectIng=D('Project')->where("`is_all_finish`=0 $map")->select();
-        foreach ($projectIng as $k=>$v)
+        if($proTitle) $map=" and `pro_title` like '%".$proTitle."%'";
+        $pre=='18'?$map.=" and  `binding_oa`=1 ":$map='';
+        $projectIng=D('Project')->field('*,SUBSTR(`binding_oa`,1,1) as `binding_oa`')->where("`is_all_finish`=0 $map")->select();
+/*        foreach ($projectIng as $k=>$v)
         {
             $finishStatus=json_decode($v['finish_status'],true);
             if(!$finishStatus || !in_array($pre,$finishStatus))
             {
                 array_push($projectList,$v);
             }
-        }
-        $this->assign('list',$projectList);
+        }*/
+        $this->assign('list',$projectIng);
+        $this->assign('type',$pre);
         $this->display();
     }
     // 根据不同类型返回不同的相关部门人员
@@ -299,6 +302,9 @@ class CompanyController extends CommonController {
                 break;
             case '12' :
                 $map['r.role_id']='21';
+                break;
+            case '13' :
+                $map['r.role_id']=array('in',array('21'));
                 break;
             case '13_2' :
                 $map['r.role_id']=array('in',array('2','14'));

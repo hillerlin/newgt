@@ -70,6 +70,25 @@
     </div>
         <?php endif;?>
     <hr />
+
+    <?php if($oaFlow):?>
+    <hr />
+    <div class="cate">
+        <h5><span class="glyphicon glyphicon-ok-circle"></span>OA流程</h5>
+        <ul>
+            <?php foreach($oaFlow as $kkkkk=>$vvvvv):?>
+            <?php if($vvvvv['menu_name']=='发起审核'):?>
+            <li><a data-url="/Admin/Project/add/pre/<?php echo $vvvvv['data']?>.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-link h3"></span><?php echo $vvvvv['menu_name']?></a></li>
+           <?php else:?>
+            <li><a data-url="/Admin/<?php echo $vvvvv['module_name']?>/<?php echo $vvvvv['action_name']?>/type/OA.html" data-toggle="dialog" data-width='1200' data-height="900" data-mask='true' data-id="project-oaFlow" ><span class="glyphicon glyphicon-link h3"></span><?php echo $vvvvv['menu_name']?></a></li>
+            <?php endif;?>
+            <!--  <li><a data-url="/Admin/Project/add/pre/15.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-link h3"></span>放款审核</a></li><li><a data-url="/Admin/Project/add/pre/16.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-link h3"></span>日常利息归还</a></li>
+              <li><a data-url="/Admin/Project/add/pre/17.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-link h3"></span>商票退票流程</a></li>
+            -->  <?php endforeach;?>
+        </ul>
+    </div>
+    <?php endif;?>
+    <hr />
   <!-- <div class="cate">
         <h5><span class="glyphicon glyphicon-tags"></span>考勤类</h5>
         <ul>

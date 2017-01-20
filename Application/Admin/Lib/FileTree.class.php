@@ -72,7 +72,7 @@ class FileTree {
                     $this_pid = $this->dirs[$mode]['file_id'];
                     $val = $val . '_' . $this_pid;
                 }
-                if($this->fileId && empty($this->dirs)) //文件夹里面传文件夹 author：lim ---- writeTime:2017-1-3
+                if($this->fileId && empty($this->dirs)) //文件夹里面传文件夹 author：lmj ---- writeTime:2017-1-3
                 {
                     $this->dirs[$val] = array('file_id' => $file_id + 1, 'pid' => $this->fileId);
                     $pid = $this->fileId;

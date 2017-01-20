@@ -1,10 +1,14 @@
 <div class="bjui-pageHeader">
-    <form id="pagerForm" data-toggle="ajaxsearch" action="<?php echo U('Project/workflowlog')?>" method="post">
+    <form id="pagerForm" data-toggle="ajaxsearch" action="<?php echo U('Project/workflowlog',array('type'=>$type))?>" method="post">
         <input type="hidden" name="pageSize" value="${model.pageSize}">
         <input type="hidden" name="pageCurrent" value="${model.pageCurrent}">
         <input type="hidden" name="orderField" value="${param.orderField}">
         <input type="hidden" name="orderDirection" value="${param.orderDirection}">
         <div class="bjui-searchBar">
+            <?php if($type):?>
+            <a  href="/Admin/Operation/addApplication/type/1.html" data-height=1200 data-width=1000 class="btn btn-green" data-id="project-submit" data-toggle="dialog" data-mask="true" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="新建放款">新建放款
+            </a>
+            <?php endif;?>
             <label>项目状态:</label>
             <select name="is_all_finish" data-toggle="selectpicker">
                 <option value="">全部</option>
@@ -32,23 +36,37 @@
         </thead>
         <tbody>
         <php>foreach($list as $v):</php>
-        <tr data-id="{$v['pro_id']}" data-title="{$v['pro_title']}" ondblclick="showWorkflow(this)" title="双击可查看项目详情" style="cursor:pointer;">
+        <tr data-id="{$v['pro_id']}" data-title="{$v['pro_title']}"   ondblclick="showWorkflow(this)" title="双击可查看项目详情" style="cursor:pointer;">
             <td align="center">{$v['pro_no']}</td>
             <td align="center">{$v['pro_title']}</td>
             <td align="center">{:date('Y-m-d H:i', $v['addtime'])}</td>
-            <td align="center">{$v['company_name']}</td>
+            <td align="center"><?php echo $v['company_name']?$v['company_name']:"<span style='color:red'>OA类型项目</span>"?></td>
             <td align="center">
                 <php> echo empty($v['is_all_finish'])?'否':'是';</php>
             </td>
             <td align="center">
                 <php>
                     //根据登录人的页面权限来确认资料包权限
+                    $flag=0;
                     foreach($authpage as $ak=>$av):
                     if($ak != '流程监控') continue;
                     foreach($av['pre'] as $subk=>$subv):
                 </php>
                 <a  href="{:U($subk, array('pro_id'=>$v['pro_id']))}" data-height=900 data-width=800 class="btn btn-green" data-id="project-submit" data-toggle="dialog" data-mask="true" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="{$subv}">{$subv}
                 </a>
+                <php>
+
+                    if($v['binding_oa']):
+                    if($flag==1) continue;
+                    $flag=1;
+                </php>
+                <a  href="/Admin/RequestFound/editRequestFound/proId/<?php echo $v['pro_id']?>.html" data-height=1200 data-width=1000 class="btn btn-green" data-id="project-submit" data-toggle="dialog" data-mask="true" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="查看放款单">查看放款单
+                </a>
+                <php>
+                    endif;
+                </php>
+
+
                 <php> endforeach;endforeach;</php>
             </td>
         </tr>

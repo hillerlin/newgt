@@ -7,37 +7,38 @@
 </style>
 <div class="bjui-pageContent">
     <form action="<?php echo U('RequestFound/saveRequestFound')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false" method="post">
+        <input type="hidden" name="id" value="{$list.id}">
         <table class="table table-bordered" data-selected-multi="true">
             <tbody>
             <tr data-id="1">
                 <td class="conth" style="width:112px;">申请部门:</td>
-                <td> <input type="text" name="applicant" value=""></td>
+                <td> <input type="text" name="applicant" value="{$list.applicant}"></td>
                 <td class="conth">申请人:</td>
-                <td><input type="text" name="name" value="{$admin.real_name}"></td>
+                <td><input type="text" name="name" value="{$list.name}"></td>
                 <td class="conth">申请时间:</td>
-                <td> <input type="text"  value="<?php echo date('Y-m-d', time())?>" name="addtime" data-toggle="datepicker" data-nobtn="true" placeholder="点击选择日期"></td>
+                <td> <input type="text"  value="<?php echo date('Y-m-d', $list['addtime'])?>" name="addtime" data-toggle="datepicker" data-nobtn="true" placeholder="点击选择日期"></td>
             </tr>
 
             <tr data-id="2">
                 <td class="conth">产品名称:</td>
-                <td><input type="text" name="product_name" ></td>
+                <td><input type="text" name="product_name" value="{$list.product_name}"></td>
                 <td class="conth">满标日:</td>
-                <td><input type="text" name="full_scale_time" ></td>
+                <td><input type="text" name="full_scale_time" value="{$list.full_scale_time}"></td>
                 <td class="conth">合同编号:</td>
-                <td><input type="text" name="contract_num" ></td>
+                <td><input type="text" name="contract_num" value="{$list.contract_num}"></td>
             </tr>
             <tr data-id="3">
                 <td class="conth">融资额度（万元）:</td>
-                <td><input type="text" name="collect_money" id="col_money"></td>
+                <td><input type="text" name="collect_money" id="col_money" value="{$list.collect_money}"></td>
                 <td class="conth">大麦居间服务费（包含在<span id="service">0元</span>内）:</td>
-                <td><input type="text" name="charge_money" ></td>
+                <td><input type="text" name="charge_money" value="{$list.charge_money}"></td>
                 <td class="conth">放款额（元）:</td>
-                <td><input type="text" value="" size="20" name="loan_money" class="conmoney" ajax_name="s_cmoney" data-rule="required"></td>
+                <td><input type="text" value="{$list.loan_money}" size="20" name="loan_money" class="conmoney" ajax_name="s_cmoney" data-rule="required" ></td>
             </tr>
             <tr data-id="4">
                 <td class="conth">融资期限:</td>
                 <td>
-                    <input type="text" name="limit_time"  size="15">
+                    <input type="text" name="limit_time"  size="15" value="{$list.limit_time}">
                     <select data-toggle="selectpicker" name="time_type">
                         <option value="1">月</option>
                         <option value="2">天</option>
@@ -51,7 +52,7 @@
                     <php>
                         foreach(C('trade_type') as $k => $v){
                     </php>
-                    <input type="checkbox" name="trade_type[]" data-rule="checked" id="j_form_checkbox1" value="<php>echo $k;</php>" data-toggle="icheck" data-label="<php>echo $v;</php>">
+                    <input type="checkbox" name="trade_type[]" <?php echo ($k==$list['trade_type'])?'checked':'';?> data-rule="checked" id="j_form_checkbox1" value="<php>echo $k;</php>" data-toggle="icheck" data-label="<php>echo $v;</php>">
                     <php> }</php>
                 </td>
             </tr>
@@ -61,23 +62,23 @@
                     <php>
                         foreach(C('contract_pay_type') as $k => $v){
                     </php>
-                    <input type="radio" name="pay_type" data-rule="checked" id="" value="<php>echo $k;</php>" data-toggle="icheck" data-label="<php>echo $v;</php>">
+                    <input type="radio" name="pay_type" data-rule="checked" <?php echo ($k==$list['pay_type'])?'checked':'';?> id="" value="<php>echo $k;</php>" data-toggle="icheck" data-label="<php>echo $v;</php>">
                     <php> }</php>
                 </td>
             </tr>
-            <if>
-            <tr class="requestMoney" >
-                <td  class="conth"> 请款说明</td>
-                <td align="center"> 居间服务费:</td>
-                <td colspan="4">费率: <input type="text" name="charge_rate"> 融资金额: <input type="text" name="collect_money_2"></td>
-            </tr>
-            </if>
+<!--            <if>
+                <tr class="requestMoney" >
+                    <td  class="conth"> 请款说明</td>
+                    <td align="center"> 居间服务费:</td>
+                    <td colspan="4">费率: <input type="text" name="charge_rate" value="{$list.charge_rate}"> 融资金额: <input type="text" name="collect_money_2" value="{$list.collect_}"></td>
+                </tr>
+            </if>-->
             <tr>
                 <td rowspan="6" class="conth"> 收款方信息</td>
                 <td class="conth"> 是否监管账户:</td>
                 <td>
-                    <input type="radio" name="supervise" id="" data-rule="checked" value="{$content['supervise']}" data-toggle="icheck" data-label="是" >
-                    <input type="radio" name="supervise" id="" data-rule="checked" value="2" data-toggle="icheck" data-label="否" >
+                    <input type="radio" name="supervise" <?php echo (1==$list['supervise'])?'checked':'';?> id="" data-rule="checked" value="1" data-toggle="icheck" data-label="是" >
+                    <input type="radio" name="supervise" <?php echo (2==$list['supervise'])?'checked':'';?>  id="" data-rule="checked" value="2" data-toggle="icheck" data-label="否" >
                 </td>
             </tr>
             <tr>
@@ -90,19 +91,18 @@
             </tr>
             <tr>
                 <td class="conth"> 户名:</td>
-                <td colspan="5"><input type="text" value="" name="account_name" size="50" data-rule="required"></td>
+                <td colspan="5"><input type="text" value="{$list.account_name}" name="account_name" size="50" data-rule="required"></td>
             </tr>
 
             <tr>
                 <td class="conth">开户银行:</td>
-                <td colspan="5"><input type="text" value=""  name="bank_name" size="50" data-rule="required"></td>
+                <td colspan="5"><input type="text" value="{$list.bank_name}"  name="bank_name" size="50" data-rule="required"></td>
             </tr>
             <tr>
                 <td class="conth">账号:</td>
-                <td colspan="5"><input type="text" value="" name="bank_num" size="50" data-rule="required"></td>
+                <td colspan="5"><input type="text" value="{$list.bank_num}" name="bank_num" size="50" data-rule="required"></td>
             </tr>
 
-            <php>if(in_array($type,array(1,2,3))):</php>
             <tr class="requestMoney">
                 <td rowspan="3" class="conth" id="information"> 请款说明</td>
                 <td class="conth"> 人民币小写:</td>
@@ -115,17 +115,16 @@
             <tr id="deposit" >
                 <td class="conth">保证金是否已付:</td>
                 <td colspan="2" align="center">
-                    <input type="radio" name="bail_status" id="" data-rule="checked" value="1" data-toggle="icheck" data-label="已付" >
-                    <input type="radio" name="bail_status" id="" data-rule="checked" value="2" data-toggle="icheck" data-label="未付">
+                    <input type="radio" name="bail_status" <?php echo (1==$list['bail_status'])?'checked':'';?> id="" data-rule="checked" value="1" data-toggle="icheck" data-label="已付" >
+                    <input type="radio" name="bail_status" <?php echo (2==$list['bail_status'])?'checked':'';?> id="" data-rule="checked" value="2" data-toggle="icheck" data-label="未付">
                 </td>
                 <td>担保企业：</td>
-                <td><input type="text" name="warrant_company"></td>
+                <td><input type="text" name="warrant_company" value="{$list.warrant_company}"></td>
             </tr>
             <tr >
                 <td  class="conth"> 其它情况说明:</td>
-                <td  colspan="5"><textarea name="otherinfo" cols="40" rows="4"></textarea></td>
+                <td  colspan="5"><textarea name="otherinfo" cols="40" rows="4">{$list.otherinfo}</textarea></td>
             </tr>
-            <php>endif;</php>
             </tbody>
         </table>
     </form>
@@ -138,28 +137,31 @@
 </div>
 <script>
     $(function(){
+        $("select[name='time_type']").find('option[value="<?php echo $list[time_type];?>"]').attr('selected',true)
+
         $('#pro').change(function(){
             var pro_con=$(this).children('option:selected').attr('pro_con');
             $('input[name=project_con]').val(pro_con);
         });
         //人民币大小写动态关联显示
-        $('.conmoney').change(function(){
-            var money=$(this).val().trim();
-            var name=$(this).attr('name');
-            var ajax_name=$(this).attr('ajax_name');
+        var conmoney=$('.conmoney')
+
+            var money=conmoney.val().trim();
+            var name=conmoney.attr('name');
+            var ajax_name=conmoney.attr('ajax_name');
             $('input[name='+ajax_name+']').val(DX(money));
             $('input[name='+name+']').val(money);
-        });
+
         //动态更改居费率显示
         $('#col_money').change(function () {
-           var collect_money=$(this).val();
+            var collect_money=$(this).val();
             $('#service').html(collect_money+'W');
         });
         //动态更改情况说明的样式
         if($('#deposit').is(':visible')){
             var rows=$('#information').attr('rowspan');
-           $('#information').attr('rowspan',parseInt(rows)+1);
-       }
+            $('#information').attr('rowspan',parseInt(rows)+1);
+        }
         //只显示一个情况说明，当第2个情况说明显示的时候，就把第一个情况说明给屏蔽掉
         var requestMoney=$('.requestMoney');
         if(requestMoney.length>1 && $('.requestMoney').eq(1).is(':visible')){

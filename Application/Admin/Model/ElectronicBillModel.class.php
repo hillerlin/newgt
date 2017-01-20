@@ -163,5 +163,9 @@ class ElectronicBillModel extends BaseModel {
     {
         return $this->where("`pro_id`=%d",array($proId))->getField('eb_id');
     }
+    public function attachment($eb_id)
+    {
+        return D('EbillVoucher')->where("`eb_id`=%d",array($eb_id))->select();
+    }
 
 }

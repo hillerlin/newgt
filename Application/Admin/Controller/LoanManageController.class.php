@@ -90,7 +90,8 @@ class LoanManageController extends CommonController {
             if ($result === false) {
                 $this->json_error('保存失败');
             } else {
-                $this->json_success('保存成功', '', '', true, array('tabid' => 'loanmanage-loanApplyList'));
+                //$this->json_success('保存成功', '', '', true, array('tabid' => 'loanmanage-loanApplyList'));
+                $this->json_success('保存成功', '', '', true, array('dialogid' => 'project-submit'));
             }
         }
         $contract_pay_type = C('contract_pay_type');

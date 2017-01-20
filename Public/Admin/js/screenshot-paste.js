@@ -1,7 +1,6 @@
 (function ($) {
     $.fn.screenshotPaste = function (options) {
         var me = this;
-        debugger
         if (typeof options == 'string') {
 
             var method = $.fn.screenshotPaste.methods[options];

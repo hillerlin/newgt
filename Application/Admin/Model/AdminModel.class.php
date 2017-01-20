@@ -213,4 +213,9 @@ class AdminModel extends BaseModel
             ->select();
         return array('total'=>$count,'list'=>$list);
     }
+
+    public function getAll()
+    {
+        return $this->field('admin_id,real_name')->select();
+    }
 }

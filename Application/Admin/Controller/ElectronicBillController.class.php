@@ -178,9 +178,12 @@ class ElectronicBillController extends CommonController {
         $bill_info = D('ElectronicBill')->getBillInfo($eb_id);   //流水信息
 //        var_dump($bill_info);exit;
         $type_dsc = D('ElectronicBill')->getTypeDescribe();
+
+        $attachment=D('ElectronicBill')->attachment($eb_id);
         
         $this->assign('type_dsc', $type_dsc);
         $this->assign('bill_info', $bill_info);
+        $this->assign('attachment', $attachment);
         $this->display('edit_status');
     }
     

@@ -108,4 +108,11 @@ class RoleModel extends BaseModel {
             ->select();
         return array('total' => $total, 'list' => $list);
     }
+
+    //保存私密文件夹的secret字段
+    public function saveFileSecret($fileId,$proId,$fileType)
+    {
+       $update= D('ProjectFile')->where("`file_id`=%d and `pro_id`=%d",array($fileId,$proId))->data(array('secret'=>$fileType))->save();
+        return $update;
+    }
 }

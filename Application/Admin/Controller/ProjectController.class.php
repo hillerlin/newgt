@@ -67,7 +67,6 @@ class ProjectController extends CommonController
             if (intval($proRebutter) > 0)//驳回重发的修改
             {
                 list($pjWorkFlow, $sendProcess, $workFlowLog, $redisPost) = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId);
-
             } else //正常提交新建项目
             {
                 //根据name查出下个审批人的角色id
@@ -91,7 +90,7 @@ class ProjectController extends CommonController
                 'sp_id' => $sendProcess, 'pj_id' => $result, 'pro_level' => 0, 'pro_times' => 1, 'pro_state' => 0, 'pro_addtime' => time(), 'pro_author' => $admin['admin_id'],
                 'wf_id' => $pjWorkFlow, 'pro_role' => $admin['role_id'], 'pro_xml_id' => $xmlId
             ))->add();
-            $createFolder=createFolder($result);
+            $createFolder=createFolder($result);//创建多个文件夹
             $redisPost = redisTotalPost(0, $admin['admin_id'], $admin['admin_id'] . '|admin', time(), $result, $workFlowLog);
         }
         empty($proIid)?$proIid=$result:$proIid=$proIid;
@@ -132,11 +131,11 @@ class ProjectController extends CommonController
                 break;
             case '17':
             case '18':
+                break;
             default:
                 $oldProject=addSubProcessAuditor($pjId,$auditor_id,$auditor_name,$pro_level,$pro_subprocess_desc);
                 break;
         }
-
         $return = addSubProcess($pjId, $pro_level, $admin,$xmlfile);
         if ($return && $oldProject) {
             $this->json_success('新建成功', '/Admin/Project/MyAudit', '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目'),1);
@@ -157,7 +156,7 @@ class ProjectController extends CommonController
         }
         $data['auditorId']=implode(',',$data['auditorId']);
         $data['auditorName']=implode(',',$data['auditorName']);
-        if($proLevel=='11' || $proLevel=='11_2' || $proLevel=='11_3' || $proLevel=='11_4')
+        if($proLevel=='11' || $proLevel=='11_2' || $proLevel=='11_3' || $proLevel=='11_4'|| $proLevel=='11_5'|| $proLevel=='11_6')
         {
             $is_pre_contract= D('PrepareContract')->isPreContract($pro_id, $projectInfo['company_id']);
         }
@@ -174,7 +173,11 @@ class ProjectController extends CommonController
         {
             $is_finance_flow_in=D('FinanceFlow')->getProid($pro_id,'in');
         }
-        $this->assign(array('companyName'=>$projectInfo['pro_title'],'company_id'=>$projectInfo['company_id'],'is_finance_flow_in'=>$is_finance_flow_in['fid'],'is_pre_contract'=>$is_pre_contract,'Ffid'=>$is_finance_flow['fid'],'is_electronicBill'=>$is_electronicBill,'pre'=>$proLevel,'admin'=>session('admin'),'pro_subprocess_desc'=>$projectInfo['pro_subprocess'.explode('_',$proLevel)[0].'_desc']));
+        if(explode('_',$proLevel)[0]=='18') //OA请款书
+        {
+            $is_requestFunds=$pro_id;
+        }
+        $this->assign(array('companyName'=>$projectInfo['pro_title'],'company_id'=>$projectInfo['company_id'],'is_requestFunds'=>$is_requestFunds,'is_finance_flow_in'=>$is_finance_flow_in['fid'],'is_pre_contract'=>$is_pre_contract,'Ffid'=>$is_finance_flow['fid'],'is_electronicBill'=>$is_electronicBill,'pre'=>$proLevel,'admin'=>session('admin'),'pro_subprocess_desc'=>$projectInfo['pro_subprocess'.explode('_',$proLevel)[0].'_desc']));
         $this->assign($data);
         $this->assign($_GET);
         $this->display();
@@ -599,9 +602,10 @@ class ProjectController extends CommonController
                 //风控部总监再次审核
                 $allocationId=ProjectSubmitter($spId);
                 $newProLevel=addNewLevel($proLevel);
+                $auditor_name=ProjectSubmitter($spId);
                 $updataProject=addSubProcessAuditor($proIid,null,null,$newProLevel,$pro_subprocess_desc);
                 //告诉项管总监合同知情
-                $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>所需资料上传完成，并反馈给'.$auditor_name;
+                $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>所需资料上传完成，并反馈给'.adminNameToId($auditor_name);
                 $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$allocationId,$xmlId,$plId,'one',$contents,-2)&& $updataProject;
                 break;
             case '10_4':
@@ -615,7 +619,7 @@ class ProjectController extends CommonController
                 $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$auditor_id,$xmlId,$plId,'one',$content,-2) && $updataProject;//告诉项目经理的时候跨了一个等级，所以用$newProLevel
                 if($auditType==2) {  //审核通过
                     $content2 = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>审核项目<code>' . projectNameFromId($proIid) . '</code>通过';
-                    $return=postNextProcess($wfId,$newProLevel,$proTimes,$admin,$proIid,0,$auditor_id,$xmlId,$plId,'one',$content2,-2) && $updataProject&&$return;//告诉项目经理的时候跨了一个等级，所以用$newProLevel
+                    $return=postNextProcess($wfId,$newProLevel,$proTimes,$admin,$proIid,0,0,$xmlId,$plId,'one',$content2,-2) && $updataProject&&$return;//告诉项目经理的时候跨了一个等级，所以用$newProLevel
                 }else{
                     //审核不通过
                 }
@@ -708,7 +712,7 @@ class ProjectController extends CommonController
                 $auditor_id = I('get.auditor_id');//分配跟进人
                 $auditor_name = I('get.auditor_name');//跟进人的名字
                 $updataProject=addSubProcessAuditor($proIid,$auditor_id,$auditor_name,$proLevel,$pro_subprocess_desc);
-                $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>上传了合同，并转交给法务:<code>'.adminNameToId($auditor_id).'</code>';
+                $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>提交合同审核，并转交给法务:<code>'.adminNameToId($auditor_id).'</code>';
                 $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$auditor_id,$xmlId,$plId,'one',$content,-2) && $updataProject;//告诉项目经理的时候跨了一个等级，所以用$newProLevel
                 break;
             case '12_1':
@@ -716,7 +720,7 @@ class ProjectController extends CommonController
                 $newProLevel=addNewLevel($proLevel);
                 $updataProject=addSubProcessAuditor($proIid,'','',$proLevel,$pro_subprocess_desc);//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
                 $insider=array('28','24','33','72','23','22');//项管部总监，风控总监，副总裁，总裁，的role_id
-                array_push($insider,D('Project')->formProIdGetInsider($proIid)['admin_id'],D('Project')->formPjIdGetInsider($proIid)[0]['admin_id']);
+                array_push($insider,D('Project')->formProIdGetInsider($proIid)['admin_id']);
                 $insider=array_unique($insider);
                 $time=time();
                 if($auditType==2) {  //审核通过，才发起知情
@@ -729,7 +733,7 @@ class ProjectController extends CommonController
                     }
 
                     $content2 = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>审核项目<code>' . projectNameFromId($proIid) . '</code>通过';
-                    $return=postNextProcess($wfId,$newProLevel,$proTimes,$admin,$proIid,0,'',$xmlId,$plId,'one',$content2,-2) && $updataProject && $return;//归档结束，$newProLevel，跳过两级
+                    $return=postNextProcess($wfId,$newProLevel,$proTimes,$admin,$proIid,0,0,$xmlId,$plId,'one',$content2,-2) && $updataProject && $return;//归档结束，$newProLevel，跳过两级
 
                 }else{
                     //审核不通过
@@ -737,7 +741,7 @@ class ProjectController extends CommonController
                 break;
             case '13':
                 //线下签约-法务老大分配人手
-                $proAdminId = I('get.admin_id');//风控专员跟进人ID
+                $proAdminId = I('get.auditor_id');//风控专员跟进人ID
                 $newProLevel=addNewLevel($proLevel);
                 $updataProject=addSubProcessAuditor($proIid,$proAdminId,adminNameToId($proAdminId),$proLevel,$pro_subprocess_desc);//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
                 //告知总裁与副总裁
@@ -1406,7 +1410,6 @@ class ProjectController extends CommonController
         if(I('get.actionname') || I('get.custom_pro_id')){
            $html=$this->fetch(I('get.actionname'));
            $this->json_success($html);
-
         }else{
             $this->display();
         }
@@ -1419,8 +1422,11 @@ class ProjectController extends CommonController
         $map['pro_id'] = I('get.pro_id');
         $map['file_id'] = I('get.file_id');
         $list = D('ProjectAttachment')->where($map)->select();
+        $flag=D('ProjectFile')->where($map)->field('secret')->find();
         $exts = getFormerExts();
         $this->assign('exts', $exts);
+        $this->assign('departSecretFile',C('fileLevel'));
+        $this->assign('flag',$flag['secret']);
         $this->assign($map);
         if(I('get.methodname')){
             $this->assign('list', $list);
@@ -1442,6 +1448,7 @@ class ProjectController extends CommonController
             $this->assign('list', $list);
             $this->display();
         }
+
     }
     //上传附件
     public function upload_attachment()
@@ -1978,9 +1985,8 @@ class ProjectController extends CommonController
     public function detail()
     {
         $admin = session('admin');
-
         I('get.dataId')?$dataId=I('get.dataId'):$dataId=I('get.pro_id');
-        $proWorkflow=D('Project')->projectWorkflowInfo('w.pj_id = '.$dataId);
+        $proWorkflow=D('Project')->projectWorkflowInfo("w.pj_id =$dataId");
         //取出这个项目的所有子流程
         $workflowInfos=array_column($proWorkflow,'pro_level_now');
         foreach ($workflowInfos as $key => $item) {
@@ -2056,6 +2062,14 @@ class ProjectController extends CommonController
         if(I('post.is_all_finish'))$map['p.is_all_finish']=array('eq',I('post.is_all_finish'));
         //项目id
         if(I('get.pro_id'))$map['p.pro_id']=array('eq',I('get.pro_id'));
+        if(I('get.type'))
+        {
+            $map['p.binding_oa']=array('EXP','is not null');
+        }/*else //追加OA显示流程  在OA流程新建的  新建请款
+        {
+            $map['p.binding_oa']=array('EXP','is null');
+        }*/
+
 
         //如果是消息推送过来的就需要标记redis了
         if(I('get.type') && I('get.pro_id')&& I('get.time'))  checkMessage(I('get.time'),I('get.type'),I('get.pro_id'));
@@ -2068,7 +2082,7 @@ class ProjectController extends CommonController
         $authpage=M('Admin')->getFieldByAdminId($admin['admin_id'],'authpage');
         $authpage=json_decode($authpage,true);
         $this->assign('authpage',$authpage);
-        $this->assign(array('list' => $result['list'], 'total' => $result['total'], 'pageCurrent' => $page));
+        $this->assign(array('list' => $result['list'], 'total' => $result['total'], 'pageCurrent' => $page,'type'=>I('get.type')));
         $this->display('Project/workflowlog');
     }
 

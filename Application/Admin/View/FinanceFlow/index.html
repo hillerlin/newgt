@@ -6,7 +6,7 @@
         <input type="hidden" name="orderField" value="${param.orderField}">
         <input type="hidden" name="orderDirection" value="${param.orderDirection}">
         <div class="bjui-searchBar">
-            <button data-url="{:U('FinanceFlow/add')}" class="btn btn-blue" data-toggle="dialog" data-icon="plus" data-mask='true' data-height='500' data-id="finance-flow-add">新增流水</button>&nbsp;
+            <button data-url="{:U('FinanceFlow/add',array('type'=>'front'))}" class="btn btn-blue" data-toggle="dialog" data-icon="plus" data-mask='true' data-height='500' data-id="finance-flow-add">新增流水</button>&nbsp;
             <label>流水类型:</label>
             <select name="type" data-toggle="selectpicker" id="select_status">
                 <option value="">全部</option>

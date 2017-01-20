@@ -145,7 +145,8 @@ class LoanFormModel extends BaseModel {
     public function unloan($map) {
         //$map['wp.current_node_index'] = 10;
 //        $map['t.loan_type'] = 1;
-        $map['pj.pro_level_now']='15_10';
+        //$map['pj.pro_level_now']='15_10';
+        $map['_string']="pj.pro_level_now='15_10' or pj.pro_level_now='15_11'";
         $total = $this
                 ->table($this->trueTableName . ' AS t')
                 //->join('__WORKFLOW_PROCESS__ AS wp ON wp.context=t.loan_id')

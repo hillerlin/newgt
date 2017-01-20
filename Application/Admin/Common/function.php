@@ -116,9 +116,9 @@ function create_name($filename) {
 function my_file_exists($data) {
     $pro_id = session('pro_id');
     if (D('ProjectAttachment')->sha1Exists($pro_id, $data['sha1'])) {
-        return true;
+        return false;
     }
-    return false;
+    return false;//暂时去掉文件重复性
 }
 
 function debt_tr_class($status, $endtime) {

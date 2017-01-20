@@ -440,7 +440,7 @@ class RoleController extends CommonController {
     public function saveFileComAuth($folderId='',$fileId='',$personId=''){
         if(empty($folderId) || empty($personId)) return false;
         //获取pfileid的祖先级id集合
-        $parentFolder=pidfile($folderId);
+        $parentFolder=pidfile($folderId)?pidfile($folderId):array();
         array_push($parentFolder,$folderId);
         $folders=array_unique($parentFolder);
         if($fileId){
@@ -453,6 +453,18 @@ class RoleController extends CommonController {
         $oldFolders=M('ProjectFile')->field('file_id,allow_adminid')->where(array('file_id'=>array('in',$folders)))->select();
         $result=saveAll('ProjectFile','allow_adminid',$personId,$oldFolders,'file_id',array('file_id'=>array('in',$folders))) || $result;
         return $result;
+    }
+    public function saveFileDepart()
+    {
+        $contents=I('post.');
+        $update= D('Role')->saveFileSecret($contents['file_id'],$contents['pro_id'],$contents['fileType']);
+        if($update)
+        {
+            $this->success('添加成功');
+        }else
+        {
+            $this->error('添加失败');
+        }
     }
 
     /**
@@ -474,13 +486,17 @@ class RoleController extends CommonController {
         $subLevel=I('get.subLevel');
         $subLevel=C('proLevelClass')[$subLevel];
         $proLevel=C('proLevel');
+        $list=M('SublevelCheck')->where(array('wf_id'=>array('in',implode(',',$subLevel))))->select();
         foreach($proLevel as $k => $v){
             //只获取选中的子流程所获取的信息
             if(!in_array($k,$subLevel)) unset($proLevel[$k]);
         }
         $this->assign('proLevel',$proLevel);
+        $listCallBack=call_user_func_array(array('\Admin\Controller\RoleController','callBackJoin'),array($list));
+        $this->assign('list',$listCallBack);
         $this->display();
     }
+
     public function saveSubLevel(){
         $content=I('post.');
         $result=[];
@@ -488,16 +504,16 @@ class RoleController extends CommonController {
         foreach($content as $k=>$v){
             if(strpos($k,'adminId')===false) continue;
             $result[]=array(
-
-               'wf_id'=> end(explode('adminId',$k)),
-                'admin_ids'=>$v,
+                'wf_id'=> end(explode('adminId',$k)),
+                'admin_ids'=>$v
             );
         }
         //如果$result中的任意一个元素中的key存在，则说明此子流程已经添加过默认审核人了,此处取数组最后一个元素来作为检查对象
-        if(M('SublevelCheck')->getFieldByWfId(end($result)['wf_id'],'id')){
+        if(M('SublevelCheck')->where("`wf_id`='%d'",array(end($result)['wf_id']))->find()){
             //更新
             foreach($result as $k=>$v){
-                $re=M('SublevelCheck')->where('wf_ids = '.$k)->save($v) && $re;
+                $update=M('SublevelCheck')->where("`wf_id` ='%s'",$v['wf_id'])->save($v);
+                $re=$update===false?$update=false:$update=true && $re;
             }
             if($re){
                 $this->success('添加成功');
@@ -512,5 +528,27 @@ class RoleController extends CommonController {
                 $this->error('添加失败');
             }
         }
+    }
+
+    //将wf_id转成下标，并多拼接名字多一组数据
+    public function callBackJoin($list)
+    {
+        $adminList=D('Admin')->getAll();//admin所有的人名和Id
+        foreach ($list as $k=>$v)
+        {
+            $name='';
+            $list[$v['wf_id']]=$v;
+            $adminIdsExplode=explode(',',$v['admin_ids']);
+            foreach ($adminList as $key=>$vv)
+            {
+                if(in_array($vv['admin_id'],$adminIdsExplode))
+                {
+                    $name.=$vv['real_name'].',';
+                }
+            }
+            $list[$v['wf_id']]['real_name']=rtrim($name,',');
+            unset($list[$k]);
+        }
+        return $list;
     }
 }

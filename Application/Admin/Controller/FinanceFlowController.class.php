@@ -68,6 +68,7 @@ class FinanceFlowController extends CommonController {
         $this->assign('type_dsc', $type_dsc);
         $this->assign('exts', $exts);
         $this->assign('banks', $banks);
+        $this->assign($_GET);
         $this->assign('pro_id', I('get.pro_id'));
         $this->display();
     }
@@ -78,6 +79,7 @@ class FinanceFlowController extends CommonController {
             $e = $model->getError();
             $this->json_error($e);
         }
+        $type=I('post.showType');
         $voucher = I('post.voucher');
         $model->pay_time = strtotime($data['pay_time']);
         $admin = session('admin');
@@ -108,7 +110,14 @@ class FinanceFlowController extends CommonController {
         }
         
         $model->commit();
-        $this->json_success('保存成功', '', '', true, array('dialogid' => 'project-submit'));
+        if($type=='front')
+        {
+            $this->json_success('保存成功', '', '', true, array('dialogid' => 'project-checkcontract'));
+        }
+        else
+        {
+            $this->json_success('保存成功', '', '', true, array('dialogid' => 'project-submit'));
+        }
     }
     
     //编辑后
@@ -270,7 +279,7 @@ class FinanceFlowController extends CommonController {
         $pageSize = I('post.pageSize', $this->pageDefaultSize);
         $page = I('post.pageCurrent', 1);
         $isSearch = I('post.isSearch');
-        $type = I('post.type');
+        $type = I('get.type')?I('get.type'):I('post.type');
 
         $begin_time = I('post.begin_time');
         $end_time = I('post.end_time');

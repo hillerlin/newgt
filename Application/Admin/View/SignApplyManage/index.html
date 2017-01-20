@@ -82,6 +82,7 @@
                 <td align="center">
                     <!--<a href="<?php echo U('SignApplyManage/contractScanFile', array('contract_id'=>$v['contract_id']))?>" class="btn btn-green" data-toggle="dialog" data-id="contract-file" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="资料包">合同扫描件</a>-->
                     <a href="<?php echo U('SignApplyManage/realContract', array('pro_id'=>$v['pro_id'], 'company_id'=>$v['company_id']))?>" class="btn btn-green" data-toggle="dialog" data-width='600' data-height="500" data-mask='true' data-id="project-edit" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="编辑-项目">编辑</a>
+                    <a href="<?php echo U('SignApplyManage/preContract', array('pro_id'=>$v['pro_id'], 'company_id'=>$v['company_id']))?>" class="btn btn-green" data-toggle="dialog" data-width='1200' data-height="950" data-mask='true' data-id="project-edit" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="预签合同预览">预签合同预览</a>
                     <a href="<?php echo U('SignApplyManage/downloadPrecontract', array('pro_id'=>$v['pro_id'], 'company_id'=>$v['company_id']))?>" class="btn btn-green" onclick="doc_filedownload1(this); return false;" data-title="编辑-项目">下载预签合同表</a>
                 </td>
             </tr>

@@ -690,7 +690,7 @@ class SignApplyManageController extends CommonController {
         
         $contract_info['assure_kind'] = explode(',', $contract_info['assure_kind']);
         $contract_info['debt_type'] = explode(',', $contract_info['debt_type']);
-        $bank = D('Bank')->where('bank_id='.$contract_info['pay_for_account'])->find();
+        //$bank = D('Bank')->where('bank_id='.$contract_info['pay_for_account'])->find();
         $debt = '';
         $contract_debt_type = C('contract_debt_type');
         $enter = chr(13);
@@ -729,7 +729,7 @@ class SignApplyManageController extends CommonController {
             'E7' => sprintf('共计：   %d   %%（年化）%s%s费率明细：%s回购费率  %d  %%%s%s手续费率  %d %%',$total_fee, $enter, $enter, $enter, $contract_info['repurchase_rate'], $enter, $enter, $contract_info['handling_charge'], $enter, $contract_info['handling_charge']),
             'B10' => sprintf($str_bank.'%s户名：%s%s%s户行：%s%s%s帐号：%s',$enter, $contract_info['supervise_account'],$enter, $enter, $contract_info['supervise_bank'], $enter, $enter, $contract_info['supervise_num']),
             'B11' => sprintf($assure_str . '%s%s', $enter, $contract_info['assure_detail']),
-            'B12' => sprintf('放款账户:%s户名：%s%s开户行：%s%s账号：%s', $enter, $bank['account_name'], $enter, $bank['bank_name'], $enter, $bank['bank_no']),
+            'B12' => sprintf('放款账号:%s%s户名：%s%s开户行：%s', $contract_info['company_num'],$enter, $contract_info['company_account'], $enter,$contract_info['company_bank']),
             'B13' => explode('::',$process_list[2])[1],//风控部意见
             'B14' => explode('::',$process_list[1])[1],//副总裁意见
             'B15' => explode('::',$process_list[0])[1],//总裁意见

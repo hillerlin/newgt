@@ -122,14 +122,12 @@ $(function() {
         .on('hidden.bs.collapse', function(e) {
             $(this).find('> .panel > .panel-heading').each(function() {
                 var $heading = $(this), $a = $heading.find('> h4 > a')
-                
                 if ($a.hasClass('collapsed')) $heading.removeClass('active')
             })
         })
         .on('shown.bs.collapse', function (e) {
             $(this).find('> .panel > .panel-heading').each(function() {
                 var $heading = $(this), $a = $heading.find('> h4 > a')
-                
                 if (!$a.hasClass('collapsed')) $heading.addClass('active')
             })
         })

@@ -28,11 +28,11 @@
         </div>
         <ul id="layout-tree" class="ztree" data-toggle="ztree" data-expand-all="false" data-check-enable='true' data-on-click="do_open_layout">
             <?php
-            function fun($arr)
+            function fun($arr,$plId,$proLevel,$wfId)
             {
               foreach($arr as $key=>$value)
                {?>
-                <li data-id="<?php echo $value['file_id']; ?>" data-pid="<?php echo $value['pid']?>" data-url="<?php echo U('project/upload',array('pro_id'=>$value['pro_id'],'file_id'=>$value['file_id']))?>" data-divid="#layout-01"><?php echo $value['file_name']?></li>
+                <li data-id="<?php echo $value['file_id']; ?>" data-pid="<?php echo $value['pid']?>" data-url="<?php echo U('project/upload',array('pro_id'=>$value['pro_id'],'file_id'=>$value['file_id'],'proLevel'=>$proLevel,'wfId'=>$wfId,'plId'=>$plId)); ?>" data-divid="#layout-01"><?php echo $value['file_name']?></li>
             <?php if(is_array($value['sub']))
                {
                   fun($value['sub']);
@@ -42,7 +42,7 @@
                }
                }
             }
-            fun($file_tree);
+            fun($file_tree,$plId,$proLevel,$wfId);
             ?>
         </ul>
     </div>

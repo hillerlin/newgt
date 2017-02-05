@@ -322,26 +322,37 @@ class ProjectModel extends BaseModel {
     public function projectinfo($page = 1, $pageSize = 30, $map = '', $order = ''){
         $total = $this
             ->table($this->trueTableName . ' AS p')
+            ->join('LEFT JOIN __WORKFLOW_LOG__ w ON w.pj_id=p.pro_id')
             ->where($map)
+            ->group("p.pro_id")
             ->count();
         $list = $this
             ->table($this->trueTableName . ' AS p')
             ->join('LEFT JOIN __COMPANY__ AS c ON c.company_id = p.company_id')
+            ->join('LEFT JOIN __WORKFLOW_LOG__ w ON w.pj_id=p.pro_id')
             ->field('p.pro_id,p.pro_no,p.admin_id,p.pro_title,p.addtime,c.company_name,p.is_all_finish,p.binding_oa')
             ->where($map)
             ->page($page, $pageSize)
+            ->group("p.pro_id")
             ->order($order)
             ->select();
         return array('total' => $total, 'list' => $list);
     }
     //获取项目流程信息以及执行人的信息
-    public function projectWorkflowInfo($map){
+    public function projectWorkflowInfo($proId){
+        $admin=session('admin');
+        $map['w.pj_id']=$proId;
+        $map['_string']=" (wl.pro_author = ".$admin['admin_id']." AND wl.pro_role = 0) OR (wl.pro_role=".$admin['role_id']." AND wl.pro_author=0)
+                         OR (wl.pro_author=".$admin['admin_id']." and wl.pro_role=".$admin['role_id'].")";
         $result=M('PjWorkflow')->alias('w')
-            ->field('w.wf_id, w.pj_id, w.pro_level_now,wl.pro_role ,wl.pro_author, wl.pro_addtime, GROUP_CONCAT(a.real_name) as name')
-            ->join('LEFT JOIN __WORKFLOW_LOG__ AS wl ON  w.wf_id= wl.wf_id and w.pro_level_now=wl.pro_level')
-            ->join('LEFT JOIN __ADMIN__ AS a ON a.admin_id=wl.pro_author or wl.pro_role=a.role_id')
+          //  ->field('w.wf_id, w.pj_id, w.pro_level_now,wl.pro_role ,wl.pro_author, wl.pro_addtime, GROUP_CONCAT(a.real_name) as name')
+            ->field('w.wf_id, w.pj_id, w.pro_level_now,wl.pro_role ,wl.pro_author, wl.pro_addtime')
+            //->join('LEFT JOIN __WORKFLOW_LOG__ AS wl ON  w.wf_id= wl.wf_id and w.pro_level_now=wl.pro_level')
+            ->join('LEFT JOIN __WORKFLOW_LOG__ AS wl ON  w.wf_id= wl.wf_id')
+         //   ->join('LEFT JOIN __ADMIN__ AS a ON (a.admin_id = wl.pro_author AND wl.pro_role = 0) OR (a.role_id=wl.pro_role AND wl.pro_author=0)')
+           // ->join('LEFT JOIN __ADMIN__ AS a ON (a.admin_id = '.$admin['admin_id'].' AND wl.pro_role = 0) OR (a.role_id='.$admin['role_id'].' AND wl.pro_author=0)')
             ->where($map)
-            ->group('w.pro_level_now')
+           ->group('w.wf_id')
             ->select();
         return $result;
     }
@@ -375,7 +386,9 @@ class ProjectModel extends BaseModel {
     //项目备注
     public function remark($map){
         $content=M('Project')
-            ->field('pro_subprocess4_desc,pro_subprocess5_desc,pro_subprocess6_desc, pro_subprocess7_desc, pro_subprocess8_desc, pro_subprocess9_desc, pro_subprocess10_desc')
+            ->field('pro_subprocess0_desc,pro_subprocess4_desc,pro_subprocess5_desc,pro_subprocess6_desc, pro_subprocess7_desc, pro_subprocess8_desc, 
+            pro_subprocess9_desc, pro_subprocess10_desc,pro_subprocess11_desc,pro_subprocess12_desc,pro_subprocess13_desc, pro_subprocess14_desc, pro_subprocess15_desc, 
+            pro_subprocess16_desc, pro_subprocess17_desc, pro_subprocess18_desc')
             ->where($map)
             ->find();
         return $content;

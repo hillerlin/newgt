@@ -24,7 +24,8 @@
     .subproject div  dl dt.current{background:red; color:#ffffff;}
 </style>
 <div class="bjui-pageContent">
-    <php>$i=0;foreach($list as $k=>$v):</php>
+    <php>foreach($list as $list1):</php>
+    <php>$i=0;foreach($list1 as $k=>$v):</php>
     <div class="subproject">
         <label>
             <php> echo ++$i,'、', $v['name'];</php>
@@ -35,14 +36,29 @@
             <div class="backflow">
                 <dl>
                     <dt>&nbsp;</dt>
-                    <dd>{$executor[$v['wfid']][$k]['real_name']}<br/>{$executor[$v['wfid']][$k]['pro_addtime']|date="Y/m/d",###}</dd>
+                    <dd><?php echo reset($executor[$v['wfid']])['real_name']; ?><br/><?php echo date('Y-m-d',reset($executor[$v['wfid']])['pro_addtime']); ?></dd>
                 </dl>
             </div>
             <php> foreach($v['sub'] as $subk=>$subv):</php>
             <div class="backflow">
                 <dl>
                     <dt class="<php>if($v['current'] == $subk) echo 'current';</php>">
-                        <php> echo  $subv==end($v['sub'])?'&nbsp;':mb_substr($subv,-4,4,'utf-8');</php>
+                        <php>
+                            if($subv==end($v['sub']))
+                            {
+                              echo '&nbsp;';
+                            }else
+                            {
+                              if(strpos(mb_substr($subv,-4,4,'utf-8'),'-')!==false)
+                            {
+                              echo explode('-',mb_substr($subv,-4,4,'utf8'))[1];
+                            }
+                            else
+                            {
+                               echo mb_substr($subv,-4,4,'utf-8');
+                            }
+                            }
+                          </php>
                     </dt>
                     <dd>
                         <php>
@@ -56,8 +72,10 @@
                     </dd>
                 </dl>
             </div>
+
             <php>endforeach;</php>
         </div>
     </div>
+    <php>endforeach;</php>
     <php>endforeach;</php>
 </div>

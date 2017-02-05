@@ -38,6 +38,7 @@ class ProjectController extends CommonController
         $supplier_id = I('post.supplier_id');
         $admin = session('admin');
         $xmlObj = logic('xml');
+        $pro_subprocess_desc=I('post.pro_subprocess_desc');
         $xmlObj->file = 'process1.xml';
         if (false === $data = $model->create()) {
             $e = $model->getError();
@@ -52,6 +53,7 @@ class ProjectController extends CommonController
         }
 
         if ($data['pro_id']) {
+            $model->admin_id=$admin['admin_id'];
             $result = $model->relation('supplier')->save();
             $plId = I('post.plId');
             $wfId = I('post.wfId');
@@ -64,11 +66,13 @@ class ProjectController extends CommonController
             $proRebutterLevel = I('post.proRebutterLevel');//第几级被驳回
 
 
+
             if (intval($proRebutter) > 0)//驳回重发的修改
             {
                 list($pjWorkFlow, $sendProcess, $workFlowLog, $redisPost) = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId);
             } else //正常提交新建项目
             {
+                $updataProject=addSubProcessAuditor($proIid,'','',$proLevel,$pro_subprocess_desc);//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
                 //根据name查出下个审批人的角色id
                 $xmlInfo = $xmlObj->index()[xmlNameToIdAndName(C('proLevel')['0'],$xmlObj->file)['TARGETREF']];//获取即将审核人的xml信息
                 $proRoleId = roleNameToid(explode('_', $xmlInfo['name'])['0']);//审批人角色id
@@ -81,14 +85,16 @@ class ProjectController extends CommonController
 
             $xmlId = xmlNameToIdAndName(C('proLevel')['0'],$xmlObj->file)['TARGETREF'];
             $model->pro_linker = $admin['admin_id'];
+            $model->admin_id=$admin['admin_id'];
             $result = $model->relation('supplier')->add();
+
 
             //审批流入库处理
             $pjWorkFlow = D('PjWorkflow')->data(array('pj_id' => $result, 'pj_state' => '待审核', 'pro_level_now' => '0', 'pro_times_now' => '1'))->add();
             $sendProcess = D('SendProcess')->data(array('wf_id' => $pjWorkFlow, 'sp_message' => '已提交', 'sp_author' => $admin['admin_id'], 'sp_addtime' => time(), 'sp_role_id' => $admin['role_id']))->add();
             $workFlowLog = D('WorkflowLog')->data(array(
                 'sp_id' => $sendProcess, 'pj_id' => $result, 'pro_level' => 0, 'pro_times' => 1, 'pro_state' => 0, 'pro_addtime' => time(), 'pro_author' => $admin['admin_id'],
-                'wf_id' => $pjWorkFlow, 'pro_role' => $admin['role_id'], 'pro_xml_id' => $xmlId
+                'wf_id' => $pjWorkFlow, 'pro_xml_id' => $xmlId
             ))->add();
             $createFolder=createFolder($result);//创建多个文件夹
             $redisPost = redisTotalPost(0, $admin['admin_id'], $admin['admin_id'] . '|admin', time(), $result, $workFlowLog);
@@ -276,7 +282,8 @@ class ProjectController extends CommonController
                     $redisPost = redisTotalPost(-1, $admin['admin_id'], $reButter . '|admin', time(), $proIid, $plId, $contents, -1);
                     $return = $updateState && $updatePj && $sendProcess && $WflMode && $redisPost;
                 } else {//审批通过
-                    $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one');
+                    $updataProject=addSubProcessAuditor($proIid,'','',$proLevel,$pro_subprocess_desc);//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                    $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one') && $updataProject;
                 }
             break;
             case '4':
@@ -1051,7 +1058,61 @@ class ProjectController extends CommonController
                 $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one', $contents, -1) && $updataProject && $return;
 
                 break;
-
+            //OA子流程
+            case '18':
+                $auditor_id=subLevelUser($proLevel);//取动态配置的审核人
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>'.$admin['role_name'].':向<code>'.adminNameToId($auditor_id).'</code>'.'提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
+                $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$auditor_id,$xmlId,$plId,'one',$content,-3) && $updataProject;
+                break;
+            case '18_1':
+                $auditor_id=subLevelUser($proLevel);//取动态配置的审核人
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>'.$admin['role_name'].':向<code>'.adminNameToId($auditor_id).'</code>'.'提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
+                $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$auditor_id,$xmlId,$plId,'one',$content,-3) && $updataProject;
+                break;
+            case '18_2':
+                $auditor_id=subLevelUser($proLevel);//取动态配置的审核人
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>'.$admin['role_name'].':向<code>'.adminNameToId($auditor_id).'</code>'.'提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
+                $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$auditor_id,$xmlId,$plId,'one',$content,-3) && $updataProject;
+                break;
+            case '18_3':
+                $auditor_id=subLevelUser($proLevel);//取动态配置的审核人
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>'.$admin['role_name'].':向<code>'.adminNameToId($auditor_id).'</code>'.'提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
+                $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$auditor_id,$xmlId,$plId,'one',$content,-3) && $updataProject;
+                break;     
+            case '18_4':
+                $auditor_id=subLevelUser($proLevel);//取动态配置的审核人
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>'.$admin['role_name'].':向<code>'.adminNameToId($auditor_id).'</code>'.'提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
+                $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$auditor_id,$xmlId,$plId,'one',$content,-3) && $updataProject;
+                break;     
+            case '18_5':
+                $auditor_id=subLevelUser($proLevel);//取动态配置的审核人
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>'.$admin['role_name'].':向<code>'.adminNameToId($auditor_id).'</code>'.'提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
+                $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$auditor_id,$xmlId,$plId,'one',$content,-3) && $updataProject;
+                break;       
+            case '18_6':
+                $auditor_id=subLevelUser($proLevel);//取动态配置的审核人
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>'.$admin['role_name'].':向<code>'.adminNameToId($auditor_id).'</code>'.'提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
+                $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$auditor_id,$xmlId,$plId,'one',$content,-3) && $updataProject;
+                break;       
+            case '18_7':
+                $auditor_id=subLevelUser($proLevel);//取动态配置的审核人
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>'.$admin['role_name'].':<code>'.adminNameToId($auditor_id).'</code>'.'提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
+                $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$auditor_id,$xmlId,$plId,'one',$content,-3) && $updataProject;
+                break;      
+            case '18_8':
+                //$auditor_id=subLevelUser($proLevel);//取动态配置的审核人
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>'.'已将项目<code>' . projectNameFromId($proIid) . '</code>做出最后的审批';
+                $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,0,$xmlId,$plId,'one',$content,-3) && $updataProject;
+                break;
         }
 
         if (!$return) {
@@ -1192,6 +1253,7 @@ class ProjectController extends CommonController
         $this->assign($data);
         $this->assign($_GET);
         $this->assign('pro_type', $data['pro_type']);
+        $this->assign('pro_subprocess_desc',$data['pro_subprocess'.explode('_',$_GET['proLevel'])[0].'_desc']);
         $this->display();
     }
 
@@ -1217,7 +1279,7 @@ class ProjectController extends CommonController
                 $this->assign('signin_admin', $admin);*/
         $this->assign($data);
         $this->assign($_GET);
-
+        $this->assign('pro_subprocess_desc',$data['pro_subprocess'.explode('_',$_GET['proLevel'])[0].'_desc']);
         $this->display('audit_edit');
     }
 
@@ -1446,6 +1508,7 @@ class ProjectController extends CommonController
                 }
             }
             $this->assign('list', $list);
+            $this->assign($_GET);
             $this->display();
         }
 
@@ -1453,6 +1516,9 @@ class ProjectController extends CommonController
     //上传附件
     public function upload_attachment()
     {
+        $plId = I('post.plId');
+        $wfId = I('post.wfId');
+        $proLevel = I('post.proLevel');//当前审批级别
         $pro_id = I('request.pro_id');
         $file_id = I('request.file_id');
         $file=I('post.file');
@@ -1502,7 +1568,23 @@ class ProjectController extends CommonController
                 $this->json_error('上传失败');
             }
             $content = array('file_path' => $upload_info['file_path'], 'file_id' => date('YmdHis'), 'file_name' => $upload_info['name'], 'addtime' => date("Y-m-d H:i:s", $save_data['addtime']), 'aid' => $aid);
-            self::log('add', json_encode($content));
+            //处理审批流事宜
+            if(in_array($proLevel,C('changeUplodState'))) //要处理的等级做匹配
+            {
+                if($proLevel=='4_3'|| $proLevel=='14_2' || $proLevel=='15_10')
+                {
+                    $workFlowUpdata= uploadUpdataWorkFlowState($wfId,$proLevel,1,$admin,$pro_id,$plId,1,0,'',-1);
+
+                }elseif ($proLevel=='6_2' || $proLevel=='8_2' || $proLevel=='9_2')
+                {
+                    $workFlowUpdata= uploadUpdataWorkFlowState($wfId,$proLevel,1,$admin,$pro_id,$plId,0,0,'',-1);
+                }elseif($proLevel=='10_3'){
+                    $workFlowUpdata= uploadUpdataWorkFlowState($wfId,$proLevel,1,$admin,$pro_id,$plId,0,1,'',-1);
+                }
+      
+            }
+            //self::log('add', json_encode($content));
+
             $this->ajaxReturn(array('statusCode' => 200, 'content' => $content, 'message' => '上传成功'));
         }
         $this->json_error('上传失败,' . $upload_info);
@@ -1979,65 +2061,92 @@ class ProjectController extends CommonController
         $this->assign($data);
         $this->display('detail_all');
     }
+
+    //剔除非本人在的流程
+    public function filterWorkFlow($proWorkFlow,$admin)
+    {
+        foreach ($proWorkFlow as $k=> $v)
+        {
+           $wkFInfo=D('WorkflowLog')->where("`wf_id`=%d and (`pro_author`=%d or `pro_role`=%d)",array($v['wf_id'],$admin['admin_id'],$admin['role_id']))->field('pl_id')->find();
+            if(!$wkFInfo)
+            {
+                unset($proWorkFlow[$k]);
+            }
+        }
+        sort($proWorkFlow);
+        return $proWorkFlow;
+    }
+
     /**
      * 流程详细流程，每个子流程都显示出来
      */
     public function detail()
     {
         $admin = session('admin');
-        I('get.dataId')?$dataId=I('get.dataId'):$dataId=I('get.pro_id');
-        $proWorkflow=D('Project')->projectWorkflowInfo("w.pj_id =$dataId");
+        $indexFlag = array();
+        I('get.dataId') ? $dataId = I('get.dataId') : $dataId = I('get.pro_id');
+        $proWorkflowOld = D('Project')->projectWorkflowInfo($dataId);
+        if(empty($proWorkflowOld))
+        {
+           $this->json_error('流程还没开始！');
+
+        }
+        $proWorkflow=$this->filterWorkFlow($proWorkflowOld,$admin);
+        //$proWorkflow = D('Project')->projectWorkflowInfo("w.pj_id =$dataId");
+
         //取出这个项目的所有子流程
-        $workflowInfos=array_column($proWorkflow,'pro_level_now');
+        $workflowInfos = array_column($proWorkflow, 'pro_level_now');
         foreach ($workflowInfos as $key => $item) {
             //将0，0_1这种下标由‘_’来分割，并取  ‘_’ 前面的数字，然后再获取配置文件中的子流程
-            $tmpindex=reset(explode('_',$item));
-            $reg='/^'.$tmpindex.'(_[\d])?/';
-            foreach (C('proLevel') as $k=> $v) {
+            $tmpindex = reset(explode('_', $item));
+            $reg = '/^' . $tmpindex . '(_[\d])?/';
+            foreach (C('proLevel') as $k => $v) {
                 //如果配置文件中存在此键，则说明它是我们要找的键值对
-                if(preg_match($reg,$k)>0){
-                    if(strpos($k,'_')!==false){
-                        $result[$tmpindex]['sub'][$k]=trim($v);
-                    }else{
-                        $result[$tmpindex]['name']=trim($v);
+                if (preg_match($reg, $k) > 0) {
+                    if (strpos($k, '_') !== false) {
+                        $result[$tmpindex][$key]['sub'][$k] = trim($v);
+                    } else {
+                        $result[$tmpindex][$key]['name'] = trim($v);
                     }
                 }
             }
-            $result[$tmpindex]['current']=$item;
-            $result[$tmpindex]['wfid']=$proWorkflow[$key]['wf_id'];
-            $tmpindex='';
+            $result[$tmpindex][$key]['current'] = $item;
+            $result[$tmpindex][$key]['wfid'] = $proWorkflow[$key]['wf_id'];
+            $tmpindex = '';
         }
         //执行人的名字和执行的时间
-         $wfids=array_column($proWorkflow,'wf_id');
-         $tmpexecutor=D('Project')->executorInfo('wf_id in ('.implode(',',$wfids).')');
+        $wfids = array_column($proWorkflow, 'wf_id');
+        $tmpexecutor = D('Project')->executorInfo('wf_id in (' . implode(',', $wfids) . ')');
         //补全按用户角色来区分的用户信息
-        array_walk($tmpexecutor ,function(&$v,$k){
-            if(empty($v['pro_author'])) $v['real_name']=M('Admin')->getFieldByRoleId($v['pro_role'],'real_name');
+        array_walk($tmpexecutor, function (&$v, $k) {
+            if (empty($v['pro_author'])) $v['real_name'] = M('Admin')->getFieldByRoleId($v['pro_role'], 'real_name');
         });
         //转换执行人的数组形式，wf_id作为最外层的key,pro_level最为第二层的key
-        foreach($result as $v){
-            foreach($tmpexecutor as $ev){
+        foreach ($result as $v1) {
+             foreach ($v1 as $v) {
+            foreach ($tmpexecutor as $ev) {
                 //项目处于同一个进程下，且其在此进程中的执行步骤不能大于等于用$v['current']表示现在正在执行的步骤
-                if($v['wfid']==$ev['wf_id']){
-                    $tmp=$tmpCurrent='';
-                    if(strpos($v['current'],'_')===false){
+                if ($v['wfid'] == $ev['wf_id']) {
+                    $tmp = $tmpCurrent = '';
+                    if (strpos($v['current'], '_') === false) {
                         //当前状态值为起始状态的时候，则直接结束循环，并赋予起始值
-                        $executor[$ev['wf_id']][$ev['pro_level']]=$ev;
+                        $executor[$ev['wf_id']][$ev['pro_level']] = $ev;
                         break;
                     }
                     //获取当前状态的值，如果值有下标‘_’，则取下标后面的数值。
-                    $tmpCurrent= trim(strstr($v['current'],'_'),'_');
-                    $tmp=explode('_',$ev['pro_level']);
+                    $tmpCurrent = trim(strstr($v['current'], '_'), '_');
+                    $tmp = explode('_', $ev['pro_level']);
                     //如果状态值中，包含有‘_’，则去后面的值进行比较
-                    if(count($tmp)>1){
-                        if($tmpCurrent>=$tmp[1]) $executor[$ev['wf_id']][$ev['pro_level']]=$ev;
-                    }else{
-                        $executor[$ev['wf_id']][$ev['pro_level']]=$ev;
+                    if (count($tmp) > 1) {
+                        if ($tmpCurrent >= $tmp[1]) $executor[$ev['wf_id']][$ev['pro_level']] = $ev;
+                    } else {
+                        $executor[$ev['wf_id']][$ev['pro_level']] = $ev;
                         continue;
                     }
                 }
             }
         }
+    }
         //项目id号
         $pj_id=end($proWorkflow)['pj_id'];
         //项目标题
@@ -2069,12 +2178,15 @@ class ProjectController extends CommonController
         {
             $map['p.binding_oa']=array('EXP','is null');
         }*/
+        //预留功能，读配置来判断是否可以查看其他人的项目C(lookUpAll)
+        $map['_string']="( w.pro_author=".$admin['admin_id']." and w.pro_role=0) or ( w.pro_role= ".$admin['role_id']." and w.pro_author=0 ) 
+        or ( w.pro_author=".$admin['admin_id']." and w.pro_role=".$admin['role_id']." ) or p.admin_id=" .$admin['admin_id'];// p.admin_id=".$admin['admin_id'];
 
 
         //如果是消息推送过来的就需要标记redis了
         if(I('get.type') && I('get.pro_id')&& I('get.time'))  checkMessage(I('get.time'),I('get.type'),I('get.pro_id'));
 
-        $result=D('Project')->projectinfo($page, $pageSize,$map,$order);
+        $result=D('Project')->projectinfo($page, $pageSize,$map);
         foreach($result['list'] as &$v){
             $v['authpage']=json_decode($v['authpage'],true);
         }
@@ -2130,7 +2242,9 @@ class ProjectController extends CommonController
         $list=D('Project')->remark($map);
         foreach ($list as $key=>$v){
             if(!empty($v))
-            $result[C('proLevel')[trim(preg_replace('/[^\d]/s', '', $key))]]=$v;
+            {
+                $result[C('proLevel')[trim(preg_replace('/[^\d]/s', '', $key))]]=$v;
+            }
         }
         $this->assign('list',$result);
         $this->display();

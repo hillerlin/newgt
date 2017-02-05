@@ -1010,6 +1010,24 @@ function saveAll($table,$index,$addData,$data,$referer,$where){
 }
 
 
+//查询动态审核人
+function subLevelUser($level)
+{
+
+    $explodeLevel=explode('_',$level);//拼接审批轮次
+    if(!$explodeLevel[1])
+    {
+        $newLevel=$explodeLevel[0].'_1';
+    }
+    else
+    {
+        $modify=$explodeLevel[1]+1;
+        $newLevel=$explodeLevel[0].'_'.$modify;
+    }
+    $list=D('SublevelCheck')->where("`wf_id`='%s'",array($newLevel))->field('admin_ids')->find();
+    return $list['admin_ids'];
+}
+
 
 
 

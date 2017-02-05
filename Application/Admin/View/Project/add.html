@@ -73,12 +73,17 @@ $('#j_custom_issuedate').on('afterchange.bjui.datepicker', function(e, data) {
                         <input type="text" name="befor_pro_title" id="p_company" value="" size="15" data-toggle="lookup" data-url="<?php echo U('Project/lookUp')?>" data-width="600" data-height="300" readonly>
                     </td>
                 </tr>
-                <tr>
+                <tr></tr>
+<!--                <tr>
                     <td>
-                        <label for="pro_desc" class="control-label x120">项目简介：</label>
-                        <textarea name="pro_desc" id="j_custom_note_1" data-toggle="autoheight" cols="40" rows="2"></textarea>
+                        <label for="pro_desc" class="control-label x120">备注：</label>
+                        <input type="hidden" name="old_pro_subprocess_desc" value="{$pro_subprocess_desc}">
+                        <div style="display: inline-block; border: 1px solid #ccc;">
+                            <span style="display: block; margin-bottom: 10px; padding: 5px 0 0 5px;">{$pro_subprocess_desc}</span>
+                            <textarea name="pro_subprocess_desc" style="border:none;" id="j_custom_note_1" data-toggle="autoheight" cols="30" rows="3"></textarea>
+                        </div>
                     </td>
-                </tr>
+                </tr>-->
             </tbody>
         </table>
     </form>

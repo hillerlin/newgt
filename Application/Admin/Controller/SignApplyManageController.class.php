@@ -273,13 +273,11 @@ class SignApplyManageController extends CommonController {
     public function addContract() {
         $pro_id = I('request.pro_id');
         $company_id = I('get.company_id');
-        
         $map['pro_id'] = $pro_id;
         $pro_info = D('Project')->where($map)->find();
         $pro_linker_info = D('Admin')->getAdminInfo($pro_info['pro_linker']);
         $company_info = D('Company')->getSpecificCompany($pro_id, $company_id);
         $superviseType = D('PrepareContract')->superviseType();
-        
         $this->assign('superviseType', $superviseType);
         $this->assign('company_info', $company_info);
         $this->assign('pro_linker_info', $pro_linker_info);

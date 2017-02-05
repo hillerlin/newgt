@@ -7,6 +7,10 @@ class IndexController extends CommonController {
         parent::__construct();
     }
 
+    public function flushRedis()
+    {
+        S()->FLUSHALL();
+    }
     public function index() {
      /*   $xmlClass=logic('xml');
           $xmlClass->file='process1.xml';
@@ -194,7 +198,7 @@ class IndexController extends CommonController {
         //代办显示10条
         $this->assign('backlog', array_slice($backlog,0,10));
 
-        $this->assign('contractMessage',$contractMessage);
+        $this->assign('contractMessage',array_slice($contractMessage,0,5));
 
         $this->assign('backLogCount', count($backlog));
         $this->assign('admin', $admin);

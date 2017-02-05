@@ -192,7 +192,7 @@ class RoleController extends CommonController {
     }
     //显示所有的管理员姓名
     public  function listName(){
-        $pageSize = I('post.pageSize', 30);
+        $pageSize = I('post.pageSize', 200);
         $page = I('post.pageCurrent', 1);
         $where='';
         //判断是否是英文输入的

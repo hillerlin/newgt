@@ -245,7 +245,7 @@ class CompanyController extends CommonController {
         }*/
         //$mapStripTags =rtrim($proIdString,',');
         if($proTitle) $map=" and `pro_title` like '%".$proTitle."%'";
-        $pre=='18'?$map.=" and  `binding_oa`=1 ":$map='';
+        $pre=='18'?$map.=" and  `binding_oa`=1 ":$map=' and `binding_oa` is null';
         $projectIng=D('Project')->field('*,SUBSTR(`binding_oa`,1,1) as `binding_oa`')->where("`is_all_finish`=0 $map")->select();
 /*        foreach ($projectIng as $k=>$v)
         {

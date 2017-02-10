@@ -161,7 +161,7 @@ class ElectronicBillModel extends BaseModel {
 
     public function isElectronicBill($proId)
     {
-        return $this->where("`pro_id`=%d",array($proId))->getField('eb_id');
+        return $this->where("`pro_id`=%d",array($proId))->getField('eb_id',true);
     }
     public function attachment($eb_id)
     {

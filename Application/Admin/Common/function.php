@@ -665,6 +665,26 @@ function postRebutter($wfId,$proIid,$proRebutterLevel,$proTimes,$admin,$proRebut
         return $pjWorkFlow && $sendProcess && $workFlowLog && $oldworkFlowLog && $redisPost;
     }
 }
+//驳回的模块
+function reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId)
+{
+    $WflMode = D('WorkflowLog');
+    //改变审批人的状态为2-已审核状态
+    $updateState = $WflMode->where("`pl_id`=%d", array($plId))->data(array('pro_state' => '2'))->save();
+    $sendProcess = D('SendProcess')->data(array('wf_id' => $wfId, 'sp_message' => '已提交', 'sp_author' => $admin['admin_id'], 'sp_addtime' => time(), 'sp_role_id' => $admin['role_id']))->add();
+    //改变pj_workflow 表 因为是驳回，所以pro_time_now + 1
+    $updatePj = D('PjWorkflow')->where("`wf_id`=%d", array($wfId))->data(array('pro_level_now' => $proRebutterLevel, 'pro_times_now' => intval($proTimes) + 1))->save();
+    //新建worklowLog表中驳回的人的相关信息
+    $WflMode->data(array(
+        'sp_id' => $sendProcess, 'pj_id' => $proIid, 'pro_author' => $reButter, 'pro_level' => $proRebutterLevel, 'pro_times' => intval($proTimes) + 1, 'pro_state' => 3, 'pro_addtime' => time(),
+        'wf_id' => $wfId, 'pro_role' => '0', 'pro_xml_id' => $xmlId, 'pro_rebutter' => $admin['admin_id'], 'pro_rebutter_level' => $proLevel
+    ))->add();
+    //redis推送消息
+    //$contents = '项管专员<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>立项事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+    $contents = $contents;
+    $redisPost = redisTotalPost(-1, $admin['admin_id'], $reButter . '|admin', time(), $proIid, $plId, $contents, -1);
+    return $updateState && $updatePj && $sendProcess && $WflMode && $redisPost;
+}
 //返回执行完下一步的流程模块
 /******
  * @param $wfId gt_pj_workflow id
@@ -772,12 +792,57 @@ function addSubProcessAuditor($pjId,$auditor_id,$auditor_name,$pro_level,$pro_su
     $finish_status = json_decode($finishStatusJson['finish_status'],true);
     //$proKeys = array_keys($finish_status);
     foreach ($auditor_id as $k => $v) {
-        $finish_status[$pro_level][$k]['adminId'] = $v;
-        $finish_status[$pro_level][$k]['adminName'] = $auditor_name[$k];
+        $finish_status[$pro_level]['auditor'][$k]['adminId'] = $v;
+        $finish_status[$pro_level]['auditor'][$k]['adminName'] = $auditor_name[$k];
     }
+    //新增的商票--背书等信息和日常利息--银行等信息
+    if($pro_level=='14')
+    {
+        $finish_status[$pro_level]['electronicInfo']['handling_charge_bank_name']=I('get.handling_charge_bank_name');
+        $finish_status[$pro_level]['electronicInfo']['handling_charge_account_name']=I('get.handling_charge_account_name');
+        $finish_status[$pro_level]['electronicInfo']['handling_charge_bank_no']=I('get.handling_charge_bank_no');
+        $finish_status[$pro_level]['electronicInfo']['electronicBillMoney']=I('get.electronicBillMoney');
+        $finish_status[$pro_level]['electronicInfo']['electronicBillName']=I('get.electronicBillName');
+    }
+    if($pro_level=='16')
+    {
+        $finish_status[$pro_level]['financeFlow']['handling_charge_bank_name']=I('get.handling_charge_bank_name');
+        $finish_status[$pro_level]['financeFlow']['handling_charge_account_name']=I('get.handling_charge_account_name');
+        $finish_status[$pro_level]['financeFlow']['handling_charge_bank_no']=I('get.handling_charge_bank_no');
+        $finish_status[$pro_level]['financeFlow']['electronicBillMoney']=I('get.electronicBillMoney');
+        $finish_status[$pro_level]['financeFlow']['electronicBillName']=I('get.electronicBillName');
+    }
+
+    
     $finish_enjson = json_encode($finish_status);
     $old_subprocess_desc =$finishStatusJson[$proSubprocessDesc];//子流程老数据备注
-    $pro_subprocess_desc=$admin['real_name'].'::'.$pro_subprocess_desc=!empty($pro_subprocess_desc)?$pro_subprocess_desc.'<br/>'.$old_subprocess_desc:'无意见！'.'<br/>'.$old_subprocess_desc;
+    $pro_subprocess_desc_new='';
+    //新备注补丁，可以修改自己名下的备注
+    empty(I('get.desc'))?$desc=I('post.desc'):$desc=I('get.desc');
+    if($old_subprocess_desc)
+    {
+        foreach (array_filter(explode('<br/>',$old_subprocess_desc)) as $dkey=>$dvalue)
+        {
+            if(explode('::',$desc[$dkey])[0]==$admin['real_name'])
+            {
+                $pro_subprocess_desc_new.=$desc[$dkey].'<br/>';
+            }
+            else
+            {
+                $pro_subprocess_desc_new.=$dvalue.'<br/>';
+            }
+        }
+    }
+
+    if($pro_subprocess_desc)
+    {
+        $pro_subprocess_desc=$admin['real_name'].'::'.$pro_subprocess_desc.'<br/>'.$pro_subprocess_desc_new;
+    }
+    else
+    {
+        $pro_subprocess_desc=$pro_subprocess_desc_new;
+    }
+    //$pro_subprocess_desc=$admin['real_name'].'::'.$pro_subprocess_desc=!empty($pro_subprocess_desc)?$pro_subprocess_desc.'<br/>'.$old_subprocess_desc:'无意见！'.'<br/>'.$old_subprocess_desc;
     if(!$auditor_id || !$auditor_name)
     {
         $oldProject = $projectModel->where("`pro_id`=%d", array($pjId))->data(array($proSubprocessDesc => $pro_subprocess_desc))->save();
@@ -839,12 +904,17 @@ function checkMessage($time,$type,$proId){
 }
 
 //新建立项时创建资料包对应的文件夹
-function createFolder($proId)
+function createFolder($proId,$folderList=null,$pid=0)
 {
     $returns=true;
-    foreach (C('upLoadFolder') as $k=>$v)
+    isset($folderList)?$folderList=$folderList:$folderList=C('upLoadFolder');
+    foreach ($folderList as $k=>$v)
     {
-        $return=D('ProjectFile')->data(array('pro_id'=>$proId,'pid'=>0,'file_name'=>$v,))->add();
+        $return=D('ProjectFile')->data(array('pro_id'=>$proId,'pid'=>$pid,'file_name'=>$v['name'],'secret'=>$v['secret']))->add();
+        if(array_key_exists('sub',$v))
+        {
+            createFolder($proId,$v['sub'],$return);
+        }
         $returns=$return && $returns;
     }
     return $return;
@@ -940,7 +1010,7 @@ function uploadUpdataWorkFlowState($wfId,$proLevel,$proTimes,$admin,$proIid,$plI
 function getFinishStatus($proLevel,$proId)
 {
     $projectInfo=D('Project')->where("`pro_id`=%d",array($proId))->find();
-    foreach (json_decode($projectInfo['finish_status'],true)[$proLevel] as $k=>$v)
+    foreach (json_decode($projectInfo['finish_status'],true)[$proLevel]['auditor'] as $k=>$v)
     {
 
         $data['auditorId'][]=$v['adminId'];

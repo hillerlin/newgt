@@ -9,11 +9,7 @@
 //        $('#j_custom_span_pic').html('<img src="'+ json.filename +'" width="100" />')
         }
     }
-    function do_OK(json, $form) {
-        console.log(json)
-        console.log($form)
-    }
-// 图片上传
+    // 图片上传
     function add_uploadedfile(data) {
         //debugger
         var i = $('#file-list> tbody > tr').length + 1;
@@ -21,6 +17,11 @@
 //        var newImg = '<li id="' + data.file_id + '"><input type="hidden" name="attachment['+ i +'][path]" value="' + data.file_path + '" /><div class="thumb-list-pics"><a href="javascript:void(0);"><img src="' + data.file_path + '" alt=""/></a></div><a href="javascript:del_file_upload(0,' + data.file_id + ',\'' + data.file_path + '\');" class="del" title="删除">X</a><a href="javascript:insert_editor(\'' + data.file_path + '\');" class="inset"><i class="fa fa-clipboard"></i>插入图片</a></li>';
         $('#file-list > tbody').append(newTr);
     }
+    function do_OK(json, $form) {
+        console.log(json)
+        console.log($form)
+    }
+
 
     $('#hove'+'rtreedemo').screenshotPaste({
         imgContainer: '#imgPreviewHoverTree',
@@ -37,6 +38,7 @@
                 <th align="center" width="100">编号</th>
                 <th align="center" width="300">文件名</th>
                 <th align="center" width="300">上传日期</th>
+                <th align="center" width="300">上传者</th>
                 <th width="300" align="center">操作</th>
             </tr>
         </thead>
@@ -46,6 +48,7 @@
                 <td align="center"><?php echo $i++;?></td>
                 <td align="center"><a target="_blank" href="<?php echo $v["path"]?>"><?php echo $v['doc_name']?></a></td>
                 <td align="center"><?php echo date('Y-m-d H:s:i', $v['addtime'])?></td>
+                <td align="center"><?php echo adminNameToId($v['admin_id'])?></td>
                 <td align="center"><a href="<?php echo U('Project/remove_attachment')?>" data-data='{"file_path":"<?php echo $v["path"]?> ","pro_id":"<?php echo $v["pro_id"]?>","aid":"<?php echo $v["id"]?>","file_id":"<?php echo $v["id"]?>"}'  class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td>
             </tr>
             <?php }?>

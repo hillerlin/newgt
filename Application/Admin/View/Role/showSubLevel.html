@@ -1,12 +1,21 @@
-<form action="/Admin/Role/saveSubLevel" name="subLevel" method="post">
+<form action="/Admin/Role/saveSubLevel" name="subLevel" id="j_custom_form" data-toggle="validate" data-alertmsg="false" method="post">
 <table id="tabledit1" class="table table-bordered table-hover table-striped table-top" >
     <tbody>
     <input type="hidden" name="wf_id" value=""/>
+    <input type="hidden" name="proLevel" value="{$subLevelName}"/>
+    <tr>
+        <td style="width:300px;" align="right">请绑定项目:</td>
+        <td>
+            <input type="hidden" name="pro_id" value="{$proId}">
+            <input type="text" name="pro_title" id="p_company" value="{$proName}" size="30" data-toggle="lookup" data-url="<?php echo U('Company/findRelateSubProcess/',array('pre'=>$pre))?>" data-width="600" data-height="300" readonly>
+        </td>
+    </tr>
  <?php foreach($proLevel as $key=>$v):?>
         <tr>
             <td style="width:300px;" align="right">{$v}：</td>
             <td colspan="5">
-                <input type="text" name="custom.profession{$key}"  value="<?php echo $list[$key]['real_name'];?>" readonly="" size="50" data-toggle="lookup" data-url="{:U('/Admin/Role/listName',array('k'=>$key,'multi'=>1))}" data-group="custom" data-width="600" placeholder="选择审核人" data-height="300" class="form-control" style="padding-right: 15px; width: 300px;">
+                <input type="text" name="custom.profession{$key}"  value="<?php echo $list[$key]['real_name'];?>" readonly="" size="50" data-toggle="lookup" data-url="{:U('/Admin/Role/listName',array('k'=>$key,'multi'=>1))}"
+                       data-group="custom" data-width="600" placeholder="选择审核人" data-height="300" class="form-control" style="padding-right: 15px; width: 300px;">
                 <input type="hidden" name="custom.adminId{$key}" data-group="custom" class="form-control" value="<?php echo $list[$key]['admin_ids'];?>">
             </td>
         </tr>
@@ -20,3 +29,22 @@
     </tbody>
 </table>
 </form>
+<script>
+    $("input[name='pro_title']").on('afterchange.bjui.lookup',function(e,data){
+     //   debugger
+        var proId= $("input[name=pro_id]").val()
+        var proLevel=$("input[name=proLevel]").val()
+        $(this).bjuiajax('refreshLayout',{target:'#content',url:'/Admin/Role/showSubLevel',data:{'proId':proId,'subLevel':proLevel}})
+/*        $.ajax({
+            url: '/admin/Role/checkSubLevel',
+            type: 'POST',
+            dataType: 'JSON',
+            data: {'subLevel': subLevel},
+            success: function (data){
+                $(this).bjuiajax('refreshLayout',{target:'#content',url:'/Admin/Role/showSubLevel',data:{'proId':proId,'subLevel':proLevel}})
+            },
+            error:function(){ }
+        });*/
+        //code
+    });
+</script>

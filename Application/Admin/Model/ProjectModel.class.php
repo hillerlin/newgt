@@ -359,7 +359,7 @@ class ProjectModel extends BaseModel {
     //获取项目流程被执行的日志信息
     public function WorkflowLogInfo($map){
         $result=M('WorkflowLog')->alias('wl')
-            ->field('wl.pj_id,wl.pro_level,wl.pro_author, wl.pro_role,wl.pro_view,wl.pro_state,wl.pro_addtime,a.real_name')
+            ->field('wl.pj_id,wl.pro_level,wl.pro_author, wl.pro_role,wl.pro_view,wl.pro_state,wl.pro_addtime,a.real_name,wl.pro_rebutter')
             ->join('LEFT JOIN __ADMIN__ AS a ON a.admin_id=wl.pro_author')
             ->where($map)
             ->select();
@@ -384,11 +384,30 @@ class ProjectModel extends BaseModel {
         return $result;
     }
     //项目备注
-    public function remark($map){
-        $content=M('Project')
-            ->field('pro_subprocess0_desc,pro_subprocess4_desc,pro_subprocess5_desc,pro_subprocess6_desc, pro_subprocess7_desc, pro_subprocess8_desc, 
+    public function remark($map,$field=null){
+        if(!$field)
+        {
+            $field="pro_subprocess0_desc,pro_subprocess4_desc,pro_subprocess5_desc,pro_subprocess6_desc, pro_subprocess7_desc, pro_subprocess8_desc, 
             pro_subprocess9_desc, pro_subprocess10_desc,pro_subprocess11_desc,pro_subprocess12_desc,pro_subprocess13_desc, pro_subprocess14_desc, pro_subprocess15_desc, 
-            pro_subprocess16_desc, pro_subprocess17_desc, pro_subprocess18_desc')
+            pro_subprocess16_desc, pro_subprocess17_desc, pro_subprocess18_desc";
+        }else
+        {
+            $fieldV='';
+            foreach($field as $k=>$v)
+            {
+                if($v==end($field))
+                {
+                    $fieldV.='pro_subprocess'.$v.'_desc';
+                }else
+                {
+                    $fieldV.='pro_subprocess'.$v.'_desc,';
+                }
+
+            }
+            $field=$fieldV;
+        }
+        $content=M('Project')
+            ->field($field)
             ->where($map)
             ->find();
         return $content;
@@ -399,6 +418,70 @@ class ProjectModel extends BaseModel {
         $projectInfo=$this->where("`pro_id`=%d",array($proId))->field('binding_oa')->find();
         return array('oaType'=>explode('_',$projectInfo['binding_oa'])[0],'oaId'=>explode('_',$projectInfo['binding_oa'])[1]);
 
+    }
+    //根据项目id和文件夹名称返回文件夹下面的文件信息
+    public function returnFolderInfo($proId,$folderName,$adminId=null)
+    {
+        $projectFile=D('projectFile');
+        $projectAttachment=D('projectAttachment');
+        $fileIdAttr=$projectFile->where("`pro_id`=%d and `file_name`='%s'",array($proId,$folderName))->find();
+        if($adminId)
+        {
+            $where="`pro_id`=$proId and `file_id`=$fileIdAttr[file_id] and `admin_id`=$adminId";
+        }
+        else
+        {
+            $where="`pro_id`=$proId and `file_id`=$fileIdAttr[file_id]";
+        }
+        $listInfo=$projectAttachment->where($where)->select();
+        return array('list'=>$listInfo,'fileId'=>$fileIdAttr['file_id']);
+    }
+    //返回将驳回人的信息
+    public function reButter($wfId)
+    {
+        $wfPjMode=D('workflowLog');
+        $preLevel=$wfPjMode->where("`wf_id`=%d",array($wfId))->getField('pro_level,pro_author,pro_role',true);
+        return $preLevel;
+    }
+    //返回后台配置好的通知人
+    public function checkSublevel($proLevel,$proId)
+    {
+       $sublevelCheckMode=D('sublevelCheck');
+        $info=$sublevelCheckMode->where("`wf_id`='%s'",array($proLevel))->select();
+        if($info)
+        {
+            foreach ($info as $k=>$v)
+            {
+                if($v['pro_id']==$proId)
+                {
+                        $adminIds=$v['admin_ids'];
+                        break;
+                }else{
+                    if($v['pro_id']=='0')
+                    {
+                        $adminIds=$v['admin_ids'];
+                    }
+                }
+            }
+            return $adminIds;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+    //返回后台设置的对应等级的审核人id
+    public function returnCheckIdFromProLevel($proLevel,$pro_id)
+    {
+        $adminIds=$this->checkSublevel($proLevel,$pro_id);
+        $adminRealName= array_reduce(explode(',',$adminIds),function($vv,$ww){
+            return $vv.=adminNameToId($ww).',';
+        });
+        $adminRealName=rtrim($adminRealName,',');
+        $data['auditorId']=$adminIds;
+        $data['auditorName']=$adminRealName;
+        return $data;
     }
 }
 

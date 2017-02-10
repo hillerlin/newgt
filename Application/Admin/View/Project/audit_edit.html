@@ -3,6 +3,8 @@
         console.log(json)
         console.log($form)
     }
+
+
 </script>
 <div class="bjui-pageContent">
     <form action="<?php echo U('Project/saveMyAudit')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false" method="get">
@@ -61,43 +63,35 @@
                             <option value="0">通过</option>
                             <option value="1">驳回</option>
                         </select>
-                        <label for="" id="rb" class="control-label x120" style="display: none"><span style="color:red">请选择驳回的对象：</span></label>
-                        <select name="reButter"  style="display: none">
-                        </select>
+
                         <!--                        <input type="radio" name="status" id="j_custom_status1" data-toggle="icheck" value="1" data-rule="checked" data-label="审核通过&nbsp;&nbsp;">
                                                 <input type="radio" name="status" id="j_custom_status2" data-toggle="icheck" value="0" data-label="审核不通过">-->
+                    </td>
+                </tr>
+                <tr style="display: none" id="addSelect">
+                    <td>
+                        <label for="" id="rb" class="control-label x120" ><span style="color:red">请选择驳回的对象：</span></label>
+                        <select name="reButter" data-toggle="selectpicker" data-rule="required"  value="选择" >
+                            <option value="0">--请选择--</option>
+                           <?php foreach($adminIdAndNameAttr as $akey=>$avalue):?>
+                            <option value="<?php echo $avalue['indexJoint']?>"><?php echo $avalue['contents']?></option>
+                            <?php endforeach;?>
+                        </select>
                     </td>
                 </tr>
                 <option>
                     <script>
                     function chooseRebutter() {
                         var select=$("select[name='status']");
-                        var selectReButter= $("select[name='reButter']");
-                        var selectVal=select.val();
                         var wfId=$("input[name='wfId']").val();
-                        var option="<option value=''>--请选择--</option>"  ;
-                        if(parseInt(selectVal)==1)
+                        if(parseInt(select.val())==1)
                         {
-                           $.post("<?php echo U('Project/chooseRebutter')?>",{'wfId':wfId},function (data) {
-                              $.each(data,function (key,value) {
-                                  //alert(value.adminId)
-                                  option+="<option value='"+value.adminId+"'>"+value.adminName+"</option>"
-                              })
-                               selectReButter.append(option)
-                               selectReButter.css({'display':''})
-                               $("#rb").css({'display':''})
-                           },'json');
+                            $('#addSelect').css({'display':''})
                         }
                         else
                         {
-                            selectReButter.css({'display':'none'})
-                            selectReButter.empty()
-                            $("#rb").css({'display':'none'})
-                            selectReButter.val('');
-
+                            $('#addSelect').css({'display':'none'})
                         }
-
-
                     }
                 </script>
 <!--                <tr>
@@ -106,13 +100,41 @@
                         <textarea name="opinion" id="j_custom_note_1" data-toggle="autoheight" cols="60" data-minheight="100"></textarea>
                     </td>
                 </tr>-->
-                    <tr>
+<!--                    <tr>
                         <td>
                             <label for="pro_desc" class="control-label x120">项目简介：</label>
                             <input type="hidden" name="old_pro_subprocess_desc" value="{$pro_subprocess_desc}">
                             <div style="display: inline-block; border: 1px solid #ccc;">
                                 <span style="display: block; margin-bottom: 10px; padding: 5px 0 0 5px;">{$pro_subprocess_desc}</span>
                                 <textarea name="pro_subprocess_desc" style="border:none;" id="j_custom_note_1" data-toggle="autoheight" cols="30" rows="3"></textarea>
+                            </div>
+                        </td>
+                    </tr>-->
+                    <tr>
+                        <td>
+                            <label for="pro_desc" class="control-label x120">备注：</label>
+                            <input type="hidden" name="old_pro_subprocess_desc" value="{$pro_subprocess_desc}">
+                            <div style="display: inline-block; border: 1px solid #ccc;">
+                                <?php foreach($pro_subprocess_desc as $dkey=>$dvalue):?>
+                                <textarea name="desc[]" style="display: block;  margin-bottom: 1px; padding: 0px 0 0 3px;" data-toggle="autoheight" cols="30" rows="1" <?php if($admin['real_name']!==explode('::',$dvalue)[0]){ echo 'readonly';}?>><?php echo $dvalue?></textarea>
+                                <?php endforeach;?>
+                                <textarea name="pro_subprocess_desc" style="border:none;" id="j_custom_note_1" data-toggle="autoheight" cols="30" rows="3"></textarea>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="pro_desc" class="control-label x120">上传文件：</label>
+                            <div style="display: inline-block; vertical-align: middle;">
+                                <div id="j_custom_pic_up" data-toggle="upload" data-uploader="<?php echo U('Project/upload_attachment')?>?sessionid=?"
+                                     data-file-size-limit="1024000000"
+                                     data-file-type-exts="<?php echo $exts ?>"
+                                     data-multi="true"
+                                     data-on-upload-success="pic_upload_success"
+                                     data-icon="cloud-upload"
+                                     data-auto="true"
+                                     data-form-data='{"file_id":"<?php echo $file_id?>","pro_id":"<?php echo $pro_id?>","proLevel":"<?php echo $proLevel?>","wfId":"<?php echo $wfId?>","plId":"<?php echo $plId?>"}'
+                                     data-file-obj-name='pro-<?php echo $pro_id?>'></div>
                             </div>
                         </td>
                     </tr>
@@ -138,24 +160,29 @@
                 </tr>-->
             </tbody>
         </table>
-      <!--  <table id='file-list' class="table table-condensed table-hover" width="100%">
+
+        <table id='file-list' class="table table-condensed table-hover" width="100%">
             <thead>
-                <tr>
-                    <th align="center" width="300">文件名</th>
-                    <th align="center" width="300">上传日期</th>
-                    <th width="300" align="center">操作</th>
-                </tr>
+            <tr>
+                <th align="center" width="100">编号</th>
+                <th align="center" width="300">文件名</th>
+                <th align="center" width="300">上传日期</th>
+                <th align="center" width="300">上传者</th>
+                <th width="300" align="center">操作</th>
+            </tr>
             </thead>
             <tbody>
-                <?php foreach($list as $v){?>
-                <tr>
-                    <td align="center"><a target="_blank" href="<?php echo $v["path"]?>"><?php echo $v['doc_name']?></a></td>
-                    <td align="center"><?php echo date('Y-m-d H:s:i', $v['addtime'])?></td>
-                    <td align="center"><a href="<?php echo U('Project/remove_attachment')?>" data-data='{"file_path":"<?php echo $v["path"]?> ","pro_id":"<?php echo $v["pro_id"]?>","aid":"<?php echo $v["id"]?>","file_id":"<?php echo $v["id"]?>"}'  class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td>
-                </tr>
-                <?php }?>
+            <?php $i = 1;foreach($list as $v){?>
+            <tr>
+                <td align="center"><?php echo $i++;?></td>
+                <td align="center"><a target="_blank" href="<?php echo $v["path"]?>"><?php echo $v['doc_name']?></a></td>
+                <td align="center"><?php echo date('Y-m-d H:s:i', $v['addtime'])?></td>
+                <td align="center"><?php echo adminNameToId($v['admin_id'])?></td>
+                <td align="center"><a href="<?php echo U('Project/remove_attachment')?>" data-data='{"file_path":"<?php echo $v["path"]?> ","pro_id":"<?php echo $v["pro_id"]?>","aid":"<?php echo $v["id"]?>","file_id":"<?php echo $v["id"]?>"}'  class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td>
+            </tr>
+            <?php }?>
             </tbody>
-        </table>-->
+        </table>
     </form>
 </div>
 <div class="bjui-pageFooter">
@@ -182,7 +209,7 @@
 
     function add_uploadedfile(data) {
         var i = $('#file-list> tbody > tr').length + 1;
-        var newTr = '<tr><td align="center"><a href="' + data.file_path + '">' + data.file_name + '</a><input type="hidden" name="reviews['+ i +'][path]" value="' + data.file_path + '" /></a><input type="hidden" name="reviews['+ i +'][doc_name]" value="' + data.file_name + '" /></td><td align="center">' + data.addtime + '</td><td align="center"><a href="<?php echo U("Project/remove_review")?>" data-data=\'{"file_path":\"' + data.file_path + '\"}\' class="btn btn-red" data-callback="del_uploadedfile" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td></tr>';
+        var newTr = '<tr><td align="center">'+i+'</td><td align="center"><a href="'+data.file_path+'">' + data.file_name + '</a></td>' + '<td align="center">' + data.addtime + '</td>' + '<td align="center">'+data.realName+'</td>'+ '<td align="center"><a href="<?php echo U("Project/remove_attachment")?>?aid='+data.aid+'&pro_id={#pro_id}" data-data=\'{"file_path":\"'+data.file_path+'\","pro_id":"{#pro_id}","aid":"'+data.aid+'\"}\' class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td></tr>';
 //        var newImg = '<li id="' + data.file_id + '"><input type="hidden" name="attachment['+ i +'][path]" value="' + data.file_path + '" /><div class="thumb-list-pics"><a href="javascript:void(0);"><img src="' + data.file_path + '" alt=""/></a></div><a href="javascript:del_file_upload(0,' + data.file_id + ',\'' + data.file_path + '\');" class="del" title="删除">X</a><a href="javascript:insert_editor(\'' + data.file_path + '\');" class="inset"><i class="fa fa-clipboard"></i>插入图片</a></li>';
         $('#file-list > tbody').append(newTr);
 

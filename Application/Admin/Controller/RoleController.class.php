@@ -205,7 +205,7 @@ class RoleController extends CommonController {
         //此函数可被系统设置中的消息推送权限设置中的添加调用，因其具备多选的需求，所以在这里添加这个参数判断，以前台显示不同的样式
         if(I('get.multi')) $this->assign('multi',I('get.multi'));
         //编号数字
-        if(I('get.k')) $this->assign('k',I('get.k'));
+        I('get.k')!==''?$this->assign('k',I('get.k')):$this->assign('k',I('post.k'));
         $list = D('Role')->listName($page,$pageSize,$where);
         $this->assign('list', $list['list']);
         $this->assign('total', $list['total']);
@@ -483,15 +483,26 @@ class RoleController extends CommonController {
         $this->display();
     }
     public function showSubLevel(){
-        $subLevel=I('get.subLevel');
-        $subLevel=C('proLevelClass')[$subLevel];
+        $subLevelName=I('get.subLevel');
+        $proId=intval(I('get.proId'))>0?I('get.proId'):0;
+        $subLevel=C('proLevelClass')[$subLevelName];
         $proLevel=C('proLevel');
-        $list=M('SublevelCheck')->where(array('wf_id'=>array('in',implode(',',$subLevel))))->select();
+        if($proId)
+        {
+            $list=M('SublevelCheck')->where(array('wf_id'=>array('in',implode(',',$subLevel)),'pro_id'=>$proId))->select();
+        }else
+        {
+            $list=M('SublevelCheck')->where(array('wf_id'=>array('in',implode(',',$subLevel)),'pro_id'=>0))->select();
+        }
+
         foreach($proLevel as $k => $v){
             //只获取选中的子流程所获取的信息
             if(!in_array($k,$subLevel)) unset($proLevel[$k]);
         }
         $this->assign('proLevel',$proLevel);
+        $this->assign('proName',projectNameFromId($proId));
+        $this->assign('subLevelName',$subLevelName);
+        $this->assign('proId',$proId);
         $listCallBack=call_user_func_array(array('\Admin\Controller\RoleController','callBackJoin'),array($list));
         $this->assign('list',$listCallBack);
         $this->display();
@@ -502,42 +513,95 @@ class RoleController extends CommonController {
         $result=[];
         $re=true;
         foreach($content as $k=>$v){
+            $realName='';
             if(strpos($k,'adminId')===false) continue;
+            foreach (explode(',',$v) as $kk=>$vv)
+            {
+                $realName.=adminNameToId($vv).',';
+            }
             $result[]=array(
                 'wf_id'=> end(explode('adminId',$k)),
-                'admin_ids'=>$v
+                'admin_ids'=>$v,
+                'pro_id'=>$content['pro_id'],
+                'real_name'=>rtrim($realName,',')
             );
+
         }
+        //{"16":{"auditor":[{"adminId":"","adminName":""}],"financeFlow":{"handling_charge_bank_name":"\u62db\u5546\u94f6\u884c","handling_charge_account_name":"\u4fdd\u7406","handling_charge_bank_no":"6666666666","electronicBillMoney":"880","electronicBillName":"\u4e1c\u4e00"}},
+        //"16_2":{"auditor":[{"adminId":"","adminName":""}]},"7_1":{"auditor":[{"adminId":"63","adminName":"\u6c5f\u6b22"}]},"10":{"auditor":[{"adminId":"10","adminName":"\u5f20\u654f\u4f73"}]}}
         //如果$result中的任意一个元素中的key存在，则说明此子流程已经添加过默认审核人了,此处取数组最后一个元素来作为检查对象
-        if(M('SublevelCheck')->where("`wf_id`='%d'",array(end($result)['wf_id']))->find()){
-            //更新
-            foreach($result as $k=>$v){
-                $update=M('SublevelCheck')->where("`wf_id` ='%s'",$v['wf_id'])->save($v);
-                $re=$update===false?$update=false:$update=true && $re;
+        if($content['pro_id']!=='0')
+        {
+            if(M('SublevelCheck')->where("`wf_id`='%s' and `pro_id`=%d",array(end($result)['wf_id'],end($result)['pro_id']))->find())
+            {
+                //更新
+                foreach($result as $k=>$v){
+                    $update=M('SublevelCheck')->where("`wf_id` ='%s' and `pro_id`=%d",array($v['wf_id'],$v['pro_id']))->save($v);
+                    $addSubPro=addSubProcessAuditor($v['pro_id'],$v['admin_ids'],$v['real_name'],$v['wf_id'],'');
+                    $re=$update===false && $addSubPro===false?false:$update=true && $addSubPro=true && $re;
+                }
+                if($re){
+                   // $this->success('添加成功');
+                   // $this->json_success('新建成功', '/Admin/Role/checkSubLevel', '', true);
+                    $this->json_success('修改成功', '/Admin/Role/checkSubLevel', '', true, array('tabid' => 'project-subwidows','tabName'=>'project-submit','tabTitle'=>'资料包'),1);
+                }else{
+                    $this->error('添加失败');
+                }
             }
-            if($re){
-                $this->success('添加成功');
-            }else{
-                $this->error('添加失败');
-            }
-        }else{
-            //新增
-            if(M('SublevelCheck')->addAll($result)){
-                $this->success('添加成功');
-            }else{
-                $this->error('添加失败');
+            else{
+                //新增
+                foreach($result as $k=>$v){
+                    $addSubPro=addSubProcessAuditor($v['pro_id'],$v['admin_ids'],$v['real_name'],$v['wf_id'],'');
+                    $re=$addSubPro===false?false:$addSubPro=true && $re;
+                }
+                if(M('SublevelCheck')->addAll($result) && $re){
+                   // $this->success('添加成功');
+                    $this->json_success('添加成功', '/Admin/Role/checkSubLevel', '', true, array('tabid' => 'project-subwidows','tabName'=>'project-submit','tabTitle'=>'资料包'),1);
+                }else{
+                    $this->error('添加失败');
+                }
             }
         }
+        else
+        {
+            if(M('SublevelCheck')->where("`wf_id`='%s' and `pro_id`=%d",array(end($result)['wf_id'],0))->find()){
+                //更新
+                foreach($result as $k=>$v){
+                    $update=M('SublevelCheck')->where("`wf_id` ='%s' and `pro_id`=%d",array($v['wf_id'],$v['pro_id']))->save($v);
+                    $re=$update===false?$update=false:$update=true && $re;
+                }
+                if($re){
+                    //$this->success('添加成功');
+                   // $this->json_success('修改成功', '/Admin/Role/checkSubLevel', '', true);
+                    $this->json_success('修改成功', '/Admin/Role/checkSubLevel', '', true, array('tabid' => 'project-subwidows','tabName'=>'project-submit','tabTitle'=>'资料包'),1);
+                }else{
+                    $this->error('添加失败');
+                }
+            }
+            else{
+                //新增
+                if(M('SublevelCheck')->addAll($result)){
+                    //$this->success('添加成功');
+                    $this->json_success('添加成功', '/Admin/Role/checkSubLevel', '', true, array('tabid' => 'project-subwidows','tabName'=>'project-submit','tabTitle'=>'资料包'),1);
+
+                }else{
+                    $this->error('添加失败');
+                }
+            }
+        }
+        //if(M('SublevelCheck')->where("`wf_id`='%s' and `pro_id`=%d",array(end($result)['wf_id'],end($result)['pro_id']))->find())
+
     }
 
     //将wf_id转成下标，并多拼接名字多一组数据
     public function callBackJoin($list)
     {
         $adminList=D('Admin')->getAll();//admin所有的人名和Id
+        $newList=array();
         foreach ($list as $k=>$v)
         {
             $name='';
-            $list[$v['wf_id']]=$v;
+            $newList[$v['wf_id']]=$v;
             $adminIdsExplode=explode(',',$v['admin_ids']);
             foreach ($adminList as $key=>$vv)
             {
@@ -546,9 +610,9 @@ class RoleController extends CommonController {
                     $name.=$vv['real_name'].',';
                 }
             }
-            $list[$v['wf_id']]['real_name']=rtrim($name,',');
+            $newList[$v['wf_id']]['real_name']=rtrim($name,',');
             unset($list[$k]);
         }
-        return $list;
+        return $newList;
     }
 }

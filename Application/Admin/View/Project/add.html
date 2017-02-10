@@ -49,6 +49,28 @@ $('#j_custom_issuedate').on('afterchange.bjui.datepicker', function(e, data) {
                 </tr>
                 <tr>
                     <td>
+                        <label for="debt_no" class="control-label x120">项目类型：</label>
+                        <select name="pro_type_id" data-rule="required" data-toggle="selectpicker">
+                            <option value="">--请选择--</option>
+                            <?php foreach(C('Ind.projectType') as $key => $val):?>
+                            <option value="<?php echo $key;?>"><?php echo $val?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="debt_no2" class="control-label x120">相关行业：</label>
+                        <select name="pro_profession_id" data-rule="required" data-toggle="selectpicker">
+                            <option value="">--请选择--</option>
+                            <?php foreach(C('Ind.industries') as $keys => $vals):?>
+                            <option value="<?php echo $keys;?>"><?php echo $vals?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </td>
+                </tr>
+<!--                <tr>
+                    <td>
                         <label for="pro_type" class="control-label x120">反向保理：</label>
                         <input type="checkbox" name="pro_type" value="1" id="check" data-toggle="icheck">
                     </td>
@@ -72,7 +94,7 @@ $('#j_custom_issuedate').on('afterchange.bjui.datepicker', function(e, data) {
                         <input type="hidden" name="before_pro_id" value='0'>
                         <input type="text" name="befor_pro_title" id="p_company" value="" size="15" data-toggle="lookup" data-url="<?php echo U('Project/lookUp')?>" data-width="600" data-height="300" readonly>
                     </td>
-                </tr>
+                </tr>-->
                 <tr></tr>
 <!--                <tr>
                     <td>

@@ -296,7 +296,7 @@ class CompanyController extends CommonController {
                 //返回股权部和分控部老大的adminId
                 $map['r.role_id']='16';
                 break;
-            case '11_3':
+            case '11_2':
                 //返回法务adminId
                 $map['r.role_id']='21';
                 break;

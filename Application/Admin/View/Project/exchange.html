@@ -32,8 +32,59 @@ $('#j_custom_issuedate').on('afterchange.bjui.datepicker', function(e, data) {
         <input type="hidden"  name="xmlId" value="{$xmlId}">
         <input type="hidden"  name="proLevel" value="{$proLevel}">
         <input type="hidden"  name="proTimes" value="{$proTimes}">
-        <div style="margin-top:50px;">
-            <label for="money" class="control-label x150"><?php
+        <table class="table table-condensed table-hover" width="100%">
+<tbody>
+<tr>
+    <td>
+        <label for="j_custom_name" class="control-label x120">项目名称：</label>
+        <input type="text" name="pro_title" id="p_name" value="<?php echo $pro_title?>" data-rule="required" size="15" readonly>
+    </td>
+    <!--                    <td>
+                            <label for="j_custom_sale" class="control-label x120">项目编号：</label>
+                            <input type="text" name="pro_no" id="p_name" value="<?php echo $pro_no?>" data-rule="required" size="15">
+                        </td>-->
+</tr>
+<tr>
+    <td>
+        <label for="pro_account" class="control-label x120">融资金额：</label>
+        <input type="text" name="pro_account" id="p_account" value="<?php echo $pro_account?>" data-rule="required;money" size="15" readonly>
+    </td>
+</tr>
+<tr>
+    <td>
+        <label for="company_id" class="control-label x120">公司：</label>
+        <input type="hidden" name="company_id" value='<?php echo $company_id?>'>
+        <input type="text" name="company_name" id="p_company" value="<?php echo $company['company_name']?>" size="15"  data-width="600" data-height="300" data-rule="required" readonly>
+    </td>
+</tr>
+
+<tr>
+    <td>
+        <label for="debt_no" class="control-label x120">项目类型：</label>
+        <select name="pro_type_id" data-rule="required" data-toggle="selectpicker" disabled>
+            <option value="">--请选择--</option>
+            <?php foreach(C('Ind.projectType') as $key => $val):?>
+            <option value="<?php echo $key;?>"><?php echo $val?></option>
+            <?php endforeach;?>
+        </select>
+    </td>
+</tr>
+<tr>
+    <td>
+        <label for="debt_no2" class="control-label x120">相关行业：</label>
+        <select name="pro_profession_id" data-rule="required" data-toggle="selectpicker" disabled>
+            <option value="">--请选择--</option>
+            <?php foreach(C('Ind.industries') as $keys => $vals):?>
+            <option value="<?php echo $keys;?>"><?php echo $vals?></option>
+            <?php endforeach;?>
+        </select>
+    </td>
+</tr>
+
+
+<tr>
+    <td>
+        <label for="money" class="control-label x120"><?php
             if($proLevel=='0_1') {
              echo '项管部跟进人：';
             } elseif($proLevel=='13') {
@@ -44,21 +95,95 @@ $('#j_custom_issuedate').on('afterchange.bjui.datepicker', function(e, data) {
                 echo '法务知情人';
             }
 ?></label>
-            <input type="hidden" name="admin_id" value="" />
-            <input type="text" name="real_name" id="p_company" value="" size="15" readonly
-                   data-toggle="lookup" data-url="<?php echo U('Admin/projectFollow',array('proLevel'=>$proLevel))?>" data-width="600" data-height="300">
+        <input type="hidden" name="admin_id" value="" />
+        <input type="text" name="real_name" id="p_company" value="" size="15" readonly
+               data-toggle="lookup" data-url="<?php echo U('Admin/projectFollow',array('proLevel'=>$proLevel))?>" data-width="600" data-height="300">
+    </td>
+</tr>
 
-        </div>
-        <?php if($proLevel=='0_1' || $proLevel=='10_4'):?>
-        <div style="margin-top: 50px;">
-            <label for='company_id' class='control-label x150'>请审核:</label>
-            <select name="auditType" class="auditType" data-rule="required" data-toggle="selectpicker">
-                <option value="">选择审核类型</option>
-                <option value="2">通过</option>
-                <option value="3">驳回</option>
-            </select>
-        </div>
+<?php if($proLevel=='0_1' || $proLevel=='10_4'):?>
+<tr>
+    <td colspan="2">
+        <label for="" class="control-label x120">审核结果：</label>
+        <select name="status" data-toggle="selectpicker" data-rule="required" onchange="chooseRebutter()" value="选择" >
+            <option value="">--请选择--</option>
+            <option value="0">通过</option>
+            <option value="1">驳回</option>
+        </select>
+    </td>
+</tr>
+
+<tr style="display: none" id="addSelect">
+    <td>
+        <label for="" id="rb" class="control-label x120" ><span style="color:red">请选择驳回的对象：</span></label>
+        <select name="reButter" data-toggle="selectpicker" data-rule="required"  value="选择" >
+            <option value="0">--请选择--</option>
+            <?php foreach($adminIdAndNameAttr as $akey=>$avalue):?>
+            <option value="<?php echo $avalue['indexJoint']?>"><?php echo $avalue['contents']?></option>
+            <?php endforeach;?>
+        </select>
+    </td>
+</tr>
         <?php endif;?>
+
+
+<tr>
+    <td>
+        <label for="pro_desc" class="control-label x120">备注：</label>
+        <input type="hidden" name="old_pro_subprocess_desc" value="{$pro_subprocess_desc}">
+        <div style="display: inline-block; border: 1px solid #ccc;">
+            <?php foreach($pro_subprocess_desc as $dkey=>$dvalue):?>
+            <textarea name="desc[]" style="display: block;  margin-bottom: 1px; padding: 0px 0 0 3px;" data-toggle="autoheight" cols="30" rows="1" <?php if($admin['real_name']!==explode('::',$dvalue)[0]){ echo 'readonly';}?>><?php echo $dvalue?></textarea>
+            <?php endforeach;?>
+            <textarea name="pro_subprocess_desc" style="border:none;" id="j_custom_note_1" data-toggle="autoheight" cols="30" rows="3"></textarea>
+        </div>
+    </td>
+</tr>
+<?php if($proLevel=='10_4'):?>
+<tr>
+    <td>
+        <label for="pro_desc" class="control-label x120">上传文件：</label>
+        <div style="display: inline-block; vertical-align: middle;">
+            <div id="j_custom_pic_up" data-toggle="upload" data-uploader="<?php echo U('Project/upload_attachment')?>?sessionid=?"
+                 data-file-size-limit="1024000000"
+                 data-file-type-exts="<?php echo $exts ?>"
+                 data-multi="true"
+                 data-on-upload-success="pic_upload_success"
+                 data-icon="cloud-upload"
+                 data-auto="true"
+                 data-form-data='{"file_id":"<?php echo $file_id?>","pro_id":"<?php echo $pro_id?>","proLevel":"<?php echo $proLevel?>","wfId":"<?php echo $wfId?>","plId":"<?php echo $plId?>"}'
+                 data-file-obj-name='pro-<?php echo $pro_id?>'></div>
+        </div>
+    </td>
+</tr>
+<?php endif;?>
+</tbody>
+        </table>
+        <?php if($proLevel=='10_4'):?>
+        <table id='file-list' class="table table-condensed table-hover" width="100%">
+            <thead>
+            <tr>
+                <th align="center" width="100">编号</th>
+                <th align="center" width="300">文件名</th>
+                <th align="center" width="300">上传日期</th>
+                <th align="center" width="300">上传者</th>
+                <th width="300" align="center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php $i = 1;foreach($list as $v){?>
+            <tr>
+                <td align="center"><?php echo $i++;?></td>
+                <td align="center"><a target="_blank" href="<?php echo $v["path"]?>"><?php echo $v['doc_name']?></a></td>
+                <td align="center"><?php echo date('Y-m-d H:s:i', $v['addtime'])?></td>
+                <td align="center"><?php echo adminNameToId($v['admin_id'])?></td>
+                <td align="center"><a href="<?php echo U('Project/remove_attachment')?>" data-data='{"file_path":"<?php echo $v["path"]?> ","pro_id":"<?php echo $v["pro_id"]?>","aid":"<?php echo $v["id"]?>","file_id":"<?php echo $v["id"]?>"}'  class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td>
+            </tr>
+            <?php }?>
+            </tbody>
+        </table>
+        <?php endif;?>
+
 <!--        <div style="margin-top:50px;">
             <label for="money" class="control-label x150">发送邮件提醒：</label>
             <input type="checkbox" data-toggle="icheck" data-label="">
@@ -71,3 +196,22 @@ $('#j_custom_issuedate').on('afterchange.bjui.datepicker', function(e, data) {
         <li><button type="submit" class="btn-default" data-icon="save">确认</button></li>
     </ul>
 </div>
+<script>
+    function chooseRebutter() {
+        var select=$("select[name='status']");
+        var wfId=$("input[name='wfId']").val();
+        if(parseInt(select.val())==1)
+        {
+            $('#addSelect').css({'display':''})
+        }
+        else
+        {
+            $('#addSelect').css({'display':'none'})
+        }
+    }
+    var proTypeJoinId="<?php echo $pro_type_join_id?>"
+    var proTypeId=proTypeJoinId.split('_')[0]
+    var proProfessionId=proTypeJoinId.split('_')[1]
+    $("select[name='pro_type_id']").find("option[value="+proTypeId+"]").attr('selected',true)
+    $("select[name='pro_profession_id']").find("option[value="+proProfessionId+"]").attr('selected',true)
+</script>

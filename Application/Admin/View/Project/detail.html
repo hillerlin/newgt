@@ -1,27 +1,15 @@
 <style>
-    .subproject{ padding: 14px 0 0 14px; }
-
-    .subproject label{ padding-bottom: 16px; }
-
-    .subproject div dl{ display: inline-block; margin-right: 54px; text-align: center; margin-bottom: 40px; position: relative; }
-
-    .subproject div  dl dt{ width: 113px; height: 30px; margin-bottom: 10px; border-radius: 14px; line-height: 30px; border: 1px #999 solid; background: #eaeaea; }
-
-    .subproject div  dl dd{ position: absolute; width: 87px; text-align: left; }
-
-    .backflow{ padding-right: 20px; display: inline-block; margin-bottom: 30px; background: url(/Public/Admin/images/datagrid/flow.png) no-repeat right center; background-position: 131px 7px; }
-
-    .backflow:first-child,.backflow:last-child{ background-position: 50px 6px; }
-
-    .backflow:last-child{ background:none; }
-
-    .subproject  .backflow:first-child  dl, .subproject  .backflow:last-child   dl{ margin-right:54px; }
-
-    .subproject  .backflow:first-child  dt, .subproject  .backflow:last-child   dt { width: 33px; height: 33px; border-radius: 33px; border:none; }
-
-    .subproject  .backflow:first-child  dt{ background-color:#0bb30b; }
-
-    .subproject div  dl dt.current{background:red; color:#ffffff;}
+.subproject{padding:15px 0 0 15px;}
+.subproject div dl{display:inline-block;margin-right:54px;text-align:center;margin-bottom:0;}
+.subproject div  dl dt{width:113px;height:30px;margin-bottom:10px;border-radius:14px;line-height:30px;border:1px #999 solid;background:#eaeaea;}
+.project{clear:both;overflow:hidden;display: none;}
+.backflow{float:left;height:70px;margin:20px 15px 0 0;background:url(/Public/Admin/images/datagrid/flow.png) no-repeat;background-position:128px 8px;}
+.backflow:first-child,.backflow:last-child{width:108px;background-position:68px 8px;}
+.backflow:last-child{background:none;}
+.subproject  .backflow:first-child  dl,.subproject  .backflow:last-child   dl{margin-right:10px;}
+.subproject  .backflow:first-child  dt,.subproject  .backflow:last-child   dt{width:33px;margin:0 auto 10px;height:33px;border-radius:33px;border:none;}
+.subproject  .backflow:first-child  dt{background-color:#0bb30b;}
+.subproject div  dl dt.current{background:red;color:#ffffff;}
 </style>
 <div class="bjui-pageContent">
     <php>foreach($list as $list1):</php>
@@ -29,14 +17,17 @@
     <div class="subproject">
         <label>
             <php> echo ++$i,'、', $v['name'];</php>
-            <a href="/admin/Project/detailMore/wf_id/{$v['wfid']}" data-title="{$v['name']}" data-toggle="dialog" data-width="800" data-height="400"  data-id="dialog">详情>></a>
+            <a href="/admin/Project/detailMore/wf_id/{$v['wfid']}" data-title="{$v['name']}" data-toggle="dialog" data-width="800" data-height="400"  data-id="dialog">详情>></a> 
+            <span class="ptitle"></span>（<span class="pname"></span><span class="ptime"></span>）
+            <a class="showBtn" href="javascript:;">流程图详情>></a>
         </label>
-        <div>
+        <div class="project">
             <!-- 开始 -->
             <div class="backflow">
                 <dl>
                     <dt>&nbsp;</dt>
-                    <dd><?php echo reset($executor[$v['wfid']])['real_name']; ?><br/><?php echo date('Y-m-d',reset($executor[$v['wfid']])['pro_addtime']); ?></dd>
+                    <dd><?php echo reset($executor[$v['wfid']])['real_name']; ?></dd>
+                    <dd><?php echo date('Y.m.d',reset($executor[$v['wfid']])['pro_addtime']); ?></dd>
                 </dl>
             </div>
             <php> foreach($v['sub'] as $subk=>$subv):</php>
@@ -44,32 +35,25 @@
                 <dl>
                     <dt class="<php>if($v['current'] == $subk) echo 'current';</php>">
                         <php>
-                            if($subv==end($v['sub']))
-                            {
-                              echo '&nbsp;';
-                            }else
-                            {
-                              if(strpos(mb_substr($subv,-4,4,'utf-8'),'-')!==false)
-                            {
-                              echo explode('-',mb_substr($subv,-4,4,'utf8'))[1];
+                        if($subv==end($v['sub'])){
+                            echo '&nbsp;';
+                        }else{
+                            if(strpos(mb_substr($subv,-4,4,'utf-8'),'-')!==false){ 
+                                echo explode('-',mb_substr($subv,-4,4,'utf8'))[1];
+                            }else{
+                                echo mb_substr($subv,-4,4,'utf-8');
                             }
-                            else
-                            {
-                               echo mb_substr($subv,-4,4,'utf-8');
-                            }
-                            }
-                          </php>
-                    </dt>
-                    <dd>
-                        <php>
-                            if($subv==end($v['sub'])){
-                                echo $subv;  //步骤标题
-                            }elseif($executor[$v['wfid']][$subk]){
-                                echo $executor[$v['wfid']][$subk]['real_name'],"<br/>"; //名字
-                                echo ($executor[$v['wfid']][$subk]['pro_addtime'])?date('Y/m/d',$executor[$v['wfid']][$subk]['pro_addtime']):''; //执行时间
-                            }
+                        }
                         </php>
-                    </dd>
+                    </dt>
+                    <php>
+                        if($subv==end($v['sub'])){
+                            echo '<dd>'.$subv.'</dd>';  //步骤标题
+                        }elseif($executor[$v['wfid']][$subk]){
+                            echo '<dd>'.$executor[$v['wfid']][$subk]['real_name'].'</dd><dd>'; //名字
+                            echo ($executor[$v['wfid']][$subk]['pro_addtime'])?date('Y.m.d',$executor[$v['wfid']][$subk]['pro_addtime']):'&nbsp;'.'</dd>'; //执行时间
+                        }
+                    </php>
                 </dl>
             </div>
 
@@ -79,3 +63,34 @@
     <php>endforeach;</php>
     <php>endforeach;</php>
 </div>
+<script>
+$(function(){
+    $('.subproject').each(function(){
+        var bool = $(this).find('dt').hasClass('current');
+        if(bool){
+            var ptitle = $(this).find('.current').text();
+            var pname = $(this).find('.current').next().text();
+            var ptime = $(this).find('.current').next().next().text();
+        }else{
+            var ptitle = $(this).find('.backflow:first').find('dt').text();
+            var pname = $(this).find('.backflow:first').find('dd').eq(0).text();
+            var ptime = $(this).find('.backflow:first').find('dd').eq(1).text();
+        }
+        //console.log(ptitle+' '+pname+' '+ptime);
+        $(this).find('.ptitle').text(ptitle);
+        $(this).find('.pname').text(pname);
+        $(this).find('.ptime').text(ptime?'-'+ptime:'');
+    });
+
+    var flag = 1;
+    $('.showBtn').on('click',function(){
+        if(flag){
+            $(this).parent('label').siblings('div').show();
+            flag = 0;
+        }else{
+            $(this).parent('label').siblings('div').hide();
+            flag = 1;
+        }
+    });
+});
+</script>

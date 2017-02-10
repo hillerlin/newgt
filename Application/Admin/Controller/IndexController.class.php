@@ -17,7 +17,7 @@ class IndexController extends CommonController {
           $xmlInfo = logic('xml')->index()[xmlIdToInfo('el_292541503583fc0a60758b7036469204')['TARGETREF']];//获取即将审核人的xml信息*/
         //$xmlInfo = logic('xml')->index();
         //el_292541503583fc0a60758b7036469204
-        $fileLevel=C('Pro.aaaa');
+       // $fileLevel=C('Pro.aaaa');
        //  $fileLevel=C('Pro.aaaa','999999','','./Application/Admin/Conf/process.php');  //封装了C方法的写入
          $admin = session('admin');
          if ($admin['is_supper'] == 0) {

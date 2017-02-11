@@ -10,12 +10,13 @@ return array(
     //数据库的配置
     //数据库配置信息
     'DB_TYPE'   => 'mysql', // 数据库类型
-    'DB_HOST'   => '127.0.0.1', // 服务器地址
+    'DB_HOST'   => '192.168.8.4', // 服务器地址
 //    'DB_HOST'   => 'localhost',
 //    'DB_USER'   => 'root', // 数据库名
     'DB_PWD'    => '', // 密码
-    'DB_NAME'   => 'newgt', // 数据库名
-    'DB_USER'   => 'root', // 用户名
+    'DB_NAME'   => 'gt', // 数据库名
+    'DB_USER'   => 'gt', // 用户名
+    'DB_PWD'    => 'gt', // 密码
     'DB_PORT'   => 3306, // 端口
     'DB_PARAMS' =>  array(), // 数据库连接参数
     'DB_PREFIX' => 'gt_', // 数据库表前缀 

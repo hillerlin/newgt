@@ -90,13 +90,15 @@ class RequestFoundController extends CommonController {
             }
         }
        	$rf=D('RequestFound');
-       	if($rf->createQequest()){
+        $sumbitModify=submitStatus(1,I('post.bid'));
+       	if($rf->createQequest() && intval($sumbitModify['code'])===0){
            // $this->json_success('添加成功');
             $this->json_success('添加成功', '', '', true, array('dialogid' => 'project-oaFlow'));
         }else{
             $this->json_error('添加失败');
         }
     }
+
     //编辑
     public function editRequestFound()
     {

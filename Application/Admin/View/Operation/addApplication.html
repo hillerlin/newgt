@@ -7,11 +7,12 @@
 </style>
 <div class="bjui-pageContent">
     <form action="<?php echo U('RequestFound/saveRequestFound')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false" method="post">
+        <input type="hidden" name="bid">
         <table class="table table-bordered" data-selected-multi="true">
             <tbody>
             <tr data-id="1">
                 <td class="conth" style="width:112px;">申请部门:</td>
-                <td> <input type="text" name="applicant" value=""></td>
+                <td> <input type="text" name="applicant" value="项管部"></td>
                 <td class="conth">申请人:</td>
                 <td><input type="text" name="name" value="{$admin.real_name}"></td>
                 <td class="conth">申请时间:</td>
@@ -20,9 +21,10 @@
 
             <tr data-id="2">
                 <td class="conth">产品名称:</td>
-                <td><input type="text" name="product_name" ></td>
+                <!--<td><input type="text" name="product_name" ></td>-->
+                <td><input type="text" name="product_name" id="p_company" value=""  style="padding-right: 4px;" data-toggle="lookup" data-url="<?php echo U('Operation/aysnProjectInfo')?>" data-width="900" data-height="500" readonly></td>
                 <td class="conth">满标日:</td>
-                <td><input type="text" name="full_scale_time" ></td>
+                <td><input type="text" name="full_scale_time" value="" ></td>
                 <td class="conth">合同编号:</td>
                 <td><input type="text" name="contract_num" ></td>
             </tr>
@@ -38,9 +40,9 @@
                 <td class="conth">融资期限:</td>
                 <td>
                     <input type="text" name="limit_time"  size="15">
-                    <select data-toggle="selectpicker" name="time_type">
-                        <option value="1">月</option>
+                    <select  name="time_type">
                         <option value="2">天</option>
+                        <option value="1">月</option>
                     </select>
                 </td>
 
@@ -61,7 +63,7 @@
                     <php>
                         foreach(C('contract_pay_type') as $k => $v){
                     </php>
-                    <input type="radio" name="pay_type" data-rule="checked" id="" value="<php>echo $k;</php>" data-toggle="icheck" data-label="<php>echo $v;</php>">
+                    <input type="radio" name="pay_type" data-rule="checked" id="radio" value="<php>echo $k;</php>" data-toggle="icheck" data-label="<php>echo $v;</php>">
                     <php> }</php>
                 </td>
             </tr>
@@ -76,7 +78,7 @@
                 <td rowspan="6" class="conth"> 收款方信息</td>
                 <td class="conth"> 是否监管账户:</td>
                 <td>
-                    <input type="radio" name="supervise" id="" data-rule="checked" value="{$content['supervise']}" data-toggle="icheck" data-label="是" >
+                    <input type="radio" name="supervise" id="" data-rule="checked" value="1" data-toggle="icheck" data-label="是" >
                     <input type="radio" name="supervise" id="" data-rule="checked" value="2" data-toggle="icheck" data-label="否" >
                 </td>
             </tr>
@@ -138,12 +140,17 @@
 </div>
 <script>
     $(function(){
+
         $('#pro').change(function(){
             var pro_con=$(this).children('option:selected').attr('pro_con');
             $('input[name=project_con]').val(pro_con);
+
         });
+
+
         //人民币大小写动态关联显示
         $('.conmoney').change(function(){
+           // debugger
             var money=$(this).val().trim();
             var name=$(this).attr('name');
             var ajax_name=$(this).attr('ajax_name');
@@ -179,4 +186,16 @@
             str += '零壹贰叁肆伍陆柒捌玖'.charAt(n.charAt(i)) + unit.charAt(i);
         return str.replace(/零(千|百|拾|角)/g, "零").replace(/(零)+/g, "零").replace(/零(万|亿|元)/g, "$1").replace(/(亿)万|壹(拾)/g, "$1$2").replace(/^元零?|零分/g, "").replace(/元$/g, "元整");
     }
+    $("select[name=time_type]").on('afterchange.bjui.lookup', function(e, data) { //查找找回
+
+        //$("select[name=time_type]").val(data.value);
+       $("select[name=time_type]").find('option[value='+data.value+']').attr('selected',true)
+
+    })
+    $('input[name=loan_money]').on('afterchange.bjui.lookup', function(e, data) { //查找找回
+        $('input[name=s_cmoney]').val(DX(data.value))
+    })
+
+
+
 </script>

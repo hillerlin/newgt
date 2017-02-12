@@ -373,6 +373,12 @@ class ProjectModel extends BaseModel {
             ->where('pro_id = '.$pro_id)
             ->find();
     }
+    //获取项目创建人的ID
+    public function fromProLinkerGetProId($proId)
+    {
+        $list=$this->where("`pro_id`=%d",array($proId))->field('pro_linker')->find();
+        return array($list['pro_linker']);
+    }
     //根据gt_workflow_log中的pro_id来获取创建项目的人的role_id
     public function formPjIdGetInsider($pro_id){
         return M()->query('select a.admin_id from gt_workflow_log as wl LEFT JOIN gt_admin as a on a.admin_id=wl.pro_author where wl.pro_level=0 and wl.pj_id='.$pro_id.' order by wl.pro_times desc limit 1');
@@ -416,7 +422,9 @@ class ProjectModel extends BaseModel {
     public function returnRequestInfo($proId)
     {
         $projectInfo=$this->where("`pro_id`=%d",array($proId))->field('binding_oa')->find();
-        return array('oaType'=>explode('_',$projectInfo['binding_oa'])[0],'oaId'=>explode('_',$projectInfo['binding_oa'])[1]);
+        $oaId=explode('_',$projectInfo['binding_oa'])[1];
+        $bid=D('RequestApply')->where('`id`=%d',array($oaId))->field('bid')->find();
+        return array('oaType'=>explode('_',$projectInfo['binding_oa'])[0],'oaId'=>explode('_',$projectInfo['binding_oa'])[1],'bid'=>$bid);
 
     }
     //根据项目id和文件夹名称返回文件夹下面的文件信息

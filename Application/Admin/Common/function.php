@@ -1098,6 +1098,22 @@ function subLevelUser($level)
     return $list['admin_ids'];
 }
 
+//提交审核状态接口
+function submitStatus($type,$bid)//1是提交审核 2是审核完毕
+{
+    header("Content-type:text/html:charset=utf-8");
+    $url = 'http://ndm.atrmoney.com/admin/dmlc/ProjectApi/requestLoan'; // 平台接口地址前缀
+    $params['bid']=$bid;
+    $params['loan_status']=$type;
+    $key=md5('xiaopinguo');
+    $json=json_encode($params);
+    $sign=md5($json.$key);
+    $params['sign']=$sign;
+    $asynClass=new \Admin\Lib\AsynReturn;
+    $asynClass->init($url,array('data'=>json_encode($params)));
+    $result = $asynClass->request_post();
+    return json_decode($result, true);
+}
 
 
 

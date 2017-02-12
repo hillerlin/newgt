@@ -81,7 +81,7 @@ $('#j_custom_issuedate').on('afterchange.bjui.datepicker', function(e, data) {
     </td>
 </tr>
 
-
+<?php if($proLevel=='0_1' || $proLevel=='13' || $proLevel=='10_2'):?>
 <tr>
     <td>
         <label for="money" class="control-label x120"><?php
@@ -91,15 +91,15 @@ $('#j_custom_issuedate').on('afterchange.bjui.datepicker', function(e, data) {
               echo '法务跟进人：';
             }elseif($proLevel=='10_2'){
                 echo '风控部审核人员';
-            }elseif($proLevel=='10_4'){
-                echo '法务知情人';
-            }
-?></label>
+            }?></label>
+
         <input type="hidden" name="admin_id" value="" />
         <input type="text" name="real_name" id="p_company" value="" size="15" readonly
                data-toggle="lookup" data-url="<?php echo U('Admin/projectFollow',array('proLevel'=>$proLevel))?>" data-width="600" data-height="300">
+
     </td>
 </tr>
+<?php endif;?>
 
 <?php if($proLevel=='0_1' || $proLevel=='10_4'):?>
 <tr>

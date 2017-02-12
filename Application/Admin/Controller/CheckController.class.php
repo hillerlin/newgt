@@ -43,7 +43,7 @@ class CheckController extends CommonController
         // $url = 'http://api.zcgmall.com/Home/Index/subOrder'; // 平台接口地址前缀
            //$url = 'http://192.168.8.188:9016/admin/dmlc/ProjectApi/waitLoan'; // 平台接口地址前缀
           //$url = 'http://192.168.8.188:9016/admin/dmlc/ProjectApi/requestLoan'; // 平台接口地址前缀
-          $url = 'http://ndm.atrmoney.com/admin/dmlc/ProjectApi/requestLoan'; // 平台接口地址前缀
+          $url = 'http://ndm.atrmoney.com/admin/dmlc/ProjectApi/waitLoan'; // 平台接口地址前缀
          //$url = 'http://api.zcgmall.com/Home/Index/goodsInfo'; // 平台接口地址前缀
 //        $params['cateList'] ='{"brandList":"40","areaList":"4","attrList":{"682":["\u9ed1\u8272"]}}';
 //        $params['catId'] =170;
@@ -60,7 +60,7 @@ class CheckController extends CommonController
         $params['list'] ='[{"cartId":956,"num":3}]';*/
    //  $params['catId']=37;
         $params['page']=1;
-        $params['pageNum']=5;
+        $params['pageNum']=10;
         $params['bid']=2579;
         $params['loan_status']=1;
         $key=md5('xiaopinguo');

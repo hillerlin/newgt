@@ -111,4 +111,16 @@ class WorkflowController extends CommonController {
             $this->json_error('操作失败');
         }
     }
+    public function analysis()
+    {
+        //$this->json_success('该功能正在开发！', '', '', false, array('dialogid' => 'project-oaFlow'));
+       // $this->json_success('保存成功');
+        $this->display();
+    }  
+    public function dataCenter()
+    {
+        //$this->json_success('该功能正在开发！', '', '', false, array('dialogid' => 'project-oaFlow'));
+       // $this->json_success('保存成功');
+        $this->display();
+    }
 }

@@ -39,7 +39,7 @@
                 <td class="conth">融资期限:</td>
                 <td>
                     <input type="text" name="limit_time"  size="15" value="{$list.limit_time}">
-                    <select data-toggle="selectpicker" name="time_type">
+                    <select name="time_type">
                         <option value="1">月</option>
                         <option value="2">天</option>
                     </select>
@@ -137,6 +137,7 @@
 </div>
 <script>
     $(function(){
+        //debugger
         $("select[name='time_type']").find('option[value="<?php echo $list[time_type];?>"]').attr('selected',true)
 
         $('#pro').change(function(){

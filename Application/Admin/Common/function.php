@@ -492,6 +492,9 @@ function redisCollect($proLevel,$sender,$receive='',$time,$proId,$specialMessage
         case '17':
             $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>商票流程';
             break;
+        case '18':
+            $contents='项管专员<code>'.$sender.'</code>新建大麦<code>'.$proName.'</code>放款流程';
+            break;
         case '-1':
         case '-2':
         case '-3':
@@ -602,6 +605,9 @@ function redisPostAudit($proLevel,$sender,$receive='',$time,$proId,$plId,$specia
         case '17':
             $contents='项管专员<code>'.$sender.'</code>新建项目<code>'.$proName.'</code>商票流程';
             break;
+        case '18':
+            $contents='项管专员<code>'.$sender.'</code>新建大麦<code>'.$proName.'</code>放款流程';
+            break;
         case '-1':
         case '-2':
         case '-3':
@@ -646,6 +652,7 @@ function auditMainProcessType($proLevel)
 function postRebutter($wfId,$proIid,$proRebutterLevel,$proTimes,$admin,$proRebutter,$xmlId,$plId,$type='list')
 {
     //审批流入库处理
+    $proRebutterPlid=I('get.proRebutterPlid')?I('get.proRebutterPlid'):I('post.proRebutterPlid');//被驳回的plid是多少
     $pjWorkFlow = D('PjWorkflow')->where("`wf_id`=%d",array($wfId))->data(array('pj_id' => $proIid, 'pj_state' => '待审核', 'pro_level_now' => $proRebutterLevel, 'pro_times_now' => $proTimes))->save();
     $sendProcess = D('SendProcess')->data(array('wf_id' => $wfId,'sp_message'=>'已提交', 'sp_author' => $admin['admin_id'], 'sp_addtime' => time(), 'sp_role_id' => $admin['role_id']))->add();
     $workFlowLog = D('WorkflowLog')->data(array(
@@ -654,7 +661,8 @@ function postRebutter($wfId,$proIid,$proRebutterLevel,$proTimes,$admin,$proRebut
     ))->add();
     $oldworkFlowLog=D('WorkflowLog')->where("`pl_id`=%d",array($plId))->data(array('pro_state'=>2))->save();
     $contents=$admin['role_name'].'<code>'.$admin['real_name'].'</code>重新提交<code>被驳回</code>项目<code>'.projectNameFromId($proIid).'</code>';
-    $redisPost = redisTotalPost(-1, $admin['admin_id'], $proRebutter . '|admin', time(), $proIid, $workFlowLog,$contents,-1);
+    $deleRedis=delredis($proRebutterPlid,$admin['admin_id']);
+    $redisPost = redisTotalPost($proRebutterLevel, $admin['admin_id'], $proRebutter . '|admin', time(), $proIid, $workFlowLog,$contents,-1) && $deleRedis;
     if($type=='list')
     {
 
@@ -677,13 +685,16 @@ function reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reB
     //新建worklowLog表中驳回的人的相关信息
     $WflMode->data(array(
         'sp_id' => $sendProcess, 'pj_id' => $proIid, 'pro_author' => $reButter, 'pro_level' => $proRebutterLevel, 'pro_times' => intval($proTimes) + 1, 'pro_state' => 3, 'pro_addtime' => time(),
-        'wf_id' => $wfId, 'pro_role' => '0', 'pro_xml_id' => $xmlId, 'pro_rebutter' => $admin['admin_id'], 'pro_rebutter_level' => $proLevel
+        'wf_id' => $wfId, 'pro_role' => '0', 'pro_xml_id' => $xmlId, 'pro_rebutter' => $admin['admin_id'], 'pro_rebutter_level' => $proLevel,'pro_rebutter_plid'=>$plId
     ))->add();
     //redis推送消息
     //$contents = '项管专员<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>立项事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
     $contents = $contents;
-    $redisPost = redisTotalPost(-1, $admin['admin_id'], $reButter . '|admin', time(), $proIid, $plId, $contents, -1);
-    return $updateState && $updatePj && $sendProcess && $WflMode && $redisPost;
+    $deleRedis=delredis($plId); //删除对应的redis记录
+    $pro_subprocess_desc =$_GET['pro_subprocess_desc'];//子流程备注
+    $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+    $redisPost = redisTotalPost($proLevel, $admin['admin_id'], $reButter . '|admin', time(), $proIid, $plId, $contents, -1);
+    return $updateState && $updatePj && $sendProcess && $WflMode && $redisPost && $deleRedis && $updataProject;
 }
 //返回执行完下一步的流程模块
 /******
@@ -1025,13 +1036,21 @@ function getFinishStatus($proLevel,$proId)
  * 删除redis中对应的代办信息记录
  * @param $plid  workflow_log  的 id号
  */
-function delredis($plid){
+function delredis($plid,$author=null){
     //查找出对应的workflog的id号的记录
     $pro_author=D('WorkflowLog')->field('pro_author,pro_role')->where('pl_id ='.$plid)->find();
     //如果pro_author的优先级大于pro_role,所以，如果pro_author存在，则表示采用的是admin方式存储于redis中的，否则是role方式
     $authorType=$pro_author['pro_author']?'admin':'role';
     //redis中对应的键
-    $authorId=$pro_author['pro_author']?$pro_author['pro_author']:$pro_author['pro_role'];
+    if($author)
+    {
+        $authorId=$author;
+    }
+    else
+    {
+        $authorId=$pro_author['pro_author']?$pro_author['pro_author']:$pro_author['pro_role'];
+    }
+
     return  S()->hDel($authorType . ':'.$authorId, $plid);
 }
 
@@ -1113,6 +1132,17 @@ function submitStatus($type,$bid)//1是提交审核 2是审核完毕
     $asynClass->init($url,array('data'=>json_encode($params)));
     $result = $asynClass->request_post();
     return json_decode($result, true);
+}
+//根据OA的id返回OA对应的值
+function returnOaNameAndIdAttr($ids)
+{
+   $list= D('RequestFound')->returnOaInfoFromProId($ids,'in');
+    $idsAttr=array();
+    foreach ($list as $k=>$v)
+    {
+        $idsAttr[$v['id']]=$v['product_name'];
+    }
+    return $idsAttr;
 }
 
 

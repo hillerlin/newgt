@@ -230,7 +230,10 @@
                     <button type="button" class="bjui-navbar-toggle btn-default" data-toggle="collapse" data-target="#bjui-navbar-collapse">
                         <i class="fa fa-bars"></i>
                     </button>
+<!--
                     <a class="bjui-navbar-logo" href="#"><img src="__ADMIN__/images/logo.png"></a>
+-->
+                    <a class="bjui-navbar-logo" href="#"><img src="<?php if(intval($admin['flag'])==1){ echo '__ADMIN__/images/logo-damai-index.png'; } else { echo '__ADMIN__/images/logo.png';}?>"></a>
                 </div>
                 <nav id="bjui-navbar-collapse">
                     <ul class="bjui-navbar-right">
@@ -241,7 +244,7 @@
                                 <a id="message" href="#" data-toggle="" data-width='600' data-mask='true' data-id="my-message">
                                     <?php } ?>
                                     消息 <span class="badge"><?php echo $unReadNums?></span></a></li> -->
-                        <li class="dropdown"><div><span>你好，{$admin.admin_name}</span></div><!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">你好，{$admin.admin_name} <span class="caret"></span></a>
+                        <li class="dropdown"><div><span>你好，<?php echo $admin['admin_name']?></span></div><!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">你好，{$admin.admin_name} <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="<?php echo U('Profile/editMyPaswd')?>" data-toggle="dialog" data-id="changepwd_page" data-mask="true" data-width="500" data-height="360">&nbsp;<span class="glyphicon glyphicon-lock"></span> 修改密码&nbsp;</a></li>
                                 <li><a href="#">&nbsp;<span class="glyphicon glyphicon-user"></span> 我的资料</a></li>

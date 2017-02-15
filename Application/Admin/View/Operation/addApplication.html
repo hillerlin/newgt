@@ -92,7 +92,8 @@
             </tr>
             <tr>
                 <td class="conth"> 户名:</td>
-                <td colspan="5"><input type="text" value="" name="account_name" size="50" data-rule="required"></td>
+
+                <td colspan="5"><input type="text" value="" name="account_name" data-toggle="lookup" data-url="/Admin/Bank/lookupOa.html"  size="50" data-width="700" data-height="600" data-rule="required"></td>
             </tr>
 
             <tr>
@@ -158,15 +159,15 @@
             $('input[name='+name+']').val(money);
         });
         //动态更改居费率显示
-        $('#col_money').change(function () {
+/*        $('#col_money').change(function () {
            var collect_money=$(this).val();
             $('#service').html(collect_money+'W');
-        });
+        });*/
         //动态更改情况说明的样式
-        if($('#deposit').is(':visible')){
+/*        if($('#deposit').is(':visible')){
             var rows=$('#information').attr('rowspan');
            $('#information').attr('rowspan',parseInt(rows)+1);
-       }
+       }*/
         //只显示一个情况说明，当第2个情况说明显示的时候，就把第一个情况说明给屏蔽掉
         var requestMoney=$('.requestMoney');
         if(requestMoney.length>1 && $('.requestMoney').eq(1).is(':visible')){

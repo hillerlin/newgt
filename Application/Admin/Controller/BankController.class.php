@@ -173,4 +173,29 @@ class BankController extends CommonController {
         $this->assign(array('total'=>$total, 'pageCurrent'=>1, 'list'=>$list));
         $this->display('lookup_prosupplier');
     }
+
+    //公司查找
+    public function lookupOa() {
+        $type = I('get.type');
+        $pageSize = I('post.pageSize', 30);
+        $page = I('post.pageCurrent', 1);
+        $company_name = I('post.company_name');
+        $company_linker = I('post.company_linker');
+        $isSearch = I('post.isSearch');
+        if (!empty($isSearch)) {
+            if (!empty($company_name)) {
+                $map['company_name'] = array('LIKE', $company_name);
+            }
+            if (!empty($company_linker)) {
+                $map['company_linker'] = array('LIKE', $company_linker);
+            }
+        }
+        $map['status'] = 1;
+        $total = $this->mainModel->where($map)->count();
+        $list = $this->mainModel->where($map)->order('addtime desc')->page($page, $pageSize)->select();
+
+        $this->assign('type', $type);
+        $this->assign(array('total'=>$total, 'pageCurrent'=>$page, 'list'=>$list));
+        $this->display();
+    }
 }

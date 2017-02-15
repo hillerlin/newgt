@@ -55,12 +55,11 @@
                 <a  href="{:U($subk, array('pro_id'=>$v['pro_id']))}" data-height=900 data-width=800 class="btn btn-green" data-id="project-submit" data-toggle="dialog" data-mask="true" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="{$subv}">{$subv}
                 </a>
                 <php>
-
                     if($v['binding_oa']):
                     if($flag==1) continue;
                     $flag=1;
                 </php>
-                <a  href="/Admin/RequestFound/editRequestFound/proId/<?php echo $v['pro_id']?>.html" data-height=1200 data-width=1000 class="btn btn-green" data-id="project-submit" data-toggle="dialog" data-mask="true" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="查看放款单">查看放款单
+                <a  href="/Admin/RequestFound/contractList/proId/<?php echo $v['pro_id']?>.html" data-height=1200 data-width=1000 class="btn btn-green" data-id="project-submit" data-toggle="dialog" data-mask="true" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="查看放款单">查看放款单
                 </a>
                 <php>
                     endif;

@@ -6,16 +6,16 @@ class RequestFoundModel extends BaseModel {
 	public function createQequest(){
 		//同时在project表里面增加一条新数据
 		$admin=session('admin');
-		$projectModel=D('Project');
-		if(!$_POST['id']) $projectModel->create();
-		$projectModel->pro_title=I('post.product_name');
-		$projectModel->pro_account=I('post.collect_money');
-		$projectModel->admin_id=$admin['admin_id'];
+		//$projectModel=D('Project');
+		//if(!$_POST['id']) $projectModel->create();
+		//$projectModel->pro_title=I('post.product_name');
+		//$projectModel->pro_account=I('post.collect_money');
+		//$projectModel->admin_id=$admin['admin_id'];
 		foreach ($_POST as $k => $v) {
 			if(is_array($v)){ //把数组装成字符串
 				$_POST[$k]=trim($v[0]);
 			}
-			if($k=='addtime'){
+			if($k=='addtime' || $k=='full_scale_time'){
 				$_POST[$k]=strtotime($v);
 			}
 		}
@@ -25,18 +25,18 @@ class RequestFoundModel extends BaseModel {
 		if($_POST['id'])
 		{
 			$result=$RequestFound->where("`id`=%d",array($_POST['id']))->save($_POST);
-			$resultProject=$projectModel->where("`binding_oa`='%s'",array('1_'.$_POST['id']))->save();
+			//$resultProject=$projectModel->where("`binding_oa`='%s'",array('1_'.$_POST['id']))->save();
 		}
 		else
 		{
 			$result=$RequestFound->add($_POST);
-			$projectModel->binding_oa='1_'.$result;//定义project表中的bingding_oa字段的数值
-			$resultProject=$projectModel->add();
+			//$projectModel->binding_oa='1_'.$result;//定义project表中的bingding_oa字段的数值
+			//$resultProject=$projectModel->add();
 		}
 
 
-		$result=$result===false?$result=false:$result=true && $resultProject===false?$resultProject=false:$resultProject=true;
-		if(empty($result)){
+		$result=$result===false?false:true;
+		if(!$result){
 			//失败
 			$RequestFound->rollback();
 			return false;
@@ -179,10 +179,30 @@ class RequestFoundModel extends BaseModel {
 	}
 
 	//通过proId返回OA的信息
-	public function returnOaInfoFromProId($proId)
+	public function returnOaInfoFromProId($appId,$searchType=null,$field='id')
 	{
-		$bindOA=D('Project')->where("`pro_id`=%d",array($proId))->field('binding_oa')->find();
-        $list=D('RequestApply')->where("`id`=%d",array(explode('_',$bindOA['binding_oa'])[1]))->find();
+		switch ($searchType)
+		{
+			case 'in':
+				$list=D('RequestApply')->where(array($field=>array('in',$appId)))->select();
+				break;
+			default:
+				$list=D('RequestApply')->where("$field=%d",$appId)->find();
+				break;
+		}
+
 		return $list;
+	}
+	//通过类型返回相对应的OA信息
+	public function applicationFundsInfo($page,$pageNum,$map)
+	{
+		$rqa=D('RequestApply');
+		$total=$rqa->where($map)
+			->count();
+		$list=$rqa->where($map)
+			->page($page,$pageNum)
+			->select();
+		return array('list'=>$list,'total'=>$total);
+
 	}
 }

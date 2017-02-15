@@ -422,8 +422,10 @@ class ProjectModel extends BaseModel {
     public function returnRequestInfo($proId)
     {
         $projectInfo=$this->where("`pro_id`=%d",array($proId))->field('binding_oa')->find();
-        $oaId=explode('_',$projectInfo['binding_oa'])[1];
-        $bid=D('RequestApply')->where('`id`=%d',array($oaId))->field('bid')->find();
+        $oaId=explode('_',$projectInfo['binding_oa']);
+        unset($oaId[0]);
+        sort($oaId);
+        $bid=D('RequestApply')->where(array('id'=>array('in',implode(',',$oaId))))->getField('bid',true);
         return array('oaType'=>explode('_',$projectInfo['binding_oa'])[0],'oaId'=>explode('_',$projectInfo['binding_oa'])[1],'bid'=>$bid);
 
     }
@@ -490,6 +492,12 @@ class ProjectModel extends BaseModel {
         $data['auditorId']=$adminIds;
         $data['auditorName']=$adminRealName;
         return $data;
+    }
+    //更新项目完结状态
+    public function updateProjectStatus($proId)
+    {
+       $updata= $this->where('`pro_id`=%d',array($proId))->data(array('is_all_finish'=>'1'))->save();
+        return $updata;
     }
 }
 

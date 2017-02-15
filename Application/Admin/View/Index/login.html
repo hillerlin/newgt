@@ -28,7 +28,7 @@
             .main_box .setting a {color: #FF6600;}
             .main_box .setting a:hover {color: #555;}
             .login_box{clear: both;overflow: hidden;}
-            .login_logo {margin:10px 80px 10px 0; height: 45px; text-align: right;}
+            .login_logo {margin:10px 80px 10px 0; height: 47px; text-align: right;}
             .login_logo img {height: 45px;}
             .login_msg {text-align: center; font-size: 16px;}
             .login_form {padding: 20px 40px 0 0; font-size: 16px;float: right;}
@@ -44,6 +44,8 @@
         </style>
         <script type="text/javascript">
             var COOKIE_NAME = 'sys__username';
+            var flag="<?php echo $_GET['flag']?>";
+           // alert(flag)
             $(function () {
                 //choose_bg();
                 //changeCode();
@@ -92,7 +94,7 @@
                 //        contentType: false,
                 //        processData: false,
                         cache: false,
-                        data: {admin_name:username, admin_password:password, j_captcha:captcha},
+                        data: {admin_name:username, admin_password:password, j_captcha:captcha,flag:flag},
                         dataType: 'json',
                         success: function(data) {
                 //            debugger
@@ -142,15 +144,9 @@
             <!-- <div class="setting"><a href="javascript:;" onclick="choose_bg();" title="更换背景"><span class="glyphicon glyphicon-th-large"></span></a></div> -->
             <div class="login_box">
                 <div class="login_logo">
-                    <img src="__ADMIN__/images/logo.png" >
+                    <img src="__ADMIN__/images/logo.png" id="guotou" >
+                    <img src="__ADMIN__/images/logo_damai.png" id="damai" style="display: none">
                 </div>
-                <!--
-                        <c:if test="${!empty message}">
-                                <div class="login_msg">
-                                <font color="red">${message }</font>
-                        </div>
-                    </c:if>
-                -->
                 <div class="login_form">
                     <input type="hidden" value="${randomKey }" id="j_randomKey" />
                     <form action="{:U('index/login')}" id="login_form" method="post">
@@ -180,5 +176,12 @@
             </div>
             <div class="bottom">Copyright &copy; 2013 - 2017 <a href="#">深圳国投商业保理有限公司</a></div>
         </div>
+    <script>
+        if(flag==1)
+        {
+            $('#damai').css({'display':''});
+            $('#guotou').css({'display':'none'});
+        }
+    </script>
     </body>
 </html>

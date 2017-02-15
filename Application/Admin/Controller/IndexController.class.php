@@ -76,6 +76,7 @@ class IndexController extends CommonController {
                     'position_id'     => $admin['role']['position_id'],
                     'role_name'=>$admin['role']['role_name'],
                     'flow_des'=>$admin['role']['flow_des'],
+                    'flag'=>I('flag'),
                 ));
 
                 $admin_model->after_login($admin['admin_id']);

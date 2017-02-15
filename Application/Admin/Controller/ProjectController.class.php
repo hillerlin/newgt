@@ -54,7 +54,7 @@ class ProjectController extends CommonController
         $model->pro_type_join_id=I('pro_type_id').'_'.I('pro_profession_id');//项目id与项目行业id拼接
 
         if ($data['pro_id']) {
-            $model->admin_id=$admin['admin_id'];
+            //$model->admin_id=$admin['admin_id'];
             $result = $model->relation('supplier')->save();
             $plId = I('post.plId');
             $wfId = I('post.wfId');
@@ -237,7 +237,11 @@ class ProjectController extends CommonController
         }
         if(explode('_',$proLevel)[0]=='18') //OA请款书
         {
-            $is_requestFunds=$pro_id;
+            //$is_requestFunds=$pro_id;
+            $oaIds=explode('_',$projectInfo['binding_oa']);
+            unset($oaIds[0]);
+            sort($oaIds);
+            $is_requestFunds=returnOaNameAndIdAttr(implode(',',$oaIds));
         }
         if(explode('_',$proLevel)[0]=='6'||explode('_',$proLevel)[0]=='8'||explode('_',$proLevel)[0]=='9')
         {
@@ -329,6 +333,7 @@ class ProjectController extends CommonController
         $pro_subprocess_desc =$_GET['pro_subprocess_desc'];//子流程备注
         $proRebutter = I('get.proRebutter');//驳回人id
         $proRebutterLevel = I('get.proRebutterLevel');//第几级被驳回
+      
         $admin = session('admin');
         $projectModel=D('Project');
         $xmlfile='process1.xml';
@@ -618,7 +623,7 @@ class ProjectController extends CommonController
               /*  $auditor_id = I('get.auditor_id');//分配跟进人
                 $auditor_name = I('get.auditor_name');//跟进人的名字*/
                 $newProLevel=addNewLevel($proLevel);
-                $auditor_id=$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?explode(',',$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)):28;
+                $auditor_id=$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?explode(',',$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)):array();
                 $updataProject=addSubProcessAuditor($proIid,'','',$newProLevel,$pro_subprocess_desc);//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
                 if (intval($status) === 1)//驳回情况
                 {
@@ -1628,7 +1633,7 @@ class ProjectController extends CommonController
                     $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
                     //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
                     $proRebutterLevel = explode('-',I('get.reButter'))[1];
-                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>商票退票事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>大麦放款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
                     $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
                 } else {
                     if (intval($proRebutter) > 0)//驳回重发的修改
@@ -1650,7 +1655,7 @@ class ProjectController extends CommonController
                     $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
                     //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
                     $proRebutterLevel = explode('-',I('get.reButter'))[1];
-                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>商票退票事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>大麦放款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
                     $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
                 } else {
                     if (intval($proRebutter) > 0)//驳回重发的修改
@@ -1672,7 +1677,7 @@ class ProjectController extends CommonController
                     $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
                     //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
                     $proRebutterLevel = explode('-',I('get.reButter'))[1];
-                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>商票退票事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>大麦放款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
                     $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
                 } else {
                     if (intval($proRebutter) > 0)//驳回重发的修改
@@ -1694,7 +1699,7 @@ class ProjectController extends CommonController
                     $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
                     //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
                     $proRebutterLevel = explode('-',I('get.reButter'))[1];
-                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>商票退票事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>大麦放款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
                     $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
                 } else {
                     if (intval($proRebutter) > 0)//驳回重发的修改
@@ -1716,7 +1721,7 @@ class ProjectController extends CommonController
                     $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
                     //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
                     $proRebutterLevel = explode('-',I('get.reButter'))[1];
-                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>商票退票事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>大麦放款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
                     $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
                 } else {
                     if (intval($proRebutter) > 0)//驳回重发的修改
@@ -1738,7 +1743,7 @@ class ProjectController extends CommonController
                     $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
                     //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
                     $proRebutterLevel = explode('-',I('get.reButter'))[1];
-                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>商票退票事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>大麦放款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
                     $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
                 } else {
                     if (intval($proRebutter) > 0)//驳回重发的修改
@@ -1760,7 +1765,7 @@ class ProjectController extends CommonController
                     $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
                     //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
                     $proRebutterLevel = explode('-',I('get.reButter'))[1];
-                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>商票退票事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>大麦放款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
                     $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
                 } else {
                     if (intval($proRebutter) > 0)//驳回重发的修改
@@ -1770,7 +1775,7 @@ class ProjectController extends CommonController
                     } else  //正常流程发起
                     {
                         $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
-                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>' . $admin['role_name'] . ':<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向' . $admin['role_name'] . ':<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
                         $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $auditor_id, $xmlId, $plId, 'one', $content, -3) && $updataProject;
                     }
                 }
@@ -1781,13 +1786,13 @@ class ProjectController extends CommonController
               //  $bid=$projectModel->returnRequestInfo($proIid)['bid'];
                 //$sumbitModify=submitStatus(2,$bid);
              //   intval($sumbitModify['code'])===0
-                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+               //
                 if (intval($status) === 1)//驳回情况
                 {
                     $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
                     //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
                     $proRebutterLevel = explode('-',I('get.reButter'))[1];
-                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>商票退票事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>大麦放款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
                     $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
                 } else {
                     if (intval($proRebutter) > 0)//驳回重发的修改
@@ -1796,8 +1801,35 @@ class ProjectController extends CommonController
                         $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
                     } else  //正常流程发起
                     {
-                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>' . '已将项目<code>' . projectNameFromId($proIid) . '</code>做出最后的审批';
-                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one', $content, -3) && $updataProject;
+                        $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                        $bid=$projectModel->returnRequestInfo($proIid)['bid'];
+                        $sumbitModify=true;
+                        $raModel=D('RequestApply');
+                        $theEndProject=$projectModel->updateProjectStatus($proIid);
+                        foreach ($bid as $bidk=>$bidv)
+                        {
+                            //$sumbitModify=submitStatus(2,$bidv);
+                            if(submitStatus(2,$bidv)['code']==0)
+                            {
+                                $updataProject=$raModel->where('`bid`=%d',array($bidv))->setInc('status');
+                                $sumbitModify =$sumbitModify && true && $updataProject;
+                            }
+                            else
+                            {
+                                $sumbitModify =$sumbitModify && false;
+                            }
+                        }
+
+                        if($sumbitModify && $theEndProject)
+                        {
+                            $return=true;
+                            $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>' . '已将项目<code>' . projectNameFromId($proIid) . '</code>做出最后的审批';
+                            $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one', $content, -3) && $updataProject && $return;
+                        }else
+                        {
+                            $return=false;
+                        }
+
                     }
                 }
                 break;

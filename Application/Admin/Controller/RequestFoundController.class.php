@@ -102,8 +102,8 @@ class RequestFoundController extends CommonController {
     //编辑
     public function editRequestFound()
     {
-        $proId=I('get.proId');
-        $list=D('RequestFound')->returnOaInfoFromProId($proId);
+        $appId=I('get.appId');
+        $list=D('RequestFound')->returnOaInfoFromProId($appId);
         $this->assign('list',$list);
         $this->display();
     }
@@ -146,6 +146,18 @@ class RequestFoundController extends CommonController {
         }
         M()->rollback();
         $this->json_error('删除失败');
+    }
+    //项目的合同列表
+    public function contractList($proId)
+    {
+        
+        $projectModel=D('Project');
+        $raModel=D('RequestFound');
+        $oaIds=$projectModel->returnRequestInfo($proId)['bid'];
+        $list=$raModel->returnOaInfoFromProId(implode(',',$oaIds),'in','bid');
+        $this->assign('oaIds',$oaIds);
+        $this->assign('list',$list);
+        $this->display();
     }
 
 }

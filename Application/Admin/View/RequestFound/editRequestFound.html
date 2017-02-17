@@ -23,7 +23,7 @@
                 <td class="conth">产品名称:</td>
                 <td><input type="text" name="product_name" value="{$list.product_name}"></td>
                 <td class="conth">满标日:</td>
-                <td><input type="text" name="full_scale_time" value="{$list.full_scale_time}"></td>
+                <td><input type="text" name="full_scale_time" value="<?php echo date('Y-m-d',$list['full_scale_time'])?>"></td>
                 <td class="conth">合同编号:</td>
                 <td><input type="text" name="contract_num" value="{$list.contract_num}"></td>
             </tr>

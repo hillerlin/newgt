@@ -495,6 +495,7 @@ function redisCollect($proLevel,$sender,$receive='',$time,$proId,$specialMessage
         case '18':
             $contents='项管专员<code>'.$sender.'</code>新建大麦<code>'.$proName.'</code>放款流程';
             break;
+  
         case '-1':
         case '-2':
         case '-3':
@@ -712,6 +713,17 @@ function reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reB
  */
 function postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,$proRoleId=0,$proAdminId=0,$xmlId,$plId,$type='list',$specialMessage=null,$specialType=null,$time=null)
 {
+    //url='http://j.mp/2ks0GkT';//大麦的审核系统，附带大麦logo
+
+    //手机短信通知
+    $proModel=D('Project');
+    $adminModel=D('Admin');
+    $mobileList=$adminModel->getMobile($proAdminId);
+    $projectInfo=$proModel->returnProjectInfo($proIid);
+    if($projectInfo['binding_oa'])
+    {
+        $send=sendMsg($mobileList['mobile'],$mobileList['realName'],$projectInfo['pro_title'],$projectInfo['pro_account'],'http://t.cn/RJYA71M','dm');
+    }
     $explodeLevel=explode('_',$proLevel);//拼接审批轮次
     if(!$explodeLevel[1])
     {
@@ -730,11 +742,13 @@ function postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,$proRoleId=0,$
         'sp_id' => $sendProcess, 'pj_id' => $proIid, 'pro_level' => $newLevel, 'pro_times' => $proTimes, 'pro_state' => 0, 'pro_addtime' => time(),'pro_role'=>$proRoleId,'pro_author'=>$proAdminId,
         'wf_id' => $wfId, 'pro_xml_id' => $xmlId
     ))->add();
-    $oldworkFlowLog=D('WorkflowLog')->where("`pl_id`=%d",array($plId))->data(array('pro_state'=>2))->save();//eg ,  此时是10_2子流程，则将10_1的子流程审核状态改变为2 表示已审核状态
+    $oldworkFlowLog=D('WorkflowLog')->where("`pl_id`=%d",array($plId))->data(array('pro_state'=>2,'pro_addtime'=>time()))->save();//eg ,  此时是10_2子流程，则将10_1的子流程审核状态改变为2 表示已审核状态
 
     if($oldworkFlowLog){
             delredis($plId); //删除对应的redis记录
     }
+
+
     $adminValue=($proRoleId>0)?$proRoleId:$proAdminId;
     $adminType=($proRoleId>0)?'|role':'|admin';
     $noticeType=isset($specialType)?$specialType:$proLevel;
@@ -1121,7 +1135,7 @@ function subLevelUser($level)
 function submitStatus($type,$bid)//1是提交审核 2是审核完毕
 {
     header("Content-type:text/html:charset=utf-8");
-    $url = 'http://ndm.atrmoney.com/admin/dmlc/ProjectApi/requestLoan'; // 平台接口地址前缀
+    $url = 'http://ndm.damailicai.com/admin/dmlc/ProjectApi/requestLoan'; // 平台接口地址前缀
     $params['bid']=$bid;
     $params['loan_status']=$type;
     $key=md5('xiaopinguo');
@@ -1132,6 +1146,34 @@ function submitStatus($type,$bid)//1是提交审核 2是审核完毕
     $asynClass->init($url,array('data'=>json_encode($params)));
     $result = $asynClass->request_post();
     return json_decode($result, true);
+}
+//手机短信通知
+function sendMsg($phone,$sendName,$projectName,$projectMoney,$loginUrl,$type='dm')
+{
+    if($type=='dm')
+    {
+        $Contents='尊敬的'.$sendName.',你有一个待审批的项目(项目名称:'.$projectName.',总金额:'.$projectMoney.'元),你可以登录大麦审批系统进行操作(网址:'.$loginUrl.')';
+    }
+    $params=array(
+        'account'=>'sz_dmlc',
+        'pswd'=>'Dmlc123456',
+        'msg'=>$Contents,
+        'mobile'=>$phone,
+        'needstatus'=>'true',
+        'product'=>'',
+        'extno'=>''
+    );
+    $url='http://222.73.117.156/msg/HttpBatchSendSM';
+    $asynClass=new \Admin\Lib\AsynReturn;
+    $asynClass->init($url,$params);
+    $result = $asynClass->request_post();
+    $result=preg_split("/[,\r\n]/",$result);
+    if(isset($result[1])){
+        return true;
+    }else{
+        return false;
+    }
+    
 }
 //根据OA的id返回OA对应的值
 function returnOaNameAndIdAttr($ids)

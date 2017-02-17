@@ -170,6 +170,12 @@ class AdminModel extends BaseModel
         return $info;
     }
 
+    public function getMobile($adminId)
+    {
+        $list=$this->where('`admin_id`=%d',array($adminId))->find();
+        return array('mobile'=>$list['mobile'],'realName'=>$list['real_name']);
+    }
+
     //递归查找一级大部门的子ID    //递归查找资金客户关系
     public function recuId($parentId, $arr)
     {
@@ -218,4 +224,6 @@ class AdminModel extends BaseModel
     {
         return $this->field('admin_id,real_name')->select();
     }
+
+
 }

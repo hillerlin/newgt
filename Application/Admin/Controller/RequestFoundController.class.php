@@ -90,13 +90,27 @@ class RequestFoundController extends CommonController {
             }
         }
        	$rf=D('RequestFound');
-        $sumbitModify=submitStatus(1,I('post.bid'));
-       	if($rf->createQequest() && intval($sumbitModify['code'])===0){
-           // $this->json_success('添加成功');
-            $this->json_success('添加成功', '', '', true, array('dialogid' => 'project-oaFlow'));
-        }else{
-            $this->json_error('添加失败');
+        if(I('post.id'))
+        {
+           // $sumbitModify=submitStatus(1,I('post.bid'));
+            if($rf->createQequest()){
+                // $this->json_success('添加成功');
+                $this->json_success('添加成功', '', '', true, array('dialogid' => 'project-oaFlow'));
+            }else{
+                $this->json_error('添加失败');
+            }
         }
+        else
+        {
+            $sumbitModify=submitStatus(1,I('post.bid'));
+            if($rf->createQequest() && intval($sumbitModify['code'])===0){
+                // $this->json_success('添加成功');
+                $this->json_success('添加成功', '', '', true, array('dialogid' => 'project-oaFlow'));
+            }else{
+                $this->json_error('添加失败');
+            }
+        }
+
     }
 
     //编辑

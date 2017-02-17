@@ -115,7 +115,8 @@ class HelpController extends CommonController
         //获取项目文件的相关信息
         $file_model = D('ProjectFile');
         //获取文件的数量
-        $maxId = $file_model->getMaxId($pro_id);
+        //$maxId = $file_model->getMaxId($pro_id);
+        $maxId=$file_model->max('file_id');
 
         $fileTree = new \Admin\Lib\FileTree($paths, $pro_id, $maxId,$fieId);
         //生成相关的路径

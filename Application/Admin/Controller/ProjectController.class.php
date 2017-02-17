@@ -140,6 +140,8 @@ class ProjectController extends CommonController
             case '17':
             case '18':
                 break;
+            case '19':
+                break;
             default:
                 $oldProject=addSubProcessAuditor($pjId,$auditor_id,$auditor_name,$pro_level,$pro_subprocess_desc);
                 break;
@@ -498,7 +500,7 @@ class ProjectController extends CommonController
                // $auditor_name = I('get.auditor_name');//跟进人的名字
                 $newProLevel=addNewLevel($proLevel);
                 $auditor_id=$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?explode(',',$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)):28;
-                $updataProject=addSubProcessAuditor($proIid,'','',$newProLevel,$pro_subprocess_desc);//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+               //
                 if (intval($status) === 1)//驳回情况
                 {
                     $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
@@ -514,6 +516,7 @@ class ProjectController extends CommonController
                     } else  //正常流程发起
                     {
                         /*****正常审批通过*******/
+                        $updataProject=addSubProcessAuditor($proIid,'','',$newProLevel,$pro_subprocess_desc);//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
                         foreach ($auditor_id as $k => $v) {
                             $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $v, $xmlId, $plId, 'one',$time) && $updataProject;
                             $time=$time+1;
@@ -581,7 +584,7 @@ class ProjectController extends CommonController
                 break;
             case '7_1':
                 //风控专员报告编写完毕发送给项管专员审核
-                $allocationId='2';//业务需求分配给项管所有专员
+              //  $allocationId='2';//业务需求分配给项管所有专员
                 //$pro_subprocess_desc =I('get.pro_subprocess_desc');//子流程备注
                 $insider=array('28');//项管部总监的admin_id
                 array_push($insider,D('Project')->formProIdGetInsider($proIid)['admin_id']);//项目跟进人
@@ -1643,7 +1646,7 @@ class ProjectController extends CommonController
                     } else  //正常流程发起
                     {
                         $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
-                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>' . $admin['role_name'] . ':向<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>' . ':向<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
                         $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $auditor_id, $xmlId, $plId, 'one', $content, -3) && $updataProject;
                     }
                 }
@@ -1665,7 +1668,7 @@ class ProjectController extends CommonController
                     } else  //正常流程发起
                     {
                         $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
-                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>' . $admin['role_name'] . ':向<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
+                        $content = '<code>' . $admin['real_name'] . '</code>' .  ':向<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
                         $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $auditor_id, $xmlId, $plId, 'one', $content, -3) && $updataProject;
                     }
                 }
@@ -1687,7 +1690,7 @@ class ProjectController extends CommonController
                     } else  //正常流程发起
                     {
                         $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
-                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>' . $admin['role_name'] . ':向<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>' . ':向<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
                         $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $auditor_id, $xmlId, $plId, 'one', $content, -3) && $updataProject;
                     }
                 }
@@ -1709,7 +1712,7 @@ class ProjectController extends CommonController
                     } else  //正常流程发起
                     {
                         $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
-                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>' . $admin['role_name'] . ':向<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>' . ':向<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
                         $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $auditor_id, $xmlId, $plId, 'one', $content, -3) && $updataProject;
                     }
                 }
@@ -1731,7 +1734,7 @@ class ProjectController extends CommonController
                     } else  //正常流程发起
                     {
                         $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
-                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>' . $admin['role_name'] . ':向<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>' . ':向<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
                         $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $auditor_id, $xmlId, $plId, 'one', $content, -3) && $updataProject;
                     }
                 }
@@ -1753,7 +1756,7 @@ class ProjectController extends CommonController
                     } else  //正常流程发起
                     {
                         $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
-                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>' . $admin['role_name'] . ':向<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>' . ':向<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
                         $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $auditor_id, $xmlId, $plId, 'one', $content, -3) && $updataProject;
                     }
                 }
@@ -1775,7 +1778,7 @@ class ProjectController extends CommonController
                     } else  //正常流程发起
                     {
                         $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
-                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向' . $admin['role_name'] . ':<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向' . ':<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>放款审批';
                         $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $auditor_id, $xmlId, $plId, 'one', $content, -3) && $updataProject;
                     }
                 }
@@ -1832,6 +1835,10 @@ class ProjectController extends CommonController
 
                     }
                 }
+                break;
+            case '19'://资料下载中心审核流程
+                $contents=$admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交资料下载知情';
+                $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one', $contents, -3);
                 break;
         }
 
@@ -1973,13 +1980,14 @@ class ProjectController extends CommonController
         }
 
         //查找【反馈】文件夹下的文件
-        $list=$p_model->returnFolderInfo($pro_id,'反馈')['list'];
+        $list=$p_model->returnFolderInfo($pro_id,'反馈');
         $this->assign($data);
         $this->assign($_GET);
         $this->assign('pro_type', $data['pro_type']);
         $this->assign('admin',$admin);
-        $this->assign('list',$list);
-        $this->assign(array('pro_subprocess_desc'=>array_filter(explode('<br/>',$data['pro_subprocess'.explode('_',$proLevel)[0].'_desc']))));
+        $this->assign('list',$list['list']);
+        $this->assign('file_id',$list['fileId']);
+        $this->assign(array('pro_subprocess_desc'=>array_filter(explode('<br/>',$data['pro_subprocess'.explode('_',$proLevel)[0].'_desc'])),'exts'=>getFormerExts()));
         $this->display();
     }
 
@@ -2237,12 +2245,19 @@ class ProjectController extends CommonController
             $allow_role= C('fileLevel')[$secret]['role_id'];
             $admin=session('admin');
             //当此人的角色id不在secret对应的fileLevel下中的fole_id中并且secret大于1【1代表所有人都可以看到，不需要判断】，就需要判断此人的id是否在文件的allow_adminid中，在则运行访问，否则不允许访问
-            if(strpos($allow_role,$admin['role_id'])===false && $secret>1){
+           // if(strpos($allow_role,$admin['role_id'])===false && $secret>1){
+/*            if($secret>1){
                 foreach($list as $k=>$v){
                     //此人的id不在此文件中的allow_adminid中，则不让其看见这个文件
                     if(strpos($v['allow_adminid'],$admin['admin_id'])===false){
                         unset($list[$k]);
                     }
+                }
+            }*/
+            foreach($list as $k=>$v){
+                //此人的id不在此文件中的allow_adminid中，则不让其看见这个文件
+                if(strpos($v['allow_adminid'],$admin['admin_id'])===false && !empty($v['allow_adminid'])){
+                    unset($list[$k]);
                 }
             }
             $this->assign('list', $list);
@@ -2907,25 +2922,29 @@ class ProjectController extends CommonController
      * 项目流程完结记录
      * @param string $pro_id 项目的id号
      */
-    public  function workflowlog(){
+    public  function workflowlog()
+    {
         $admin = session('admin');
         $pageSize = I('post.pageSize', 30);
         $page = I('post.pageCurrent', 1);
         //项目标题
-        if(I('post.pro_title')) $map['p.pro_title']=array('like','%'.I('post.pro_title').'%');
+        if (I('post.pro_title')) $map['p.pro_title'] = array('like', '%' . I('post.pro_title') . '%');
         //项目编号
-        if(I('post.pro_no')) $map['p.pro_no']=array('eq',I('post.pro_no'));
+        if (I('post.pro_no')) $map['p.pro_no'] = array('eq', I('post.pro_no'));
         //项目是否已经完结
-        if(I('post.is_all_finish'))$map['p.is_all_finish']=array('eq',I('post.is_all_finish'));
+        if (I('post.is_all_finish')) $map['p.is_all_finish'] = array('eq', I('post.is_all_finish'));
         //项目id
-        if(I('get.pro_id'))$map['p.pro_id']=array('eq',I('get.pro_id'));
-        if(I('get.type'))
-        {
-            $map['p.binding_oa']=array('EXP','is not null');
+        if (I('get.pro_id')) $map['p.pro_id'] = array('eq', I('get.pro_id'));
+        if (I('get.type')) {
+            $map['p.binding_oa'] = array('EXP', 'is not null');
         }/*else //追加OA显示流程  在OA流程新建的  新建请款
         {
             $map['p.binding_oa']=array('EXP','is null');
         }*/
+        if (I('post.begin_time')) {
+        $map['p.addtime'][] = array('EGT', strtotime(I('post.begin_time')));
+        $map['p.addtime'][] = array('ELT', strtotime(I('post.end_time')));
+    }
         //预留功能，读配置来判断是否可以查看其他人的项目C(lookUpAll)
         $map['_string']="( w.pro_author=".$admin['admin_id']." and w.pro_role=0) or ( w.pro_role= ".$admin['role_id']." and w.pro_author=0 ) 
         or ( w.pro_author=".$admin['admin_id']." and w.pro_role=".$admin['role_id']." ) or p.admin_id=" .$admin['admin_id'];// p.admin_id=".$admin['admin_id'];

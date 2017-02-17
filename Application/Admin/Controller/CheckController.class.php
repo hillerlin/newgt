@@ -43,7 +43,8 @@ class CheckController extends CommonController
         // $url = 'http://api.zcgmall.com/Home/Index/subOrder'; // 平台接口地址前缀
            //$url = 'http://192.168.8.188:9016/admin/dmlc/ProjectApi/waitLoan'; // 平台接口地址前缀
           //$url = 'http://192.168.8.188:9016/admin/dmlc/ProjectApi/requestLoan'; // 平台接口地址前缀
-          $url = 'http://ndm.atrmoney.com/admin/dmlc/ProjectApi/waitLoan'; // 平台接口地址前缀
+          //$url = 'http://ndm.atrmoney.com/admin/dmlc/ProjectApi/waitLoan'; // 平台接口地址前缀
+          $url = 'http://222.73.117.156/msg/HttpBatchSendSM'; // 平台接口地址前缀
          //$url = 'http://api.zcgmall.com/Home/Index/goodsInfo'; // 平台接口地址前缀
 //        $params['cateList'] ='{"brandList":"40","areaList":"4","attrList":{"682":["\u9ed1\u8272"]}}';
 //        $params['catId'] =170;
@@ -59,22 +60,32 @@ class CheckController extends CommonController
         $params['goods_attr']='镜头:鱼眼,版本:官方版,颜色:白色';
         $params['list'] ='[{"cartId":956,"num":3}]';*/
    //  $params['catId']=37;
-        $params['page']=1;
+/*        $params['page']=1;
         $params['pageNum']=10;
         $params['bid']=2579;
         $params['loan_status']=1;
         $key=md5('xiaopinguo');
         $json=json_encode($params);
         $sign=md5($json.$key);
-        $params['sign']=$sign;
+        $params['sign']=$sign;*/
+        $params=array(
+            'account'=>'sz_dmlc',
+            'pswd'=>'Dmlc123456',
+            'msg'=>'我是来测试的',
+            'mobile'=>'18617018050',
+            'needstatus'=>'true',
+            'product'=>'',
+            'extno'=>''
+        );
 
 
 
 
-        $result = $this->request_post($url,array('data'=>json_encode($params)));
-        //$result = $this->request_post($url,$params);
-        $return_data = json_decode($result, true);
-        print_r($return_data);
+       // $result = $this->request_post($url,array('data'=>json_encode($params)));
+        $result = $this->request_post($url,$params);
+        $result=preg_split("/[,\r\n]/",$result);
+       // $return_data = json_decode($result, true);
+        print_r($result);
     }
     
     public function Api_Request($url, $data, $method = "GET")

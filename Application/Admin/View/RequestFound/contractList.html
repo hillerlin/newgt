@@ -5,6 +5,8 @@
             <th align="center" width="300">合同编号</th>
             <th align="center" width="300">项目名称</th>
             <th align="center" width="300">申请人</th>
+            <th align="center" width="300">募集额度</th>
+            <th align="center" width="300">融资期限</th>
             <th align="center" width="200">满标时间</th>
             <th width="300" align="center">操作</th>
         </tr>
@@ -14,6 +16,8 @@
                 <td align="center">{$vo['contract_num']}</td>
                 <td align="center">{$vo['product_name']}</td>
                 <td align="center">{$vo['name']}</td>
+                <td align="center">{$vo['collect_money']}</td>
+                <td align="center">{$vo['limit_time']}<?php if($vo['time_type']==2){echo '天';}else{echo '个月';}?></td>
                 <td align="center"><?php echo date('Y-m-d',$vo['full_scale_time'])?></td>
                 <td align="center">
                         <a href="<?php echo U('RequestFound/editRequestFound', array('appId'=>$vo['id']))?>" class="btn btn-green" data-toggle="dialog" data-mask="true" data-height="1000" data-width="900" data-id="loanform-edit" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="编辑">查看合同</a>

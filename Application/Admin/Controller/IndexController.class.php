@@ -11,6 +11,11 @@ class IndexController extends CommonController {
     {
         S()->FLUSHALL();
     }
+    public function redisComment()
+    {
+        $all=S()->keys('*');
+        var_dump($all);
+    }
     public function index() {
      /*   $xmlClass=logic('xml');
           $xmlClass->file='process1.xml';

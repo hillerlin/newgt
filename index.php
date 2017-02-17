@@ -25,6 +25,7 @@ define('APP_STATUS','dev');
 
 define('TMP_PATH', './Tmp/');
 // 引入ThinkPHP入口文件
+define('redisDb',1);
 require './ThinkPHP/ThinkPHP.php';
 
 // 亲^_^ 后面不需要任何代码了 就是如此简单

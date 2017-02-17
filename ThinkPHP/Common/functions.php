@@ -1111,6 +1111,8 @@ function S($name='',$value='',$options=null) {
         $cache      =   Think\Cache::getInstance();
     }
     if(empty($name)){ // 获取缓存
+         //$db=redisDb;
+        $cache->select(redisDb);
          return $cache;
     }elseif(is_null($value)) { // 删除缓存
         return $cache->rm($name);

@@ -123,4 +123,47 @@ class WorkflowController extends CommonController {
        // $this->json_success('保存成功');
         $this->display();
     }
+    //下载中心
+    public function download()
+    {
+        $admin = session('admin');
+        $pageSize = I('post.pageSize', 30);
+        $page = I('post.pageCurrent', 1);
+        //项目标题
+        if (I('post.pro_title')) $map['p.pro_title'] = array('like', '%' . I('post.pro_title') . '%');
+        //项目编号
+        if (I('post.pro_no')) $map['p.pro_no'] = array('eq', I('post.pro_no'));
+        //项目是否已经完结
+        if (I('post.is_all_finish')) $map['p.is_all_finish'] = array('eq', I('post.is_all_finish'));
+        //项目id
+        if (I('get.pro_id')) $map['p.pro_id'] = array('eq', I('get.pro_id'));
+        if (I('get.type')) {
+            $map['p.binding_oa'] = array('EXP', 'is not null');
+        }/*else //追加OA显示流程  在OA流程新建的  新建请款
+        {
+            $map['p.binding_oa']=array('EXP','is null');
+        }*/
+        if (I('post.begin_time')) {
+            $map['p.addtime'][] = array('EGT', strtotime(I('post.begin_time')));
+            $map['p.addtime'][] = array('ELT', strtotime(I('post.end_time')));
+        }
+        //预留功能，读配置来判断是否可以查看其他人的项目C(lookUpAll)
+        $map['_string']="( w.pro_author=".$admin['admin_id']." and w.pro_role=0) or ( w.pro_role= ".$admin['role_id']." and w.pro_author=0 ) 
+        or ( w.pro_author=".$admin['admin_id']." and w.pro_role=".$admin['role_id']." ) or p.admin_id=" .$admin['admin_id'];// p.admin_id=".$admin['admin_id'];
+
+
+        //如果是消息推送过来的就需要标记redis了
+        if(I('get.type') && I('get.pro_id')&& I('get.time'))  checkMessage(I('get.time'),I('get.type'),I('get.pro_id'));
+
+        $result=D('Project')->projectinfo($page, $pageSize,$map);
+        foreach($result['list'] as &$v){
+            $v['authpage']=json_decode($v['authpage'],true);
+        }
+        //当前用户是所拥有的页面权限
+        $authpage=M('Admin')->getFieldByAdminId($admin['admin_id'],'authpage');
+        $authpage=json_decode($authpage,true);
+        $this->assign('authpage',$authpage);
+        $this->assign(array('list' => $result['list'], 'total' => $result['total'], 'pageCurrent' => $page,'type'=>I('get.type')));
+        $this->display('Project/workflowlog');
+    }
 }

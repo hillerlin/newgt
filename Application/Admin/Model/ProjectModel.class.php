@@ -499,5 +499,11 @@ class ProjectModel extends BaseModel {
        $updata= $this->where('`pro_id`=%d',array($proId))->data(array('is_all_finish'=>'1'))->save();
         return $updata;
     }
+    //传项目id返回整个项目详细信息
+    public function returnProjectInfo($proId)
+    {
+        $projectInfo=$this->where("`pro_id`=%d",array($proId))->find();
+        return $projectInfo;
+    }
 }
 

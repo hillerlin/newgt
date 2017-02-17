@@ -244,8 +244,19 @@ class CompanyController extends CommonController {
             }
         }*/
         //$mapStripTags =rtrim($proIdString,',');
-        if($proTitle) $map=" and `pro_title` like '%".$proTitle."%'";
-        $pre=='18'?$map.=" and  `binding_oa`=1 ":$map=' and `binding_oa` is null';
+        $map='';
+        if (I('post.begin_time')) {
+            $beginTime=strtotime(I('post.begin_time'));
+            $end_time=strtotime(I('post.end_time'));
+            //$map['p.addtime'][] = array('EGT', strtotime(I('post.begin_time')));
+            //$map['p.addtime'][] = array('ELT', strtotime(I('post.end_time')));
+            $map.=" and `addtime` >=$beginTime and `addtime` <=$end_time";
+        }
+        if($proTitle)
+        {
+            $map.=" and `pro_title` like '%".$proTitle."%'";
+        }
+        $pre=='18'?$map.=" and  `binding_oa`=1 ":$map.=' and `binding_oa` is null';
         $projectIng=D('Project')->field('*,SUBSTR(`binding_oa`,1,1) as `binding_oa`')->where("`is_all_finish`=0 $map")->select();
 /*        foreach ($projectIng as $k=>$v)
         {

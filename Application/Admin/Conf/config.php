@@ -132,12 +132,11 @@ return array(
             )),
         2=>array('name'=>'风控部','secret'=>'1'),
         3=>array('name'=>'财务','secret'=>'1'),
-        4=>array('name'=>'总裁办','secret'=>'1'),
-        5=>array('name'=>'合同','secret'=>'1','sub'=>array(
+        4=>array('name'=>'合同','secret'=>'1','sub'=>array(
             1=>array('name'=>'合同初稿','secret'=>'1'),//'1'是默认公开文件夹
             2=>array('name'=>'合同终稿','secret'=>'1'),//'1'是默认公开文件夹
         )),
-        6=>array('name'=>'项目资料','secret'=>'1'),
+        5=>array('name'=>'项目资料','secret'=>'1'),
     ),
     //文件角色等级划分，1为普通的文件，所有人都可以查看，不需要做特殊处理
     'fileLevel'=>array(

@@ -4,7 +4,7 @@
         $(this).bjuiajax('ajaxDone', json)
         if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
             $('#j_custom_pic').val(json.filename).trigger('validate')
-            $('#j_custom_span_pic').html('<img src="'+ json.filename +'" width="100" />')
+            $('#j_custom_span_pic').html('<img src="' + json.filename + '" width="100" />')
         }
     }
     function do_OK(json, $form) {
@@ -14,50 +14,62 @@
 </script>
 <!--此页面用于审核-->
 <div class="bjui-pageContent">
-    <form action="<?php echo U('Project/saveMyAudit')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false" onSubmit="checkFormMyEvent()" method="get">
+    <form action="<?php echo U('Project/saveMyAudit')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false"
+          onSubmit="checkFormMyEvent()" method="get">
         <input type="hidden" name="auditType" value="{$pre}">
         <input type="hidden" name="pro_id" value="{$pro_id}">
-        <input type="hidden"  name="plId" value="{$plId}">
-        <input type="hidden"  name="wfId" value="{$wfId}">
-        <input type="hidden"  name="xmlId" value="{$xmlId}">
-        <input type="hidden"  name="spId" value="{$spId}">
-        <input type="hidden"  name="proLevel" value="{$proLevel}">
-        <input type="hidden"  name="proTimes" value="{$proTimes}">
-        <input type="hidden"  name="proRebutter" value="{$proRebutter}">
-        <input type="hidden"  name="proRebutterLevel" value="{$proRebutterLevel}">
-        <input type="hidden"  name="proRebutterPlid" value="{$proRebutterPlid}">
+        <input type="hidden" name="plId" value="{$plId}">
+        <input type="hidden" name="wfId" value="{$wfId}">
+        <input type="hidden" name="xmlId" value="{$xmlId}">
+        <input type="hidden" name="spId" value="{$spId}">
+        <input type="hidden" name="proLevel" value="{$proLevel}">
+        <input type="hidden" name="proTimes" value="{$proTimes}">
+        <input type="hidden" name="proRebutter" value="{$proRebutter}">
+        <input type="hidden" name="proRebutterLevel" value="{$proRebutterLevel}">
+        <input type="hidden" name="proRebutterPlid" value="{$proRebutterPlid}">
         <table class="table table-condensed table-hover" width="100%">
             <tbody>
             <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150">已绑定的项目：</label>
                     <input type="hidden" name="pro_id" value="{$pro_id}">
-                    <input type="text" name="pro_title" id="p_company" value="{$companyName}" size="30"   readonly>
+                    <input type="text" name="pro_title" id="p_company" value="{$companyName}" size="30" readonly>
                 </td>
             </tr>
- 
+
             <?php if(in_array($pre,array('7_1','7_2','7_3','6_2','6_3','8_3','8_2','9_3','9_2','14','12_1'))): ?>
             <?php elseif($pre=='11_3' || $pre=='11_4' || $pre=='11_5' ):?>
             <tr>
                 <td>
-                    <label for="j_custom_name" class="control-label x150"><?php echo $is_pre_contract? '查看合同：' : '点击添加合同：'?></label>
-                    <button data-url="/Admin/SignApplyManage/<?php echo $is_pre_contract? 'editContract' : 'addContract'?>.html?pro_id={$pro_id}&company_id={$company_id}" class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $companyName?></button>
+                    <label for="j_custom_name"
+                           class="control-label x150"><?php echo $is_pre_contract? '查看合同：' : '点击添加合同：'?></label>
+                    <button data-url="/Admin/SignApplyManage/<?php echo $is_pre_contract? 'editContract' : 'addContract'?>.html?pro_id={$pro_id}&company_id={$company_id}"
+                            class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630"
+                            data-mask='true' data-icon="edit" data-id="project-add"><?php echo $companyName?></button>
                 </td>
             </tr>
             <?php else:?>
             <?php if($pre=='11'|| $pre=='11_2'):?>
             <tr>
                 <td>
-                    <label for="j_custom_name" class="control-label x150"><?php echo $is_pre_contract? '查看合同：' : '点击添加合同：'?></label>
-                    <button data-url="/Admin/SignApplyManage/<?php echo $is_pre_contract? 'editContract' : 'addContract'?>.html?pro_id={$pro_id}&company_id={$company_id}" class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $companyName.'的合同'?></button>
+                    <label for="j_custom_name"
+                           class="control-label x150"><?php echo $is_pre_contract? '查看合同：' : '点击添加合同：'?></label>
+                    <button data-url="/Admin/SignApplyManage/<?php echo $is_pre_contract? 'editContract' : 'addContract'?>.html?pro_id={$pro_id}&company_id={$company_id}"
+                            class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630"
+                            data-mask='true' data-icon="edit"
+                            data-id="project-add"><?php echo $companyName.'的合同'?></button>
                 </td>
             </tr>
             <?php endif;?>
             <?php if($pre=='15' || $pre=='15_2' || $pre=='15_3' || $pre=='15_4'|| $pre=='15_5'|| $pre=='15_6' || $pre=='15_7'|| $pre=='15_8' || $pre=='15_9'|| $pre=='15_10'):?>
             <tr>
                 <td>
-                    <label for="j_custom_name" class="control-label x150"><?php echo $is_pre_contract? '查看放款表：' : '点击添加放款表：'?></label>
-                    <button data-url="/Admin/LoanManage/<?php echo $is_pre_contract? 'detail' : 'LoanApplyToAdd'?>.html?loan_id={$is_pre_contract}" class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $companyName.'的放款'?></button>
+                    <label for="j_custom_name"
+                           class="control-label x150"><?php echo $is_pre_contract? '查看放款表：' : '点击添加放款表：'?></label>
+                    <button data-url="/Admin/LoanManage/<?php echo $is_pre_contract? 'detail' : 'LoanApplyToAdd'?>.html?loan_id={$is_pre_contract}"
+                            class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630"
+                            data-mask='true' data-icon="edit"
+                            data-id="project-add"><?php echo $companyName.'的放款'?></button>
                 </td>
             </tr>
             <?php endif;?>
@@ -65,16 +77,24 @@
             <?php if($pre=='15_10'):?>
             <tr>
                 <td>
-                    <label for="j_custom_name" class="control-label x150"><?php echo $Ffid? '查看放款流水：' : '点击添加放款流水表：'?></label>
-                    <button data-url="/Admin/FinanceFlow/<?php echo $Ffid? 'edit' : 'add'?>.html?fid={$Ffid}&pro_id={$pro_id}" class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $companyName.'的流水'?></button>
+                    <label for="j_custom_name"
+                           class="control-label x150"><?php echo $Ffid? '查看放款流水：' : '点击添加放款流水表：'?></label>
+                    <button data-url="/Admin/FinanceFlow/<?php echo $Ffid? 'edit' : 'add'?>.html?fid={$Ffid}&pro_id={$pro_id}"
+                            class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630"
+                            data-mask='true' data-icon="edit"
+                            data-id="project-add"><?php echo $companyName.'的流水'?></button>
                 </td>
             </tr>
             <?php endif;?>
             <?php if($pre=='16_2'):?>
             <tr>
                 <td>
-                    <label for="j_custom_name" class="control-label x150"><?php echo $is_finance_flow_in? '查看还款流水：' : '点击添加还款流水表：'?></label>
-                    <button data-url="/Admin/FinanceFlow/<?php echo $is_finance_flow_in? 'edit' : 'add'?>.html?fid={$is_finance_flow_in}&pro_id={$pro_id}" class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $companyName.'的流水'?></button>
+                    <label for="j_custom_name"
+                           class="control-label x150"><?php echo $is_finance_flow_in? '查看还款流水：' : '点击添加还款流水表：'?></label>
+                    <button data-url="/Admin/FinanceFlow/<?php echo $is_finance_flow_in? 'edit' : 'add'?>.html?fid={$is_finance_flow_in}&pro_id={$pro_id}"
+                            class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630"
+                            data-mask='true' data-icon="edit"
+                            data-id="project-add"><?php echo $companyName.'的流水'?></button>
                 </td>
             </tr>
             <?php endif;?>
@@ -82,7 +102,9 @@
             <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150">绑定还款流水</label>
-                    <button data-url="/Admin/ProjectDebt/index.html?fid={$Ffid}&pro_id={$pro_id}" class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $companyName.'的流水'?></button>
+                    <button data-url="/Admin/ProjectDebt/index.html?fid={$Ffid}&pro_id={$pro_id}" class="btn btn-blue"
+                            data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit"
+                            data-id="project-add"><?php echo $companyName.'的流水'?></button>
                 </td>
             </tr>
             <?php endif;?>
@@ -93,18 +115,24 @@
             <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150">查看商票</label>
-                    <button data-url="/Admin/ElectronicBill/<?php echo $is_electronicBill? 'editStatus' : 'add'?>.html?eb_id={$eleVal}&pro_id={$pro_id}" class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $companyName.'的流水'?></button>
+                    <button data-url="/Admin/ElectronicBill/<?php echo $is_electronicBill? 'editStatus' : 'add'?>.html?eb_id={$eleVal}&pro_id={$pro_id}"
+                            class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630"
+                            data-mask='true' data-icon="edit"
+                            data-id="project-add"><?php echo $companyName.'的流水'?></button>
                     <?php if($eleVal==$prev):?>
                     <a href="#" onclick="addNewAttr(this);">[+]</a>
                     <?php endif;?>
                 </td>
             </tr>
             <?php endforeach;?>
-          <?php else:?>
+            <?php else:?>
             <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150">点击添加商票</label>
-                    <button data-url="/Admin/ElectronicBill/<?php echo $is_electronicBill? 'editStatus' : 'add'?>.html?eb_id={$is_electronicBill}&pro_id={$pro_id}" class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $companyName.'的流水'?></button>
+                    <button data-url="/Admin/ElectronicBill/<?php echo $is_electronicBill? 'editStatus' : 'add'?>.html?eb_id={$is_electronicBill}&pro_id={$pro_id}"
+                            class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630"
+                            data-mask='true' data-icon="edit"
+                            data-id="project-add"><?php echo $companyName.'的流水'?></button>
                     <a href="#" onclick="addNewAttr(this);">[+]</a>
                 </td>
             </tr>
@@ -117,19 +145,28 @@
             <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150">查看请款内容：</label>
-                    <button data-url="/Admin/RequestFound/editRequestFound/appId/{$appkey}.html" class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit" data-id="project-add"><?php echo $appval.'的请款表'?></button>
+                    <button data-url="/Admin/RequestFound/editRequestFound/appId/{$appkey}.html" class="btn btn-blue"
+                            data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit"
+                            data-id="project-add"><?php echo $appval.'的请款表'?></button>
                 </td>
             </tr>
             <?php endforeach;?>
             <?php endif;?>
 
-            <?php if(!in_array($pre,array('5','5_1','6','6_1','8','8_1','9','9_1','10','10_1','11','11_1','11_2','11_3','11_4','12','12_1','13','13_2','15'
-            ,'15_4','15_5','15_6','15_7','15_8','15_9','15_10','10_3','17','17_1','17_4','17_5','17_6','17_7','17_8','17_9','17_10','14_2','16','16_1','16_2','16_3','16_4','18','18_1','18_2','18_3','18_4','18_5','18_6','18_7','18_8','18_9'))):?>
+            <?php if(!in_array($pre,array('4','4_1','5','5_1','6','6_1','8','8_1','9','9_1','10','10_1','10_2','11','11_1','11_2','11_3','11_4','12','12_1','13','13_2','15'
+            ,'15_4','15_5','15_6','15_7','15_8','15_9','15_10','10_3','17','17_1','17_4','17_5','17_6','17_7','17_8','17_9','17_10','14_2','16','16_1','16_2','16_3','16_4','18','18_1','18_2','18_3','18_4','18_5','18_6','18_7','18_8','18_9',
+            '20','20_1','20_2','20_3','20_4','20_5','20_6','20_7','20_8','20_9','21','21_1','21_2','21_3','21_4','21_5','21_6','21_7','21_8','21_9'
+            ,'22','22_1','22_2','22_3','22_4','22_5','22_6','22_7','22_8','22_9'
+            ,'23','23_1','23_2','23_3','23_4','23_5','23_6','23_7','23_8','23_9'
+            ,'24','24_1','24_2','24_3','24_4','24_5','24_6','24_7','24_8','24_9'))):?>
             <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150">选择通知知情的相关人员：</label>
                     <input type="hidden" name="auditor_id" value='<?php echo $auditorId?>'>
-                    <input type="text" name="auditor_name" id="p_company" value="<?php echo $auditorName?>" size="30" data-rule="required" data-toggle="lookup" data-url="<?php echo U('Company/findHeaderToType',array('pre'=>$proLevel))?>" data-width="600" data-height="300" readonly>
+                    <input type="text" name="auditor_name" id="p_company" value="<?php echo $auditorName?>" size="30"
+                           data-rule="required" data-toggle="lookup"
+                           data-url="<?php echo U('Company/findHeaderToType',array('pre'=>$proLevel))?>"
+                           data-width="600" data-height="300" readonly>
                 </td>
             </tr>
             <?php endif;?>
@@ -138,11 +175,18 @@
             || $pre=='15_3' || $pre=='15_4'|| $pre=='15_5'|| $pre=='15_6' || $pre=='15_7'|| $pre=='15_8' || $pre=='15_9'||$pre=='12_1'
             || $pre=='17_2'|| $pre=='17_3'|| $pre=='17_4'|| $pre=='17_5'|| $pre=='17_6'|| $pre=='17_7'|| $pre=='17_8'|| $pre=='17_9'|| $pre=='18_1'
             || $pre=='18_2'|| $pre=='18_3'|| $pre=='18_4'|| $pre=='18_5'|| $pre=='18_6'|| $pre=='18_7'|| $pre=='18_8'
+            || $pre=='20_2'|| $pre=='20_3'|| $pre=='20_4'|| $pre=='20_5'|| $pre=='20_6'|| $pre=='20_7'|| $pre=='20_8'|| $pre=='20_9'
+            || $pre=='21_2'|| $pre=='21_3'|| $pre=='21_4'|| $pre=='21_5'|| $pre=='21_6'|| $pre=='21_7'|| $pre=='21_8'|| $pre=='21_9' || $pre=='21_1'
+            || $pre=='22_2'|| $pre=='22_3'|| $pre=='22_4'|| $pre=='22_5'|| $pre=='22_6'|| $pre=='22_7'|| $pre=='22_8'|| $pre=='22_9' || $pre=='22_1'
+            || $pre=='23_2'|| $pre=='23_3'|| $pre=='23_4'|| $pre=='23_5'|| $pre=='23_6'|| $pre=='23_7'|| $pre=='23_8'|| $pre=='23_9' || $pre=='23_1'
+            || $pre=='24_2'|| $pre=='24_3'|| $pre=='24_4'|| $pre=='24_5'|| $pre=='24_6'|| $pre=='24_7'|| $pre=='24_8'|| $pre=='24_9' || $pre=='24_1'
+
             ):?>
             <tr>
                 <td colspan="2">
                     <label for="" class="control-label x150">审核结果：</label>
-                    <select name="status" data-toggle="selectpicker" data-rule="required" onchange="chooseRebutter()" value="选择" >
+                    <select name="status" data-toggle="selectpicker" data-rule="required" onchange="chooseRebutter()"
+                            value="选择">
                         <option value="">--请选择--</option>
                         <option value="0">通过</option>
                         <option value="1">驳回</option>
@@ -150,9 +194,9 @@
                 </td>
             </tr>
 
-            <tr style="display:none" id="addSelect" >
+            <tr style="display:none" id="addSelect">
                 <td>
-                    <label for="" id="rb" class="control-label x150" ><span style="color:red">请选择驳回的对象：</span></label>
+                    <label for="" id="rb" class="control-label x150"><span style="color:red">请选择驳回的对象：</span></label>
                     <select name="reButter" data-toggle="selectpicker" data-rule="required" value="选择">
                         <option value="">--请选择--</option>
                         <?php foreach($adminIdAndNameAttr as $akey=>$avalue):?>
@@ -166,9 +210,10 @@
 
             <?php if(explode('_',$proLevel)[0]=='14' || explode('_',$proLevel)[0]=='16'):?>
             <tr style="margin-top:10px;display:block;">
-              <td align="center" style="width: 100%;display:block;border-left:1px #ddd solid;border-right:1px #ddd solid;">
-                  <h5><?php if(explode('_',$proLevel)[0]=='14'){echo '商票背书签收账户信息';}else{echo ' 收款账户信息';} ?></h5>
-              </td>
+                <td align="center"
+                    style="width: 100%;display:block;border-left:1px #ddd solid;border-right:1px #ddd solid;">
+                    <h5><?php if(explode('_',$proLevel)[0]=='14'){echo '商票背书签收账户信息';}else{echo ' 收款账户信息';} ?></h5>
+                </td>
             </tr>
             <tr>
                 <td style="border-top:0;border-left:1px #ddd solid;border-right:1px #ddd solid;">
@@ -177,32 +222,39 @@
                            value="<?php echo $handling_charge_bank_name?>"
                            data-toggle="lookup"
                            data-url="/Admin/bank/lookup/type/handling_charge.html"
-                           size="30" data-rule="required"  data-width="900" data-height="500" >
+                           size="30" data-rule="required" data-width="900" data-height="500">
                 </td>
             </tr>
             <tr>
                 <td style="border-top:0;border-left:1px #ddd solid;border-right:1px #ddd solid;">
                     <label for='company_id' class='control-label x150'>户名：</label>
-                    <input type="text" name="handling_charge_account_name"  value="<?php echo $handling_charge_account_name?>" size="30" data-rule="required"  data-width="900" data-height="500" >
+                    <input type="text" name="handling_charge_account_name"
+                           value="<?php echo $handling_charge_account_name?>" size="30" data-rule="required"
+                           data-width="900" data-height="500">
                 </td>
             </tr>
             <tr>
                 <td style="border-top:0;border-left:1px #ddd solid;border-right:1px #ddd solid;">
                     <label for='company_id' class='control-label x150'>账号：</label>
-                    <input type="text" name="handling_charge_bank_no"  value="<?php echo $handling_charge_bank_no?>" size="30" data-rule="required"  data-width="600" data-height="300" >
+                    <input type="text" name="handling_charge_bank_no" value="<?php echo $handling_charge_bank_no?>"
+                           size="30" data-rule="required" data-width="600" data-height="300">
                 </td>
             </tr>
 
             <tr>
                 <td style="border-top:0;border-left:1px #ddd solid;border-right:1px #ddd solid;">
                     <label for='company_id' class='control-label x150'>金额：</label>
-                    <input type="text" name="electronicBillMoney"  value="<?php echo $electronicBillMoney?>" size="30" data-rule="required"  data-width="600" data-height="300" >
+                    <input type="text" name="electronicBillMoney" value="<?php echo $electronicBillMoney?>" size="30"
+                           data-rule="required" data-width="600" data-height="300">
                 </td>
             </tr>
             <tr>
                 <td style="padding-top:10px;">
-                    <label for='company_id' class='control-label x150'><?php if(explode('_',$proLevel)[0]=='14'){echo '背书方：';}else{echo ' 付款方：'; }?></label>
-                    <input type="text" name="electronicBillName" id="electronicBill" value="<?php echo $electronicBillName?>" size="30" data-rule="required"  data-width="600" data-height="300" >
+                    <label for='company_id'
+                           class='control-label x150'><?php if(explode('_',$proLevel)[0]=='14'){echo '背书方：';}else{echo ' 付款方：'; }?></label>
+                    <input type="text" name="electronicBillName" id="electronicBill"
+                           value="<?php echo $electronicBillName?>" size="30" data-rule="required" data-width="600"
+                           data-height="300">
                 </td>
             </tr>
             <?php endif;?>
@@ -212,9 +264,13 @@
                     <input type="hidden" name="old_pro_subprocess_desc" value="{$pro_subprocess_desc}">
                     <div style="display: inline-block; border: 1px solid #ccc;">
                         <?php foreach($pro_subprocess_desc as $dkey=>$dvalue):?>
-                        <textarea name="desc[]" style="display: block;  margin-bottom: 1px; padding: 0px 0 0 3px;" data-toggle="autoheight" cols="30" rows="1" <?php if($admin['real_name']!==explode('::',$dvalue)[0]){ echo 'readonly';}?>><?php echo $dvalue?></textarea>
+                        <textarea name="desc[]" style="display: block;  margin-bottom: 1px; padding: 0px 0 0 3px;"
+                                  data-toggle="autoheight" cols="30"
+                                  rows="1" <?php if($admin['real_name']!==explode('::',$dvalue)[0]){ echo 'readonly';}?>
+                        ><?php echo $dvalue?></textarea>
                         <?php endforeach;?>
-                        <textarea name="pro_subprocess_desc" style="border:none;" id="j_custom_note_1" data-toggle="autoheight" cols="30" rows="3"></textarea>
+                        <textarea name="pro_subprocess_desc" style="border:none;" id="j_custom_note_1"
+                                  data-toggle="autoheight" cols="30" rows="3"></textarea>
                     </div>
                 </td>
             </tr>
@@ -222,18 +278,19 @@
             ||$proLevel=='12'||$proLevel=='12_1'||$proLevel=='13_2'||$proLevel=='7_1'||$proLevel=='10_3'||$proLevel=='10_4'):?>
             <tr>
                 <td>
-            <label for="pro_desc" class="control-label x150">上传文件：</label>
-            <div style="display: inline-block; vertical-align: middle;">
-                <div id="j_custom_pic_up" data-toggle="upload" data-uploader="<?php echo U('Project/upload_attachment')?>?sessionid=?"
-                     data-file-size-limit="1024000000"
-                     data-file-type-exts="<?php echo $exts ?>"
-                     data-multi="true"
-                     data-on-upload-success="pic_upload_success"
-                     data-icon="cloud-upload"
-                     data-auto="true"
-                     data-form-data='{"file_id":"<?php echo $file_id?>","pro_id":"<?php echo $pro_id?>","proLevel":"<?php echo $proLevel?>","wfId":"<?php echo $wfId?>","plId":"<?php echo $plId?>"}'
-                     data-file-obj-name='pro-<?php echo $pro_id?>'></div>
-            </div>
+                    <label for="pro_desc" class="control-label x150">上传文件：</label>
+                    <div style="display: inline-block; vertical-align: middle;">
+                        <div id="j_custom_pic_up" data-toggle="upload"
+                             data-uploader="<?php echo U('Project/upload_attachment')?>?sessionid=?"
+                             data-file-size-limit="1024000000"
+                             data-file-type-exts="<?php echo $exts ?>"
+                             data-multi="true"
+                             data-on-upload-success="pic_upload_success"
+                             data-icon="cloud-upload"
+                             data-auto="true"
+                             data-form-data='{"file_id":"<?php echo $file_id?>","pro_id":"<?php echo $pro_id?>","proLevel":"<?php echo $proLevel?>","wfId":"<?php echo $wfId?>","plId":"<?php echo $plId?>"}'
+                             data-file-obj-name='pro-<?php echo $pro_id?>'></div>
+                    </div>
                 </td>
             </tr>
             <?php endif;?>
@@ -255,10 +312,13 @@
             <?php $i = 1;foreach($list as $v){?>
             <tr>
                 <td align="center"><?php echo $i++;?></td>
-                <td align="center"><a target="_blank" href="<?php echo $v["path"]?>"><?php echo $v['doc_name']?></a></td>
+                <td align="center"><a target="_blank" href="<?php echo $v[" path"]?>"><?php echo $v['doc_name']?></a>
+                </td>
                 <td align="center"><?php echo date('Y-m-d H:s:i', $v['addtime'])?></td>
                 <td align="center"><?php echo adminNameToId($v['admin_id'])?></td>
-                <td align="center"><a href="<?php echo U('Project/remove_attachment')?>" data-data='{"file_path":"<?php echo $v["path"]?> ","pro_id":"<?php echo $v["pro_id"]?>","aid":"<?php echo $v["id"]?>","file_id":"<?php echo $v["id"]?>"}'  class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td>
+                <td align="center"><a href="<?php echo U('Project/remove_attachment')?>"
+                                      data-data='{"file_path":"<?php echo $v["path"]?> ","pro_id":"<?php echo $v["pro_id"]?>","aid":"<?php echo $v["id"]?>","file_id":"<?php echo $v["id"]?>"}'
+                                      class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td>
             </tr>
             <?php }?>
             </tbody>
@@ -268,8 +328,12 @@
 </div>
 <div class="bjui-pageFooter">
     <ul>
-        <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
-        <li><button type="submit" id="submit" class="btn-default" data-icon="save">提交</button></li>
+        <li>
+            <button type="button" class="btn-close" data-icon="close">取消</button>
+        </li>
+        <li>
+            <button type="submit" id="submit" class="btn-default" data-icon="save">提交</button>
+        </li>
     </ul>
 </div>
 <script>
@@ -307,7 +371,7 @@
 
     function add_uploadedfile(data) {
         var i = $('#file-list> tbody > tr').length + 1;
-        var newTr = '<tr><td align="center">'+i+'</td><td align="center"><a href="'+data.file_path+'">' + data.file_name + '</a></td>' + '<td align="center">' + data.addtime + '</td>' + '<td align="center">'+data.realName+'</td>'+ '<td align="center"><a href="<?php echo U("Project/remove_attachment")?>?aid='+data.aid+'&pro_id={#pro_id}" data-data=\'{"file_path":\"'+data.file_path+'\","pro_id":"{#pro_id}","aid":"'+data.aid+'\"}\' class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td></tr>';
+        var newTr = '<tr><td align="center">' + i + '</td><td align="center"><a href="' + data.file_path + '">' + data.file_name + '</a></td>' + '<td align="center">' + data.addtime + '</td>' + '<td align="center">' + data.realName + '</td>' + '<td align="center"><a href="<?php echo U("Project/remove_attachment")?>?aid=' + data.aid + '&pro_id={#pro_id}" data-data=\'{"file_path":\"' + data.file_path + '\","pro_id":"{#pro_id}","aid":"' + data.aid + '\"}\' class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td></tr>';
 //        var newImg = '<li id="' + data.file_id + '"><input type="hidden" name="attachment['+ i +'][path]" value="' + data.file_path + '" /><div class="thumb-list-pics"><a href="javascript:void(0);"><img src="' + data.file_path + '" alt=""/></a></div><a href="javascript:del_file_upload(0,' + data.file_id + ',\'' + data.file_path + '\');" class="del" title="删除">X</a><a href="javascript:insert_editor(\'' + data.file_path + '\');" class="inset"><i class="fa fa-clipboard"></i>插入图片</a></li>';
         $('#file-list > tbody').append(newTr);
 
@@ -319,9 +383,9 @@
 //        var statusCode =
         if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
             var file_path = data.message;
-            var li = $('input[value="'+file_path+'"]');
+            var li = $('input[value="' + file_path + '"]');
             li.parent().parent().remove();
-            $("#file-list").alertmsg('ok', '删除成功！') ;
+            $("#file-list").alertmsg('ok', '删除成功！');
         } else {
             $("#file-list").alertmsg('error', '删除失败！');
         }
@@ -329,35 +393,31 @@
 
     function addNewAttr(a) {
         // debugger
-        var k=$('#maxid');
-        var _k=Number(k.val())+1;
+        var k = $('#maxid');
+        var _k = Number(k.val()) + 1;
         k.val(_k);
-        var tr=$(a).parent().parent();
-        if($(a).text()=='[+]')
-        {
-            newTr=tr.clone();
-            newTr.find(".btn").attr('data-url',"/Admin/ElectronicBill/add?pro_id=<?php echo $pro_id?>")
+        var tr = $(a).parent().parent();
+        if ($(a).text() == '[+]') {
+            newTr = tr.clone();
+            newTr.find(".btn").attr('data-url', "/Admin/ElectronicBill/add?pro_id=<?php echo $pro_id?>")
             newTr.find('a').text('[-]');
             newTr.find('label').text('点击添加商票');
             tr.after(newTr)
-        }else
-        {
+        } else {
             tr.remove();
         }
     }
     function chooseRebutter() {
-        var select=$("select[name='status']");
-        var wfId=$("input[name='wfId']").val();
-        var selectReButter=$("select[name=reButter]");
-        if(parseInt(select.val())==1)
-        {
-            $('#addSelect').css({'display':''})
+        var select = $("select[name='status']");
+        var wfId = $("input[name='wfId']").val();
+        var selectReButter = $("select[name=reButter]");
+        if (parseInt(select.val()) == 1) {
+            $('#addSelect').css({'display': ''})
             selectReButter.removeAttr('disabled')
         }
-        else
-        {
-            $('#addSelect').css({'display':'none'})
-            selectReButter.attr('disabled','true')
+        else {
+            $('#addSelect').css({'display': 'none'})
+            selectReButter.attr('disabled', 'true')
         }
     }
 

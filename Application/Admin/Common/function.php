@@ -694,7 +694,7 @@ function reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reB
     $deleRedis=delredis($plId); //删除对应的redis记录
     $pro_subprocess_desc =$_GET['pro_subprocess_desc'];//子流程备注
     $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
-    $redisPost = redisTotalPost($proLevel, $admin['admin_id'], $reButter . '|admin', time(), $proIid, $plId, $contents, -1);
+    $redisPost = redisTotalPost(-1, $admin['admin_id'], $reButter . '|admin', time(), $proIid, $plId, $contents, -1);
     return $updateState && $updatePj && $sendProcess && $WflMode && $redisPost && $deleRedis && $updataProject;
 }
 //返回执行完下一步的流程模块

@@ -34,9 +34,13 @@ class WorkflowController extends CommonController {
             {
                 $oaFlow=$this->menuRec($menuInfo,$v['menu_id']);
                 $oaFlow=$this->authRec($authInfo,$oaFlow);
+            }elseif ($v['menu_name']=='完结流程')
+            {
+                $endFlow=$this->menuRec($menuInfo,$v['menu_id']);
+                $endFlow=$this->authRec($authInfo,$endFlow);
             }
         }
-        $this->assign(array('project'=>$project,'contract'=>$contract,'loan'=>$loan,'nonFlow'=>$nonFlow,'oaFlow'=>$oaFlow));
+        $this->assign(array('project'=>$project,'contract'=>$contract,'loan'=>$loan,'nonFlow'=>$nonFlow,'oaFlow'=>$oaFlow,'endFlow'=>$endFlow));
         $this->display();
     }
 

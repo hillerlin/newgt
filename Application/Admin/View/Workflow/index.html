@@ -56,6 +56,20 @@
     </div>
     <?php endif;?>
 
+    <?php if($endFlow):?>
+    <hr />
+    <div class="cate">
+        <h5><span class="glyphicon glyphicon-ok-circle"></span>完结流程</h5>
+        <ul>
+            <?php foreach($endFlow as $kkk=>$vvv):?>
+            <li><a data-url="/Admin/Project/add/pre/<?php echo $vvv['data']?>.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-link h3"></span><?php echo $vvv['menu_name']?></a></li>
+            <!--  <li><a data-url="/Admin/Project/add/pre/15.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-link h3"></span>放款审核</a></li><li><a data-url="/Admin/Project/add/pre/16.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-link h3"></span>日常利息归还</a></li>
+              <li><a data-url="/Admin/Project/add/pre/17.html" data-toggle="dialog" data-width='600' data-height="400" data-mask='true' data-id="project-add"><span class="glyphicon glyphicon-link h3"></span>商票退票流程</a></li>
+            -->  <?php endforeach;?>
+        </ul>
+    </div>
+    <?php endif;?>
+
 <?php if($nonFlow):?>
     <hr />
     <div class="cate">

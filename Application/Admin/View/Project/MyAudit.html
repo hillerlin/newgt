@@ -46,7 +46,8 @@
                 data-id="project-submit"
                 data-title="<?php echo $vv?>"><?php echo $vv?></button>
                <?php else:?>
-                <a href="<?php echo U($kk, array('pro_id'=>$v['pro_id'],'plId'=>$v['pl_id'],'wfId'=>$v['wfid'],
+                <a href="<?php
+                echo U($kk, array('pro_id'=>$v['pro_id'],'plId'=>$v['pl_id'],'wfId'=>$v['wfid'],
                 'xmlId'=>$v['pro_xml_id'],'proLevel'=>$v['pro_level'],'proRebutter'=>$v['pro_rebutter'],'proRebutterLevel'=>$v['pro_rebutter_level'],'proRebutterPlid'=>$v['pro_rebutter_plid'],
                 'proTimes'=>$v['pro_times'],'spId'=>$v['sp_id'],'proState'=>$v['pro_state'])) ?>" class="btn btn-green"
                    data-toggle="<?php if($vv=='资料包') {echo 'navtab';}else{echo 'dialog';}?>"

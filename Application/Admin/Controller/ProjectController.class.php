@@ -75,12 +75,13 @@ class ProjectController extends CommonController
 
                 //根据name查出下个审批人的角色id
                 $xmlInfo = $xmlObj->index()[xmlNameToIdAndName(C('proLevel')['0'],$xmlObj->file)['TARGETREF']];//获取即将审核人的xml信息
-                $proRoleId = roleNameToid(explode('_', $xmlInfo['name'])['0']);//审批人角色id
+               // $proRoleId = 28;//提交给宋波//roleNameToid(explode('_', $xmlInfo['name'])['0']);//审批人角色id
+                $proAdminId = $model->checkSublevel(addNewLevel($proLevel),$proIid)?$model->checkSublevel(addNewLevel($proLevel),$proIid):28;//28;//传给项管总监知情审核
                 $newProLevel=addNewLevel($proLevel);
                 $updataProject=addSubProcessAuditor($proIid,'','',$newProLevel,$pro_subprocess_desc);//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
                 //$xmlId=xmlIdToInfo($xmlId)['TARGETREF'];
                 $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' . projectNameFromId($proIid) . '</code>';
-                list($pjWorkFlow, $sendProcess, $workFlowLog, $redisPost) = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, $proRoleId, 0, $xmlId, $plId, 'list', $contents, -1);
+                list($pjWorkFlow, $sendProcess, $workFlowLog, $redisPost) = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $proAdminId, $xmlId, $plId, 'list', $contents, -1);
             }
 
         } else {
@@ -141,6 +142,16 @@ class ProjectController extends CommonController
             case '18':
                 break;
             case '19':
+                break;
+            case '20':
+                break;
+            case '21':
+                break;
+            case '22':
+                break;
+            case '23':
+                break;
+            case '24':
                 break;
             default:
                 $oldProject=addSubProcessAuditor($pjId,$auditor_id,$auditor_name,$pro_level,$pro_subprocess_desc);
@@ -273,7 +284,9 @@ class ProjectController extends CommonController
         if(explode('_',$proLevel)[0]=='7'||explode('_',$proLevel)[0]=='10')
         {
             //查找【风控部】文件夹只返回该角色的文件下的文件
-            $list=$p_model->returnFolderInfo($pro_id,'风控部',$admin['admin_id'])['list'];
+           // $list=$p_model->returnFolderInfo($pro_id,'风控部',$admin['admin_id'])['list'];
+            //$this->assign(array('list'=>$list,'exts'=>getFormerExts(),'file_id'=>$p_model->returnFolderInfo($pro_id,'风控部')['fileId']));
+             $list=$p_model->returnFolderInfo($pro_id,'风控部')['list'];
             $this->assign(array('list'=>$list,'exts'=>getFormerExts(),'file_id'=>$p_model->returnFolderInfo($pro_id,'风控部')['fileId']));
         }
         $this->assign(array('companyName'=>$projectInfo['pro_title'],
@@ -299,7 +312,7 @@ class ProjectController extends CommonController
         $pageSize = I('post.pageSize', 30);
         $page = I('post.pageCurrent', 1);
         $list = $model->isAudit($page, $pageSize, 't.addtime DESC', $admin['admin_id'], $admin['role_id'], 0);
-        $this->assign(array('name' => $admin['real_name'], 'list' => $list['list'], 'total' => $list['total'], 'pageCurrent' => $page));
+        $this->assign(array('name' => $admin['real_name'], 'list' => $list['list'], 'total' => $list['total'], 'pageCurrent' => $page,'admin'=>$admin));
         $this->display();
 
     }
@@ -382,8 +395,9 @@ class ProjectController extends CommonController
             break;
             case '4':
                 //提交新建知情
-                $auditor_id = I('get.auditor_id');//分配跟进人
-                $auditor_name = I('get.auditor_name');//跟进人的名字
+                //$auditor_id = I('get.auditor_id');//分配跟进人
+                //$auditor_name = I('get.auditor_name');//跟进人的名字
+                $auditor_id=$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?$projectModel->checkSublevel(addNewLevel($proLevel),$proIid):28;
 
                 if (intval($proRebutter) > 0)//驳回重发的修改
                 {
@@ -393,44 +407,45 @@ class ProjectController extends CommonController
                 {
                     $newProLevel = addNewLevel($proLevel);
                     $updataProject = addSubProcessAuditor($proIid, $auditor_id, $auditor_name, $newProLevel, $pro_subprocess_desc);//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
-                    $proRoleId = 14;//业务类型指定了宋波或者项管总监
+                    $auditor_id = 28;//业务类型指定了宋波或者项管总监
                     $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' . projectNameFromId($proIid) . '</code>知情事宜';
-                    $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, $proRoleId, 0, $xmlId, $plId, 'one', $contents, -1) && $updataProject;
+                    $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $auditor_id, $xmlId, $plId, 'one', $contents, -1) && $updataProject;
                 }
                 break;
             case '4_1':
                 //知情发起审核-项管总监
-                $auditor_id = I('get.auditor_id');//分配跟进人
-                $auditor_name = I('get.auditor_name');//跟进人的名字
+                $auditor_id=$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?$projectModel->checkSublevel(addNewLevel($proLevel),$proIid):28;
+                //$auditor_id = I('get.auditor_id');//分配跟进人
+               // $auditor_name = I('get.auditor_name');//跟进人的名字
                 if (intval($status) === 1)//驳回情况
                 {
                     $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
                     //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
                     $proRebutterLevel = explode('-',I('get.reButter'))[1];
-                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>立项会事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>会议报告事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
                     $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
                 } else {
                     if (intval($proRebutter) > 0)//驳回重发的修改
                     {
-                        $updataProject = addSubProcessAuditor($proIid, $auditor_id, $auditor_name, $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
                         $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
                     } else  //正常流程发起
                     {
                         $newProLevel = addNewLevel($proLevel);
-                        $updataProject = addSubProcessAuditor($proIid, $auditor_id, $auditor_name, $newProLevel, $pro_subprocess_desc);//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $newProLevel, $pro_subprocess_desc);//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
                         $auditor_id = explode(',', $auditor_id);
                         $return = true;
                         /*****正常审批通过*******/
                         foreach ($auditor_id as $k => $v) {
-                            $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $v, $xmlId, $plId, 'one') && $return && $updataProject;
-                            sleep(1);
+                            $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $v, $xmlId, $plId, 'one',$time) && $return && $updataProject;
+                            $time=$time+1;
                         }
                     }
                 }
             break;
             case '4_2':
                 //分配知情人员
-                $allocationId=I('get.allocationId');//分配上传人的id
+                $allocationId=I('get.admin_id');//分配上传人的id
                 $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>知情分配给<code>'.adminNameToId($allocationId).'</code>';
                 $return= postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$allocationId,$xmlId,$plId,'one',$contents,-1);
                 break;
@@ -1090,8 +1105,8 @@ class ProjectController extends CommonController
                 foreach ($auditor_id as $k=>$v)
                 {
                     $content = $admin['role_name'] . '<code>' . $admin['real_name'] .'</code>向财务部:<code>'.adminNameToId($v).'</code>'.'</code>提交项目<code>' . projectNameFromId($proIid) . '</code>商票背书知情';
-                    $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$v,$xmlId,$plId,'one',$content,-3) && $updataProject;
-                    sleep(1);
+                    $return=postNextProcess($wfId,$proLevel,$proTimes,$admin,$proIid,0,$v,$xmlId,$plId,'one',$content,-3,$time) && $updataProject;
+                    $time=$time+1;
                 }
                 $proAdminId='34';//告诉出纳黄虹上传商票凭证
                 $contents = $admin['role_name'] . '<code>' . $admin['real_name'] .'通知出纳:<code>'.adminNameToId($proAdminId).'</code>'.'</code>上传项目<code>' . projectNameFromId($proIid) . '</code>商票凭证';
@@ -1847,6 +1862,874 @@ class ProjectController extends CommonController
                 $contents=$admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交资料下载知情';
                 $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one', $contents, -3);
                 break;
+            //换质退款
+            case '20':
+                //新建商票审核流程-项管专员
+                $proAdminId = $projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?explode(',',$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)):28;//28;//传给项管总监知情审核
+                $auditor_id = $projectModel->returnCheckIdFromProLevel(addNewLevel(addNewLevel($proLevel)),$proIid)['auditorId'];//I('get.auditor_id');//分配跟进人
+                $auditor_name =  $projectModel->returnCheckIdFromProLevel(addNewLevel(addNewLevel($proLevel)),$proIid)['auditorName'];//I('get.auditor_name');//跟进人的名字
+                $newProLevel=addNewLevel($proLevel);
+
+                if (intval($proRebutter) > 0)//驳回重发的修改
+                {
+                    $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                    $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                } else  //正常流程发起
+                {
+                    $updataProject = addSubProcessAuditor($proIid, $auditor_id, $auditor_name, $proLevel, $pro_subprocess_desc);
+                    $auditor_id = explode(',', $auditor_id);
+                        foreach ($proAdminId as $pAk=>$pAv)
+                        {
+                            $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' . projectNameFromId($proIid) . '</code>换质退款知情';
+                            $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $pAv, $xmlId, $plId, 'one', $contents, -3,$time) && $updataProject;
+                            $time=$time+$pAk;
+                        }
+
+
+
+                    //跳到法务人员
+                    foreach ($auditor_id as $k => $v) {
+                        $time=$time+$k;
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' . projectNameFromId($proIid) . '</code>换质退款流程';
+                        $return = postNextProcess($wfId, $newProLevel, $proTimes, $admin, $proIid, 0, $v, $xmlId, $plId, 'one', $content, -3,$time) && $updataProject;
+
+                    }
+                }
+                break;
+            case '20_2':
+                //新建商票审核流程-法务人员分配给风控A和风控B
+                // $proAdminId = 28;//传给项管总监知情审核
+                         $auditor_id = $projectModel->returnCheckIdFromProLevel(addNewLevel($proLevel),$proIid)['auditorId'];//I('get.auditor_id');//分配跟进人
+                          $auditor_name =  $projectModel->returnCheckIdFromProLevel(addNewLevel($proLevel),$proIid)['auditorName'];//I('get.auditor_name');//跟进人的名字
+                //$auditor_id = I('get.auditor_id');//分配跟进人
+                //$auditor_name = I('get.auditor_name');//跟进人的名字
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>换质退款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, $auditor_id, $auditor_name, $proLevel, $pro_subprocess_desc);
+                        $auditor_id = explode(',', $auditor_id);
+                        //通知项管总监知情
+                        //跳到法务人员
+                        foreach ($auditor_id as $k => $v) {
+                            $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' . projectNameFromId($proIid) . '</code>换质退款审核事宜';
+                            $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $v, $xmlId, $plId, 'one', $content, -3,$time) && $updataProject;
+                            $time=$time+1;
+                        }
+                    }
+                }
+                break;
+            case '20_3':
+                // 商票风控A轮初审
+                $auditor_id = $projectModel->returnCheckIdFromProLevel(addNewLevel($proLevel),$proIid)['auditorId'];//I('get.auditor_id');//分配跟进人
+                $auditor_name =  $projectModel->returnCheckIdFromProLevel(addNewLevel($proLevel),$proIid)['auditorName'];//I('get.auditor_name');//跟进人的名字
+                //$auditor_id = I('get.auditor_id');//分配跟进人
+                //$auditor_name = I('get.auditor_name');//跟进人的名字
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>换质退款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, $auditor_id, $auditor_name, $proLevel, $pro_subprocess_desc);
+                        $auditor_id = explode(',', $auditor_id);
+                        //跳到法务人员
+                        foreach ($auditor_id as $k => $v) {
+                            $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' . projectNameFromId($proIid) . '</code>换质退款事宜';
+                            $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $v, $xmlId, $plId, 'one', $content, -3,$time) && $updataProject;
+                            $time=$time+1;
+                        }
+                    }
+                }
+                break;
+            case '20_4':
+                // 商票风控B轮初审----风控张总知情，黄总审批
+                //张总知情
+                $proAdminId=$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?$projectModel->checkSublevel(addNewLevel($proLevel),$proIid):10;//I('get.auditor_id');
+                //黄总审核
+                $auditor_id=$projectModel->checkSublevel(addNewLevel(addNewLevel($proLevel)),$proIid)?$projectModel->checkSublevel(addNewLevel(addNewLevel($proLevel)),$proIid):24;//I('get.auditor_id');
+                $newProLevel=addNewLevel($proLevel);
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>换质退款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
+                        $return = true;
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($proAdminId) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>换质退款知情事宜';
+                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $proAdminId, $xmlId, $plId, 'one', $content, -3) && $updataProject && $return;
+                        $auditor_id=explode(',',$auditor_id);
+                        foreach ($auditor_id as $k=>$v)
+                        {
+                            $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>换质退款审核事宜';
+                            $return = postNextProcess($wfId, $newProLevel, $proTimes, $admin, $proIid, 0, $v, $xmlId, $plId, 'one', $content, -3,$time) && $updataProject && $return;
+                            $time=$time+1;
+                        }
+                    }
+                }
+                break;
+            case '20_6':
+                // 商票风控黄总审批
+                $auditor_id='23';//副总裁
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>换质退款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向总裁办:<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>换质退款审核事宜';
+                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $auditor_id, $xmlId, $plId, 'one', $content, -3) && $updataProject;
+                    }
+                }
+                break;
+            case '20_7':
+                // 商票副总裁孙总审批
+                $auditor_id='22';//总裁
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>换质退款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向总裁办:<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>换质退款审核事宜';
+                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $auditor_id, $xmlId, $plId, 'one', $content, -3) && $updataProject;
+                    }
+                }
+                break;
+            case '20_8':
+                // 商票副总裁佟总审批
+                //$auditor_id='33';//财务总监丁总
+                $auditor_id = $projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?$projectModel->checkSublevel(addNewLevel($proLevel),$proIid):33;//array('10','24');//分配跟进人
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>换质退款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>换质退款审核事宜';
+                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $auditor_id, $xmlId, $plId, 'one', $content, -3) && $updataProject;
+                    }
+                }
+                break;
+            case '20_9':
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                // $newProLevel=addNewLevel($proLevel);
+                $return=true;
+                //直接结束
+                $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的换质退款流水已上传';
+                $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one', $contents, -1) && $updataProject && $return;
+                break;
+            //换质退款,退票
+            case '21':
+                //新建商票审核流程-项管专员
+                $proAdminId = $projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?explode(',',$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)):28;//28;//传给项管总监知情审核
+                $auditor_id = $projectModel->returnCheckIdFromProLevel(addNewLevel(addNewLevel($proLevel)),$proIid)['auditorId'];//I('get.auditor_id');//分配跟进人
+                $auditor_name =  $projectModel->returnCheckIdFromProLevel(addNewLevel(addNewLevel($proLevel)),$proIid)['auditorName'];//I('get.auditor_name');//跟进人的名字
+                $newProLevel=addNewLevel($proLevel);
+
+                if (intval($proRebutter) > 0)//驳回重发的修改
+                {
+                    $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                    $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                } else  //正常流程发起
+                {
+                    $updataProject = addSubProcessAuditor($proIid, $auditor_id, $auditor_name, $proLevel, $pro_subprocess_desc);
+                    $auditor_id = explode(',', $auditor_id);
+                    foreach ($proAdminId as $pAk=>$pAv)
+                    {
+                        $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' . projectNameFromId($proIid) . '</code>换质,退款知情';
+                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $pAv, $xmlId, $plId, 'one', $contents, -3,$time) && $updataProject;
+                        $time=$time+$pAk;
+                    }
+
+                    //跳到法务人员
+                    foreach ($auditor_id as $k => $v) {
+                        $time=$time+$k;
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' . projectNameFromId($proIid) . '</code>换质,退款流程';
+                        $return = postNextProcess($wfId, $newProLevel, $proTimes, $admin, $proIid, 0, $v, $xmlId, $plId, 'one', $content, -3,$time) && $updataProject;
+
+                    }
+                }
+                break;
+            case '21_2':
+                //新建商票审核流程-法务人员分配给风控A和风控B
+                // $proAdminId = 28;//传给项管总监知情审核
+                $auditor_id = $projectModel->returnCheckIdFromProLevel(addNewLevel($proLevel),$proIid)['auditorId'];//I('get.auditor_id');//分配跟进人
+                $auditor_name =  $projectModel->returnCheckIdFromProLevel(addNewLevel($proLevel),$proIid)['auditorName'];//I('get.auditor_name');//跟进人的名字
+                //$auditor_id = I('get.auditor_id');//分配跟进人
+                //$auditor_name = I('get.auditor_name');//跟进人的名字
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>换质,退款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, $auditor_id, $auditor_name, $proLevel, $pro_subprocess_desc);
+                        $auditor_id = explode(',', $auditor_id);
+                        //通知项管总监知情
+                        //跳到法务人员
+                        foreach ($auditor_id as $k => $v) {
+                            $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' . projectNameFromId($proIid) . '</code>换质,退款审核事宜';
+                            $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $v, $xmlId, $plId, 'one', $content, -3,$time) && $updataProject;
+                            $time=$time+1;
+                        }
+                    }
+                }
+                break;
+            case '21_3':
+                // 商票风控A轮初审
+                $auditor_id = $projectModel->returnCheckIdFromProLevel(addNewLevel($proLevel),$proIid)['auditorId'];//I('get.auditor_id');//分配跟进人
+                $auditor_name =  $projectModel->returnCheckIdFromProLevel(addNewLevel($proLevel),$proIid)['auditorName'];//I('get.auditor_name');//跟进人的名字
+                //$auditor_id = I('get.auditor_id');//分配跟进人
+                //$auditor_name = I('get.auditor_name');//跟进人的名字
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>换质,退款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, $auditor_id, $auditor_name, $proLevel, $pro_subprocess_desc);
+                        $auditor_id = explode(',', $auditor_id);
+                        //跳到法务人员
+                        foreach ($auditor_id as $k => $v) {
+                            $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' . projectNameFromId($proIid) . '</code>换质,退款事宜';
+                            $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $v, $xmlId, $plId, 'one', $content, -3,$time) && $updataProject;
+                            $time=$time+1;
+                        }
+                    }
+                }
+                break;
+            case '21_4':
+                // 商票风控B轮初审----风控张总知情，黄总审批
+                //张总知情
+                $proAdminId=$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?$projectModel->checkSublevel(addNewLevel($proLevel),$proIid):10;//I('get.auditor_id');
+                //黄总审核
+                $auditor_id=$projectModel->checkSublevel(addNewLevel(addNewLevel($proLevel)),$proIid)?$projectModel->checkSublevel(addNewLevel(addNewLevel($proLevel)),$proIid):24;//I('get.auditor_id');
+                $newProLevel=addNewLevel($proLevel);
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>换质,退款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
+                        $return = true;
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($proAdminId) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>换质,退款知情事宜';
+                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $proAdminId, $xmlId, $plId, 'one', $content, -3) && $updataProject && $return;
+                        $auditor_id=explode(',',$auditor_id);
+                        foreach ($auditor_id as $k=>$v)
+                        {
+                            $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>换质,退款审核事宜';
+                            $return = postNextProcess($wfId, $newProLevel, $proTimes, $admin, $proIid, 0, $v, $xmlId, $plId, 'one', $content, -3,$time) && $updataProject && $return;
+                            $time=$time+1;
+                        }
+                    }
+                }
+                break;
+            case '21_6':
+                // 商票风控黄总审批
+                $auditor_id='23';//副总裁
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>换质,退款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向总裁办:<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>换质,退款审核事宜';
+                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $auditor_id, $xmlId, $plId, 'one', $content, -3) && $updataProject;
+                    }
+                }
+                break;
+            case '21_7':
+                // 商票副总裁孙总审批
+                $auditor_id='22';//总裁
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>换质,退款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向总裁办:<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>换质,退款审核事宜';
+                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $auditor_id, $xmlId, $plId, 'one', $content, -3) && $updataProject;
+                    }
+                }
+                break;
+            case '21_8':
+                // 商票副总裁佟总审批
+                //$auditor_id='33';//财务总监丁总
+                $auditor_id = $projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?$projectModel->checkSublevel(addNewLevel($proLevel),$proIid):33;//array('10','24');//分配跟进人
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>换质,退款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>换质,退款审核事宜';
+                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $auditor_id, $xmlId, $plId, 'one', $content, -3) && $updataProject;
+                    }
+                }
+                break;
+            case '21_9':
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                // $newProLevel=addNewLevel($proLevel);
+                $return=true;
+                //直接结束
+                $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的换质,退款流水已上传';
+                $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one', $contents, -1) && $updataProject && $return;
+                break;
+            //完结退款审批
+            case '22':
+                //新建商票审核流程-项管专员
+                $proAdminId = $projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?explode(',',$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)):28;//28;//传给项管总监知情审核
+                if (intval($proRebutter) > 0)//驳回重发的修改
+                {
+                    $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                    $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                } else  //正常流程发起
+                {
+                    $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);
+                    foreach ($proAdminId as $pAk=>$pAv)
+                    {
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($pAv) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>完结退款审核事宜';
+                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $pAv, $xmlId, $plId, 'one', $content, -3,$time) && $updataProject;
+                        $time=$time+$pAk;
+                    }
+
+                }
+                break;
+            case '22_1':
+                //新建商票审核流程-法务人员分配给风控A和风控B
+                // $proAdminId = 28;//传给项管总监知情审核
+                $auditor_id = $projectModel->returnCheckIdFromProLevel(addNewLevel($proLevel),$proIid)['auditorId'];//I('get.auditor_id');//分配跟进人
+                $auditor_name =  $projectModel->returnCheckIdFromProLevel(addNewLevel($proLevel),$proIid)['auditorName'];//I('get.auditor_name');//跟进人的名字
+                //$auditor_id = I('get.auditor_id');//分配跟进人
+                //$auditor_name = I('get.auditor_name');//跟进人的名字
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>完结退款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, $auditor_id, $auditor_name, $proLevel, $pro_subprocess_desc);
+                        $auditor_id = explode(',', $auditor_id);
+                        foreach ($auditor_id as $k => $v) {
+                            $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($v) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>完结退款审核事宜';
+                            $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $v, $xmlId, $plId, 'one', $content, -3,$time) && $updataProject;
+                            $time=$time+1;
+                        }
+                    }
+                }
+                break;
+            case '22_2':
+                // 商票风控A轮初审
+                $auditor_id = $projectModel->returnCheckIdFromProLevel(addNewLevel($proLevel),$proIid)['auditorId'];//I('get.auditor_id');//分配跟进人
+                $auditor_name =  $projectModel->returnCheckIdFromProLevel(addNewLevel($proLevel),$proIid)['auditorName'];//I('get.auditor_name');//跟进人的名字
+                //$auditor_id = I('get.auditor_id');//分配跟进人
+                //$auditor_name = I('get.auditor_name');//跟进人的名字
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>完结退款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, $auditor_id, $auditor_name, $proLevel, $pro_subprocess_desc);
+                        $auditor_id = explode(',', $auditor_id);
+                        //跳到法务人员
+                        foreach ($auditor_id as $k => $v) {
+                            $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($v) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>完结退款审核事宜';
+                            $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $v, $xmlId, $plId, 'one', $content, -3,$time) && $updataProject;
+                            $time=$time+1;
+                        }
+                    }
+                }
+                break;
+            case '22_3':
+                $proAdminId=$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?$projectModel->checkSublevel(addNewLevel($proLevel),$proIid):10;//I('get.auditor_id');
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>完结退款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
+                        $return = true;
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($proAdminId) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>完结退款审核事宜';
+                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $proAdminId, $xmlId, $plId, 'one', $content, -3) && $updataProject && $return;
+                    }
+                }
+                break;
+            case '22_4':
+                $auditor_id=$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?$projectModel->checkSublevel(addNewLevel($proLevel),$proIid):10;//I('get.auditor_id');
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>完结退款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>完结退款审核事宜';
+                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $auditor_id, $xmlId, $plId, 'one', $content, -3) && $updataProject;
+                    }
+                }
+                break;
+            case '22_5':
+                $auditor_id=$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?$projectModel->checkSublevel(addNewLevel($proLevel),$proIid):10;//I('get.auditor_id');
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>完结退款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>完结退款审核事宜';
+                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $auditor_id, $xmlId, $plId, 'one', $content, -3) && $updataProject;
+                    }
+                }
+                break;
+            case '22_6':
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                // $newProLevel=addNewLevel($proLevel);
+                $return=true;
+                //直接结束
+                $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的完结退款流水已上传';
+                $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one', $contents, -1) && $updataProject && $return;
+                break;
+            //正常完结退票审批
+            case '23':
+                //新建商票审核流程-项管专员
+                $proAdminId = $projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?explode(',',$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)):28;//28;//传给项管总监知情审核
+                if (intval($proRebutter) > 0)//驳回重发的修改
+                {
+                    $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                    $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                } else  //正常流程发起
+                {
+                    $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);
+                    foreach ($proAdminId as $pAk=>$pAv)
+                    {
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($pAv) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>正常完结退票审核事宜';
+                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $pAv, $xmlId, $plId, 'one', $content, -3,$time) && $updataProject;
+                        $time=$time+$pAk;
+                    }
+
+                }
+                break;
+            case '23_1':
+                //新建商票审核流程-法务人员分配给风控A和风控B
+                // $proAdminId = 28;//传给项管总监知情审核
+                $auditor_id = $projectModel->returnCheckIdFromProLevel(addNewLevel($proLevel),$proIid)['auditorId'];//I('get.auditor_id');//分配跟进人
+                $auditor_name =  $projectModel->returnCheckIdFromProLevel(addNewLevel($proLevel),$proIid)['auditorName'];//I('get.auditor_name');//跟进人的名字
+                //$auditor_id = I('get.auditor_id');//分配跟进人
+                //$auditor_name = I('get.auditor_name');//跟进人的名字
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>正常完结退票事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, $auditor_id, $auditor_name, $proLevel, $pro_subprocess_desc);
+                        $auditor_id = explode(',', $auditor_id);
+                        foreach ($auditor_id as $k => $v) {
+                            $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($v) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>正常完结退票审核事宜';
+                            $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $v, $xmlId, $plId, 'one', $content, -3,$time) && $updataProject;
+                            $time=$time+1;
+                        }
+                    }
+                }
+                break;
+            case '23_2':
+                // 商票风控A轮初审
+                $auditor_id = $projectModel->returnCheckIdFromProLevel(addNewLevel($proLevel),$proIid)['auditorId'];//I('get.auditor_id');//分配跟进人
+                $auditor_name =  $projectModel->returnCheckIdFromProLevel(addNewLevel($proLevel),$proIid)['auditorName'];//I('get.auditor_name');//跟进人的名字
+                //$auditor_id = I('get.auditor_id');//分配跟进人
+                //$auditor_name = I('get.auditor_name');//跟进人的名字
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>正常完结退票事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, $auditor_id, $auditor_name, $proLevel, $pro_subprocess_desc);
+                        $auditor_id = explode(',', $auditor_id);
+                        //跳到法务人员
+                        foreach ($auditor_id as $k => $v) {
+                            $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($v) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>正常完结退票审核事宜';
+                            $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $v, $xmlId, $plId, 'one', $content, -3,$time) && $updataProject;
+                            $time=$time+1;
+                        }
+                    }
+                }
+                break;
+            case '23_3':
+                $proAdminId=$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?$projectModel->checkSublevel(addNewLevel($proLevel),$proIid):10;//I('get.auditor_id');
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>正常完结退票事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
+                        $return = true;
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($proAdminId) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>正常完结退票审核事宜';
+                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $proAdminId, $xmlId, $plId, 'one', $content, -3) && $updataProject && $return;
+                    }
+                }
+                break;
+            case '23_4':
+                $auditor_id=$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?$projectModel->checkSublevel(addNewLevel($proLevel),$proIid):10;//I('get.auditor_id');
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>正常完结退票事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>正常完结退票审核事宜';
+                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $auditor_id, $xmlId, $plId, 'one', $content, -3) && $updataProject;
+                    }
+                }
+                break;
+            case '23_5':
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                // $newProLevel=addNewLevel($proLevel);
+                $return=true;
+                //直接结束
+                $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的正常完结退票流水已上传';
+                $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one', $contents, -1) && $updataProject && $return;
+                break;
+            //非正常完结退票审批
+            case '24':
+                //新建商票审核流程-项管专员
+                $proAdminId = $projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?explode(',',$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)):28;//28;//传给项管总监知情审核
+                if (intval($proRebutter) > 0)//驳回重发的修改
+                {
+                    $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                    $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                } else  //正常流程发起
+                {
+                    $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);
+                    foreach ($proAdminId as $pAk=>$pAv)
+                    {
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($pAv) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>非正常完结退票审核事宜';
+                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $pAv, $xmlId, $plId, 'one', $content, -3,$time) && $updataProject;
+                        $time=$time+$pAk;
+                    }
+
+                }
+                break;
+            case '24_1':
+                $auditor_id = $projectModel->returnCheckIdFromProLevel(addNewLevel($proLevel),$proIid)['auditorId'];//I('get.auditor_id');//分配跟进人
+                $auditor_name =  $projectModel->returnCheckIdFromProLevel(addNewLevel($proLevel),$proIid)['auditorName'];//I('get.auditor_name');//跟进人的名字
+                //$auditor_id = I('get.auditor_id');//分配跟进人
+                //$auditor_name = I('get.auditor_name');//跟进人的名字
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>非正常完结退票事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, $auditor_id, $auditor_name, $proLevel, $pro_subprocess_desc);
+                        $auditor_id = explode(',', $auditor_id);
+                        foreach ($auditor_id as $k => $v) {
+                            $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($v) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>非正常完结退票审核事宜';
+                            $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $v, $xmlId, $plId, 'one', $content, -3,$time) && $updataProject;
+                            $time=$time+1;
+                        }
+                    }
+                }
+                break;
+            case '24_2':
+                // 商票风控A轮初审
+                $auditor_id = $projectModel->returnCheckIdFromProLevel(addNewLevel($proLevel),$proIid)['auditorId'];//I('get.auditor_id');//分配跟进人
+                $auditor_name =  $projectModel->returnCheckIdFromProLevel(addNewLevel($proLevel),$proIid)['auditorName'];//I('get.auditor_name');//跟进人的名字
+                //$auditor_id = I('get.auditor_id');//分配跟进人
+                //$auditor_name = I('get.auditor_name');//跟进人的名字
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>非正常完结退票事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, $auditor_id, $auditor_name, $proLevel, $pro_subprocess_desc);
+                        $auditor_id = explode(',', $auditor_id);
+                        //跳到法务人员
+                        foreach ($auditor_id as $k => $v) {
+                            $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($v) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>非正常完结退票审核事宜';
+                            $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $v, $xmlId, $plId, 'one', $content, -3,$time) && $updataProject;
+                            $time=$time+1;
+                        }
+                    }
+                }
+                break;
+            case '24_3':
+                $proAdminId=$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?$projectModel->checkSublevel(addNewLevel($proLevel),$proIid):10;//I('get.auditor_id');
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>非正常完结退票事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
+                        $return = true;
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($proAdminId) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>非正常完结退票审核事宜';
+                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $proAdminId, $xmlId, $plId, 'one', $content, -3) && $updataProject && $return;
+                    }
+                }
+                break;
+            case '24_4':
+                $auditor_id=$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?$projectModel->checkSublevel(addNewLevel($proLevel),$proIid):10;//I('get.auditor_id');
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>非正常完结退票事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>非正常完结退票审核事宜';
+                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $auditor_id, $xmlId, $plId, 'one', $content, -3) && $updataProject;
+                    }
+                }
+                break;
+            case '24_5':
+                $auditor_id=$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?$projectModel->checkSublevel(addNewLevel($proLevel),$proIid):10;//I('get.auditor_id');
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>非正常完结退票事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>非正常完结退票审核事宜';
+                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $auditor_id, $xmlId, $plId, 'one', $content, -3) && $updataProject;
+                    }
+                }
+                break;
+            case '24_6':
+                $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
+                // $newProLevel=addNewLevel($proLevel);
+                $return=true;
+                //直接结束
+                $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的完结退款流水已上传';
+                $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one', $contents, -1) && $updataProject && $return;
+                break;
+
         }
 
         if (!$return) {
@@ -1952,7 +2835,7 @@ class ProjectController extends CommonController
         $pre = I('get.pre');
         $this->assign('pre', $pre);
         $this->assign('admin', $admin);
-        if (in_array(intval($pre),array(4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20))) {
+        if (in_array(intval($pre),array(4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25))) {
             //新建子流程
             $this->display('subProcess1');
         } else {

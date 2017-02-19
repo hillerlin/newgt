@@ -82,7 +82,7 @@ $('#j_custom_issuedate').on('afterchange.bjui.datepicker', function(e, data) {
     </td>
 </tr>
 
-<?php if($proLevel=='0_1' || $proLevel=='13' || $proLevel=='10_2'):?>
+<?php if($proLevel=='0_1' || $proLevel=='13' || $proLevel=='10_2' || $proLevel=='4_2'):?>
 <tr>
     <td>
         <label for="money" class="control-label x120"><?php
@@ -92,6 +92,8 @@ $('#j_custom_issuedate').on('afterchange.bjui.datepicker', function(e, data) {
               echo '法务跟进人：';
             }elseif($proLevel=='10_2'){
                 echo '风控部审核人员';
+            }elseif($proLevel=='4_2'){
+                echo '分配跟进人：';
             }?></label>
 
         <input type="hidden" name="admin_id" value="" />

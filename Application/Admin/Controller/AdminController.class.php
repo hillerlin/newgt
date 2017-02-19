@@ -306,13 +306,16 @@ class AdminController extends CommonController {
             $map['role_id']=18;
         }elseif($proLevel=='12_1'){//
             $map['role_id']=array('in',array());
+        }elseif($proLevel=='4_2')
+        {
+            $map['role_id']=array('in','16,18');
         }
         $model = D('Admin');
         $list = $model->where($map)->select();
         $total = $model->where($map)->count();
         $this->assign('total', $total);
         $this->assign('list', $list);
-        $this->assign('post', $post);
+       // $this->assign('post', $post);
         $this->display('project_follow');
     }
     

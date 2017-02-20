@@ -153,6 +153,8 @@ class ProjectController extends CommonController
                 break;
             case '24':
                 break;
+            case '25':
+                break;
             default:
                 $oldProject=addSubProcessAuditor($pjId,$auditor_id,$auditor_name,$pro_level,$pro_subprocess_desc);
                 break;
@@ -1858,9 +1860,20 @@ class ProjectController extends CommonController
                     }
                 }
                 break;
-            case '19'://资料下载中心审核流程
-                $contents=$admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交资料下载知情';
-                $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one', $contents, -3);
+            case '19'://资料下载中心审核流程 彭自己提交
+                $auditor_id = I('get.auditor_id');//分配跟进人
+                $auditor_name = I('get.auditor_name');//跟进人的名字
+                $updataProject = addSubProcessAuditor($proIid, $auditor_id, $auditor_name, $proLevel, $pro_subprocess_desc);
+                $auditor_id = explode(',', $auditor_id);
+                $newProLevel=addNewLevel($proLevel);
+                foreach ($auditor_id as $pAk=>$pAv)
+                {
+                    $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>分配项目<code>' . projectNameFromId($proIid) . '</code>资料下载权限给<code>'.adminNameToId($pAv).'</code>';
+                    $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $pAv, $xmlId, $plId, 'one', $contents, -3,$time) && $updataProject;
+                    $time=$time+$pAk;
+                }
+                $contents=$admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交资料下载知情完毕！';
+                $return = postNextProcess($wfId, $newProLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one', $contents, -3);
                 break;
             //换质退款
             case '20':
@@ -1884,10 +1897,6 @@ class ProjectController extends CommonController
                             $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $pAv, $xmlId, $plId, 'one', $contents, -3,$time) && $updataProject;
                             $time=$time+$pAk;
                         }
-
-
-
-                    //跳到法务人员
                     foreach ($auditor_id as $k => $v) {
                         $time=$time+$k;
                         $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>提交项目<code>' . projectNameFromId($proIid) . '</code>换质退款流程';
@@ -2729,6 +2738,57 @@ class ProjectController extends CommonController
                 $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>的完结退款流水已上传';
                 $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one', $contents, -1) && $updataProject && $return;
                 break;
+            //申请资料下载
+            case '25':
+                //新建商票审核流程-项管专员
+                $proAdminId = $projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?explode(',',$projectModel->checkSublevel(addNewLevel($proLevel),$proIid)):64;//28;//传给项管总监知情审核
+                if (intval($proRebutter) > 0)//驳回重发的修改
+                {
+                    $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                    $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                } else  //正常流程发起
+                {
+                    $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);
+                    foreach ($proAdminId as $pAk=>$pAv)
+                    {
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($pAv) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>项目资料下载审核';
+                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $pAv, $xmlId, $plId, 'one', $content, -3,$time) && $updataProject;
+                        $time=$time+$pAk;
+                    }
+
+                }
+                break;
+            case '25_1':
+                $auditor_id = $projectModel->returnCheckIdFromProLevel(addNewLevel($proLevel),$proIid)['auditorId'];//I('get.auditor_id');//分配跟进人
+                $auditor_name =  $projectModel->returnCheckIdFromProLevel(addNewLevel($proLevel),$proIid)['auditorName'];//I('get.auditor_name');//跟进人的名字
+                //$auditor_id = I('get.auditor_id');//分配跟进人
+                //$auditor_name = I('get.auditor_name');//跟进人的名字
+                 $newProLevel=addNewLevel($proLevel);
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>申请资料下载申请驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, $auditor_id, $auditor_name, $proLevel, $pro_subprocess_desc);
+                        $auditor_id = explode(',', $auditor_id);
+                        foreach ($auditor_id as $k => $v) {
+                            $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($v) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>申请资料下载知情';
+                            $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $v, $xmlId, $plId, 'one', $content, -3,$time) && $updataProject;
+                            $time=$time+1;
+                        }
+                        $return = postNextProcess($wfId, $newProLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one', $contents, -1) && $updataProject && $return;
+                    }
+                }
+                break;
 
         }
 
@@ -2835,7 +2895,7 @@ class ProjectController extends CommonController
         $pre = I('get.pre');
         $this->assign('pre', $pre);
         $this->assign('admin', $admin);
-        if (in_array(intval($pre),array(4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25))) {
+        if (in_array(intval($pre),array(4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30))) {
             //新建子流程
             $this->display('subProcess1');
         } else {
@@ -3119,6 +3179,7 @@ class ProjectController extends CommonController
     {
         $map['pro_id'] = I('get.pro_id');
         $map['file_id'] = I('get.file_id');
+        $admin=session('admin');
         $list = D('ProjectAttachment')->where($map)->select();
         $flag=D('ProjectFile')->where($map)->field('secret')->find();
         $exts = getFormerExts();
@@ -3127,13 +3188,21 @@ class ProjectController extends CommonController
         $this->assign('flag',$flag['secret']);
         $this->assign($map);
         if(I('get.methodname')){
+            if(intval($admin['admin_id'])!==1)
+            {
+                foreach($list as $k=>$v){
+                    //此人的id不在此文件中的allow_adminid中，则不让其看见这个文件
+                    if(strpos($v['allow_adminid'],$admin['admin_id'])===false && !empty($v['allow_adminid'])){
+                        unset($list[$k]);
+                    }
+                }
+            }
             $this->assign('list', $list);
             $this->display(I('get.methodname'));
         }else{
             $secret=M('ProjectFile')->getFieldByFileId($map['file_id'],'secret');
             //可以访问这些文件的角色
             $allow_role= C('fileLevel')[$secret]['role_id'];
-            $admin=session('admin');
             //当此人的角色id不在secret对应的fileLevel下中的fole_id中并且secret大于1【1代表所有人都可以看到，不需要判断】，就需要判断此人的id是否在文件的allow_adminid中，在则运行访问，否则不允许访问
            // if(strpos($allow_role,$admin['role_id'])===false && $secret>1){
 /*            if($secret>1){

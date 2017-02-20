@@ -382,14 +382,18 @@ class RoleController extends CommonController {
         $admin=$_SESSION['admin'];
         $fileLevel=C('fileLevel');
         foreach ($file_tree as $k=> $v) {
-            if($v['secret']>1){
-                //如果文件的机密等级大于1，则代表此文件夹是机密的，需要与配置中的fileLevel进行比对，查看此人的角色是否在对应的role_id中，在则可以查，
-                //不在，则需要进一步判断，此人的是否是特批查看此文件的用户，即：此文件夹中的 allow_adminid 是否包含了此人的id号
-                if(strpos($fileLevel[$v['secret']]['role_id'],$admin['role_id'])===false && strpos($v['allow_adminid'],$admin['admin_id'])===false){
-                    unset($file_tree[$k]);
-                    continue;
+            if(intval($admin['role_id'])!==1)
+            {
+                if($v['secret']>1){
+                    //如果文件的机密等级大于1，则代表此文件夹是机密的，需要与配置中的fileLevel进行比对，查看此人的角色是否在对应的role_id中，在则可以查，
+                    //不在，则需要进一步判断，此人的是否是特批查看此文件的用户，即：此文件夹中的 allow_adminid 是否包含了此人的id号
+                    if(strpos($fileLevel[$v['secret']]['role_id'],$admin['role_id'])===false && strpos($v['allow_adminid'],$admin['admin_id'])===false){
+                        unset($file_tree[$k]);
+                        continue;
+                    }
                 }
             }
+
             $array[$v['file_id']] = $v;
         }
         $tree = new \Admin\Lib\Tree;
@@ -399,7 +403,7 @@ class RoleController extends CommonController {
         $this->assign($map);
         $this->assign('pro_title',I('get.custom_pro_title'));
         if(I('get.actionname') || I('get.custom_pro_id')){
-            $this->json_success('新建成功', '/Admin/Role/fileRole/pro_id/'.$map['pro_id'], '', true, array('tabid' => 'project-subwidows','tabName'=>'project-submit','tabTitle'=>'资料包'),1);
+            $this->json_success('获取成功', '/Admin/Role/fileRole/pro_id/'.$map['pro_id'], '', true, array('tabid' => 'project-subwidows','tabName'=>'project-submit','tabTitle'=>'资料包'),1);
         }else{
             $this->display();
         }

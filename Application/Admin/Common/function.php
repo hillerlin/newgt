@@ -495,7 +495,9 @@ function redisCollect($proLevel,$sender,$receive='',$time,$proId,$specialMessage
         case '18':
             $contents='项管专员<code>'.$sender.'</code>新建大麦<code>'.$proName.'</code>放款流程';
             break;
-  
+        case '25':
+            $contents='同业部经理<code>'.$sender.'</code>申请项目<code>'.$proName.'</code>资料下载';
+            break;
         case '-1':
         case '-2':
         case '-3':
@@ -609,6 +611,10 @@ function redisPostAudit($proLevel,$sender,$receive='',$time,$proId,$plId,$specia
         case '18':
             $contents='项管专员<code>'.$sender.'</code>新建大麦<code>'.$proName.'</code>放款流程';
             break;
+        case '25':
+            $contents='同业部经理<code>'.$sender.'</code>申请项目<code>'.$proName.'</code>资料下载';
+            break;
+
         case '-1':
         case '-2':
         case '-3':
@@ -1093,6 +1099,7 @@ function pidfile($folder){
  * @return          返回被更新的记录条数
  */
 function saveAll($table,$index,$addData,$data,$referer,$where){
+    //saveAll('ProjectAttachment','allow_adminid',$personId,$oldFiles,'id',array('id'=>array('in',$fileId)));
     //将需要插入的新人添加到原先已经存在的人的id集合中即，插入到allow_adminid中
     foreach($data as $k=>$v){
         //将旧数据，和要插入的数据都转换为数组，然后合并，组合成新的要插入的数据

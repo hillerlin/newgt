@@ -24,9 +24,9 @@ class IndexController extends CommonController {
         //el_292541503583fc0a60758b7036469204
        // $fileLevel=C('Pro.aaaa');
        //  $fileLevel=C('Pro.aaaa','999999','','./Application/Admin/Conf/process.php');  //封装了C方法的写入
-        $userInfo=D('Admin')->where('`admin_id`=2')->field('authpage')->find();
+       // $userInfo=D('Admin')->where('`admin_id`=2')->field('authpage')->find();
        // $userInfo=D('Admin')->where('`admin_id`=16')->field('authpage')->find();
-        $authpage=$userInfo['authpage'];
+        //$authpage=$userInfo['authpage'];
        // $unseriAuth=json_decode($authpage,true);
 /*foreach ($unseriAuth as $ukey=>$uval)
 {
@@ -42,9 +42,9 @@ class IndexController extends CommonController {
     }
 }
          $newAuth=json_encode($unseriAuth);*/
-         $map['authpage']=$authpage;
-         //$update=D('Admin')->where('`role_id`=2')->data($map)->save();
-         $update=D('Admin')->where(1)->data($map)->save();
+       //  $map['authpage']=$authpage;
+        // $update=D('Admin')->where('`role_id`=2')->data($map)->save();
+         //$update=D('Admin')->where(1)->data($map)->save();
 
          $admin = session('admin');
          if ($admin['is_supper'] == 0) {

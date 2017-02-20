@@ -4,6 +4,7 @@
         var json = $.parseJSON(data)
         $(this).bjuiajax('ajaxDone', json)
         if (json[BJUI.keys.statusCode] == BJUI.statusCode.ok) {
+            //debugger
             add_uploadedfile(json.content);
 //        $('#j_custom_pic').val(json.filename).trigger('validate')
 //        $('#j_custom_span_pic').html('<img src="'+ json.filename +'" width="100" />')
@@ -13,7 +14,9 @@
     function add_uploadedfile(data) {
         //debugger
         var i = $('#file-list> tbody > tr').length + 1;
-        var newTr = '<tr><td align="center">'+i+'</td><td align="center"><a href="'+data.file_path+'">' + data.file_name + '</a></td><td align="center">' + data.addtime + '</td><td align="center"><a href="<?php echo U("Project/remove_attachment")?>?aid='+data.aid+'&pro_id={#pro_id}" data-data=\'{"file_path":\"'+data.file_path+'\","pro_id":"{#pro_id}","aid":"'+data.aid+'\"}\' class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td></tr>';
+
+        var newTr = '<tr><td align="center">' + i + '</td><td align="center"><a href="' + data.file_path + '">' + data.file_name + '</a></td>' + '<td align="center">' + data.addtime + '</td>' + '<td align="center">' + data.realName + '</td>' + '<td align="center"><a href="<?php echo U("Project/remove_attachment")?>?aid=' + data.aid + '&pro_id={#pro_id}" data-data=\'{"file_path":\"' + data.file_path + '\","pro_id":"{#pro_id}","aid":"' + data.aid + '\"}\' class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td></tr>';
+       // var newTr = '<tr><td align="center">'+i+'</td><td align="center"><a href="'+data.file_path+'">' + data.file_name + '</a></td><td align="center">' + data.addtime + '</td><td align="center"><a href="<?php echo U("Project/remove_attachment")?>?aid='+data.aid+'&pro_id={#pro_id}" data-data=\'{"file_path":\"'+data.file_path+'\","pro_id":"{#pro_id}","aid":"'+data.aid+'\"}\' class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除该行信息吗？">删</a></td></tr>';
 //        var newImg = '<li id="' + data.file_id + '"><input type="hidden" name="attachment['+ i +'][path]" value="' + data.file_path + '" /><div class="thumb-list-pics"><a href="javascript:void(0);"><img src="' + data.file_path + '" alt=""/></a></div><a href="javascript:del_file_upload(0,' + data.file_id + ',\'' + data.file_path + '\');" class="del" title="删除">X</a><a href="javascript:insert_editor(\'' + data.file_path + '\');" class="inset"><i class="fa fa-clipboard"></i>插入图片</a></li>';
         $('#file-list > tbody').append(newTr);
     }

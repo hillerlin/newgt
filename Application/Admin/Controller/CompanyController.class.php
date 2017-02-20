@@ -233,17 +233,7 @@ class CompanyController extends CommonController {
     {
         $pre=I('get.pre')?I('get.pre'):I('post.pre');
         $proTitle=I('post.company_name');
-        //$projectList=array();
-       // $pjInfo=D('PjWorkflow')->select();
-        //$proIdString='';
-/*        foreach ($pjInfo as $kk=>$vv)
-        {
-            if(explode('_',$vv['pro_level_now'])[0]==$pre)
-            {
-                $proIdString.=$vv['pj_id'].',';
-            }
-        }*/
-        //$mapStripTags =rtrim($proIdString,',');
+        $proJectModel=D('Project');
         $map='';
         if (I('post.begin_time')) {
             $beginTime=strtotime(I('post.begin_time'));
@@ -257,15 +247,19 @@ class CompanyController extends CommonController {
             $map.=" and `pro_title` like '%".$proTitle."%'";
         }
         $pre=='18'?$map.=" and  `binding_oa`=1 ":$map.=' and `binding_oa` is null';
-        $projectIng=D('Project')->field('*,SUBSTR(`binding_oa`,1,1) as `binding_oa`')->where("`is_all_finish`=0 $map")->select();
-/*        foreach ($projectIng as $k=>$v)
+        $projectIng=$proJectModel->field('*,SUBSTR(`binding_oa`,1,1) as `binding_oa`')->where("`is_all_finish`=0 $map")->select();
+        //同业部经理申请给资方看资料包，条件是风控会之后，风控会最后的流程是8_4
+        if($pre=='25')
         {
-            $finishStatus=json_decode($v['finish_status'],true);
-            if(!$finishStatus || !in_array($pre,$finishStatus))
+            $selectProjectIds= $proJectModel->returnPjInfoFromPjWorkflow('8_4');
+            foreach ($projectIng as $pk=>$pv)
             {
-                array_push($projectList,$v);
+                if(!in_array($pv['pro_id'],$selectProjectIds))
+                {
+                    unset($projectIng[$pk]);
+                }
             }
-        }*/
+        }
         $this->assign('list',$projectIng);
         $this->assign('type',$pre);
         $this->display();

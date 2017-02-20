@@ -505,5 +505,11 @@ class ProjectModel extends BaseModel {
         $projectInfo=$this->where("`pro_id`=%d",array($proId))->find();
         return $projectInfo;
     }
+    //从pj_workflow表中返回指定projectId
+    public function returnPjInfoFromPjWorkflow($proLevel)
+    {
+        $list=D('PjWorkflow')->where("`pro_level_now`='%s'",array($proLevel))->getField('pj_id',true);
+        return $list;
+    }
 }
 

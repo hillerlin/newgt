@@ -3188,7 +3188,7 @@ class ProjectController extends CommonController
         $this->assign('flag',$flag['secret']);
         $this->assign($map);
         if(I('get.methodname')){
-            if(intval($admin['admin_id'])!==1)
+            if(intval($admin['admin_id'])!==2)
             {
                 foreach($list as $k=>$v){
                     //此人的id不在此文件中的allow_adminid中，则不让其看见这个文件

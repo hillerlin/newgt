@@ -8,6 +8,7 @@
 <div class="bjui-pageContent">
     <form action="<?php echo U('RequestFound/saveRequestFound')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false" method="post">
         <input type="hidden" name="bid">
+        <input type="hidden" name="borrow_name_type">
         <table class="table table-bordered" data-selected-multi="true">
             <tbody>
             <tr data-id="1">
@@ -74,7 +75,7 @@
                 <td colspan="4">费率: <input type="text" name="charge_rate"> 融资金额: <input type="text" name="collect_money_2"></td>
             </tr>
             </if>
-            <tr>
+            <tr >
                 <td rowspan="6" class="conth"> 收款方信息</td>
                 <td class="conth"> 是否监管账户:</td>
                 <td>
@@ -103,6 +104,25 @@
             <tr>
                 <td class="conth">账号:</td>
                 <td colspan="5"><input type="text" value="" name="bank_num" size="50" data-rule="required"></td>
+            </tr>
+            <tr class="chargeRate">
+                <td rowspan="4" class="conth">
+                    居间费收款方信息
+                </td>
+            </tr>
+            <tr class="chargeRate">
+                <td class="conth"> 户名:</td>
+
+                <td colspan="5"><input type="text" value="" name="charge_account_name" data-toggle="lookup" data-url="/Admin/Bank/lookupCharge.html"  size="50" data-width="700" data-height="600" data-rule="required"></td>
+            </tr>
+
+            <tr class="chargeRate">
+                <td class="conth">开户银行:</td>
+                <td colspan="5"><input type="text" value=""  name="charge_bank_name" size="50" data-rule="required"></td>
+            </tr>
+            <tr class="chargeRate">
+                <td class="conth">账号:</td>
+                <td colspan="5"><input type="text" value="" name="charge_bank_num" size="50" data-rule="required"></td>
             </tr>
 
             <php>if(in_array($type,array(1,2,3))):</php>
@@ -141,6 +161,7 @@
 </div>
 <script>
     $(function(){
+        //$('.chargeRate').css({'display':'none'});
 
         $('#pro').change(function(){
             var pro_con=$(this).children('option:selected').attr('pro_con');
@@ -195,6 +216,17 @@
     })
     $('input[name=loan_money]').on('afterchange.bjui.lookup', function(e, data) { //查找找回
         $('input[name=s_cmoney]').val(DX(data.value))
+    })
+    $('input[name=borrow_name_type]').on('afterchange.bjui.lookup', function(e, data) { //查找找回
+      //  $('input[name=s_cmoney]').val(DX(data.value))
+        if(data.value==7)
+        {
+            //alert(1)
+        }
+        else
+        {
+            //alert(2)
+        }
     })
 
 

@@ -1103,11 +1103,13 @@ function saveAll($table,$index,$addData,$data,$referer,$where){
     //将需要插入的新人添加到原先已经存在的人的id集合中即，插入到allow_adminid中
     foreach($data as $k=>$v){
         //将旧数据，和要插入的数据都转换为数组，然后合并，组合成新的要插入的数据
-        $tmp=array_merge(explode(',',$v[$index]),explode(',',$addData));
+        //$tmp=array_merge(explode(',',$v[$index]),explode(',',$addData));
+        $tmp=$data[$k][$v[$index]]=explode(',',$addData);
         //合并数组的时候保证数组唯一，并且去除空值
         $tmp=array_filter(array_unique($tmp));
         $data[$k]['allow_adminid']=implode(',',$tmp);
     }
+
     $whencase='';
     //拼接whencase 字段
     foreach($data as $k=>$v){

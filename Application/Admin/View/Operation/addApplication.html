@@ -8,7 +8,7 @@
 <div class="bjui-pageContent">
     <form action="<?php echo U('RequestFound/saveRequestFound')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false" method="post">
         <input type="hidden" name="bid">
-        <input type="hidden" name="borrow_name_type">
+        <input type="hidden" name="product_type">
         <table class="table table-bordered" data-selected-multi="true">
             <tbody>
             <tr data-id="1">
@@ -113,16 +113,16 @@
             <tr class="chargeRate">
                 <td class="conth"> 户名:</td>
 
-                <td colspan="5"><input type="text" value="" name="charge_account_name" data-toggle="lookup" data-url="/Admin/Bank/lookupCharge.html"  size="50" data-width="700" data-height="600" data-rule="required"></td>
+                <td colspan="5"><input type="text" value="" name="charge_account_name" data-toggle="lookup" data-url="/Admin/Bank/lookupCharge.html"  size="50" data-width="700" data-height="600" ></td>
             </tr>
 
             <tr class="chargeRate">
                 <td class="conth">开户银行:</td>
-                <td colspan="5"><input type="text" value=""  name="charge_bank_name" size="50" data-rule="required"></td>
+                <td colspan="5"><input type="text" value=""  name="charge_bank_name" size="50" ></td>
             </tr>
             <tr class="chargeRate">
                 <td class="conth">账号:</td>
-                <td colspan="5"><input type="text" value="" name="charge_bank_num" size="50" data-rule="required"></td>
+                <td colspan="5"><input type="text" value="" name="charge_bank_num" size="50" ></td>
             </tr>
 
             <php>if(in_array($type,array(1,2,3))):</php>
@@ -217,15 +217,14 @@
     $('input[name=loan_money]').on('afterchange.bjui.lookup', function(e, data) { //查找找回
         $('input[name=s_cmoney]').val(DX(data.value))
     })
-    $('input[name=borrow_name_type]').on('afterchange.bjui.lookup', function(e, data) { //查找找回
-      //  $('input[name=s_cmoney]').val(DX(data.value))
-        if(data.value==7)
+    $('input[name=product_type]').on('afterchange.bjui.lookup', function(e, data) { //查找找回
+        if(data.value==9 || data.value==7)  //车贷和每天惠需要显示居间费的信息
         {
-            //alert(1)
+            $('.chargeRate').css({'display':''});
         }
         else
         {
-            //alert(2)
+            $('.chargeRate').css({'display':'none'});
         }
     })
 

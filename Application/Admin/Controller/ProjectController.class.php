@@ -90,8 +90,6 @@ class ProjectController extends CommonController
             $model->pro_linker = $admin['admin_id'];
             $model->admin_id=$admin['admin_id'];
             $result = $model->relation('supplier')->add();
-
-
             //审批流入库处理
             $pjWorkFlow = D('PjWorkflow')->data(array('pj_id' => $result, 'pj_state' => '待审核', 'pro_level_now' => '0', 'pro_times_now' => '1'))->add();
             $sendProcess = D('SendProcess')->data(array('wf_id' => $pjWorkFlow, 'sp_message' => '已提交', 'sp_author' => $admin['admin_id'], 'sp_addtime' => time(), 'sp_role_id' => $admin['role_id']))->add();
@@ -265,24 +263,24 @@ class ProjectController extends CommonController
             $this->assign(array('list'=>$list,'exts'=>getFormerExts(),'file_id'=>$p_model->returnFolderInfo($pro_id,'投票')['fileId']));
             
         }
-        if(explode('_',$proLevel)[0]=='11')
+        if(explode('_',$proLevel)[0]=='11' || explode('_',$proLevel)[0]=='12')
         {
             //查找【合同】文件夹下的文件
             $list=$p_model->returnFolderInfo($pro_id,'合同初稿')['list'];
             $this->assign(array('list'=>$list,'exts'=>getFormerExts(),'file_id'=>$p_model->returnFolderInfo($pro_id,'合同初稿')['fileId']));
         }
-        if(explode('_',$proLevel)[0]=='12')
+        if(explode('_',$proLevel)[0]=='13')
         {
             //查找【合同】文件夹下的文件
             $list=$p_model->returnFolderInfo($pro_id,'合同终稿')['list'];
             $this->assign(array('list'=>$list,'exts'=>getFormerExts(),'file_id'=>$p_model->returnFolderInfo($pro_id,'合同终稿')['fileId']));
         }
-        if(explode('_',$proLevel)[0]=='13')
+   /*     if(explode('_',$proLevel)[0]=='13')
         {
             //查找【风控部】文件夹下的文件
             $list=$p_model->returnFolderInfo($pro_id,'风控部')['list'];
             $this->assign(array('list'=>$list,'exts'=>getFormerExts(),'file_id'=>$p_model->returnFolderInfo($pro_id,'风控部')['fileId']));
-        }
+        }*/
         if(explode('_',$proLevel)[0]=='7'||explode('_',$proLevel)[0]=='10')
         {
             //查找【风控部】文件夹只返回该角色的文件下的文件
@@ -382,16 +380,16 @@ class ProjectController extends CommonController
                 //项目归档
                 /*****************驳回情况*******************/
                 $newProLevel=addNewLevel($proLevel);
-                $updataProject=addSubProcessAuditor($proIid,'','',$newProLevel,$pro_subprocess_desc);//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+
                 if (intval($status) === 1)//驳回情况
                 {
                     $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
                     //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
                     $proRebutterLevel = explode('-',I('get.reButter'))[1];
-                    $contents = '项管专员<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>立项事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $contents = '项管专员<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>项目 初审反馈给<code>' . adminNameToId($reButter) . '</code>';
                     $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
                 } else {//审批通过
-
+                    $updataProject=addSubProcessAuditor($proIid,'','',$newProLevel,$pro_subprocess_desc);//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
                     $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, 0, $xmlId, $plId, 'one') && $updataProject;
                 }
             break;
@@ -2075,6 +2073,29 @@ class ProjectController extends CommonController
                 }
                 break;
             case '20_9':
+
+                $auditor_id = $projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?$projectModel->checkSublevel(addNewLevel($proLevel),$proIid):33;//array('10','24');//分配跟进人
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>换质退款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>换质退款审核事宜';
+                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $auditor_id, $xmlId, $plId, 'one', $content, -3) && $updataProject;
+                    }
+                }
+                break;
+            case '20_10':
                 $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
                 // $newProLevel=addNewLevel($proLevel);
                 $return=true;
@@ -2284,6 +2305,28 @@ class ProjectController extends CommonController
                 }
                 break;
             case '21_9':
+                $auditor_id = $projectModel->checkSublevel(addNewLevel($proLevel),$proIid)?$projectModel->checkSublevel(addNewLevel($proLevel),$proIid):33;//array('10','24');//分配跟进人
+                if (intval($status) === 1)//驳回情况
+                {
+                    $reButter = explode('-',I('get.reButter'))[0];//驳回人的adminId
+                    //先定义驳回的级别   这里后期开发需做成动态赋值，因业务需求驳回只能指定给立项人，所以赋值为0
+                    $proRebutterLevel = explode('-',I('get.reButter'))[1];
+                    $contents = $admin['role_name'].'<code>' . $admin['real_name'] . '</code>将项目<code>' . projectNameFromId($proIid) . '</code>换质,退款事宜驳回给<code>' . adminNameToId($reButter) . '</code>';
+                    $return =reButter($plId,$wfId,$proIid,$proLevel,$contents,$proRebutterLevel,$reButter,$proTimes,$admin,$xmlId);//驳回模块
+                } else {
+                    if (intval($proRebutter) > 0)//驳回重发的修改
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
+                        $return = postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $proRebutter, $xmlId, $plId, 'one') && $updataProject;
+                    } else  //正常流程发起
+                    {
+                        $updataProject = addSubProcessAuditor($proIid, null, null, $proLevel, $pro_subprocess_desc);
+                        $content = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>向:<code>' . adminNameToId($auditor_id) . '</code>' . '提交项目<code>' . projectNameFromId($proIid) . '</code>换质,退款审核事宜';
+                        $return = postNextProcess($wfId, $proLevel, $proTimes, $admin, $proIid, 0, $auditor_id, $xmlId, $plId, 'one', $content, -3) && $updataProject;
+                    }
+                }
+                break;
+            case '21_10':
                 $updataProject=addSubProcessAuditor($proIid,null,null,$proLevel,$pro_subprocess_desc);
                 // $newProLevel=addNewLevel($proLevel);
                 $return=true;
@@ -3984,7 +4027,7 @@ class ProjectController extends CommonController
         //取出这个项目的所有子流程
         $workflowInfos = array_column($proWorkflow, 'pro_level_now');
         $filterLevel=array_map(array(__CLASS__,'filterLevel'),$workflowInfos);
-        $list=D('Project')->remark($map,$filterLevel);//预留功能，如果后期需要做特殊角色，就是有某个角色想要看到全部备注，$filterLevel=null即可
+        $list=D('Project')->remark($map,array_unique($filterLevel));//预留功能，如果后期需要做特殊角色，就是有某个角色想要看到全部备注，$filterLevel=null即可
         foreach ($list as $key=>$v){
             if(!empty($v))
             {

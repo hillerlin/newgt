@@ -14,7 +14,7 @@
         <tr>
             <td style="width:300px;" align="right">{$v}：</td>
             <td colspan="5">
-                <input type="text" name="custom.profession{$key}"  value="<?php echo $list[$key]['real_name'];?>" readonly="" size="50" data-toggle="lookup" data-url="{:U('/Admin/Role/listName',array('k'=>$key,'multi'=>1))}"
+                <input type="text" name="custom.profession{$key}"  value="<?php echo $list[$key]['real_name'];?>" readonly="" size="100" data-toggle="lookup" data-url="{:U('/Admin/Role/listName',array('k'=>$key,'multi'=>1))}"
                        data-group="custom" data-width="600" placeholder="选择审核人" data-height="300" class="form-control" style="padding-right: 15px; width: 300px;">
                 <input type="hidden" name="custom.adminId{$key}" data-group="custom" class="form-control" value="<?php echo $list[$key]['admin_ids'];?>">
             </td>

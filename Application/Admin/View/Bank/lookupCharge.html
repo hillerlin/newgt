@@ -32,8 +32,8 @@
     <table class="table table-bordered table-hover table-top">
         <thead>
         <tr>
+            <th data-order-field="company_linker" align="center" width="300">户名</th>
             <th data-order-field="company_name" align="center" width="300">开户行</th>
-            <th data-order-field="company_linker" align="center" width="100">户名</th>
             <th data-order-field="company_mobile" align="center" width="100">账号</th>
             <th data-order-field="company_mobile" align="center" width="100">备注</th>
             <th width="100" align="center">操作</th>
@@ -42,8 +42,8 @@
         <tbody>
         <?php foreach($list as $v){?>
         <tr data-id="<?php echo $v['company_id']?>" >
-            <td align="center"><?php echo $v['bank_name']?></td>
             <td align="center"><?php echo $v['account_name']?></td>
+            <td align="center"><?php echo $v['bank_name']?></td>
             <td align="center"><?php echo $v['bank_no']?></td>
             <td align="center"><?php echo $v['remark']?></td>
             <td align="center">

@@ -313,7 +313,7 @@
             <?php $i = 1;foreach($list as $v){?>
             <tr>
                 <td align="center"><?php echo $i++;?></td>
-                <td align="center"><a target="_blank" href="<?php echo $v[" path"]?>"><?php echo $v['doc_name']?></a>
+                <td align="center"><a target="_blank" href='<?php echo $v["path"]?>'><?php echo $v['doc_name']?></a>
                 </td>
                 <td align="center"><?php echo date('Y-m-d H:s:i', $v['addtime'])?></td>
                 <td align="center"><?php echo adminNameToId($v['admin_id'])?></td>

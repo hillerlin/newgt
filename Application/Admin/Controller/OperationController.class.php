@@ -39,7 +39,8 @@ class OperationController extends CommonController
         header("Content-type:text/html:charset=utf-8");
         $pageSize = I('post.pageSize', 10);
         $page = I('post.pageCurrent', 1);
-        $url = 'http://ndm.damailicai.com/admin/dmlc/ProjectApi/waitLoan'; // 平台接口地址前缀
+        $url = 'http://ndm.damailicai.com/admin/dmlc/ProjectApi/waitLoan'; // 线上平台接口
+        //$url='http://ndm.atrmoney.com/admin/dmlc/ProjectApi/waitLoan';
         $params['page']=$page;
         $params['pageNum']=$pageSize;
         $key=md5('xiaopinguo');

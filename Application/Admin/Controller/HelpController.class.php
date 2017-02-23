@@ -367,6 +367,7 @@ class HelpController extends CommonController
         //apache  mod_xsendfile 让Xsendfile发送文件
 //        header("X-Sendfile: $file");
         //nginx
+       // □金融资产交易所 ''▇保理机构
         header('X-Accel-Redirect: ' . $filePath);
     }
 
@@ -396,9 +397,9 @@ class HelpController extends CommonController
                 $abpath = $document_root . $v['path'];
                 $zip->addFile($abpath, $local_path);
             }
-            var_dump($zip->getStatusString());
+            //var_dump($zip->getStatusString());
         }
-        var_dump($zip->getStatusString());
+        //var_dump($zip->getStatusString());
         $zip->close();
     }
 
@@ -407,7 +408,6 @@ class HelpController extends CommonController
         $map['pro_id'] = $pro_id;
         $map['file_id'] = array('in', $file_id);
         $file_list = D('ProjectAttachment')->where($map)->select();
-//        var_dump($file_list);exit;
         $doc = D('ProjectFile')->where($map)->select();
         if (empty($doc) || empty($file_list)) {
             echo json_encode(array('statusCode' => 300, 'message' => '文件包不存在文件' . D('ProjectAttachment')->_sql()));
@@ -428,9 +428,8 @@ class HelpController extends CommonController
                 $abpath = $document_root . $v['path'];
                 $zip->addFile($abpath, $local_path);
             }
-            var_dump($zip->getStatusString());
+
         }
-        var_dump($zip->getStatusString());
         $zip->close();
     }
 

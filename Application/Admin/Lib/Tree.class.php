@@ -335,6 +335,25 @@ class Tree {
         $this->getPath($pid, $top, $name, $path);
     }
 
+    //递归得到role表中的所有pid
+    public function recurRolePid($roleId,$list=null,$switch=null)
+    {
+        if(!$switch)
+        {
+            $list=D('Role')->field('role_id,pid')->select();
+        }
+        static $roleIdList= array();
+        foreach ($list as $k=>$v)
+        {
+            if($v['pid']==$roleId)
+            {
+                $roleIdList[]=$v['role_id'];
+                $this->recurRolePid($v['role_id'],$list,1);
+            }
+        }
+        return $roleIdList;
+    }
+
 }
 
 ?>

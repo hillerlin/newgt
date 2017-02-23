@@ -35,9 +35,9 @@
                 <td>{$v['role_name']}</td>
                 <td>
                     <php>if($personType):</php>
-                    <a href="{:U('/Admin/Role/addAdmin',array('adminId'=>$v['admin_id'],'type'=>$type,'comId'=>$comId))}" class="btn btn-green" data-toggle="doajax" data-confirm-msg="确定要添加--{$v['real_name']}？">添加</a>
+                    <a href="{:U('/Admin/Role/addAdmin',array('adminId'=>$v['admin_id'],'type'=>$type,'comId'=>$comId,'roleId'=>$v['role_id']))}" class="btn btn-green" data-toggle="doajax" data-confirm-msg="确定要添加--{$v['real_name']}？">添加</a>
                     <php>else:</php>
-                    <a href="{:U('/Admin/Role/delAdmin',array('adminId'=>$v['admin_id'],'type'=>$type,'comId'=>$comId))}" class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除--{$v['real_name']}？">删除</a>
+                    <a href="{:U('/Admin/Role/delAdmin',array('adminId'=>$v['admin_id'],'type'=>$type,'comId'=>$comId,'roleId'=>$v['role_id']))}" class="btn btn-red" data-toggle="doajax" data-confirm-msg="确定要删除--{$v['real_name']}？">删除</a>
                     <php>endif;</php>
                 </td>
             </tr>

@@ -194,6 +194,7 @@ class RoleController extends CommonController {
     public  function listName(){
         $pageSize = I('post.pageSize', 200);
         $page = I('post.pageCurrent', 1);
+        $admin=session('admin');
         $where='';
         //判断是否是英文输入的
         if(preg_match("/^[a-zA-Z]+$/",I('post.real_name'))){
@@ -201,6 +202,10 @@ class RoleController extends CommonController {
         }elseif(I('post.real_name')){
             //如果不是英文，则默认为汉字
             $where['a.real_name']=array('like','%'.I('post.real_name').'%');
+        }elseif ($admin['role_id']=='33')//同业部总监只能看到本部门的
+        {
+            //$where['_string']='a.role_id=34 or a.role_id=29';
+            $where['a.role_id']=array('in','34,29,33');//'a.role_id=34 or a.role_id=29';
         }
         //此函数可被系统设置中的消息推送权限设置中的添加调用，因其具备多选的需求，所以在这里添加这个参数判断，以前台显示不同的样式
         if(I('get.multi')) $this->assign('multi',I('get.multi'));
@@ -249,6 +254,16 @@ class RoleController extends CommonController {
     //删除已存在的用户id号
     public function delAdmin(){
         //需要删除的人物id号
+        if(session('admin')['role_id']=='33')//如果是同业部的总监就不给他删除其他部门的权限
+        {
+            $tree = new \Admin\Lib\Tree;
+            $roleIdAttrList=$tree->recurRolePid(33);
+            if(!in_array(I('get.roleId'),$roleIdAttrList))
+            {
+                $this->json_error('没权限删除！');
+            }
+        }
+
         $adminId=I('get.adminId');
         //操作的类型，file：文件，folder:文件夹
         $type=I('get.type');
@@ -268,7 +283,7 @@ class RoleController extends CommonController {
         $tmp=explode(',',$persons['allow_adminid']);
         //查找出要删除的人的id在$tmp中的下标
         $index=array_search($adminId,$tmp);
-        if($index)unset($tmp[$index]);
+        if($index!==false)unset($tmp[$index]);
         //将删除指定人的id后的数组，用‘，’拼接为字符串
         $tmp=implode(',',$tmp);
 

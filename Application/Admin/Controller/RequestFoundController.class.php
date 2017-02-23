@@ -171,6 +171,7 @@ class RequestFoundController extends CommonController {
         $list=$raModel->returnOaInfoFromProId(implode(',',$oaIds),'in','bid');
         $this->assign('oaIds',$oaIds);
         $this->assign('list',$list);
+        $this->assign('proId',$proId);
         $this->display();
     }
 

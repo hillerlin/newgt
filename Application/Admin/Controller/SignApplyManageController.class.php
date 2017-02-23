@@ -752,4 +752,86 @@ class SignApplyManageController extends CommonController {
         $this->assign(array('total' => $total, 'list' => $list));
         $this->display();
     }
+    //导出OA系统中相对应的表格
+    public function exportOaDate()
+    {
+        $proId=I('get.proId');
+        $projectModel=D('Project');
+        $requestFound=D('RequestFound');
+        $oaIds = $projectModel->returnProjectInfo($proId)['binding_oa'];
+        $oaIds=explode('_',$oaIds);
+        array_shift($oaIds);
+        $oaIds = implode(',',$oaIds);
+        $count=count(explode(',',$oaIds));
+        $map['id']=array('in',$oaIds);
+        $requestApply = $requestFound->applicationFundsInfo(1,100,$map)['list'];
+       // $projectType=array_column($requestApply,'product_type','id');//项目类型与ID
+        $projectBankNum=array_column($requestApply,'bank_num','id');//银行账号与ID
+
+        //拼装phpexcel数据类型
+        $combinBankNum=call_user_func_array(function($bankList,$requestApply){
+            $temp=array();
+            $index=7;
+            foreach ($bankList as $k=>$v)
+            {
+               // $temp[$v]['A'.$index]=$k;
+                $temp[$v]['A'.$index]=call_user_func_array(function($requestApply,$k){
+                    foreach ($requestApply as $kk=>$vv)
+                    {
+                        if($vv['id']==$k)
+                        {
+                            return $vv;
+                        }
+                    }
+                },array($requestApply,$k));
+                $index=$index+1;
+            }
+            return $temp;
+        },array($projectBankNum,$requestApply));
+
+
+        //组合入表的格式
+        $arr=array();
+        $arrColumn=array();
+        foreach ($combinBankNum as $comk=>$comv)
+        {
+             if(count($comv)>1)//需要合并的单元格
+             {
+                  array_push($arrColumn,call_user_func_array(function($comv){
+                     $index=array();
+                     $index=array_keys($comv);//返回下标
+                     $joinStart='G'.substr(current($index),1);//第一个下标
+                     $joinEnd='G'.substr(end($index),1);//最后一个下标
+                     return $joinStart.'-'.$joinEnd;
+                 },array($comv)));
+             }
+            $arr=array_merge($arr,call_user_func_array(function($comv){
+                $res=array();
+                foreach ($comv as $k=>$v)
+                {
+                    $index=substr($k,1);
+                    $enter = chr(13);
+                    $timeType=($v['time_type']==1)?'天':'个月';
+                    $res = array_merge($res,array(
+                        $k=>$v['product_name'],
+                        'C'.$index=>date('Y-m-d',$v['full_scale_time']),
+                        'D'.$index=>$v['collect_money'],
+                        'E'.$index=>$v['collect_money'],
+                        'F'.$index=>$v['limit_time'].$timeType,
+                        'G'.$index=>sprintf("账号名称：%s %s银行：%s %s账号：%s",$v['account_name'],$enter,$v['bank_name'],$enter,$v['bank_num'])
+                        ));
+                }
+                return $res;
+            },array($comv)));
+        }
+        $countName='A'.($count+8);
+        $countMoneyName='D'.($count+8);
+       // array_merge($arr,array($countName=>))
+        
+        $file = TMP_PATH.'excel/mtdemo.xlsx';
+        $execl = new \Admin\Lib\PHPexecl();
+        $filename = "大麦请款表";
+       // $execl->importExecl($file, $arr, $filename);
+        $execl->testImport($file, $arr, $filename,$arrColumn,$count);//$arrColumn是要合并的下标组合,$count总列数
+    }
 }

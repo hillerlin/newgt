@@ -102,6 +102,25 @@
                 <td class="conth">账号:</td>
                 <td colspan="5"><input type="text" value="{$list.bank_num}" name="bank_num" size="50" data-rule="required"></td>
             </tr>
+            <tr class="chargeRate">
+                <td rowspan="4" class="conth">
+                    居间费收款方信息
+                </td>
+            </tr>
+            <tr class="chargeRate">
+                <td class="conth"> 户名:</td>
+
+                <td colspan="5"><input type="text" value="{$list.charge_account_name}" name="charge_account_name" data-toggle="lookup" data-url="/Admin/Bank/lookupCharge.html"  size="50" data-width="700" data-height="600" ></td>
+            </tr>
+
+            <tr class="chargeRate">
+                <td class="conth">开户银行:</td>
+                <td colspan="5"><input type="text" value="{$list.charge_bank_name}"  name="charge_bank_name" size="50" ></td>
+            </tr>
+            <tr class="chargeRate">
+                <td class="conth">账号:</td>
+                <td colspan="5"><input type="text" value="{$list.charge_bank_num}" name="charge_bank_num" size="50" ></td>
+            </tr>
 
             <tr class="requestMoney">
                 <td rowspan="3" class="conth" id="information"> 请款说明</td>
@@ -137,7 +156,7 @@
 </div>
 <script>
     $(function(){
-        //debugger
+        $('input[name=charge_account_name]').val()==''?$('.chargeRate').css({'display':'none'}):$('.chargeRate').css({'display':''});
         $("select[name='time_type']").find('option[value="<?php echo $list[time_type];?>"]').attr('selected',true)
 
         $('#pro').change(function(){

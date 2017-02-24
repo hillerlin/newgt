@@ -167,12 +167,12 @@ class ProjectManageController extends CommonController {
             $this->json_error('更新请款表失败');
         }
         
-        if (bccomp($has_loan_money, $pro_info['pro_account']) === 0) {  //请款的金额已经放完，修改放款申请进程的状态
+/*       if (bccomp($has_loan_money, $pro_info['pro_account']) === 0) {  //请款的金额已经放完，修改放款申请进程的状态
             if (!D('WorkflowProcess')->where('context=' . $loan_id)->save(array('current_node_index' => 11))) {
                 $model->rollback();
                 $this->json_error('失败3');
             }
-        }
+        }*/
         $model->commit();
         self::log('add', "放款操作:pro_id-$pro_id");
        // $this->json_success('保存成功');

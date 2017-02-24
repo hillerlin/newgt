@@ -1,28 +1,30 @@
 <div class="bjui-pageHeader">
     <div class="bjui-searchBar">
-<!--
-        <button data-url="{:U('SignApplyManage/exportOaDate',array('proId'=>$proId))}" class="btn btn-blue" data-toggle="dialog" data-height='400' data-icon="plus" data-id="Bank-add">导出Excel</button>
--->
-        <a href="<?php echo U('SignApplyManage/exportOaDate',array('proId'=>$proId))?>" class="btn btn-green" onclick="doc_filedownload1(this); return false;" data-title="编辑-项目">下载Excel表格</a>
+        <?php if($isChargeMoney==1):?>
+        <a href="<?php echo U('SignApplyManage/exportoadate',array('proId'=>$proId,'type'=>1))?>" class="btn btn-green" onclick="doc_filedownload1(this); return false;" data-title="编辑-项目">下载麦田标的表格</a>
         &nbsp;
-        <!--            <label>公司名称：</label><input type="text" id="company_name" value="{$post.company_name}" name="company_name" class="form-control" size="10">&nbsp;
-                    <label>联系人姓名：</label><input type="text" value="{$post.company_linker}" name="company_linker" class="form-control" size="8">&nbsp;
-                    <input type="checkbox" id="j_table_chk" value="true" data-toggle="icheck" data-label="我的客户">
-                    <button type="button" class="showMoreSearch" data-toggle="moresearch" data-name="custom"><i class="fa fa-angle-double-down"></i></button>
-                    <button type="submit" class="btn-default" data-icon="search">查询</button>&nbsp;-->
-     <!--   <a class="btn btn-orange" href="javascript:;" data-toggle="reloadsearch" data-clear-query="true" data-icon="undo">清空查询</a>-->
+        <a href="<?php echo U('SignApplyManage/exportoadate',array('proId'=>$proId,'type'=>2))?>" class="btn btn-green" onclick="doc_filedownload1(this); return false;" data-title="编辑-项目">下载非麦田标的表格</a>
+        &nbsp;
+        <a href="<?php echo U('SignApplyManage/exportoadate',array('proId'=>$proId,'type'=>3))?>" class="btn btn-green" onclick="doc_filedownload1(this); return false;" data-title="编辑-项目">下载居间费表格</a>
+        &nbsp;
+        <?php else:?>
+        <a href="<?php echo U('SignApplyManage/exportoadate',array('proId'=>$proId,'type'=>1))?>" class="btn btn-green" onclick="doc_filedownload1(this); return false;" data-title="编辑-项目">下载Excel表格</a>
+        &nbsp;
+        <?php endif;?>
+
+
     </div>
-    <script>
-        function doc_filedownload1(a) {
-            $.fileDownload($(a).attr('href'), {
-                failCallback: function(responseHtml, url) {
-                    if (responseHtml.trim().startsWith('{')) responseHtml = responseHtml.toObj()
-                    $(a).bjuiajax('ajaxDone', responseHtml)
-                }
-            })
-        }
-    </script>
     </div>
+<script>
+    function doc_filedownload1(a) {
+        $.fileDownload($(a).attr('href'), {
+            failCallback: function(responseHtml, url) {
+                if (responseHtml.trim().startsWith('{')) responseHtml = responseHtml.toObj()
+                $(a).bjuiajax('ajaxDone', responseHtml)
+            }
+        })
+    }
+</script>
 <div class="bjui-pageContent tableContent">
     <table class="table table-bordered table-hover table-striped table-top" data-selected-multi="true">
         <thead>

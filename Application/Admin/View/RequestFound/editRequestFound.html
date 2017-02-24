@@ -103,7 +103,7 @@
                 <td colspan="5"><input type="text" value="{$list.bank_num}" name="bank_num" size="50" data-rule="required"></td>
             </tr>
             <tr class="chargeRate">
-                <td rowspan="4" class="conth">
+                <td rowspan="6" class="conth">
                     居间费收款方信息
                 </td>
             </tr>
@@ -121,15 +121,23 @@
                 <td class="conth">账号:</td>
                 <td colspan="5"><input type="text" value="{$list.charge_bank_num}" name="charge_bank_num" size="50" ></td>
             </tr>
+            <tr class="chargeRate">
+                <td class="conth"> 人民币小写:</td>
+                <td colspan="5"><input type="text" name="chargeRateLower" value="{$list.charge_money}" size="30"  readonly></td>
+            </tr>
+            <tr class="chargeRate">
+                <td class="conth"> 人民币大写:</td>
+                <td colspan="5"><input type="text" name="chargeRateUpper" value="" size="30"  readonly></td>
+            </tr>
 
             <tr class="requestMoney">
                 <td rowspan="3" class="conth" id="information"> 请款说明</td>
                 <td class="conth"> 人民币小写:</td>
-                <td colspan="5"><input type="text" name="loan_money" value="" size="30"  readonly></td>
+                <td colspan="5"><input type="text" name="collect_money_other" value="{$list.collect_money}" size="30"  readonly></td>
             </tr>
             <tr >
                 <td class="conth"> 人民币大写:</td>
-                <td colspan="5"><input type="text" name="s_cmoney" value="" size="30"  readonly></td>
+                <td colspan="5"><input type="text" name="s_cmoney_other" value="" size="30"  readonly></td>
             </tr>
             <tr id="deposit" >
                 <td class="conth">保证金是否已付:</td>
@@ -167,8 +175,12 @@
         var conmoney=$('.conmoney')
 
             var money=conmoney.val().trim();
+            var collectMoneyEnd=$('input[name=collect_money_other]').val().trim();
+            var chargeMoneyUpper=$('input[name=chargeRateLower]').val().trim();
             var name=conmoney.attr('name');
             var ajax_name=conmoney.attr('ajax_name');
+            $('input[name=chargeRateUpper]').val(DX(chargeMoneyUpper))
+            $('input[name=s_cmoney_other]').val(DX(collectMoneyEnd))
             $('input[name='+ajax_name+']').val(DX(money));
             $('input[name='+name+']').val(money);
 

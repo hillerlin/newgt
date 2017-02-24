@@ -753,10 +753,34 @@ class SignApplyManageController extends CommonController {
         $this->display();
     }
     //导出OA系统中相对应的表格
-    public function exportOaDate()
+    public function exportoadate()
     {
         $proId=I('get.proId');
-        $projectModel=D('Project');
+        $type=I('get.type');
+
+        switch ($type){
+            case 1:
+                 $mapString="`product_type`<>9 and `product_type`<>7";
+                 $file='mtdemo.xlsx';
+                break;
+            case 2:
+                $mapString="`product_type`=9 or `product_type`=7";
+                $file='mtdemocharge.xlsx';
+                break;
+            case 3:
+                $mapString="`product_type`=9 or `product_type`=7";
+                $file='mtdemochargemoney.xlsx';
+             break;
+        }
+        //'arr'=>$arr,'count'=>$_count,'mergeCell'=>$arrColumn
+        list($arr,$count,$mergeCell)=$this->joinData($proId,$mapString,$type);
+       // var_dump(TMP_PATH.'excel/'.$file);
+        $file = TMP_PATH.'excel/'.$file;
+        $execl = new \Admin\Lib\PHPexecl();
+        $filename = "大麦请款表";
+        $execl->testImport($file, $arr, $filename,$mergeCell,$count);//$arrColumn是要合并的下标组合,$count总列数
+
+     /*   $projectModel=D('Project');
         $requestFound=D('RequestFound');
         $oaIds = $projectModel->returnProjectInfo($proId)['binding_oa'];
         $oaIds=explode('_',$oaIds);
@@ -764,6 +788,7 @@ class SignApplyManageController extends CommonController {
         $oaIds = implode(',',$oaIds);
         $count=count(explode(',',$oaIds));
         $map['id']=array('in',$oaIds);
+        $map['_string']="`product_type`<>9 and `product_type`<>7";
         $requestApply = $requestFound->applicationFundsInfo(1,100,$map)['list'];
        // $projectType=array_column($requestApply,'product_type','id');//项目类型与ID
         $projectBankNum=array_column($requestApply,'bank_num','id');//银行账号与ID
@@ -797,12 +822,12 @@ class SignApplyManageController extends CommonController {
         {
              if(count($comv)>1)//需要合并的单元格
              {
-                  array_push($arrColumn,call_user_func_array(function($comv){
+                 $arrColumn=array_merge($arrColumn,call_user_func_array(function($comv){
                      $index=array();
                      $index=array_keys($comv);//返回下标
                      $joinStart='G'.substr(current($index),1);//第一个下标
                      $joinEnd='G'.substr(end($index),1);//最后一个下标
-                     return $joinStart.'-'.$joinEnd;
+                     return array($joinStart.'-'.$joinEnd);
                  },array($comv)));
              }
             $arr=array_merge($arr,call_user_func_array(function($comv){
@@ -824,14 +849,333 @@ class SignApplyManageController extends CommonController {
                 return $res;
             },array($comv)));
         }
-        $countName='A'.($count+8);
-        $countMoneyName='D'.($count+8);
-       // array_merge($arr,array($countName=>))
-        
+        $countMoney=0;
+         foreach ($arr as $arrk=>$arrv)
+         {
+             if(substr($arrk,0,1)=='D')
+             {
+                 $countMoney+=$arrv;
+             }
+             if(substr($arrk,0,1)=='A')
+             {
+                 $joinIndex=substr($arrk,1);
+                 $arrColumn=array_merge($arrColumn,array('A'.$joinIndex.'-'.'B'.$joinIndex));
+             }
+         }
+        $countName='A'.($count+7);
+        $countMoneyName='D'.($count+7);
+        $moneyUpperIndex='D'.(9+$count);
+        $moneyUpper=$this->get_amount($countMoney);
+        $moneyLowerIndex='D'.(10+$count);
+        $moneyLower=$countMoney;
+        $arr=array_merge($arr,array($countName=>'总金额'),array($countMoneyName=>$countMoney),array($moneyUpperIndex=>$moneyUpper),array($moneyLowerIndex=>$moneyLower));
+         //判断项目是否完结
+        $isAllFinish=D('Project')->returnProjectInfo($proId)['is_all_finish'];
+        if($isAllFinish)//已经完结
+        {
+            //部门人签名
+            $managerIndex='B'.(11+$count);
+            $manager=sprintf("  签名：%s    日期：%s",'谷传广',date('Y-m-d',time()));
+            //风控部门人签名
+            $riskManagerIndex='B'.(13+$count);
+            $riskManager=sprintf("  签名：%s    日期：%s",'宋波',date('Y-m-d',time()));
+            //财务部门签名
+            $CFOIndex='B'.(15+$count);
+            $CFO=sprintf("  签名：%s    日期：%s",'刘颖/邹祎祎',date('Y-m-d',time()));
+            //副总裁意见
+            $CEOAIndex='B'.(17+$count);
+            $CEOA=sprintf("  签名：%s    日期：%s",'孙耀飞',date('Y-m-d',time()));
+            //总裁意见
+            $CEOIndex='B'.(19+$count);
+            $CEO=sprintf("  签名：%s    日期：%s",'孙耀飞',date('Y-m-d',time()));
+        }
+        $arr=array_merge($arr,array($managerIndex=>$manager),array($riskManagerIndex=>$riskManager),array($CFOIndex=>$CFO),array($CEOAIndex=>$CEOA),array($CEOIndex=>$CEO));
         $file = TMP_PATH.'excel/mtdemo.xlsx';
         $execl = new \Admin\Lib\PHPexecl();
         $filename = "大麦请款表";
-       // $execl->importExecl($file, $arr, $filename);
-        $execl->testImport($file, $arr, $filename,$arrColumn,$count);//$arrColumn是要合并的下标组合,$count总列数
+        $execl->testImport($file, $arr, $filename,$arrColumn,$count);//$arrColumn是要合并的下标组合,$count总列数*/
+    }
+    //导出居间费跟其他表格
+    public function exportCharge()
+    {
+
+    }
+
+    /***
+     * @param $proId
+     * @param $mapString  数据库条件
+     * @param $type  要筛选的类型  1是麦田类型  2是非麦田类型  3是居间费
+     * @return array
+     */
+    public function joinData($proId,$mapString=null,$type)
+    {
+        $proId=$proId;
+        $projectModel=D('Project');
+        $requestFound=D('RequestFound');
+        $oaIds = $projectModel->returnProjectInfo($proId)['binding_oa'];
+        $oaIds=explode('_',$oaIds);
+        array_shift($oaIds);
+        $oaIds = implode(',',$oaIds);
+       // $count=count(explode(',',$oaIds));
+        $map['id']=array('in',$oaIds);
+        if($mapString){
+            $map['_string']=$mapString;//"`product_type`==9 or `product_type`==7";
+        }
+
+        $requestApply = $requestFound->applicationFundsInfo(1,100,$map)['list'];
+        $_count=count($requestApply);
+        // $projectType=array_column($requestApply,'product_type','id');//项目类型与ID
+        $projectBankNum=array_column($requestApply,'bank_num','id');//银行账号与ID
+
+        //拼装phpexcel数据类型
+        $combinBankNum=call_user_func_array(function($bankList,$requestApply){
+            $temp=array();
+            $index=7;
+            foreach ($bankList as $k=>$v)
+            {
+                // $temp[$v]['A'.$index]=$k;
+                $temp[$v]['A'.$index]=call_user_func_array(function($requestApply,$k){
+                    foreach ($requestApply as $kk=>$vv)
+                    {
+                        if($vv['id']==$k)
+                        {
+                            return $vv;
+                        }
+                    }
+                },array($requestApply,$k));
+                $index=$index+1;
+            }
+            return $temp;
+        },array($projectBankNum,$requestApply));
+
+
+        //组合入表的格式
+        $arr=array();
+        $arrColumn=array();
+        foreach ($combinBankNum as $comk=>$comv)
+        {
+
+                switch ($type)
+                {
+                    case 1:
+                        if(count($comv)>1)//需要合并的单元格
+                        {
+                            $arrColumn = array_merge($arrColumn, call_user_func_array(function ($comv) {
+                                $index = array();
+                                $index = array_keys($comv);//返回下标
+                                $joinStart = 'G' . substr(current($index), 1);//第一个下标
+                                $joinEnd = 'G' . substr(end($index), 1);//最后一个下标
+                                return array($joinStart . '-' . $joinEnd);
+                            }, array($comv)));
+                        }
+                        $arr=array_merge($arr,call_user_func_array(function($comv){
+                            $res=array();
+                            foreach ($comv as $k=>$v)
+                            {
+                                $index=substr($k,1);
+                                $enter = chr(13);
+                                $timeType=($v['time_type']==1)?'个月':'天';
+                                $res = array_merge($res,array(
+                                    $k=>$v['product_name'],
+                                    'C'.$index=>date('Y-m-d',$v['full_scale_time']),
+                                    'D'.$index=>$v['collect_money'],
+                                    'E'.$index=>$v['collect_money'],
+                                    'F'.$index=>$v['limit_time'].$timeType,
+                                    'G'.$index=>sprintf("账号名称：%s %s银行：%s %s账号：%s",$v['account_name'],$enter,$v['bank_name'],$enter,$v['bank_num'])
+                                ));
+                            }
+                            return $res;
+                        },array($comv)));
+                        break;
+                    case 2:
+                        if(count($comv)>1)//需要合并的单元格
+                        {
+                            $arrColumn = array_merge($arrColumn, call_user_func_array(function ($comv) {
+                                $index = array();
+                                $index = array_keys($comv);//返回下标
+                                $joinStart = 'I' . substr(current($index), 1);//第一个下标
+                                $joinEnd = 'I' . substr(end($index), 1);//最后一个下标
+                                return array($joinStart . '-' . $joinEnd);
+                            }, array($comv)));
+                        }
+                        $arr=array_merge($arr,call_user_func_array(function($comv){
+                            $res=array();
+                            foreach ($comv as $k=>$v)
+                            {
+                                $index=substr($k,1);
+                                $enter = chr(13);
+                                $timeType=($v['time_type']==1)?'个月':'天';
+                                $res = array_merge($res,array(
+                                    $k=>$v['product_name'],
+                                    'C'.$index=>$v['contract_num'],//date('Y-m-d',$v['full_scale_time']),
+                                    'D'.$index=>date('Y-m-d',$v['full_scale_time']),
+                                    'E'.$index=>$v['collect_money'],
+                                    'F'.$index=>$v['charge_money'],//$v['limit_time'].$timeType,
+                                    'G'.$index=>$v['loan_money'],//sprintf("账号名称：%s %s银行：%s %s账号：%s",$v['account_name'],$enter,$v['bank_name'],$enter,$v['bank_num'])
+                                    'H'.$index=>$v['limit_time'].$timeType,
+                                    'I'.$index=>sprintf("账号名称：%s %s银行：%s %s账号：%s",$v['account_name'],$enter,$v['bank_name'],$enter,$v['bank_num']),
+                                ));
+                            }
+                            return $res;
+                        },array($comv)));
+                        break;
+                    case 3:
+                        if(count($comv)>1)//需要合并的单元格
+                        {
+                            $arrColumn = array_merge($arrColumn, call_user_func_array(function ($comv) {
+                                $index = array();
+                                $index = array_keys($comv);//返回下标
+                                $joinStart = 'L' . substr(current($index), 1);//第一个下标
+                                $joinEnd = 'L' . substr(end($index), 1);//最后一个下标
+                                return array($joinStart . '-' . $joinEnd);
+                            }, array($comv)));
+                        }
+                        $arr=array_merge($arr,call_user_func_array(function($comv){
+                            $res=array();
+                            foreach ($comv as $k=>$v)
+                            {
+                                $index=substr($k,1);
+                                $enter = chr(13);
+                                $timeType=($v['time_type']==1)?'个月':'天';
+                                $res = array_merge($res,array(
+                                    $k=>$v['product_name'],
+                                    'C'.$index=>$v['contract_num'],//date('Y-m-d',$v['full_scale_time']),
+                                    'D'.$index=>date('Y-m-d',$v['full_scale_time']),
+                                    'E'.$index=>$v['collect_money'],
+                                    'F'.$index=>$v['charge_money'],//$v['limit_time'].$timeType,
+                                    'G'.$index=>$v['loan_money'],//sprintf("账号名称：%s %s银行：%s %s账号：%s",$v['account_name'],$enter,$v['bank_name'],$enter,$v['bank_num'])
+                                    'H'.$index=>$v['limit_time'].$timeType,
+                                    'I'.$index=>$v['product_type']==9?'6.5%':'10.5%',
+                                    'J'.$index=>'网银',
+                                    'K'.$index=>$v['account_name'],
+                                    'L'.$index=>"账号名称：深圳大麦理财互联网金融服务有限公司 \r银行：民生银行深圳宝城支行 \r账号：608618008",
+                                ));
+                            }
+                            return $res;
+                        },array($comv)));
+                        break;
+                }
+
+            }
+
+
+        $countMoney=0;
+        foreach ($arr as $arrk=>$arrv)
+        {
+            switch ($type)
+            {
+                case 1:
+                    if(substr($arrk,0,1)=='D')
+                    {
+                        $countMoney+=$arrv;
+                    }
+                    $countMoneyName='D'.($_count+7);
+                    break;
+                case 2:
+                    if(substr($arrk,0,1)=='G')
+                    {
+                        $countMoney+=$arrv;
+                    }
+                    $countMoneyName='G'.($_count+7);
+                    break;
+                case 3:
+                    if(substr($arrk,0,1)=='F')
+                    {
+                        $countMoney+=$arrv;
+                    }
+                    $countMoneyName='F'.($_count+7);
+                    break;
+            }
+            if(substr($arrk,0,1)=='A')
+            {
+                $joinIndex=substr($arrk,1);
+                $arrColumn=array_merge($arrColumn,array('A'.$joinIndex.'-'.'B'.$joinIndex));
+            }
+
+        }
+        $countName='A'.($_count+7);
+        $moneyUpperIndex='D'.(9+$_count);
+        $moneyUpper=$this->get_amount($countMoney);
+        $moneyLowerIndex='D'.(10+$_count);
+        $moneyLower=$countMoney;
+        $arr=array_merge($arr,array($countName=>'总金额'),array($countMoneyName=>$countMoney),array($moneyUpperIndex=>$moneyUpper),array($moneyLowerIndex=>$moneyLower));
+
+        //判断项目是否完结
+        $isAllFinish=D('Project')->returnProjectInfo($proId)['is_all_finish'];
+        if($isAllFinish)//已经完结
+        {
+            //部门人签名
+            $managerIndex='B'.(11+$_count);
+            $manager=sprintf("  签名：%s    日期：%s",'谷传广',date('Y-m-d',time()));
+            //风控部门人签名
+            $riskManagerIndex='B'.(13+$_count);
+            $riskManager=sprintf("  签名：%s    日期：%s",'宋波',date('Y-m-d',time()));
+            //财务部门签名
+            $CFOIndex='B'.(15+$_count);
+            $CFO=sprintf("  签名：%s    日期：%s",'刘颖/邹祎祎',date('Y-m-d',time()));
+            //副总裁意见
+            $CEOAIndex='B'.(17+$_count);
+            $CEOA=sprintf("  签名：%s    日期：%s",'孙耀飞',date('Y-m-d',time()));
+            //总裁意见
+            $CEOIndex='B'.(19+$_count);
+            $CEO=sprintf("  签名：%s    日期：%s",'佟琦',date('Y-m-d',time()));
+        }
+        $arr=array_merge($arr,array($managerIndex=>$manager),array($riskManagerIndex=>$riskManager),array($CFOIndex=>$CFO),array($CEOAIndex=>$CEOA),array($CEOIndex=>$CEO));
+       // return array('arr'=>$arr,'count'=>$_count,'mergeCell'=>$arrColumn);
+        return array($arr,$_count,$arrColumn);
+    }
+
+    public function get_amount($num){
+        $c1 = "零壹贰叁肆伍陆柒捌玖";
+        $c2 = "分角元拾佰仟万拾佰仟亿";
+        $num = round($num, 2);
+        $num = $num * 100;
+        if (strlen($num) > 10) {
+            return "数据太长，没有这么大的钱吧，检查下";
+        }
+        $i = 0;
+        $c = "";
+        while (1) {
+            if ($i == 0) {
+                $n = substr($num, strlen($num)-1, 1);
+            } else {
+                $n = $num % 10;
+            }
+            $p1 = substr($c1, 3 * $n, 3);
+            $p2 = substr($c2, 3 * $i, 3);
+            if ($n != '0' || ($n == '0' && ($p2 == '亿' || $p2 == '万' || $p2 == '元'))) {
+                $c = $p1 . $p2 . $c;
+            } else {
+                $c = $p1 . $c;
+            }
+            $i = $i + 1;
+            $num = $num / 10;
+            $num = (int)$num;
+            if ($num == 0) {
+                break;
+            }
+        }
+        $j = 0;
+        $slen = strlen($c);
+        while ($j < $slen) {
+            $m = substr($c, $j, 6);
+            if ($m == '零元' || $m == '零万' || $m == '零亿' || $m == '零零') {
+                $left = substr($c, 0, $j);
+                $right = substr($c, $j + 3);
+                $c = $left . $right;
+                $j = $j-3;
+                $slen = $slen-3;
+            }
+            $j = $j + 3;
+        }
+
+        if (substr($c, strlen($c)-3, 3) == '零') {
+            $c = substr($c, 0, strlen($c)-3);
+        }
+        if (empty($c)) {
+            return "零元整";
+        }else{
+            return $c . "整";
+        }
     }
 }

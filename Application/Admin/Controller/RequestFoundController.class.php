@@ -169,9 +169,16 @@ class RequestFoundController extends CommonController {
         $raModel=D('RequestFound');
         $oaIds=$projectModel->returnRequestInfo($proId)['bid'];
         $list=$raModel->returnOaInfoFromProId(implode(',',$oaIds),'in','bid');
+        $isChargeMoneyAttr=array_column($list,'product_type');
+        $isChargeMoney=0;
+        if(array_search('7',$isChargeMoneyAttr) or array_search('9',$isChargeMoneyAttr))
+        {
+               $isChargeMoney=1;
+        }
         $this->assign('oaIds',$oaIds);
         $this->assign('list',$list);
         $this->assign('proId',$proId);
+        $this->assign('isChargeMoney',$isChargeMoney);
         $this->display();
     }
 

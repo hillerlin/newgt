@@ -52,7 +52,7 @@ class PHPexecl {
         $phpexcel->setActiveSheetIndex(0);
 
 // 获取当前激活的工作表
-        $sheet = $phpexcel->getActiveSheet();
+        $sheet = $phpexcel->getActiveSheet(0);
 
 // 得到工作表之后就可以操作它的单元格以修改数据了
 // 修改工作表的名称
@@ -61,6 +61,7 @@ class PHPexecl {
 // 设置单元格A&的值
 
     //$sheet->setCellValue("A7", date('Y-m-d h:i:s'));
+        $sheet->insertNewRowBefore(7, $count);
         $attrMv=array();
         $newMv=array();
        // $money=0;
@@ -76,7 +77,7 @@ class PHPexecl {
             $sheet->getStyle($firtIndex)->getFont()->setBold(true)->setSize(16);
             $style = $sheet->getStyle($firtIndex);
            //$sheet->getColumnDimension($firtIndex)->setRowHeight(20);
-            $style->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER); // 水平方向
+            $style->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER); // 水平方向
 
             $attrMv=array_merge($attrMv,$newMv);
             $newMv=array();
@@ -92,9 +93,16 @@ class PHPexecl {
             $sheet->setCellValue($k, $v);
             $style = $sheet->getStyle($k);
             $sheet->getStyle($k)->getFont()->setBold(true)->setSize(16);
-            $style->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER); // 水平方向
+            if(substr($k,0,1)=='G')
+            {
+                $sheet->getRowDimension(substr($k,1))->setRowHeight('65'); // 行高
+              //  $sheet->getDefaultRowDimension('G7')->setRowHeight(-1);
+                $style->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER); // 水平方向
+            }else
+            {
+                $style->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER); // 水平方向
+            }
         }
-        //输出总金额
 
 // 设置第3行第5列（E3）的值
       //  $sheet->setCellValueByColumnAndRow(4, 3, date('Y-m-d h:i:s'));
@@ -159,9 +167,12 @@ class PHPexecl {
       //  PHPExcel_IOFactory::createWriter($phpexcel, 'Excel2007')->save("output.xls");
 
 // 输出文档到页面
+        header('pragma:public');
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="11111.xlsx"');
+        header('Content-Disposition: attachment;filename="'.$filename.'.xlsx"');
         header('Cache-Control: max-age=0');
+        header('Content-type:application/vnd.ms-excel;charset=utf-8;name="'.$filename.'.xlsx"');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         \PHPExcel_IOFactory::createWriter($phpexcel, 'Excel2007')->save('php://output');
         exit;
     }

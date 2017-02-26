@@ -511,5 +511,13 @@ class ProjectModel extends BaseModel {
         $list=D('PjWorkflow')->where("`pro_level_now`='%s'",array($proLevel))->getField('pj_id',true);
         return $list;
     }
+    //过滤表单列表的可看人员
+    public function filterMemberToFrom($proId,$proLevel,$adminId)
+    {
+        $map['_string']="substr(`pro_level_now`,1,2)=$proLevel and `pj_id`=$proId";
+        $pjId=D('PjWorkflow')->where($map)->field('wf_id')->find();
+        $list=D('WorkflowLog')->where("`wf_id`=%d and `pro_author`=%d and (`pro_state`=2 or `pro_state`=3)",array($pjId['wf_id'],$adminId))->find();
+        return $list;
+    }
 }
 

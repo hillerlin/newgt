@@ -170,4 +170,39 @@ class WorkflowController extends CommonController {
         $this->assign(array('list' => $result['list'], 'total' => $result['total'], 'pageCurrent' => $page,'type'=>I('get.type')));
         $this->display('Project/workflowlog');
     }
+    //流程监控的商票、流水、放款等详细表格
+    public function formDetailList()
+    {
+        $proId=I('get.proId');
+        $admin=session('admin');
+        $proLevel=array('11','13','15','17','20','21','22','23','24');
+        foreach ($proLevel as $k=>$v)
+        {
+            switch ($v)
+            {
+                case '11':
+                    $list= D('Project')->filterMemberToFrom($proId,$v,$admin['admin_id']);
+                    break;
+                case '13':
+                    break;
+                case '15':
+                    break;
+                case '17':
+                    break;
+                case '20':
+                    break;
+                case '21':
+                    break;
+                case '22':
+                    break;
+                case '23':
+                    break;
+                case '24':
+                    break;
+            }
+
+        }
+
+
+    }
 }

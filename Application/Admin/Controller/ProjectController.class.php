@@ -65,7 +65,6 @@ class ProjectController extends CommonController
             $proTimes = I('post.proTimes');//当前审批轮次
             $proRebutter = I('post.proRebutter');//驳回人id
             $proRebutterLevel = I('post.proRebutterLevel');//第几级被驳回
-
             if (intval($proRebutter) > 0)//驳回重发的修改
             {
                 $updataProject=addSubProcessAuditor($proIid,'','',$proRebutterLevel,$pro_subprocess_desc);//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
@@ -230,6 +229,42 @@ class ProjectController extends CommonController
             $is_pre_contract=D('PrepareContract')->isLoanManager($pro_id, $projectInfo['company_id']);
             $is_finance_flow=D('FinanceFlow')->getProid($pro_id,'out');
         }
+        if(explode('_',$proLevel)[0]=='17')  //换质退票
+        {
+            $is_refund_quality= D('ProjectDebt')->isRefundQuality($pro_id,'A','RefundQuality');
+           // $is_refund_quality=0;
+            $this->assign('is_refund_quality',$is_refund_quality);
+        }
+        if(explode('_',$proLevel)[0]=='20')  //换质退票
+        {
+            $is_for_payment=D('ProjectDebt')->isRefundQuality($pro_id,'A','ForPayment');
+            $this->assign('is_for_payment',$is_for_payment);
+        }
+        if(explode('_',$proLevel)[0]=='21')  //换质退款、退票审批
+        {
+            $is_refund_quality= D('ProjectDebt')->isRefundQuality($pro_id,'A','RefundQuality');
+            $this->assign('is_refund_quality',$is_refund_quality);
+            $is_for_payment=D('ProjectDebt')->isRefundQuality($pro_id,'A','ForPayment');
+            $this->assign('is_for_payment',$is_for_payment);
+
+        }
+        if(explode('_',$proLevel)[0]=='22')  //完结退款
+        {
+            $is_refund_for_payment=D('ProjectDebt')->isRefundQuality($pro_id,'B','ForPayment');
+            $this->assign('is_refund_for_payment',$is_refund_for_payment);
+        }
+        if(explode('_',$proLevel)[0]=='23')  //正常完结退票
+        {
+            $is_c_refund_quality= D('ProjectDebt')->isRefundQuality($pro_id,'C','RefundQuality');
+            // $is_refund_quality=0;
+            $this->assign('is_c_refund_quality',$is_c_refund_quality);
+        }
+        if(explode('_',$proLevel)[0]=='24')  //非正常完结退票
+        {
+            $is_b_refund_quality= D('ProjectDebt')->isRefundQuality($pro_id,'B','RefundQuality');
+            // $is_refund_quality=0;
+            $this->assign('is_b_refund_quality',$is_b_refund_quality);
+        }
         if(explode('_',$proLevel)[0]=='14')//商票
         {
             $is_electronicBill=D('ElectronicBill')->isElectronicBill($pro_id);
@@ -256,6 +291,7 @@ class ProjectController extends CommonController
             sort($oaIds);
             $is_requestFunds=returnOaNameAndIdAttr(implode(',',$oaIds));
         }
+
         if(explode('_',$proLevel)[0]=='6'||explode('_',$proLevel)[0]=='8'||explode('_',$proLevel)[0]=='9')
         {
             //查找【反馈】文件夹下的文件
@@ -293,7 +329,8 @@ class ProjectController extends CommonController
             'company_id'=>$projectInfo['company_id'],'is_requestFunds'=>$is_requestFunds,
             'is_finance_flow_in'=>$is_finance_flow_in['fid'],'is_pre_contract'=>$is_pre_contract,
             'Ffid'=>$is_finance_flow['fid'],'is_electronicBill'=>$is_electronicBill,'pre'=>$proLevel,'admin'=>session('admin'),
-            'pro_subprocess_desc'=>array_filter(explode('<br/>',$projectInfo['pro_subprocess'.explode('_',$proLevel)[0].'_desc']))));
+            'pro_subprocess_desc'=>array_filter(explode('<br/>',$projectInfo['pro_subprocess'.explode('_',$proLevel)[0].'_desc'])),
+            'is_refund_quality'=>$is_refund_quality));
         $this->assign($data);
         $this->assign($_GET);
         $this->assign('adminIdAndNameAttr',$adminIdAndNameAttr);

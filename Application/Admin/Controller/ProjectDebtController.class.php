@@ -418,4 +418,112 @@ class ProjectDebtController extends CommonController {
         $this->assign('post', $_POST);
         $this->display();
     }
+    //换质退票
+    public function addRefundQuality()
+    {
+        $proId=I('get.pro_id');
+        $rq_id=I('get.rq_id');
+        $projectInfo=D('Project')->returnProjectInfo($proId);
+        $this->assign($projectInfo);
+        $this->assign('form_type',I('get.form_type'));
+        $this->assign('pro_id',$proId);
+        $this->assign('rq_id',$rq_id);
+        $this->display();
+    }
+    public function editRefundQuality()
+    {
+
+        $rqModel=M('RefundQuality');
+        if(IS_POST)
+        {
+            $rq_id=I('post.rq_id');
+            $data=I('post.');
+            //新建
+            if(!$rq_id)
+            {
+                $rqModel->create();
+                $rqModel->guarantee_type=$data['guarantee_type'][0];
+                $rqModel->pay_type=$data['pay_type'][0];
+                $result=$rqModel->add();
+
+            }else      //保存
+            {
+                $rqModel->create();
+                $rqModel->guarantee_type=$data['guarantee_type'][0];
+                $rqModel->pay_type=$data['pay_type'][0];
+                $rqModel->id=$rq_id;
+                $result=$rqModel->save();
+            }
+            if($result)
+            {
+                $this->json_success('保存成功', '', '', true, array('dialogid' => 'project-submit'));
+            }else
+            {
+                $this->error('失败！');
+            }
+        }else
+        {
+            $rq_id=I('get.rq_id');
+            $form_type=I('get.form_type');
+            $list=$rqModel->where("`id`=%d and `form_type`='%s'",array($rq_id,$form_type))->find();
+            $this->assign($list);
+            $this->display();
+        }
+
+
+
+    }
+    //换质请款
+    public function addForPayment()
+    {
+
+        $proId=I('get.pro_id');
+        $fp_id=I('get.fp_id');
+        $projectInfo=D('Project')->returnProjectInfo($proId);
+        $this->assign('form_type',I('get.form_type'));
+        $this->assign('pro_id',$proId);
+        $this->assign('fp_id',$fp_id);
+        $this->assign($projectInfo);
+        $this->display();
+    }
+    public function editForPayment()
+    {
+
+        $rqModel=M('ForPayment');
+        if(IS_POST)
+        {
+            $fp_id=I('post.fp_id');
+            $data=I('post.');
+            //新建
+            if(!$fp_id)
+            {
+                $rqModel->create();
+                $rqModel->guarantee_type=$data['guarantee_type'][0];
+                $rqModel->pay_type=$data['pay_type'][0];
+                $result=$rqModel->add();
+
+            }else
+            {
+                $rqModel->create();
+                $rqModel->guarantee_type=$data['guarantee_type'][0];
+                $rqModel->pay_type=$data['pay_type'][0];
+                $rqModel->id=$fp_id;
+                $result=$rqModel->save();
+            }
+            if($result)
+            {
+                $this->json_success('添加成功', '', '', true, array('dialogid' => 'project-submit'));
+            }else
+            {
+                $this->error('失败！');
+            }
+        }else{
+            $fp_id=I('get.fp_id');
+            $form_type=I('get.form_type');
+            $list=$rqModel->where("`id`=%d and `form_type`='%s'",array($fp_id,$form_type))->find();
+            $this->assign($list);
+            $this->display();
+        }
+
+    }
 }

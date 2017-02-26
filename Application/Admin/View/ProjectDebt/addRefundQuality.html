@@ -1,0 +1,87 @@
+<style type="text/css">
+    .conth{
+        width:80px;
+        text-align: center;
+        font-weight: bolder;
+    }
+</style>
+<form action="<?php echo U('ProjectDebt/editRefundQuality')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false" method="post">
+<div class="bjui-pageContent">
+
+        <input type="hidden" name="form_type" value="{$form_type}">
+        <input type="hidden" name="pro_id" value="{$pro_id}">
+        <input type="hidden" name="rq_id" value="{$rq_id}">
+        <table class="table table-bordered" data-selected-multi="true">
+            <tbody>
+            <tr data-id="1">
+                <td class="conth" style="width:112px;">申请部门：</td>
+                <td> <input type="text" name="department" value="项管部"></td>
+                <td class="conth">申请人：</td>
+                <td><input type="text" name="name" value="{$admin.real_name}"></td>
+                <td class="conth">申请时间：</td>
+                <td> <input type="text"  value="<?php echo date('Y-m-d', time())?>" name="addtime" data-toggle="datepicker" data-nobtn="true" placeholder="点击选择日期"></td>
+            </tr>
+            <tr data-id="2">
+                <td class="conth" style="width: 100px;">项目名称：</td>
+                <td><input type="text" name="project_name" value="{$pro_title}"  style="padding-right: 4px;" data-toggle="lookup" data-url="<?php echo U('Operation/aysnProjectInfo')?>" data-width="900" data-height="500" readonly></td>
+                <td class="conth" style="width: 100px;">项目编号：</td>
+                <td><input type="text" name="project_num" value="{$pro_no}"></td>
+                <td class="conth" style="width: 100px;">融资期限：</td>
+                <td><input type="text" name="start_time" value="" size="15" data-toggle="datepicker" class="form-control" style="padding-right: 15px; width: 150px;">
+                    --到--
+                    <input type="text" name="end_time" value="" size="15" data-toggle="datepicker" class="form-control" style="padding-right: 15px; width: 150px;">
+                </td>
+            </tr>
+            <tr data-id="3">
+               <td class="conth" style="width: 100px;">担保方式：</td>
+                <td colspan="6">
+                    <php>
+                        foreach(C('assure_type') as $k => $v){
+                    </php>
+                    <input type="checkbox" name="guarantee_type[]" data-rule="checked" id="j_form_checkbox1" value="<php>echo $k;</php>" data-toggle="icheck" data-label="<php>echo $v;</php>">
+                    <php> }</php>
+                </td>
+            </tr>
+            <tr data-id="4">
+                <td class="conth" style="width: 100px;">支付方式：</td>
+                <td colspan="6">
+                    <input type="checkbox" name="pay_type[]" data-rule="checked"  value="1" data-toggle="icheck" data-label="退商业承兑汇票">
+                </td>
+            </tr>
+            <tr data-id="8">
+                <td rowspan="4" class="conth">被背书人信息</td>
+            </tr>
+            <tr>
+                <td class="conth"> 户名:</td>
+                <td colspan="5"><input type="text" value="" name="account_name" data-toggle="lookup" data-url="/Admin/Bank/lookupOa.html"  size="50" data-width="700" data-height="600" data-rule="required"></td>
+            </tr>
+            <tr>
+                <td class="conth">开户银行:</td>
+                <td colspan="5"><input type="text" value=""  name="bank_name" size="50" data-rule="required"></td>
+            </tr>
+            <tr>
+                <td class="conth">账号:</td>
+                <td colspan="5"><input type="text" value="" name="bank_num" size="50" data-rule="required"></td>
+            </tr>
+            <tr data-id="5">
+                <td rowspan="3" class="conth"> 背书商票说明</td>
+            </tr>
+            <tr data-id="6">
+                <td class="conth">情况说明：</td>
+                <td  colspan="5"><textarea name="otherinfo" cols="40" rows="4"></textarea></td>
+            </tr>
+            <tr data-id="7">
+                <td class="conth">背书商票明细：</td>
+                <td  colspan="5"><textarea name="taking_ticket_info" cols="40" rows="4"></textarea></td>
+            </tr>
+
+            </tbody>
+            </table>
+</div>
+        <div class="bjui-pageFooter">
+            <ul style="margin-right: 10px;">
+                <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+                <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+            </ul>
+        </div>
+    </form>

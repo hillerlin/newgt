@@ -152,6 +152,79 @@
             </tr>
             <?php endforeach;?>
             <?php endif;?>
+            <?php if(explode('_',$pre)[0]=='17'):?>
+            <tr>
+                <td>
+                    <label for="j_custom_name" class="control-label x150"><?php if($is_refund_quality){echo '查看换质退票';}else{echo '绑定换质退票';}?></label>
+                    <button data-url="/Admin/ProjectDebt/<?php echo $is_refund_quality?'editRefundQuality':'addRefundQuality';?>?pro_id={$pro_id}&form_type=A&rq_id=<?php echo $is_refund_quality['id']?>" class="btn btn-blue"
+                            data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit"
+                            data-id="project-add"><?php echo $companyName.'的换质退票'?></button>
+                </td>
+            </tr>
+            <?php endif;?>
+            <?php if(explode('_',$pre)[0]=='23'):?>
+            <tr>
+                <td>
+                    <label for="j_custom_name" class="control-label x150"><?php if($is_c_refund_quality){echo '查看正常完结退票';}else{echo '绑定正常完结退票';}?></label>
+                    <button data-url="/Admin/ProjectDebt/<?php echo $is_c_refund_quality?'editRefundQuality':'addRefundQuality';?>?pro_id={$pro_id}&form_type=C&rq_id=<?php echo $is_c_refund_quality['id']?>" class="btn btn-blue"
+                            data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit"
+                            data-id="project-add"><?php echo $companyName.'的正常完结退票'?></button>
+                </td>
+            </tr>
+            <?php endif;?>
+
+            <?php if(explode('_',$pre)[0]=='24'):?>
+            <tr>
+                <td>
+                    <label for="j_custom_name" class="control-label x150"><?php if($is_b_refund_quality){echo '查看非正常完结退票';}else{echo '绑定非正常完结退票';}?></label>
+                    <button data-url="/Admin/ProjectDebt/<?php echo $is_b_refund_quality?'editRefundQuality':'addRefundQuality';?>?pro_id={$pro_id}&form_type=B&rq_id=<?php echo $is_b_refund_quality['id']?>" class="btn btn-blue"
+                            data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit"
+                            data-id="project-add"><?php echo $companyName.'的非正常完结退票'?></button>
+                </td>
+            </tr>
+            <?php endif;?>
+
+            <?php if(explode('_',$pre)[0]=='20'):?>
+            <tr>
+                <td>
+                    <label for="j_custom_name" class="control-label x150"><?php if($is_for_payment){echo '查看换质退款';}else{echo '绑定换质退款';}?></label>
+                    <button data-url="/Admin/ProjectDebt/<?php echo $is_for_payment?'editForPayment':'addForPayment';?>?pro_id={$pro_id}&form_type=A&fp_id=<?php echo $is_for_payment['id']?>" class="btn btn-blue"
+                            data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit"
+                            data-id="project-add"><?php echo $companyName.'的换质退票'?></button>
+                </td>
+            </tr>
+            <?php endif;?>
+
+            <?php if(explode('_',$pre)[0]=='22'):?>
+            <tr>
+                <td>
+                    <label for="j_custom_name" class="control-label x150"><?php if($is_refund_for_payment){echo '查看完结退款';}else{echo '绑定完结退款';}?></label>
+                    <button data-url="/Admin/ProjectDebt/<?php echo $is_refund_for_payment?'editForPayment':'addForPayment';?>?pro_id={$pro_id}&form_type=B&fp_id=<?php echo $is_refund_for_payment['id']?>" class="btn btn-blue"
+                            data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit"
+                            data-id="project-add"><?php echo $companyName.'的完结退款'?></button>
+                </td>
+            </tr>
+            <?php endif;?>
+            <?php if(explode('_',$pre)[0]=='21'):?>
+            <tr>
+                <td>
+                    <label for="j_custom_name" class="control-label x150"><?php if($is_refund_quality){echo '查看换质退票';}else{echo '绑定换质退票';}?></label>
+                    <button data-url="/Admin/ProjectDebt/<?php echo $is_refund_quality?'editRefundQuality':'addRefundQuality';?>?pro_id={$pro_id}&form_type=A&rq_id=<?php echo $is_refund_quality['id']?>" class="btn btn-blue"
+                            data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit"
+                            data-id="project-add"><?php echo $companyName.'的换质退票'?></button>
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <label for="j_custom_name" class="control-label x150"><?php if($is_for_payment){echo '查看换质退款';}else{echo '绑定换质退款';}?></label>
+                    <button data-url="/Admin/ProjectDebt/<?php echo $is_for_payment?'editForPayment':'addForPayment';?>?pro_id={$pro_id}&form_type=A&fp_id=<?php echo $is_for_payment['id']?>" class="btn btn-blue"
+                            data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit"
+                            data-id="project-add"><?php echo $companyName.'的换质退款'?></button>
+                </td>
+            </tr>
+            <?php endif;?>
+
 
             <?php if(!in_array($pre,array('4','4_1','5','5_1','6','6_1','8','8_1','9','9_1','10','10_1','10_2','11','11_1','11_2','11_3','11_4','12','12_1','13','13_2','15'
             ,'15_4','15_5','15_6','15_7','15_8','15_9','15_10','10_3','17','17_1','17_4','17_5','17_6','17_7','17_8','17_9','17_10','14_2','16','16_1','16_2','16_3','16_4','18','18_1','18_2','18_3','18_4','18_5','18_6','18_7','18_8','18_9',

@@ -204,5 +204,10 @@ class ProjectDebtModel extends BaseModel {
         $v['pro_title'] = $detb_info['pro_title'];
         return $v;
     }
+    public function isRefundQuality($proId,$formType,$dbName)
+    {
+        $list=D($dbName)->where("`pro_id`=%d and `form_type`='%s'",array($proId,$formType))->find();
+        return $list;
+    }
 }
 

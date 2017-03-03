@@ -309,6 +309,7 @@ class SignApplyManageController extends CommonController {
         $this->assign('superviseType', $superviseType);
         $this->assign('company_info', $company_info);
         $this->assign('pro_linker_info', $pro_linker_info);
+       // $this->assign('admin',session('admin'));
         $this->assign('contract_debt_type', C('contract_debt_type'));
         $this->assign($pro_info);
         $this->display('edit_contract');
@@ -757,28 +758,32 @@ class SignApplyManageController extends CommonController {
     {
         $proId=I('get.proId');
         $type=I('get.type');
-
         switch ($type){
             case 1:
-                 $mapString="`product_type`<>9 and `product_type`<>7";
-                 $file='mtdemo.xlsx';
+                $mapString="`product_type`<>9 and `product_type`<>7";
+                $file='mtdemo.xls';
+                $fontSize=20;
+                $rowHeight=100;
                 break;
             case 2:
                 $mapString="`product_type`=9 or `product_type`=7";
-                $file='mtdemocharge.xlsx';
+                $file='mtdemocharge.xls';
+                $fontSize=22;
+                $rowHeight=100;
                 break;
             case 3:
                 $mapString="`product_type`=9 or `product_type`=7";
-                $file='mtdemochargemoney.xlsx';
-             break;
+                $file='mtdemochargemoney.xls';
+                $fontSize=28;
+                $rowHeight=160;
+                break;
         }
         //'arr'=>$arr,'count'=>$_count,'mergeCell'=>$arrColumn
         list($arr,$count,$mergeCell)=$this->joinData($proId,$mapString,$type);
-       // var_dump(TMP_PATH.'excel/'.$file);
         $file = TMP_PATH.'excel/'.$file;
         $execl = new \Admin\Lib\PHPexecl();
         $filename = "大麦请款表";
-        $execl->testImport($file, $arr, $filename,$mergeCell,$count);//$arrColumn是要合并的下标组合,$count总列数
+        $execl->testImport($file, $arr, $filename,$mergeCell,$count,$fontSize,$rowHeight);//$arrColumn是要合并的下标组合,$count总列数
 
      /*   $projectModel=D('Project');
         $requestFound=D('RequestFound');
@@ -926,7 +931,7 @@ class SignApplyManageController extends CommonController {
         $_count=count($requestApply);
         // $projectType=array_column($requestApply,'product_type','id');//项目类型与ID
         $projectBankNum=array_column($requestApply,'bank_num','id');//银行账号与ID
-
+        asort($projectBankNum);
         //拼装phpexcel数据类型
         $combinBankNum=call_user_func_array(function($bankList,$requestApply){
             $temp=array();
@@ -934,7 +939,7 @@ class SignApplyManageController extends CommonController {
             foreach ($bankList as $k=>$v)
             {
                 // $temp[$v]['A'.$index]=$k;
-                $temp[$v]['A'.$index]=call_user_func_array(function($requestApply,$k){
+               $callFunc=call_user_func_array(function($requestApply,$k){
                     foreach ($requestApply as $kk=>$vv)
                     {
                         if($vv['id']==$k)
@@ -943,7 +948,12 @@ class SignApplyManageController extends CommonController {
                         }
                     }
                 },array($requestApply,$k));
-                $index=$index+1;
+                if($callFunc)
+                {
+                    $temp[$v]['A'.$index]=$callFunc;
+                    $index=$index+1;
+                }
+
             }
             return $temp;
         },array($projectBankNum,$requestApply));

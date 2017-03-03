@@ -214,12 +214,14 @@
         </table>
     </form>
 </div>
+<?php if($admin['role_id']=='2'):?>
 <div class="bjui-pageFooter">
     <ul>
         <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
         <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
     </ul>
 </div>
+<?php endif;?>
 <script type="text/javascript">
     var upper = DX(<?php echo $money?>);
     $("#uploanamount").val(upper);

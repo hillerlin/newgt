@@ -19,15 +19,22 @@ class PHPexecl {
         Vendor("PHPExcel.PHPExcel");
     }
 
-    public function testImport($file, $ar, $filename,$mergeCellIndex,$count)
+    public function testImport($file, $ar, $filename,$mergeCellIndex,$count,$fontSize=20,$rowHeight=100)
     {
-        // 通常PHPExcel对象有两种实例化的方式
-// 1. 通过new关键字创建空白文档
+        if (!file_exists($file)) {
+            return array("error" => 0, 'message' => 'file not found!');
+        }
+        $ext = pathinfo($file, PATHINFO_EXTENSION);
+
+        $excel_version = $ext == 'xls' ? 'Excel5' : 'Excel2007';
+
         Vendor("PHPExcel.PHPExcel.IOFactory");
-        $phpexcel = new \PHPExcel();
+
 
 // 2. 通过读取已有的模板创建
-        $phpexcel = \PHPExcel_IOFactory::createReader("Excel2007")->load($file);
+        $phpexcel = \PHPExcel_IOFactory::createReader("$excel_version")->load($file);
+       // put(json_encode($phpexcel));
+      //  var_dump($phpexcel);
         /**
          * 实例化之后的PHPExcel对象类似于一个暂存于内存中文档文件，
          * 可以对它进行操作以达到修改文档数据的目的
@@ -46,10 +53,10 @@ class PHPexecl {
       //  $phpexcel->createSheet(1);
 
 // 获取已有编号的工作表
-       $phpexcel->getSheet(0);
+        //$phpexcel->getSheet(0);
 
 // 设置当前激活的工作表编号
-        $phpexcel->setActiveSheetIndex(0);
+       // $phpexcel->setActiveSheetIndex(0);
 
 // 获取当前激活的工作表
         $sheet = $phpexcel->getActiveSheet(0);
@@ -59,51 +66,54 @@ class PHPexecl {
       //  $sheet->setTitle("Test");
 
 // 设置单元格A&的值
-
-    //$sheet->setCellValue("A7", date('Y-m-d h:i:s'));
+        
         $sheet->insertNewRowBefore(7, $count);
         $attrMv=array();
         $newMv=array();
-       // $money=0;
+       //$money=0;
         foreach ($mergeCellIndex as $mk=>$mv)
         {
-           // $newMv=reset(explode('-',$mv));
+            //$newMv=reset(explode('-',$mv));
             //$mv='G8-G9-G10-G11';
             $newMv=explode('-',$mv);
             $firtIndex=current($newMv);
             $endIndx=end($newMv);
             $sheet->mergeCells($firtIndex.':'.$endIndx);// 合并单元格
             $sheet->setCellValue($firtIndex, $ar[$firtIndex]); //预先把账号设置好
-            $sheet->getStyle($firtIndex)->getFont()->setBold(true)->setSize(16);
+            $sheet->getStyle($firtIndex)->getFont()->setBold(true)->setSize($fontSize);
+            $sheet->getRowDimension(substr($endIndx,1))->setRowHeight('30'); // 行高
             $style = $sheet->getStyle($firtIndex);
            //$sheet->getColumnDimension($firtIndex)->setRowHeight(20);
             $style->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER); // 水平方向
-
             $attrMv=array_merge($attrMv,$newMv);
             $newMv=array();
         }
         foreach ($ar as $k=>$v)
         {
-/*            if(substr($k,0,1)=='D')
-            {
-                $money=$money+$v;
-            }*/
+            $sign=substr($k,1);
             if(in_array($k,$attrMv))
                 continue;
             $sheet->setCellValue($k, $v);
             $style = $sheet->getStyle($k);
-            $sheet->getStyle($k)->getFont()->setBold(true)->setSize(16);
+            $sheet->getStyle($k)->getFont()->setBold(true)->setSize($fontSize);
             if(substr($k,0,1)=='G')
             {
-                $sheet->getRowDimension(substr($k,1))->setRowHeight('65'); // 行高
+                $sheet->getRowDimension(substr($k,1))->setRowHeight($rowHeight); // 行高
               //  $sheet->getDefaultRowDimension('G7')->setRowHeight(-1);
                 $style->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER); // 水平方向
-            }else
+            }elseif (substr($k,0,1)=='B' && ($sign-$count==11 || $sign-$count==13 || $sign-$count==15 || $sign-$count==17 || $sign-$count==19 || $sign-$count==21))
+            {
+                $sheet->getRowDimension(substr($k,1))->setRowHeight('20'); // 行高
+                $style->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER); // 水平方向
+
+            }
+            else
             {
                 $style->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER); // 水平方向
+                $sheet->getRowDimension(substr($k,1))->setRowHeight($rowHeight); // 行高
             }
         }
-
+       // $sheet->getRowDimension('G8')->setRowHeight('90'); // 行高
 // 设置第3行第5列（E3）的值
       //  $sheet->setCellValueByColumnAndRow(4, 3, date('Y-m-d h:i:s'));
 
@@ -167,13 +177,18 @@ class PHPexecl {
       //  PHPExcel_IOFactory::createWriter($phpexcel, 'Excel2007')->save("output.xls");
 
 // 输出文档到页面
-        header('pragma:public');
+/*        header('pragma:public');
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename="'.$filename.'.xlsx"');
         header('Cache-Control: max-age=0');
         header('Content-type:application/vnd.ms-excel;charset=utf-8;name="'.$filename.'.xlsx"');
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         \PHPExcel_IOFactory::createWriter($phpexcel, 'Excel2007')->save('php://output');
+        exit;*/
+        header('Content-type:application/vnd.ms-excel;charset=utf-8;name="aa.xls"');
+        header('Content-Disposition: attachment;filename="' . $filename . '.xls"');
+        $objWriter = \PHPExcel_IOFactory::createWriter($phpexcel, $excel_version);
+        $objWriter->save('php://output');
         exit;
     }
 

@@ -5,12 +5,21 @@
         font-weight: bolder;
     }
 </style>
+<script type="text/javascript" src="__ADMIN__/js/screenshot-paste.js"></script>
+<script type="text/javascript">
+    $('#hove'+'rtreedemo').screenshotPaste({
+        imgContainer: '#imgPreviewHoverTree',
+        uploadUrl: '/Admin/FinanceFlow/uploadBase64',
+        delUrl: '/Admin/FinanceFlow/remove'
+    });
+</script>
 <form action="<?php echo U('ProjectDebt/editRefundQuality')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false" method="post">
     <div class="bjui-pageContent">
 
         <input type="hidden" name="form_type" value="{$form_type}">
         <input type="hidden" name="pro_id" value="{$pro_id}">
         <input type="hidden" name="rq_id" value="{$id}">
+        <input type="hidden" value="{$wf_id}" name="wf_id">
         <table class="table table-bordered" data-selected-multi="true">
             <tbody>
             <tr data-id="1">
@@ -38,14 +47,14 @@
                     <php>
                         foreach(C('assure_type') as $k => $v){
                     </php>
-                    <input type="checkbox" name="guarantee_type[]" <?php echo $k==$guarantee_type?'checked':'';?> data-rule="checked" id="j_form_checkbox1" value="<php>echo $k;</php>" data-toggle="icheck" data-label="<php>echo $v;</php>">
+                    <input type="checkbox" name="guarantee_type[]" <?php echo in_array($k,explode(',',$guarantee_type))?'checked':'';?> data-rule="checked" id="j_form_checkbox1" value="<php>echo $k;</php>" data-toggle="icheck" data-label="<php>echo $v;</php>">
                     <php> }</php>
                 </td>
             </tr>
             <tr data-id="4">
                 <td class="conth" style="width: 100px;">支付方式：</td>
                 <td colspan="6">
-                    <input type="checkbox" name="pay_type[]" data-rule="checked" checked value="1" data-toggle="icheck" data-label="退商业承兑汇票">
+                    <input type="checkbox" name="pay_type[]" <?php echo $pay_type=='1'?'checked':''?> value="1" data-toggle="icheck" data-label="退商业承兑汇票">
                 </td>
             </tr>
             <tr data-id="8">
@@ -72,16 +81,28 @@
             </tr>
             <tr data-id="7">
                 <td class="conth">背书商票明细：</td>
-                <td  colspan="5"><textarea name="taking_ticket_info" cols="40" rows="4">{$taking_ticket_info}</textarea></td>
+                <td  colspan="5"><textarea name="taking_ticket_info" id="hovertreedemo"  placeholder="截屏，然后点击这里，ctrl+v 粘帖，图片将在下方显示"cols="40" rows="4">{$taking_ticket_info}</textarea>
+                    <div>
+                        <div id="imgPreviewHoverTree" class=" ncap-thumb-list" >
+                            <?php foreach(json_decode($img_path,true) as $kk=>$vv):?>
+                            <li id="1"><input type="hidden" name="voucher[][path]" value="<?php echo $vv['path']?>" /><div><a href="javascript:void(0);"><img src="<?php echo $vv['path']?>" alt="" /></a></div>
+                                <a href="<?php echo $vv['path']?>" data-data="<?php echo $vv['path']?>" class="del" title="删除">X</a></li>
+                            <?php endforeach;?>
+                        </div>
+                    </div>
+
+                </td>
             </tr>
 
             </tbody>
         </table>
     </div>
+    <?php if($admin['role_id']=='2'):?>
     <div class="bjui-pageFooter">
         <ul style="margin-right: 10px;">
             <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
             <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
         </ul>
     </div>
+    <?php endif;?>
 </form>

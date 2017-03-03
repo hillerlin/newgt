@@ -184,7 +184,9 @@
 <div class="bjui-pageFooter">
     <ul>
         <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
+        <?php if($admin['role_id']=='2'):?>
         <li><button type="submit" class="btn-default" data-toggle="lookupback" data-lookupid="contract_save_<?php echo $company_info['company_id']?>" data-args="{contract_save_<?php echo $company_info['company_id']?>:'<?php echo $company_info['company_id']?>'}" data-icon="save" data-warn="请至少选择一项职业">保存</button></li>
+        <?php endif;?>
     </ul>
 </div>
 <script>

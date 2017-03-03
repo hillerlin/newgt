@@ -161,8 +161,10 @@ class HelpController extends CommonController
                 $workFlowUpdata= uploadUpdataWorkFlowState($wfId,$proLevel,$proTimes,$admin,$pro_id,$plId,0,1,'',-1);
             }
             if($workFlowUpdata)
+                S()->set('uploadCheck'.$pro_id,1);//用来做标示，用来作下载全部的标示，1是有最新下载的，0是没有的，点击一次全部下载后就置0
                 $this->success('上传成功','','',$pro_id);
         }
+        S()->set('uploadCheck'.$pro_id,1);//用来做标示，用来作下载全部的标示，1是有最新下载的，0是没有的，点击一次全部下载后就置0
         $this->success('上传成功','','',$pro_id);
     }
 
@@ -211,9 +213,14 @@ class HelpController extends CommonController
         $document_root = $_SERVER["DOCUMENT_ROOT"];
         $file = "$document_root/Uploads/project/attachment/download/pro-$pro_id.zip";
         $filePath = "/protected/pro-$pro_id.zip";
-        if (!file_exists($file)) {
+        $checkSwitch=S()->get('uploadCheck'.$pro_id);//判断上传字段是0或者1  0就不需要打包，1就需要重新打包
+        if($checkSwitch==1)
+        {
             $this->zip($pro_id, $file);
         }
+      /*  if (!file_exists($file)) {
+            $this->zip($pro_id, $file);
+        }*/
         $filename = $pro_info['pro_title'] . '.zip';
         header("Content-type: application/octet-stream");
         //处理中文文件名
@@ -226,10 +233,13 @@ class HelpController extends CommonController
         } else {
             header('Content-Disposition: attachment; filename="' . $filename . '"');
         }
+        S()->set('uploadCheck'.$pro_id,0);//用来做标示，用来作下载全部的标示，1是有最新下载的，0是没有的，点击一次全部下载后就置0
 //        header("Content-Length: ". filesize($file));
 //        readfile($file);
         //apache  mod_xsendfile 让Xsendfile发送文件
-//        header("X-Sendfile: $file");
+      //  header("X-Sendfile: $file");
+       // readfile($file);
+        //exit;
         //nginx
         header('X-Accel-Redirect: ' . $filePath);
     }

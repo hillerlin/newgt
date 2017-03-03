@@ -51,7 +51,7 @@
                        contract_num:'<?php echo $v['contract_no']?>',
                        collect_money:'<?php echo $v['account']?>',
                        charge_money:'<?php echo $v['Intermediary_fee']?>',
-                       loan_money:'<?php echo intval($v['account'])-intval($v['Intermediary_fee'])?>',
+                       loan_money:'<?php echo floatval($v['account'])-floatval($v['Intermediary_fee'])?>',
                        limit_time:'<?php echo $v['limit_time']?>',
                        time_type :'<?php echo $v['if_attorn']?>',
                        account_name:'<?php echo $v['bank_info']['account_name']?>',

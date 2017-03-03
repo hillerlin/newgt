@@ -417,6 +417,7 @@ function projectToAction($authType, $pageAuth, $middleType = 'pre')
 
 function redisCollect($proLevel, $sender, $receive = '', $time, $proId, $specialMessage = null, $specialType = null)
 {
+    $admin=session('admin');
     $type = auditMainProcessType($proLevel);
     $adminAttr = D('Admin')->where("`admin_id`=%d", array($sender))->field('admin_id,real_name')->find();
     $sender = $adminAttr['real_name'];//送审人的姓名
@@ -442,7 +443,7 @@ function redisCollect($proLevel, $sender, $receive = '', $time, $proId, $special
     switch ($proLevel) {
         case '0':
             //项目经理立项
-            $contents = '项目经理<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>';
+            $contents = $admin['role_name'].'<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>';
             break;
         case '0_1':
             //项目总监分配人手
@@ -450,14 +451,14 @@ function redisCollect($proLevel, $sender, $receive = '', $time, $proId, $special
             break;
         case '0_2':
             //项管专员归档
-            $contents = '项管专员<code>' . $sender . '</code>将项目<code>' . $proName . '</code>归档';
+            $contents = '项管专员<code>' . $sender . '</code>将项目<code>' . $proName . '</code>初审反馈';
             break;
         case '0_3':
             //项管专员归档
-            $contents = '项管专员<code>' . $sender . '</code>将项目<code>' . $proName . '</code><code>归档完成，并结束立项</code>';
+            $contents = '项管专员<code>' . $sender . '</code>将项目<code>' . $proName . '</code><code>初审通过</code>';
             break;
         case '4':
-            $contents = '项管专员<code>' . $sender . '</code>发起项目<code>' . $proName . '</code>通知知情事宜';
+            $contents = '项管专员<code>' . $sender . '</code>发起项目<code>' . $proName . '</code>会议报告编写通知';
             break;
         case '4_1':
             $contents = '项管总监<code>' . $sender . '</code>发起项目<code>' . $proName . '</code>知情给：<code>' . $receive . '</code>';
@@ -493,22 +494,22 @@ function redisCollect($proLevel, $sender, $receive = '', $time, $proId, $special
             $contents = '项管总监<code>' . $sender . '</code>将项目<code>' . $proName . '</code>投委会事宜通知：<code>' . $receive . '</code>';
             break;
         case '10':
-            $contents = '项管专员<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>签约流程-风控审核意见';
+            $contents = '项管专员<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>出具风控审核意见';
             break;
         case '11':
-            $contents = '项管专员<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>预签合同';
+            $contents = '项管专员<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>合同预签申请';
             break;
         case '13':
-            $contents = '法务<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>线下签约流程';
+            $contents = '法务<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>线下签约';
             break;
         case '14':
             $contents = '项管专员<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>商票上传流程';
             break;
         case '15':
-            $contents = '项管专员<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>放款审核流程';
+            $contents = '项管专员<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>请款审批';
             break;
         case '17':
-            $contents = '项管专员<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>商票流程';
+            $contents = '项管专员<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>换质退票审批';
             break;
         case '18':
             $contents = '项管专员<code>' . $sender . '</code>新建大麦<code>' . $proName . '</code>放款流程';
@@ -565,23 +566,23 @@ function redisPostAudit($proLevel, $sender, $receive = '', $time, $proId, $plId,
             break;
         case '0_2':
             //项管专员归档
-            $contents = '项管专员<code>' . $sender . '</code>将项目<code>' . $proName . '</code>归档';
+            $contents = '项管专员<code>' . $sender . '</code>将项目<code>' . $proName . '</code>初审反馈';
             break;
         case '0_3':
             //项管专员归档
-            $contents = '项管专员<code>' . $sender . '</code>将项目<code>' . $proName . '</code><code>归档完成，并结束立项</code>';
+            $contents = '项管专员<code>' . $sender . '</code>将项目<code>' . $proName . '</code><code>初审通过</code>';
             break;
         case '4':
-            $contents = '项管专员<code>' . $sender . '</code>发起项目<code>' . $proName . '</code>通知知情事宜';
+            $contents = '项管专员<code>' . $sender . '</code>发起项目<code>' . $proName . '</code>会议报告编写通知';
             break;
         case '4_1':
             $contents = '项管总监<code>' . $sender . '</code>发起项目<code>' . $proName . '</code>知情给我';
             break;
         case '5':
-            $contents = '项管专员<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>风控审核子流程';
+            $contents = '项管专员<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>项目审核通知';
             break;
         case '5_1':
-            $contents = '项管总监<code>' . $sender . '</code>发起项目<code>' . $proName . '</code>风控审核通知给我';
+            $contents = '项管总监<code>' . $sender . '</code>发起项目<code>' . $proName . '</code>风控流程审核';
             break;
         case '6':
             $contents = '项管专员<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>立项会';
@@ -590,10 +591,10 @@ function redisPostAudit($proLevel, $sender, $receive = '', $time, $proId, $plId,
             $contents = '项管总监<code>' . $sender . '</code>将项目<code>' . $proName . '</code>召开立项会事宜通知我';
             break;
         case '7':
-            $contents = '风控总监<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>风控报告';
+            $contents = '风控总监<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>编写风控报告';
             break;
         case '7_2':
-            $contents = '项管专员<code>' . $sender . '</code>已完成项目<code>' . $proName . '</code>风控报告的审核';
+            $contents = '项管专员<code>' . $sender . '</code>已完成项目<code>' . $proName . '</code>报告知情';
             break;
         case '8':
             $contents = '项管专员<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>风控会';
@@ -608,10 +609,10 @@ function redisPostAudit($proLevel, $sender, $receive = '', $time, $proId, $plId,
             $contents = '项管总监<code>' . $sender . '</code>将项目<code>' . $proName . '</code>投委会事宜通知我';
             break;
         case '10':
-            $contents = '项管专员<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>签约流程-风控审核意见';
+            $contents = '项管专员<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>出具风控审核意见';
             break;
         case '11':
-            $contents = '项管专员<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>预签合同';
+            $contents = '项管专员<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>合同预签申请';
             break;
         case '13':
             $contents = '法务<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>线下签约流程';
@@ -620,13 +621,13 @@ function redisPostAudit($proLevel, $sender, $receive = '', $time, $proId, $plId,
             $contents = '项管专员<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>商票上传流程';
             break;
         case '15':
-            $contents = '项管专员<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>放款审核流程';
+            $contents = '项管专员<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>请款审批';
             break;
         case '17':
-            $contents = '项管专员<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>商票流程';
+            $contents = '项管专员<code>' . $sender . '</code>新建项目<code>' . $proName . '</code>换质退票审批';
             break;
         case '18':
-            $contents = '项管专员<code>' . $sender . '</code>新建大麦<code>' . $proName . '</code>放款流程';
+            $contents = '项管专员<code>' . $sender . '</code>新建大麦<code>' . $proName . '</code>新建请款书';
             break;
         case '25':
             $contents = '同业部经理<code>' . $sender . '</code>申请项目<code>' . $proName . '</code>资料下载';
@@ -685,10 +686,19 @@ function postRebutter($wfId, $proIid, $proRebutterLevel, $proTimes, $admin, $pro
         'wf_id' => $wfId, 'pro_xml_id' => $xmlId
     ))->add();
     $oldworkFlowLog = D('WorkflowLog')->where("`pl_id`=%d", array($plId))->data(array('pro_state' => 2))->save();
-    $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>重新提交<code>被驳回</code>项目<code>' . projectNameFromId($proIid) . '</code>';
+    $explodeLevel = explode('_', $proRebutterLevel);//拼接审批轮次
+    if($explodeLevel[0]=='0')
+    {
+        $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>重新提交<code>被反馈的</code>项目<code>' . projectNameFromId($proIid) . '</code>';
+    }else
+    {
+        $contents = $admin['role_name'] . '<code>' . $admin['real_name'] . '</code>重新提交<code>被驳回</code>项目<code>' . projectNameFromId($proIid) . '</code>';
+    }
+
     $deleRedis = delredis($proRebutterPlid, $admin['admin_id']);
+    $noticeType='-'.auditMainProcessType($proRebutterLevel);
     //$redisPost = redisTotalPost($proRebutterLevel, $admin['admin_id'], $proRebutter . '|admin', time(), $proIid, $workFlowLog, $contents, -1) && $deleRedis;
-    $redisPost = redisTotalPost(-1, $admin['admin_id'], $proRebutter . '|admin', time(), $proIid, $workFlowLog, $contents, -1) && $deleRedis;
+    $redisPost = redisTotalPost($noticeType, $admin['admin_id'], $proRebutter . '|admin', time(), $proIid, $workFlowLog, $contents, $noticeType) && $deleRedis;
     if ($type == 'list') {
 
         return array($pjWorkFlow, $sendProcess, $workFlowLog, $redisPost && $oldworkFlowLog);
@@ -718,7 +728,8 @@ function reButter($plId, $wfId, $proIid, $proLevel, $contents, $proRebutterLevel
     $deleRedis = delredis($plId); //删除对应的redis记录
     $pro_subprocess_desc = $_GET['pro_subprocess_desc'];//子流程备注
     $updataProject = addSubProcessAuditor($proIid, '', '', $proLevel, $pro_subprocess_desc);;//将编辑的数据先入project库 $proLevel+1 因为中间环节有个提交
-    $redisPost = redisTotalPost(-1, $admin['admin_id'], $reButter . '|admin', time(), $proIid, $plId, $contents, -1);
+    $noticeType='-'.auditMainProcessType($proLevel);
+    $redisPost = redisTotalPost($noticeType, $admin['admin_id'], $reButter . '|admin', time(), $proIid, $plId, $contents, $noticeType);
     return $updateState && $updatePj && $sendProcess && $WflMode && $redisPost && $deleRedis && $updataProject;
 }
 

@@ -68,11 +68,11 @@
                 <php>
                     endif;
                 </php>
-
-
                 <php> endforeach;endforeach;</php>
+                <?php if(in_array($admin['role_id'],explode(',',C('fileLevel')[6]['role_id']))):?>
                 <a  href="/Admin/Workflow/formDetailList/proId/<?php echo $v['pro_id']?>.html" data-height=1200 data-width=1000 class="btn btn-green" data-id="project-submit" data-toggle="dialog" data-mask="true" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="流程表单列表">流程表单列表
                 </a>
+                <?php endif;?>
             </td>
         </tr>
         <php>endforeach;</php>

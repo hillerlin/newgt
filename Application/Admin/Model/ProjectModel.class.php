@@ -10,7 +10,6 @@ use Admin\Model\BaseModel;
  * and open the template in the editor.
  */
 class ProjectModel extends BaseModel {
-    
     protected $_validate = array(
         array('pro_title', 'require', '请输入项目标题'),
         array('pro_account', 'require', '请输入融资金额'),

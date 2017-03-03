@@ -1,0 +1,25 @@
+<div class="bjui-pageContent tableContent">
+    <table class="table table-bordered table-hover table-striped table-top" data-selected-multi="true">
+        <thead>
+        <tr>
+            <th align="center" width="300">类型名称</th>
+            <th align="center" width="300">链接</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach($list as $ko=>$vo):?>
+        <?php if($vo['check']):?>
+        <td align="center">
+            <?php echo $ko;?>
+        </td>
+        <td align="center">
+            <?php foreach($vo['url'] as $urlv):?>
+            <a href="<?php echo $urlv;?>" class="btn btn-green" data-toggle="dialog" data-mask="true" data-height="1100" data-width="1190" data-id="loanform-edit" data-reload-warn="本页已有打开的内容，确定将刷新本页内容，是否继续？" data-title="编辑">点击查看</a>
+            <?php endforeach;?>
+        </td>
+        <?php endif;?>
+        </tr>
+        <?php endforeach;?>
+        </tbody>
+    </table>
+</div>

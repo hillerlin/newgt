@@ -149,9 +149,10 @@ class FinanceFlowModel extends BaseModel {
         return $data;
     }
     //获取该流水是否绑定项目id
-   public function getProid($proId,$type)
+   public function getProid($proId,$type,$wfId)
    {
-      $listInfo= $this->where("`pro_id`=%d and `type`='%s'",array($proId,$type))->find();
+       $typeString=$type=='in'?" `type`='in'":($type=='out'?" `type`='out'":" `type`='in' or `type`='out'");
+       $listInfo= $this->where("`pro_id`=%d and `wf_id`='%d' and ($typeString)",array($proId,$wfId))->getField('fid');
        return $listInfo;
    }
 }

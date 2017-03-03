@@ -422,12 +422,13 @@ class ProjectDebtController extends CommonController {
     public function addRefundQuality()
     {
         $proId=I('get.pro_id');
-        $rq_id=I('get.rq_id');
+       // $rq_id=I('get.rq_id');
         $projectInfo=D('Project')->returnProjectInfo($proId);
         $this->assign($projectInfo);
         $this->assign('form_type',I('get.form_type'));
-        $this->assign('pro_id',$proId);
-        $this->assign('rq_id',$rq_id);
+/*        $this->assign('pro_id',$proId);
+        $this->assign('rq_id',$rq_id);*/
+        $this->assign($_GET);
         $this->display();
     }
     public function editRefundQuality()
@@ -442,15 +443,17 @@ class ProjectDebtController extends CommonController {
             if(!$rq_id)
             {
                 $rqModel->create();
-                $rqModel->guarantee_type=$data['guarantee_type'][0];
-                $rqModel->pay_type=$data['pay_type'][0];
+                $rqModel->guarantee_type=implode(',',$data['guarantee_type']);
+                $rqModel->pay_type=implode(',',$data['pay_type']);
+                $rqModel->img_path=json_encode($data['voucher']);
                 $result=$rqModel->add();
 
             }else      //保存
             {
                 $rqModel->create();
-                $rqModel->guarantee_type=$data['guarantee_type'][0];
-                $rqModel->pay_type=$data['pay_type'][0];
+                $rqModel->guarantee_type=implode(',',$data['guarantee_type']);
+                $rqModel->pay_type=implode(',',$data['pay_type']);
+                $rqModel->img_path=json_encode($data['voucher']);
                 $rqModel->id=$rq_id;
                 $result=$rqModel->save();
             }
@@ -478,11 +481,12 @@ class ProjectDebtController extends CommonController {
     {
 
         $proId=I('get.pro_id');
-        $fp_id=I('get.fp_id');
+        //$fp_id=I('get.fp_id');
         $projectInfo=D('Project')->returnProjectInfo($proId);
         $this->assign('form_type',I('get.form_type'));
-        $this->assign('pro_id',$proId);
-        $this->assign('fp_id',$fp_id);
+/*        $this->assign('pro_id',$proId);
+        $this->assign('fp_id',$fp_id);*/
+        $this->assign($_GET);
         $this->assign($projectInfo);
         $this->display();
     }
@@ -498,15 +502,15 @@ class ProjectDebtController extends CommonController {
             if(!$fp_id)
             {
                 $rqModel->create();
-                $rqModel->guarantee_type=$data['guarantee_type'][0];
-                $rqModel->pay_type=$data['pay_type'][0];
+                $rqModel->guarantee_type=implode(',',$data['guarantee_type']);
+                $rqModel->pay_type=implode(',',$data['pay_type']);
                 $result=$rqModel->add();
 
             }else
             {
                 $rqModel->create();
-                $rqModel->guarantee_type=$data['guarantee_type'][0];
-                $rqModel->pay_type=$data['pay_type'][0];
+                $rqModel->guarantee_type=implode(',',$data['guarantee_type']);
+                $rqModel->pay_type=implode(',',$data['pay_type']);
                 $rqModel->id=$fp_id;
                 $result=$rqModel->save();
             }

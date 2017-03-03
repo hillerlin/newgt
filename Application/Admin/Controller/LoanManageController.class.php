@@ -314,7 +314,7 @@ class LoanManageController extends CommonController {
        
         $data = $p_model->applyInfo($loan_id);
 //        var_dump($data);exit;
-        $workflow = D('Workflow')->getWorkFlow();   //工作流
+      //  $workflow = D('Workflow')->getWorkFlow();   //工作流
         $data['assure_type'] = explode(',', $data['assure_type']);
 //        var_dump($data['assure_type']);exit;
         $assure_type = C('assure_type');
@@ -322,8 +322,9 @@ class LoanManageController extends CommonController {
         
         $this->assign('contract_pay_type', $contract_pay_type);
         $this->assign('assure_type_list', $assure_type);
-        $this->assign('workflow', $workflow);
+       // $this->assign('workflow', $workflow);
         $this->assign($data);
+        $this->assign('admin',$admin);
         $this->display();
     }
     

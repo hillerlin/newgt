@@ -66,7 +66,7 @@
                 <td>
                     <label for="j_custom_name"
                            class="control-label x150"><?php echo $is_pre_contract? '查看放款表：' : '点击添加放款表：'?></label>
-                    <button data-url="/Admin/LoanManage/<?php echo $is_pre_contract? 'detail' : 'LoanApplyToAdd'?>.html?loan_id={$is_pre_contract}"
+                    <button data-url="/Admin/LoanManage/<?php echo $is_pre_contract? 'edit' : 'LoanApplyToAdd'?>.html?loan_id={$is_pre_contract}"
                             class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630"
                             data-mask='true' data-icon="edit"
                             data-id="project-add"><?php echo $companyName.'的放款'?></button>
@@ -79,7 +79,7 @@
                 <td>
                     <label for="j_custom_name"
                            class="control-label x150"><?php echo $Ffid? '查看放款流水：' : '点击添加放款流水表：'?></label>
-                    <button data-url="/Admin/FinanceFlow/<?php echo $Ffid? 'edit' : 'add'?>.html?fid={$Ffid}&pro_id={$pro_id}"
+                    <button data-url="/Admin/FinanceFlow/<?php echo $Ffid? 'edit' : 'add'?>.html?fid={$Ffid}&pro_id={$pro_id}&wf_id={$wfId}"
                             class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630"
                             data-mask='true' data-icon="edit"
                             data-id="project-add"><?php echo $companyName.'的流水'?></button>
@@ -91,8 +91,8 @@
                 <td>
                     <label for="j_custom_name"
                            class="control-label x150"><?php echo $is_finance_flow_in? '查看还款流水：' : '点击添加还款流水表：'?></label>
-                    <button data-url="/Admin/FinanceFlow/<?php echo $is_finance_flow_in? 'edit' : 'add'?>.html?fid={$is_finance_flow_in}&pro_id={$pro_id}"
-                            class="btn btn-blue" data-toggle="dialog" data-width='1200' data-height="630"
+                    <button data-url="/Admin/FinanceFlow/<?php echo $is_finance_flow_in? 'edit' : 'add'?>.html?fid={$is_finance_flow_in}&pro_id={$pro_id}&wf_id={$wfId}"
+                            class="btn btn-blue" data-toggle="dialog" data-width='1100' data-height="630"
                             data-mask='true' data-icon="edit"
                             data-id="project-add"><?php echo $companyName.'的流水'?></button>
                 </td>
@@ -104,6 +104,19 @@
                     <label for="j_custom_name" class="control-label x150">绑定还款流水</label>
                     <button data-url="/Admin/ProjectDebt/index.html?fid={$Ffid}&pro_id={$pro_id}" class="btn btn-blue"
                             data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit"
+                            data-id="project-add"><?php echo $companyName.'的流水'?></button>
+                </td>
+            </tr>
+            <?php endif;?>
+
+            <?php if($pre=='20_10' || $pre=='21_10' || $pre=='22_6'):?>
+            <tr>
+                <td>
+                    <label for="j_custom_name"
+                           class="control-label x150"><?php echo $is_finance_flow_or? '查看流水：' : '点击添加流水表：'?></label>
+                    <button data-url="/Admin/FinanceFlow/<?php echo $is_finance_flow_or? 'edit' : 'add'?>.html?fid={$is_finance_flow_or}&pro_id={$pro_id}&wf_id={$wfId}"
+                            class="btn btn-blue" data-toggle="dialog" data-width='1100' data-height="630"
+                            data-mask='true' data-icon="edit"
                             data-id="project-add"><?php echo $companyName.'的流水'?></button>
                 </td>
             </tr>
@@ -146,7 +159,7 @@
                 <td>
                     <label for="j_custom_name" class="control-label x150">查看请款内容：</label>
                     <button data-url="/Admin/RequestFound/editRequestFound/appId/{$appkey}.html" class="btn btn-blue"
-                            data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit"
+                            data-toggle="dialog" data-width='1300' data-height="630" data-mask='true' data-icon="edit"
                             data-id="project-add"><?php echo $appval.'的请款表'?></button>
                 </td>
             </tr>
@@ -156,8 +169,8 @@
             <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150"><?php if($is_refund_quality){echo '查看换质退票';}else{echo '绑定换质退票';}?></label>
-                    <button data-url="/Admin/ProjectDebt/<?php echo $is_refund_quality?'editRefundQuality':'addRefundQuality';?>?pro_id={$pro_id}&form_type=A&rq_id=<?php echo $is_refund_quality['id']?>" class="btn btn-blue"
-                            data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit"
+                    <button data-url="/Admin/ProjectDebt/<?php echo $is_refund_quality?'editRefundQuality':'addRefundQuality';?>?pro_id={$pro_id}&form_type=A&rq_id=<?php echo $is_refund_quality['id']?>&wf_id=<?php echo $wfId?>" class="btn btn-blue"
+                            data-toggle="dialog" data-width='1400' data-height="630" data-mask='true' data-icon="edit"
                             data-id="project-add"><?php echo $companyName.'的换质退票'?></button>
                 </td>
             </tr>
@@ -166,8 +179,8 @@
             <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150"><?php if($is_c_refund_quality){echo '查看正常完结退票';}else{echo '绑定正常完结退票';}?></label>
-                    <button data-url="/Admin/ProjectDebt/<?php echo $is_c_refund_quality?'editRefundQuality':'addRefundQuality';?>?pro_id={$pro_id}&form_type=C&rq_id=<?php echo $is_c_refund_quality['id']?>" class="btn btn-blue"
-                            data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit"
+                    <button data-url="/Admin/ProjectDebt/<?php echo $is_c_refund_quality?'editRefundQuality':'addRefundQuality';?>?pro_id={$pro_id}&form_type=C&rq_id=<?php echo $is_c_refund_quality['id']?>&wf_id=<?php echo $wfId?>" class="btn btn-blue"
+                            data-toggle="dialog" data-width='1400' data-height="630" data-mask='true' data-icon="edit"
                             data-id="project-add"><?php echo $companyName.'的正常完结退票'?></button>
                 </td>
             </tr>
@@ -177,8 +190,8 @@
             <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150"><?php if($is_b_refund_quality){echo '查看非正常完结退票';}else{echo '绑定非正常完结退票';}?></label>
-                    <button data-url="/Admin/ProjectDebt/<?php echo $is_b_refund_quality?'editRefundQuality':'addRefundQuality';?>?pro_id={$pro_id}&form_type=B&rq_id=<?php echo $is_b_refund_quality['id']?>" class="btn btn-blue"
-                            data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit"
+                    <button data-url="/Admin/ProjectDebt/<?php echo $is_b_refund_quality?'editRefundQuality':'addRefundQuality';?>?pro_id={$pro_id}&form_type=B&rq_id=<?php echo $is_b_refund_quality['id']?>&wf_id=<?php echo $wfId?>" class="btn btn-blue"
+                            data-toggle="dialog" data-width='1400' data-height="630" data-mask='true' data-icon="edit"
                             data-id="project-add"><?php echo $companyName.'的非正常完结退票'?></button>
                 </td>
             </tr>
@@ -188,9 +201,9 @@
             <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150"><?php if($is_for_payment){echo '查看换质退款';}else{echo '绑定换质退款';}?></label>
-                    <button data-url="/Admin/ProjectDebt/<?php echo $is_for_payment?'editForPayment':'addForPayment';?>?pro_id={$pro_id}&form_type=A&fp_id=<?php echo $is_for_payment['id']?>" class="btn btn-blue"
-                            data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit"
-                            data-id="project-add"><?php echo $companyName.'的换质退票'?></button>
+                    <button data-url="/Admin/ProjectDebt/<?php echo $is_for_payment?'editForPayment':'addForPayment';?>?pro_id={$pro_id}&form_type=A&fp_id=<?php echo $is_for_payment['id']?>&wf_id=<?php echo $wfId?>" class="btn btn-blue"
+                            data-toggle="dialog" data-width='1400' data-height="630" data-mask='true' data-icon="edit"
+                            data-id="project-add"><?php echo $companyName.'的换质退款'?></button>
                 </td>
             </tr>
             <?php endif;?>
@@ -199,8 +212,8 @@
             <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150"><?php if($is_refund_for_payment){echo '查看完结退款';}else{echo '绑定完结退款';}?></label>
-                    <button data-url="/Admin/ProjectDebt/<?php echo $is_refund_for_payment?'editForPayment':'addForPayment';?>?pro_id={$pro_id}&form_type=B&fp_id=<?php echo $is_refund_for_payment['id']?>" class="btn btn-blue"
-                            data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit"
+                    <button data-url="/Admin/ProjectDebt/<?php echo $is_refund_for_payment?'editForPayment':'addForPayment';?>?pro_id={$pro_id}&form_type=B&fp_id=<?php echo $is_refund_for_payment['id']?>&wf_id=<?php echo $wfId?>" class="btn btn-blue"
+                            data-toggle="dialog" data-width='1400' data-height="630" data-mask='true' data-icon="edit"
                             data-id="project-add"><?php echo $companyName.'的完结退款'?></button>
                 </td>
             </tr>
@@ -209,8 +222,8 @@
             <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150"><?php if($is_refund_quality){echo '查看换质退票';}else{echo '绑定换质退票';}?></label>
-                    <button data-url="/Admin/ProjectDebt/<?php echo $is_refund_quality?'editRefundQuality':'addRefundQuality';?>?pro_id={$pro_id}&form_type=A&rq_id=<?php echo $is_refund_quality['id']?>" class="btn btn-blue"
-                            data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit"
+                    <button data-url="/Admin/ProjectDebt/<?php echo $is_refund_quality?'editRefundQuality':'addRefundQuality';?>?pro_id={$pro_id}&form_type=A&rq_id=<?php echo $is_refund_quality['id']?>&wf_id=<?php echo $wfId?>" class="btn btn-blue"
+                            data-toggle="dialog" data-width='1400' data-height="630" data-mask='true' data-icon="edit"
                             data-id="project-add"><?php echo $companyName.'的换质退票'?></button>
                 </td>
 
@@ -218,16 +231,16 @@
             <tr>
                 <td>
                     <label for="j_custom_name" class="control-label x150"><?php if($is_for_payment){echo '查看换质退款';}else{echo '绑定换质退款';}?></label>
-                    <button data-url="/Admin/ProjectDebt/<?php echo $is_for_payment?'editForPayment':'addForPayment';?>?pro_id={$pro_id}&form_type=A&fp_id=<?php echo $is_for_payment['id']?>" class="btn btn-blue"
-                            data-toggle="dialog" data-width='1200' data-height="630" data-mask='true' data-icon="edit"
+                    <button data-url="/Admin/ProjectDebt/<?php echo $is_for_payment?'editForPayment':'addForPayment';?>?pro_id={$pro_id}&form_type=A&fp_id=<?php echo $is_for_payment['id']?>&wf_id=<?php echo $wfId?>" class="btn btn-blue"
+                            data-toggle="dialog" data-width='1400' data-height="630" data-mask='true' data-icon="edit"
                             data-id="project-add"><?php echo $companyName.'的换质退款'?></button>
                 </td>
             </tr>
             <?php endif;?>
 
 
-            <?php if(!in_array($pre,array('4','4_1','5','5_1','6','6_1','8','8_1','9','9_1','10','10_1','10_2','11','11_1','11_2','11_3','11_4','12','12_1','13','13_2','15'
-            ,'15_4','15_5','15_6','15_7','15_8','15_9','15_10','10_3','17','17_1','17_4','17_5','17_6','17_7','17_8','17_9','17_10','14_2','16','16_1','16_2','16_3','16_4','18','18_1','18_2','18_3','18_4','18_5','18_6','18_7','18_8','18_9',
+            <?php if(!in_array($pre,array('4','4_1','5','5_1','6','6_1','8','8_1','9','9_1','10','10_1','10_2','10_4','11','11_1','11_2','11_3','11_4','12','12_1','13','13_2','15','15_2','15_3'
+            ,'15_4','15_5','15_6','15_7','15_8','15_9','15_10','10_3','17','17_1','17_2','17_3','17_4','17_5','17_6','17_7','17_8','17_9','17_10','14_2','16','16_1','16_2','16_3','16_4','18','18_1','18_2','18_3','18_4','18_5','18_6','18_7','18_8','18_9',
             '20','20_1','20_2','20_3','20_4','20_5','20_6','20_7','20_8','20_9','21','21_1','21_2','21_3','21_4','21_5','21_6','21_7','21_8','21_9'
             ,'22','22_1','22_2','22_3','22_4','22_5','22_6','22_7','22_8','22_9'
             ,'23','23_1','23_2','23_3','23_4','23_5','23_6','23_7','23_8','23_9'
@@ -245,7 +258,7 @@
             </tr>
             <?php endif;?>
             <?php endif;?>
-            <?php if($admin['role_name']=='项管部总监'||$pre=='7_2' || $pre=='11_2' || $pre=='11_3' || $pre=='11_4' || $pre=='11_5' || $pre=='15_2'
+            <?php if($admin['role_name']=='项管部总监' || $pre=='7_2' || $pre=='11_2' || $pre=='11_3' || $pre=='11_4' || $pre=='11_5' || $pre=='15_2' || $pre=='10_4'
             || $pre=='15_3' || $pre=='15_4'|| $pre=='15_5'|| $pre=='15_6' || $pre=='15_7'|| $pre=='15_8' || $pre=='15_9'||$pre=='12_1'
             || $pre=='17_2'|| $pre=='17_3'|| $pre=='17_4'|| $pre=='17_5'|| $pre=='17_6'|| $pre=='17_7'|| $pre=='17_8'|| $pre=='17_9'|| $pre=='18_1'
             || $pre=='18_2'|| $pre=='18_3'|| $pre=='18_4'|| $pre=='18_5'|| $pre=='18_6'|| $pre=='18_7'|| $pre=='18_8'

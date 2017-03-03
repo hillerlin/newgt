@@ -249,7 +249,7 @@ class CompanyController extends CommonController {
         $pre=='18'?$map.=" and  `binding_oa`=1 ":$map.=' and `binding_oa` is null';
         $projectIng=$proJectModel->field('*,SUBSTR(`binding_oa`,1,1) as `binding_oa`')->where("`is_all_finish`=0 $map")->select();
         //同业部经理申请给资方看资料包，条件是风控会之后，风控会最后的流程是8_4
-        if($pre=='25')
+/*        if($pre=='25')
         {
             $selectProjectIds= $proJectModel->returnPjInfoFromPjWorkflow('8_4');
             foreach ($projectIng as $pk=>$pv)
@@ -259,7 +259,7 @@ class CompanyController extends CommonController {
                     unset($projectIng[$pk]);
                 }
             }
-        }
+        }*/
         $this->assign('list',$projectIng);
         $this->assign('type',$pre);
         $this->display();

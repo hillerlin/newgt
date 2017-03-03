@@ -5,12 +5,21 @@
         font-weight: bolder;
     }
 </style>
+<script type="text/javascript" src="__ADMIN__/js/screenshot-paste.js"></script>
+<script type="text/javascript">
+    $('#hove'+'rtreedemo').screenshotPaste({
+        imgContainer: '#imgPreviewHoverTree',
+        uploadUrl: '/Admin/FinanceFlow/uploadBase64',
+        delUrl: '/Admin/FinanceFlow/remove'
+    });
+</script>
 <form action="<?php echo U('ProjectDebt/editRefundQuality')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false" method="post">
 <div class="bjui-pageContent">
 
         <input type="hidden" name="form_type" value="{$form_type}">
         <input type="hidden" name="pro_id" value="{$pro_id}">
         <input type="hidden" name="rq_id" value="{$rq_id}">
+       <input type="hidden" value="{$wf_id}" name="wf_id">
         <table class="table table-bordered" data-selected-multi="true">
             <tbody>
             <tr data-id="1">
@@ -72,10 +81,16 @@
             </tr>
             <tr data-id="7">
                 <td class="conth">背书商票明细：</td>
-                <td  colspan="5"><textarea name="taking_ticket_info" cols="40" rows="4"></textarea></td>
+                <td  colspan="5"><textarea name="taking_ticket_info" id="hovertreedemo"  placeholder="截屏，然后点击这里，ctrl+v 粘帖，图片将在下方显示"cols="40" rows="4"></textarea>
+                    <div>
+                        <div id="imgPreviewHoverTree" class=" ncap-thumb-list" ></div>
+                    </div>
+                </td>
+
             </tr>
 
             </tbody>
+
             </table>
 </div>
         <div class="bjui-pageFooter">

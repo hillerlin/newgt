@@ -106,7 +106,7 @@
                 <td colspan="5"><input type="text" value="" name="bank_num" size="50" data-rule="required"></td>
             </tr>
             <tr class="chargeRate">
-                <td rowspan="4" class="conth">
+                <td rowspan="6" class="conth">
                     居间费收款方信息
                 </td>
             </tr>
@@ -124,16 +124,24 @@
                 <td class="conth">账号:</td>
                 <td colspan="5"><input type="text" value="" name="charge_bank_num" size="50" ></td>
             </tr>
+            <tr class="chargeRate">
+                <td class="conth"> 人民币小写:</td>
+                <td colspan="5"><input type="text" name="chargeRateLower" value="" size="30"  readonly></td>
+            </tr>
+            <tr class="chargeRate">
+                <td class="conth"> 人民币大写:</td>
+                <td colspan="5"><input type="text" name="chargeRateUpper" value="" size="30"  readonly></td>
+            </tr>
 
             <php>if(in_array($type,array(1,2,3))):</php>
             <tr class="requestMoney">
                 <td rowspan="3" class="conth" id="information"> 请款说明</td>
                 <td class="conth"> 人民币小写:</td>
-                <td colspan="5"><input type="text" name="loan_money" value="" size="30"  readonly></td>
+                <td colspan="5"><input type="text" name="loan_money_forpayment" value="" size="30"  readonly></td>
             </tr>
             <tr >
                 <td class="conth"> 人民币大写:</td>
-                <td colspan="5"><input type="text" name="s_cmoney" value="" size="30"  readonly></td>
+                <td colspan="5"><input type="text" name="s_cmoney_forpayment" value="" size="30"  readonly></td>
             </tr>
             <tr id="deposit" >
                 <td class="conth">保证金是否已付:</td>
@@ -161,7 +169,6 @@
 </div>
 <script>
     $(function(){
-        //$('.chargeRate').css({'display':'none'});
 
         $('#pro').change(function(){
             var pro_con=$(this).children('option:selected').attr('pro_con');
@@ -216,6 +223,14 @@
     })
     $('input[name=loan_money]').on('afterchange.bjui.lookup', function(e, data) { //查找找回
         $('input[name=s_cmoney]').val(DX(data.value))
+    })
+    $('input[name=charge_money]').on('afterchange.bjui.lookup', function(e, data) { //查找找回
+        $('input[name=chargeRateLower]').val(data.value)
+        $('input[name=chargeRateUpper]').val(DX(data.value))
+    })
+    $('input[name=collect_money]').on('afterchange.bjui.lookup', function(e, data) { //查找找回
+        $('input[name=s_cmoney_forpayment]').val(DX(data.value))
+        $('input[name=loan_money_forpayment]').val(data.value)
     })
     $('input[name=product_type]').on('afterchange.bjui.lookup', function(e, data) { //查找找回
         if(data.value==9 || data.value==7)  //车贷和每天惠需要显示居间费的信息

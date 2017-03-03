@@ -10,6 +10,7 @@
         <input type="hidden" name="form_type" value="{$form_type}">
         <input type="hidden" name="pro_id" value="{$pro_id}">
         <input type="hidden" name="fp_id" value="{$id}">
+        <input type="hidden" value="{$wf_id}" name="wf_id">
         <table class="table table-bordered" data-selected-multi="true">
             <tbody>
             <tr data-id="1">
@@ -37,14 +38,14 @@
                     <php>
                         foreach(C('assure_type') as $k => $v){
                     </php>
-                    <input type="checkbox" name="guarantee_type[]" <?php echo $k==$guarantee_type?'checked':'';?> data-rule="checked" id="j_form_checkbox1" value="<php>echo $k;</php>" data-toggle="icheck" data-label="<php>echo $v;</php>">
+                    <input type="checkbox" name="guarantee_type[]" <?php echo in_array($k,explode(',',$guarantee_type))?'checked':'';?> data-rule="checked" id="j_form_checkbox1" value="<php>echo $k;</php>" data-toggle="icheck" data-label="<php>echo $v;</php>">
                     <php> }</php>
                 </td>
             </tr>
             <tr data-id="4">
                 <td class="conth" style="width: 100px;">支付方式：</td>
                 <td colspan="6">
-                    <input type="checkbox" name="pay_type[]" checked data-rule="checked"  value="1" data-toggle="icheck" data-label="退商业承兑汇票">
+                    <input type="checkbox" name="pay_type[]"  <?php echo $pay_type=='1'?'checked':''?>   value="1" data-toggle="icheck" data-label="退商业承兑汇票">
                 </td>
             </tr>
             <tr data-id="8">
@@ -93,7 +94,7 @@
             </tr>
             <tr>
                 <td class="conth"> 户名:</td>
-                <td colspan="5"><input type="text" value="{$payment_name}" name="payment_name" data-toggle="lookup" data-url="/Admin/Bank/lookupOa.html"  size="50" data-width="700" data-height="600" data-rule="required"></td>
+                <td colspan="5"><input type="text" value="{$payment_name}" name="payment_name" data-toggle="lookup" data-url="/Admin/Bank/lookupPay.html"  size="50" data-width="700" data-height="600" data-rule="required"></td>
             </tr>
             <tr>
                 <td class="conth">开户银行:</td>
@@ -132,12 +133,14 @@
         </table>
 
     </div>
+    <?php if($admin['role_id']=='2'):?>
     <div class="bjui-pageFooter">
         <ul style="margin-right: 10px;">
             <li><button type="button" class="btn-close" data-icon="close">取消</button></li>
             <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
         </ul>
     </div>
+    <?php endif;?>
 </form>
 <script>
     var form_type=$('input[name=form_type]');

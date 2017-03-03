@@ -15,16 +15,6 @@
 
     </div>
     </div>
-<script>
-    function doc_filedownload1(a) {
-        $.fileDownload($(a).attr('href'), {
-            failCallback: function(responseHtml, url) {
-                if (responseHtml.trim().startsWith('{')) responseHtml = responseHtml.toObj()
-                $(a).bjuiajax('ajaxDone', responseHtml)
-            }
-        })
-    }
-</script>
 <div class="bjui-pageContent tableContent">
     <table class="table table-bordered table-hover table-striped table-top" data-selected-multi="true">
         <thead>
@@ -54,3 +44,14 @@
         </tbody>
     </table>
 </div>
+<script>
+    function doc_filedownload1(a) {
+        $.fileDownload($(a).attr('href'), {
+            failCallback: function(responseHtml, url) {
+                //if (responseHtml.trim().startsWith('{')) responseHtml = responseHtml.toObj()
+                responseHtml = responseHtml.toObj()
+                $(a).bjuiajax('ajaxDone', responseHtml)
+            }
+        })
+    }
+</script>

@@ -1,4 +1,6 @@
 <style>
+.projectend{padding:15px 0 0 15px;}
+
 .subproject{padding:15px 0 0 15px;}
 .subproject div dl{display:inline-block;margin-right:54px;text-align:center;margin-bottom:0;}
 .subproject div  dl dt{width:113px;height:30px;margin-bottom:10px;border-radius:14px;line-height:30px;border:1px #999 solid;background:#eaeaea;}
@@ -12,6 +14,13 @@
 .subproject div  dl dt.current{background:red;color:#ffffff;}
 </style>
 <div class="bjui-pageContent">
+    <div class="projectend">
+    <label style="line-height: 15px;font-size: 15px;">
+        <span class="glyphicon glyphicon-circle-arrow-right" style="vertical-align:bottom; font-size: 15px;"></span>
+        点击查看已完结的流程
+        <a href="javascript:;" style="font-size: 15px;">展开>></a>
+    </label>
+    </div>
     <php>foreach($list as $list1):</php>
     <php>$i=0;foreach($list1 as $k=>$v):</php>
     <div class="subproject">
@@ -36,7 +45,7 @@
                     <dt class="<php>if($v['current'] == $subk) echo 'current';</php>">
                         <php>
                         if($subv==end($v['sub'])){
-                            echo '&nbsp;';
+                            echo '';
                         }else{
                             if(strpos(mb_substr($subv,-4,4,'utf-8'),'-')!==false){ 
                                 echo explode('-',mb_substr($subv,-4,4,'utf8'))[1];
@@ -65,21 +74,75 @@
 </div>
 <script>
 $(function(){
+    if($('.current').parent().parent().parent().parent().length>0 && $.trim($('.current').html())=='')
+    {
+        $('.projectend').css({'display':''})
+    }else
+    {
+        $('.projectend').css({'display':'none'})
+    }
+
+    var _switch=1;
+    $('.projectend label a').on('click',function () {
+        if(_switch)
+        {
+            _switch=0;
+            $(this).html('收起>>');
+            $('.current').each(function () {
+               if($.trim($(this).html())=='')
+               {
+                   $('.current').parent().parent().parent().parent().css({'display':''})
+               }
+            })
+        }
+        else
+        {
+            _switch=1;
+            $(this).html('展开>>');
+            $('.current').each(function () {
+               // debugger
+
+                if($.trim($(this).html())=='')
+                {
+                    $(this).parent().parent().parent().parent().css({'display':'none'})
+                }
+            })
+
+        }
+    })
     $('.subproject').each(function(){
-        var bool = $(this).find('dt').hasClass('current');
-        if(bool){
+      //  var bool = $(this).find('dt').hasClass('current');
+        var find=$(this).find('div dl dt[class=current]')
+        //debugger
+        var contents=$.trim(find.html())
+        if(find.length==1){
             var ptitle = $(this).find('.current').text();
             var pname = $(this).find('.current').next().text();
             var ptime = $(this).find('.current').next().next().text();
+            if(contents=='')
+            {
+                $(this).find('.ptitle').text(ptitle);
+                $(this).find('.pname').text(pname);
+                $(this).find('.ptime').text(ptime?'-'+ptime:'');
+                $(this).css({'display':'none'})
+            }else
+            {
+                $(this).find('.ptitle').text(ptitle).css({'color':'#ff0011'});
+                $(this).find('.pname').text(pname).css({'color':'#ff0011'});
+                $(this).find('.ptime').text(ptime?'-'+ptime:'').css({'color':'#ff0011'});
+            }
+
+
         }else{
+
             var ptitle = $(this).find('.backflow:first').find('dt').text();
             var pname = $(this).find('.backflow:first').find('dd').eq(0).text();
             var ptime = $(this).find('.backflow:first').find('dd').eq(1).text();
+            $(this).find('.ptitle').text(ptitle).css({'color':'#ff0011'});
+            $(this).find('.pname').text(pname).css({'color':'#ff0011'});
+            $(this).find('.ptime').text(ptime?'-'+ptime:'').css({'color':'#ff0011'});
         }
-        //console.log(ptitle+' '+pname+' '+ptime);
-        $(this).find('.ptitle').text(ptitle);
-        $(this).find('.pname').text(pname);
-        $(this).find('.ptime').text(ptime?'-'+ptime:'');
+
     });
 
     var flag = 1;

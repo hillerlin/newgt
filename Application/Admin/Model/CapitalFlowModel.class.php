@@ -15,6 +15,7 @@ class CapitalFlowModel extends BaseModel {
     const BACK_HANDLING_CHARGE = 'back_handling_charge';   //退回手续费
     const BACK_INTEREST = 'back_interest';   //退回利息
     const BACK_OTHER = 'back_other';   //退回其他
+    const QUALITY_CHANGE='quality_change';//换质款
 
     protected $_validate = array(
 //        array('role_name', 'require', '请输入权限组'),
@@ -131,6 +132,7 @@ class CapitalFlowModel extends BaseModel {
             self::BACK_HANDLING_CHARGE => '手续费退回',
             self::BACK_INTEREST => '利息退回',
             self::BACK_OTHER => '其他退回',
+            self::QUALITY_CHANGE=>'换质款',
         );
         return $type_describe;
     }

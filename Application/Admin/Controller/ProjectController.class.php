@@ -223,11 +223,11 @@ class ProjectController extends CommonController
         }
         if($proLevel=='11' || $proLevel=='11_2' || $proLevel=='11_3' || $proLevel=='11_4'|| $proLevel=='11_5'|| $proLevel=='11_6')
         {
-            $is_pre_contract= D('PrepareContract')->isPreContract($pro_id, $projectInfo['company_id']);
+            $is_pre_contract= D('PrepareContract')->isPreContract($pro_id, $projectInfo['company_id'])['loan_id'];
         }
         if(explode('_',$proLevel)[0]=='15') //放款流水
         {
-            $is_pre_contract=D('PrepareContract')->isLoanManager($pro_id, $projectInfo['company_id']);
+            $is_pre_contract=D('PrepareContract')->isLoanManager($pro_id, $projectInfo['company_id'])['loan_id'];
             $is_finance_flow=D('FinanceFlow')->getProid($pro_id,'out',$wfId);
         }
         if(explode('_',$proLevel)[0]=='17')  //换质退票

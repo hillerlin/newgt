@@ -204,9 +204,20 @@ class ProjectDebtModel extends BaseModel {
         $v['pro_title'] = $detb_info['pro_title'];
         return $v;
     }
-    public function isRefundQuality($proId,$formType,$dbName,$wfId)
+    //返回完结流程、换质退款、换质退票等详细信息
+    public function isRefundQuality($proId,$formType,$dbName,$wfId=null)
     {
-        $list=D($dbName)->where("`pro_id`=%d and `form_type`='%s' and `wf_id`=%d",array($proId,$formType,$wfId))->find();
+        $wfIdCondition='';
+        if($wfId)
+        {
+            $wfIdCondition=" and `wf_id`=$wfId";
+            $list=D($dbName)->where("`pro_id`=%d and `form_type`='%s' $wfIdCondition",array($proId,$formType))->find();
+        }
+        else
+        {
+            $list=D($dbName)->where("`pro_id`=%d and `form_type`='%s'",array($proId,$formType))->select();
+        }
+
         return $list;
     }
 }

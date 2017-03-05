@@ -196,64 +196,81 @@ class WorkflowController extends CommonController
                     $is_pre_contract = D('PrepareContract')->isLoanManager($proId, $projectInfo['company_id']);
                     break;
                 case '17':
-                    $exchange = $p_model->filterMemberToFrom($proId, $v, $admin['admin_id']);//换质退票
-                    $is_refund_quality = D('ProjectDebt')->isRefundQuality($proId, 'A', 'RefundQuality');
+                    $exchange = $p_model->filterMemberToFrom($proId, $v, $admin['admin_id'],'1','A','__REFUND_QUALITY__');//换质退票
+                   // $is_refund_quality = D('ProjectDebt')->isRefundQuality($proId, 'A', 'RefundQuality');
                     break;
                 case '20':
-                    $refundQuality = $p_model->filterMemberToFrom($proId, $v, $admin['admin_id']); //换质退款
-                    $is_for_payment = D('ProjectDebt')->isRefundQuality($proId, 'A', 'ForPayment');
+                    //修改版
+                    $refundQuality = $p_model->filterMemberToFrom($proId, $v, $admin['admin_id'],1,'A','__FOR_PAYMENT__'); //换质退款
+                    $listRefundQuality=array();
+                    foreach ($refundQuality as $rek=>$rev)
+                    {
+                       $listRefundQuality=array_merge($listRefundQuality,array($rev['addtime'].'_'.$rek=>"/Admin/ProjectDebt/editForPayment?pro_id=$proId&form_type=A&wf_id=".$rev['wf_id']."&fp_id=" . $rev['id']));
+                    }
+                   // return $list;
+                 //  $is_for_payment = D('ProjectDebt')->isRefundQuality($proId, 'A', 'ForPayment');
+
                     break;
                 case '21':
-                  /*  $refundQuality = $p_model->filterMemberToFrom($proId, $v, $admin['admin_id']);//换质退款、退票审批
-                    $exchange = $p_model->filterMemberToFrom($proId, $v, $admin['admin_id']);//换质退票*/
-                    $toReFundAndExchange = $refundQuality && $exchange ? $refundQuality : null;
+                   //$refundQualityForPayment = $p_model->filterMemberToFrom($proId, $v, $admin['admin_id'],1);//换质退款、退票审批
+                   $_refundQuality_ForPayment = $p_model->filterMemberToFrom($proId, $v, $admin['admin_id'],1,'A','__FOR_PAYMENT__');//换质退款、退票审批
+                    $_ForPayment = $p_model->filterMemberToFrom($proId, $v, $admin['admin_id'],1,'A','__REFUND_QUALITY__');
+                   $_refundQuality_ForPaymentList=array();
+                   $_ForPaymentList=array();
+                   if($_refundQuality_ForPayment && $_ForPayment)
+                   {
+                       foreach ($_refundQuality_ForPayment as $_kere=>$_vare)
+                       {
+                           $_refundQuality_ForPaymentList=array_merge($_refundQuality_ForPaymentList,array($_vare['addtime'].'_'.$_kere=>"/Admin/ProjectDebt/editForPayment?pro_id=$proId&form_type=A&wf_id=".$_vare['wf_id']."&fp_id=" . $_vare['id']));
+                       }
+                       foreach ($_ForPayment as $_fork=>$_forv)
+                       {
+                           $_ForPaymentList=array_merge($_ForPaymentList,array($_forv['addtime'].'_'.$_fork=>"/Admin/ProjectDebt/editRefundQuality?pro_id=$proId&form_type=A&wf_id=".$_forv['wf_id']."&rq_id=" . $_forv['id']));
+                       }
+                       $toReFundAndExchange = array_merge($_refundQuality_ForPaymentList,$_ForPaymentList);
+                   }else
+                   {
+                       $toReFundAndExchange = null;
+                   }
                     break;
                 case '22':
-                    $finalRefund = $p_model->filterMemberToFrom($proId, $v, $admin['admin_id']);//完结退款审批
-                    $is_refund_for_payment = D('ProjectDebt')->isRefundQuality($proId, 'B', 'ForPayment');
+                    $finalRefund = $p_model->filterMemberToFrom($proId, $v, $admin['admin_id'],1,'B','__FOR_PAYMENT__');//完结退款审批
+                    $listFinalRefund=array();
+                    foreach ($finalRefund as $fkey=>$fval)
+                    {
+                        $listFinalRefund=array_merge($listFinalRefund,array($fval['addtime'].'_'.$fkey=>"/Admin/ProjectDebt/editForPayment?pro_id=$proId&form_type=B&fp_id=" . $fval['id']));
+                    }
+                   // $is_refund_for_payment = D('ProjectDebt')->isRefundQuality($proId, 'B', 'ForPayment');
                     break;
                 case '23':
-                    $normalFinalRefund = $p_model->filterMemberToFrom($proId, $v, $admin['admin_id']);//正常完结退票审批
-                    $is_c_refund_quality = D('ProjectDebt')->isRefundQuality($proId, 'C', 'RefundQuality');
+                    $normalFinalRefund = $p_model->filterMemberToFrom($proId, $v, $admin['admin_id'],'1','C','__REFUND_QUALITY__');//正常完结退票审批
+                   // $is_c_refund_quality = D('ProjectDebt')->isRefundQuality($proId, 'C', 'RefundQuality');
                     break;
                 case '24':
-                    $abnormalFinalRefund = $p_model->filterMemberToFrom($proId, $v, $admin['admin_id']);//非正常完结退票审批
-                    $is_b_refund_quality = D('ProjectDebt')->isRefundQuality($proId, 'B', 'RefundQuality');
+                    $abnormalFinalRefund = $p_model->filterMemberToFrom($proId, $v, $admin['admin_id'],'1','B','__REFUND_QUALITY__');//非正常完结退票审批
+                   // $is_b_refund_quality = D('ProjectDebt')->isRefundQuality($proId, 'B', 'RefundQuality');
                     break;
             }
         }
-        if ($toReFundAndExchange) {
-            $list = array('合同预签' => array('url' => array("/Admin/SignApplyManage/preContract/pro_id/" . $prepareContract['pj_id'] . "/company_id/".$projectInfoCon['company_id']),
+
+            $list = array('合同预签' => array('url' => array(date('Y-m-d',$prepareContract['pro_addtime'])=>"/Admin/SignApplyManage/preContract/pro_id/" . $prepareContract['pj_id'] . "/company_id/".$projectInfoCon['company_id']),
                 'check' => $prepareContract),//$prepareContract,
-                '请款表单' => array('url' => array("/Admin/LoanManage/detail.html?loan_id=" . $is_pre_contract),
+                '请款表单' => array('url' => array(date('Y-m-d',$is_pre_contract['addtime'])=>"/Admin/LoanManage/detail.html?loan_id=" . $is_pre_contract),
                     'check' => $requstFund),//$requstFund,
-                '换质退款、退票审批' => array('url' => array("/Admin/ProjectDebt/editRefundQuality?pro_id=$proId&form_type=A&rq_id=" . $is_refund_quality['id'],
-                    "/Admin/ProjectDebt/editForPayment?pro_id=$proId&form_type=A&fp_id=" . $is_for_payment['id']),
-                    'check' => $toReFundAndExchange),
-                '完结退款审批' => array('url' => array("/Admin/ProjectDebt/editForPayment?pro_id=$proId&form_type=B&fp_id=" . $is_refund_for_payment['id']),
-                    'check' => $finalRefund),//$finalRefund,
-                '正常完结退票审批' => array('url' => array("/Admin/ProjectDebt/editRefundQuality?pro_id=$proId&form_type=C&rq_id=" . $is_c_refund_quality['id']),
-                    'check' => $normalFinalRefund),//$normalFinalRefund,
-                '非正常完结退票审批' => array('url' => array("/Admin/ProjectDebt/editRefundQuality?pro_id=$proId&form_type=B&rq_id=" . $is_b_refund_quality['id']),
-                    'check' => $abnormalFinalRefund)//$abnormalFinalRefund
-            );
-        } else {
-            $list = array('合同预签' => array('url' => array("/Admin/SignApplyManage/preContract/pro_id/" . $prepareContract['pj_id'] . "/company_id/".$projectInfoCon['company_id']),
-                'check' => $prepareContract),//$prepareContract,
-                '请款表单' => array('url' => array("/Admin/LoanManage/detail.html?loan_id=" . $is_pre_contract),
-                    'check' => $requstFund),//$requstFund,
-                '换质退票' => array('url' => array("/Admin/ProjectDebt/editRefundQuality?pro_id=$proId&form_type=A&rq_id=" . $is_refund_quality['id']),
+                '换质退票' => array('url' => array("/Admin/ProjectDebt/editRefundQuality?pro_id=$proId&form_type=A&wf_id=".$exchange['wf_id']."&rq_id=" . $exchange['id']),
                     'check' => $exchange),
-                '换质退款' => array('url' => array("Admin/ProjectDebt/editForPayment?pro_id=$proId&form_type=A&fp_id=" . $is_for_payment['id']),
+                '换质退款' => array('url' => $listRefundQuality,
                     'check' => $refundQuality),
-                '完结退款审批' => array('url' => array("/Admin/ProjectDebt/editForPayment?pro_id=$proId&form_type=B&fp_id=" . $is_refund_for_payment['id']),
+                '换质退款、退票审批' => array('url' => $toReFundAndExchange,
+                    'check' => $toReFundAndExchange),
+                '完结退款审批' => array('url' =>$listFinalRefund,
                     'check' => $finalRefund),//$finalRefund,
-                '正常完结退票审批' => array('url' => array("/Admin/ProjectDebt/editRefundQuality?pro_id=$proId&form_type=C&rq_id=" . $is_c_refund_quality['id']),
+                '正常完结退票审批' => array('url' => array("/Admin/ProjectDebt/editRefundQuality?pro_id=$proId&form_type=C&wf_id=".$normalFinalRefund['wf_id']."&rq_id=" . $normalFinalRefund['id']),
                     'check' => $normalFinalRefund),//$normalFinalRefund,
-                '非正常完结退票审批' => array('url' => array("/Admin/ProjectDebt/editRefundQuality?pro_id=$proId&form_type=B&rq_id=" . $is_b_refund_quality['id']),
+                '非正常完结退票审批' => array('url' => array("/Admin/ProjectDebt/editRefundQuality?pro_id=$proId&form_type=B&wf_id=".$abnormalFinalRefund['wf_id']."&rq_id=" . $abnormalFinalRefund['id']),
                     'check' => $abnormalFinalRefund)//$abnormalFinalRefund
             );
-        }
+
         $this->assign('list',$list);
         $this->display();
     }

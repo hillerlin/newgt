@@ -303,6 +303,7 @@ class ProjectModel extends BaseModel
                 ->select();
             foreach ($list as $kk => $vv) {
                 $list[$kk]['authpage'] = projectToAction($vv['pro_level_now'], json_decode($vv['authpage'], true));
+                $list[$kk]['levelName']=C('proLevel')[explode('_',$vv['pro_level_now'])[0]];
             }
 
             return array('total' => $total, 'list' => $list);

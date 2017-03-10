@@ -26,6 +26,7 @@
             <th data-order-direction="asc" data-order-field="addtime" align="center" width="300">添加时间</th>
             <th data-order-field="company" align="center" width="300">公司</th>
             <th data-order-field="gt_uid" align="center" width="150">项管部跟进人</th>
+            <th data-order-field="pro_status"  align="center" width="100">流程名称</th>
             <th data-order-field="pro_status"  align="center" width="100">立项状态</th>
             <th width="300" align="center">操作</th>
         </tr>
@@ -38,6 +39,7 @@
             <td align="center"><?php echo date('Y-m-d H:i', $v['addtime'])?></td>
             <td align="center"><?php echo $v['company_name']?></td>
             <td align="center"><?php echo empty($v['pmd_name']) ? '<code>未分配</code>' : $v['pmd_name']?>&nbsp;</td>
+            <td align="center" style="color:red;"><?php echo $v['levelName']?></td>
             <td align="center"><?php echo C('proLevel')[$v['pro_level_now']]?></td>
             <td align="center">
                 <?php foreach($v['authpage'] as $kk=>$vv):?>

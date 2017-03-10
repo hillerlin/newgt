@@ -299,9 +299,12 @@ class FinanceFlowController extends CommonController {
                 $map['t.pay_time'][] = array('ELT', $end_time);
             }
         }
-        $map['is_exchange'] = 0;
+     //   $map['is_exchange'] = 0;  //这里流水筛选类型放开  author：lmj
         $result = $model->getSurplusList($page, $pageSize, $map);
         $type_describe = $model->getTypeDescribe();
+
+       // $result = $model->getList($page, $pageSize, $map);
+        //$type_describe = $model->getTypeDescribe();
         
         $this->assign('type_describe', $type_describe);
         $this->assign('list', $result);

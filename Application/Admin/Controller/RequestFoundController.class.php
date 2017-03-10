@@ -171,14 +171,20 @@ class RequestFoundController extends CommonController {
         $list=$raModel->returnOaInfoFromProId(implode(',',$oaIds),'in','bid');
         $isChargeMoneyAttr=array_column($list,'product_type');
         $isChargeMoney=0;
-        if(array_search('7',$isChargeMoneyAttr) or array_search('9',$isChargeMoneyAttr))
+        $isOnlyNormal=0;
+        if(array_search('7',$isChargeMoneyAttr)!==false or array_search('9',$isChargeMoneyAttr)!==false)
         {
                $isChargeMoney=1;
+        }
+        if(array_search('3',$isChargeMoneyAttr)!==false or array_search('8',$isChargeMoneyAttr)!==false)
+        {
+            $isOnlyNormal=1;
         }
         $this->assign('oaIds',$oaIds);
         $this->assign('list',$list);
         $this->assign('proId',$proId);
         $this->assign('isChargeMoney',$isChargeMoney);
+        $this->assign('isOnlyNormal',$isOnlyNormal);
         $this->display();
     }
 

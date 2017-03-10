@@ -292,7 +292,7 @@ class AdminController extends CommonController {
         $isSearch = I('post.isSearch');
         if (!empty($isSearch)) {
             if (!empty($isSearch)) {
-                $map['real_name'] = $real_name;
+                $map['real_name'] = array('like','%'.$real_name.'%');
             }
         }
         $map['status'] = 1;
@@ -308,7 +308,7 @@ class AdminController extends CommonController {
             $map['role_id']=array('in',array());
         }elseif($proLevel=='4_2')
         {
-            $map['role_id']=array('in','16,18');
+            $map['role_id']=array('in','16,18,36');
         }
         $model = D('Admin');
         $list = $model->where($map)->select();

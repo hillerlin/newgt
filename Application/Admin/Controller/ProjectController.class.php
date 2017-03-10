@@ -102,9 +102,9 @@ class ProjectController extends CommonController
         }
         empty($proIid)?$proIid=$result:$proIid=$proIid;
         if ($result === false || $pjWorkFlow === false || $sendProcess === false || $workFlowLog === false || $redisPost === false) {
-            $this->json_error('创建失败', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
+            $this->json_error('创建失败', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的待办','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
         } else {
-            $this->json_success('新建成功', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
+            $this->json_success('新建成功', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的待办','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
         }
     }
 
@@ -159,9 +159,9 @@ class ProjectController extends CommonController
         }
         $return = addSubProcess($pjId, $pro_level, $admin,$xmlfile);
         if ($return && $oldProject) {
-            $this->json_success('新建成功', '/Admin/Project/MyAudit', '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目'),1);
+            $this->json_success('新建成功', '/Admin/Project/MyAudit', '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的待办'),1);
         } else {
-            $this->json_error('创建失败，请联系开发人员查看原因', '/Admin/Project/MyAudit', '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目'),1);
+            $this->json_error('创建失败，请联系开发人员查看原因', '/Admin/Project/MyAudit', '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的待办'),1);
         }
     }
     //驳回人的信息
@@ -2879,9 +2879,9 @@ class ProjectController extends CommonController
         }
 
         if (!$return) {
-            $this->json_error('创建失败', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
+            $this->json_error('创建失败', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的待办','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
         } else {
-            $this->json_success('新建成功', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
+            $this->json_success('新建成功', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的待办','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
             //$this->json_success('成功', '', '', true, array('tabid' => 'project-auditList'));
         }
     }
@@ -2957,9 +2957,9 @@ class ProjectController extends CommonController
                 $flag = $flag && $return && $redisPost && $redisPostAudit;
             }
             if (!$flag) {
-                $this->json_error('创建失败', '/Admin/Project/detail/dataId/'.$proIid, '', '', array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
+                $this->json_error('创建失败', '/Admin/Project/detail/dataId/'.$proIid, '', '', array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的待办','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
             } else {
-                $this->json_success('新建成功', '/Admin/Project/detail/dataId/'.$proIid, '', '', array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的项目','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
+                $this->json_success('新建成功', '/Admin/Project/detail/dataId/'.$proIid, '', '', array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的待办','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
                 //$this->json_success('成功', '', '', '', array('tabid' => 'project-auditList'));
             }
         }

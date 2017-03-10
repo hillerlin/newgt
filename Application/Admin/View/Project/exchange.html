@@ -38,7 +38,7 @@ $('#j_custom_issuedate').on('afterchange.bjui.datepicker', function(e, data) {
 <tr>
     <td>
         <label for="j_custom_name" class="control-label x120">项目名称：</label>
-        <input type="text" name="pro_title" id="p_name" value="<?php echo $pro_title?>" data-rule="required" size="15" readonly>
+        <input type="text" name="pro_title" id="p_name" value="<?php echo $pro_title?>" data-rule="required" size="40" readonly>
     </td>
     <!--                    <td>
                             <label for="j_custom_sale" class="control-label x120">项目编号：</label>
@@ -55,7 +55,7 @@ $('#j_custom_issuedate').on('afterchange.bjui.datepicker', function(e, data) {
     <td>
         <label for="company_id" class="control-label x120">公司：</label>
         <input type="hidden" name="company_id" value='<?php echo $company_id?>'>
-        <input type="text" name="company_name" id="p_company" value="<?php echo $company['company_name']?>" size="15"  data-width="600" data-height="300" data-rule="required" readonly>
+        <input type="text" name="company_name" id="p_company" value="<?php echo $company['company_name']?>" size="40"  data-width="600" data-height="300" data-rule="required" readonly>
     </td>
 </tr>
 

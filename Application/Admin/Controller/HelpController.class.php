@@ -203,6 +203,10 @@ class HelpController extends CommonController
     public function download()
     {
         $pro_id = I('get.pro_id', 0);
+        $proLevel=I('get.proLevel',0);
+        $plId=I('get.plId',0);
+        $wfId=I('get.wfId',0);
+        $proTimes=I('get.proTimes',0);
 //        var_dump($file);
         $admin = session('admin');
         if ($this->checkDownloadAuth($pro_id, $admin['role_id'], $admin['admin_id']) === false) {
@@ -217,6 +221,13 @@ class HelpController extends CommonController
         if($checkSwitch==1)
         {
             $this->zip($pro_id, $file);
+        }
+        //处理审批流事宜
+        if(in_array($proLevel,C('changeDodownState'))) //要处理的等级做匹配
+        {
+            $workFlowUpdata= uploadUpdataWorkFlowState($wfId,$proLevel,$proTimes,$admin,$pro_id,$plId,0,0,'',-1);
+            //  if($workFlowUpdata)
+            // $this->success('下载成功','','',$pro_id);
         }
       /*  if (!file_exists($file)) {
             $this->zip($pro_id, $file);
@@ -282,7 +293,7 @@ class HelpController extends CommonController
         if (isSupper()) {
             return true;
         }
-        if (in_array($role_id, array(14, 2, 17, 18, 19, 20, 21, 24, 26, 28))) {
+        if (in_array($role_id, array(14, 2, 17, 18, 19, 20, 21, 24, 26, 28,36))) {
             return true;
         }
         $pro_info = D('Project')->findByPk($pro_id, 'pro_step,step_pid,pro_linker');

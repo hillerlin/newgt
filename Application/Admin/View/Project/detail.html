@@ -74,13 +74,13 @@
 </div>
 <script>
 $(function(){
-    if($('.current').parent().parent().parent().parent().length>0 && $.trim($('.current').html())=='')
-    {
-        $('.projectend').css({'display':''})
-    }else
-    {
-        $('.projectend').css({'display':'none'})
-    }
+    $('.projectend').css({'display': 'none'})
+    $('.current').each(function() {
+       // var aa =$(this).html();
+        if ($(this).parent().parent().parent().parent().length > 0 && $.trim($(this).html()) == '') {
+            $('.projectend').css({'display': ''})
+        }
+        })
 
     var _switch=1;
     $('.projectend label a').on('click',function () {

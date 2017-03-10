@@ -197,6 +197,11 @@ class WorkflowController extends CommonController
                     break;
                 case '17':
                     $exchange = $p_model->filterMemberToFrom($proId, $v, $admin['admin_id'],'1','A','__REFUND_QUALITY__');//换质退票
+                    $exchangeList=array();
+                    foreach ($exchange as $ekey=>$eval)
+                    {
+                        $exchangeList=array_merge($exchangeList,array($eval['addtime'].'_'.$ekey=>"/Admin/ProjectDebt/editRefundQuality?pro_id=$proId&form_type=A&wf_id=".$eval['wf_id']."&rq_id=" . $eval['id']));
+                    }
                    // $is_refund_quality = D('ProjectDebt')->isRefundQuality($proId, 'A', 'RefundQuality');
                     break;
                 case '20':
@@ -255,9 +260,9 @@ class WorkflowController extends CommonController
 
             $list = array('合同预签' => array('url' => array(date('Y-m-d',$prepareContract['pro_addtime'])=>"/Admin/SignApplyManage/preContract/pro_id/" . $prepareContract['pj_id'] . "/company_id/".$projectInfoCon['company_id']),
                 'check' => $prepareContract),//$prepareContract,
-                '请款表单' => array('url' => array(date('Y-m-d',$is_pre_contract['addtime'])=>"/Admin/LoanManage/detail.html?loan_id=" . $is_pre_contract),
+                '请款表单' => array('url' => array(date('Y-m-d',$is_pre_contract['addtime'])=>"/Admin/LoanManage/detail.html?loan_id=" . $is_pre_contract['loan_id']),
                     'check' => $requstFund),//$requstFund,
-                '换质退票' => array('url' => array("/Admin/ProjectDebt/editRefundQuality?pro_id=$proId&form_type=A&wf_id=".$exchange['wf_id']."&rq_id=" . $exchange['id']),
+                '换质退票' => array('url' => $exchangeList,
                     'check' => $exchange),
                 '换质退款' => array('url' => $listRefundQuality,
                     'check' => $refundQuality),

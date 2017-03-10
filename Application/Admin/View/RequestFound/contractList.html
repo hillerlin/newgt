@@ -1,6 +1,6 @@
 <div class="bjui-pageHeader">
     <div class="bjui-searchBar">
-        <?php if($isChargeMoney==1):?>
+        <?php if($isChargeMoney==1 and $isOnlyNormal==1):?>
         <a href="<?php echo U('SignApplyManage/exportoadate',array('proId'=>$proId,'type'=>1))?>" class="btn btn-green" onclick="doc_filedownload1(this); return false;" data-title="编辑-项目">下载麦田标的表格</a>
         &nbsp;
         <a href="<?php echo U('SignApplyManage/exportoadate',array('proId'=>$proId,'type'=>2))?>" class="btn btn-green" onclick="doc_filedownload1(this); return false;" data-title="编辑-项目">下载非麦田标的表格</a>
@@ -8,7 +8,14 @@
         <a href="<?php echo U('SignApplyManage/exportoadate',array('proId'=>$proId,'type'=>3))?>" class="btn btn-green" onclick="doc_filedownload1(this); return false;" data-title="编辑-项目">下载居间费表格</a>
         &nbsp;
         <?php else:?>
+        <?php if($isOnlyNormal==1):?>
         <a href="<?php echo U('SignApplyManage/exportoadate',array('proId'=>$proId,'type'=>1))?>" class="btn btn-green" onclick="doc_filedownload1(this); return false;" data-title="编辑-项目">下载Excel表格</a>
+        <?php endif;?>
+        <?php if($isChargeMoney==1):?>
+        <a href="<?php echo U('SignApplyManage/exportoadate',array('proId'=>$proId,'type'=>2))?>" class="btn btn-green" onclick="doc_filedownload1(this); return false;" data-title="编辑-项目">下载非麦田标的表格</a>
+        &nbsp;
+        <a href="<?php echo U('SignApplyManage/exportoadate',array('proId'=>$proId,'type'=>3))?>" class="btn btn-green" onclick="doc_filedownload1(this); return false;" data-title="编辑-项目">下载居间费表格</a>
+        <?php endif;?>
         &nbsp;
         <?php endif;?>
 

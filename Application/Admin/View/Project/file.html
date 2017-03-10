@@ -21,7 +21,7 @@
             <div class="btn-group">
                 <button type="button" class="btn-default dropdown-toggle" data-toggle="dropdown" data-icon="copy">下载<span class="caret"></span></button>
                 <ul class="dropdown-menu right" role="menu">
-                    <li><a href="/Admin/Help/download.html?pro_id=<?php echo $pro_id?>" onclick="doc_filedownload1(this); return false;">下载<span style="color: green;">全部</span></a></li>
+                    <li><a href="/Admin/Help/download.html?pro_id=<?php echo $pro_id?>&plId=<?php echo $plId;?>&proLevel=<?php echo $proLevel;?>&wfId=<?php echo $wfId;?>&proTimes=<?php echo $proTimes;?>" onclick="doc_filedownload1(this); return false;">下载<span style="color: green;">全部</span></a></li>
                     <li><a href="/Admin/Help/downloadChecked.html?pro_id=<?php echo $pro_id?>&plId=<?php echo $plId;?>&proLevel=<?php echo $proLevel;?>&wfId=<?php echo $wfId;?>&proTimes=<?php echo $proTimes;?>" onclick="doc_filedownload2(this); return false;">下载<span style="color: red;">选中</span></a></li>
                 </ul>
             </div>

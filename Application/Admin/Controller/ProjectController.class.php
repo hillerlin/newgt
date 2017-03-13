@@ -2882,7 +2882,7 @@ class ProjectController extends CommonController
             $this->json_error('创建失败', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的待办','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
         } else {
             $this->json_success('新建成功', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的待办','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
-            //$this->json_success('成功', '', '', true, array('tabid' => 'project-auditList'));
+            //$this->json_success('成功', '', '', true, array('tabid' => 'Project-MyAudit'));
         }
     }
     //子流程-2风控和项目经理分配人手

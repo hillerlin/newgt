@@ -37,7 +37,7 @@
             <td align="center"><?php echo $v['pro_no']?></td>
             <td align="center"><?php echo $v['pro_title']?></td>
             <td align="center"><?php echo date('Y-m-d H:i', $v['addtime'])?></td>
-            <td align="center"><?php echo $v['company_name']?></td>
+            <td align="center" class="companyName"><?php echo $v['company_name']?></td>
             <td align="center"><?php echo empty($v['pmd_name']) ? '<code>未分配</code>' : $v['pmd_name']?>&nbsp;</td>
             <td align="center" style="color:red;"><?php echo $v['levelName']?></td>
             <td align="center"><?php echo C('proLevel')[$v['pro_level_now']]?></td>
@@ -87,6 +87,83 @@
     </div>
 </div>
 <script type="text/javascript">
+
+    var attr1=new Array();
+    var attr2=new Array();
+    $('.companyName').each(function (key,value) {
+        var html=$(this).html();
+        attr1[html]=new Array();
+        $('.companyName').each(function (key1,value1) {
+            var html2=$(this).html();
+            if(html==html2)
+            {
+                attr1[html][key1]=value1;
+                $(this).parent().css({'display':'none'})
+            }
+        })
+    })
+    console.log(attr1)
+    for(index3 in attr1)
+    {
+        if(typeof attr1[index3]=="object")
+        {
+            $.each(attr1[index3].sort().slice(0,1),function (key2,value2){
+                if(typeof value2!=="undefined")
+                {
+                    //console.log($(this).parent())
+                    var _clone=$(this).parent().clone(true)
+                    _clone.find('td').last().html('<a href="javascript:;" onclick="showContents(this)">[+]</a>')
+                    _clone.find('td').eq(5).html('展开>>');
+                    _clone.css({'display':''});
+                    //  console.log(_clone)
+                    $('#tb').append(_clone);
+                    //console.log($(this).siblings().last())//找同组元素最后一个
+                }
+            })
+
+        }
+    }
+
+
+
+    function showContents(e)
+    {
+        var attrIndex=$(e).parent().siblings().eq(3).html()
+        var nowStatus=$(e).html();
+        if(nowStatus=='[+]')
+        {
+            $(e).html('[-]')
+            $(e).parent().siblings().eq(5).html('回收>>')
+        }else{
+            $(e).html('[+]')
+            $(e).parent().siblings().eq(5).html('展开>>')
+        }
+
+        $('.companyName').each(function (key,value) {
+            if($(this).html()==attrIndex && $(this).siblings().eq(4).html()!=='展开&gt;&gt;')
+            {
+                if(nowStatus=='[+]')
+                {
+                    $(this).parent().css({'display':''})
+                }else
+                {
+                    // console.log($(this).siblings().eq(4).html())
+                    $(this).parent().css({'display':'none'})
+                }
+
+            }
+
+        })
+
+    }
+
+
+
+
+
+
+
+
     function showWorkflow(e){
         var dataId=$(e).attr('data-id');
         var dataTitle=$(e).attr('data-title');

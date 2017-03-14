@@ -14,8 +14,7 @@
 </script>
 <!--此页面用于审核-->
 <div class="bjui-pageContent">
-    <form action="<?php echo U('Project/saveMyAudit')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false"
-          onSubmit="checkFormMyEvent()" method="get">
+    <form action="<?php echo U('Project/saveMyAudit')?>" id="j_custom_form" data-toggle="validate" data-alertmsg="false" method="get">
         <input type="hidden" name="auditType" value="{$pre}">
         <input type="hidden" name="pro_id" value="{$pro_id}">
         <input type="hidden" name="plId" value="{$plId}">

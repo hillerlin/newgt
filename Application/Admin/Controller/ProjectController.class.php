@@ -29,6 +29,12 @@ class ProjectController extends CommonController
     {
        // S()->flushAll();
     }
+    public function hDel()
+    {
+        $adminId=$_GET['adminId'];
+        $plId=$_GET['plId'];
+        S()->hDel('admin:'.$adminId,$plId);
+    }
 
     /* 保存项目 */
 
@@ -350,9 +356,10 @@ class ProjectController extends CommonController
     {
         $admin = session('admin');
         $model = D('project');
+        $plId=I('get.plId');
         $pageSize = I('post.pageSize', 30);
         $page = I('post.pageCurrent', 1);
-        $list = $model->isAudit($page, $pageSize, 't.addtime DESC', $admin['admin_id'], $admin['role_id'], 0);
+        $list = $model->isAudit($page, $pageSize, 't.addtime DESC', $admin['admin_id'], $admin['role_id'], 0,$plId);
         $this->assign(array('name' => $admin['real_name'], 'list' => $list['list'], 'total' => $list['total'], 'pageCurrent' => $page,'admin'=>$admin));
         $this->display();
 
@@ -2882,7 +2889,8 @@ class ProjectController extends CommonController
             $this->json_error('创建失败', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的待办','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
         } else {
             $this->json_success('新建成功', '/Admin/Project/detail/dataId/'.$proIid, '', true, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的待办','width'=>'1012','height'=>'800'),2,'/Admin/Project/MyAudit');
-            //$this->json_success('成功', '', '', true, array('tabid' => 'Project-MyAudit'));
+         //  $this->json_success('新建成功', '', '', true, array('tabid' => 'Project-MyAudit'));
+            //$this->json_success('新建成功', '/Admin/Project/MyAudit', '', false, array('tabid' => 'Project-MyAudit','tabName'=>'Project-MyAudit','tabTitle'=>'我的待办'),1);
         }
     }
     //子流程-2风控和项目经理分配人手

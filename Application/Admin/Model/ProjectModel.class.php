@@ -268,7 +268,7 @@ class ProjectModel extends BaseModel
     }
 
     //根据admin_id来判断审核人是否有待办的项目
-    public function isAudit($page = 1, $pageSize = 30, $order = 't.addtime DESC', $adminId = null, $roleId = null, $auditType)
+    public function isAudit($page = 1, $pageSize = 30, $order = 't.addtime DESC', $adminId = null, $roleId = null, $auditType,$plId=null)
     {
         $map['pro_state'] = $auditType;
         $map['pro_author'] = $adminId;
@@ -286,7 +286,7 @@ class ProjectModel extends BaseModel
                 array_push($idList, $v['pj_id']);
             }
             $idList = implode(',', $idList);
-            $total = count($list);
+            $plIdCondition=$plId?" and l.pl_id=$plId":'';
             $list = $this
                 ->table($this->trueTableName . ' AS t')
                 ->join('LEFT JOIN __ADMIN__ AS a1 ON a1.admin_id=t.admin_id')
@@ -296,11 +296,13 @@ class ProjectModel extends BaseModel
                 ->join('LEFT JOIN __COMPANY__ AS cp ON t.company_id=cp.company_id')
                 ->field('t.*,l.*,l.pro_level as pro_level_now,pw.wf_id as wfid,pro_title,pro_no,a1.real_name as pmd_name,a2.authpage as authpage,company_name')
                 //->where(array('pro_id'=>array('in',$idList) ,'_string'=>"(l.pro_author='".$adminId."' or l.pro_role='".$roleId."') and (l.pro_state='0' or l.pro_state='3')",'l.pj_type'=>array('eq',0)))
-                ->where(array('pro_id' => array('in', $idList), '_string' => "(l.pro_author='" . $adminId . "' or l.pro_role='" . $roleId . "') and (l.pro_state='0' or l.pro_state='3')"))
+                ->where(array('pro_id' => array('in', $idList), '_string' => "(l.pro_author='" . $adminId . "' or l.pro_role='" . $roleId . "') and (l.pro_state='0' or l.pro_state='3') $plIdCondition"))
                 ->page($page, $pageSize)
                 // ->group('pro_level_now')
                 ->order($order)
                 ->select();
+
+            $total=$plId?1:count($list);
             foreach ($list as $kk => $vv) {
                 $list[$kk]['authpage'] = projectToAction($vv['pro_level_now'], json_decode($vv['authpage'], true));
                 $list[$kk]['levelName']=C('proLevel')[explode('_',$vv['pro_level_now'])[0]];

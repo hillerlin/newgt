@@ -31,16 +31,16 @@
             <th width="300" align="center">操作</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody class="tb">
         <?php foreach($list as $v){?>
-        <tr data-id="<?php echo $v['pro_id']?>" data-title="<?php echo $v['pro_title']?>" ondblclick="showWorkflow(this)" title="双击可查看项目详情" style="cursor:pointer;">
+        <tr  data-id="<?php echo $v['pro_id']?>" data-title="<?php echo $v['pro_title']?>" ondblclick="showWorkflow(this)" title="双击可查看项目详情" style="cursor:pointer;">
             <td align="center"><?php echo $v['pro_no']?></td>
-            <td align="center"><?php echo $v['pro_title']?></td>
+            <td align="center" class="companyName"><?php echo $v['pro_title']?></td>
             <td align="center"><?php echo date('Y-m-d H:i', $v['addtime'])?></td>
-            <td align="center" class="companyName"><?php echo $v['company_name']?></td>
+            <td align="center" ><?php echo $v['company_name']?></td>
             <td align="center"><?php echo empty($v['pmd_name']) ? '<code>未分配</code>' : $v['pmd_name']?>&nbsp;</td>
             <td align="center" style="color:red;"><?php echo $v['levelName']?></td>
-            <td align="center"><?php echo C('proLevel')[$v['pro_level_now']]?></td>
+            <td align="center" ><?php echo C('proLevel')[$v['pro_level_now']]?></td>
             <td align="center">
                 <?php foreach($v['authpage'] as $kk=>$vv):?>
                 <?php if($vv=='查看知情' || $vv=='查看流程'):?>
@@ -87,22 +87,29 @@
     </div>
 </div>
 <script type="text/javascript">
-
-    var attr1=new Array();
-    var attr2=new Array();
-    $('.companyName').each(function (key,value) {
+//
+ $(function () {
+     //alert($('.tableContent').length);
+     if($('.tableContent').length==2)
+     {
+         $('.tableContent').eq(0).remove()
+     }
+    var attr1=new Array;
+    var attr2=new Array;
+    var companName=$('.companyName')
+      companName.each(function (key,value) {
         var html=$(this).html();
-        attr1[html]=new Array();
-        $('.companyName').each(function (key1,value1) {
+        attr1[html]=new Array;
+          companName.each(function (key1,value1) {
             var html2=$(this).html();
             if(html==html2)
             {
                 attr1[html][key1]=value1;
-                $(this).parent().css({'display':'none'})
+              $(this).parent().css({'display':'none'})
             }
         })
     })
-    console.log(attr1)
+
     for(index3 in attr1)
     {
         if(typeof attr1[index3]=="object")
@@ -110,30 +117,42 @@
             $.each(attr1[index3].sort().slice(0,1),function (key2,value2){
                 if(typeof value2!=="undefined")
                 {
-                    //console.log($(this).parent())
+                   // console.log($(this).html())
+                    var preHtml=$(this).html()
                     var _clone=$(this).parent().clone(true)
                     _clone.find('td').last().html('<a href="javascript:;" onclick="showContents(this)">[+]</a>')
-                    _clone.find('td').eq(5).html('展开>>');
+                    _clone.find('td').eq(5).html('展开>>').attr('colspan','2');
+                    _clone.find('td').eq(6).remove();
+                    //colspan="2"
                     _clone.css({'display':''});
-                    //  console.log(_clone)
-                    $('#tb').append(_clone);
+                   $('.tb').append(_clone);
+                    $.each(attr1[index3],function(key3,value3){
+                        if($(this).html()==preHtml)
+                        {
+                            $(this).siblings().eq(0).html('')
+                            $(this).siblings().eq(1).html('')
+                            $(this).siblings().eq(2).html('')
+                            $(this).siblings().eq(3).html('')
+                            _clone.after($(this).parent())
+                        }
+                    })
                     //console.log($(this).siblings().last())//找同组元素最后一个
                 }
             })
-
         }
     }
+})
 
 
 
     function showContents(e)
     {
-        var attrIndex=$(e).parent().siblings().eq(3).html()
+        var attrIndex=$(e).parent().siblings().eq(1).html()
         var nowStatus=$(e).html();
         if(nowStatus=='[+]')
         {
             $(e).html('[-]')
-            $(e).parent().siblings().eq(5).html('回收>>')
+            $(e).parent().siblings().eq(5).html('收起>>')
         }else{
             $(e).html('[+]')
             $(e).parent().siblings().eq(5).html('展开>>')

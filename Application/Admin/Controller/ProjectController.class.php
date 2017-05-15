@@ -3973,7 +3973,7 @@ class ProjectController extends CommonController
     public  function workflowlog()
     {
         $admin = session('admin');
-        $pageSize = I('post.pageSize', 30);
+        $pageSize = I('post.pageSize', 150);
         $page = I('post.pageCurrent', 1);
         //项目标题
         if (I('post.pro_title')) $map['p.pro_title'] = array('like', '%' . I('post.pro_title') . '%');

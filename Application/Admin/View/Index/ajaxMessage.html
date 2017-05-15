@@ -4,7 +4,7 @@
         <div class="panel-body bjui-doc task" style="padding:0;">
             <ul>
                 <?php foreach($backlog as $list) {?>
-                <li><a href="<?php echo U('Project/MyAudit',array('pro_id'=>$list['proId'],'authorType'=>$list['authorType'] ,'m'=>'delredis'))?>" data-toggle="navtab" data-id="<?php echo strtolower($list['controller']) .'-'. $list['action']?>" data-title="<?php echo $list['title']?>" title="<?php echo $list['contents']?>" style="font-size: 14px;display:inline-block;vertical-align:middle;height:28px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;cursor:pointer;"><?php echo $list['contents']?></a>
+                <li><a href="<?php echo U('Project/MyAudit',array('pro_id'=>$list['proId'],'plId'=>$list['plId'],'authorType'=>$list['authorType'] ,'m'=>'delredis'))?>" data-toggle="navtab" data-id="<?php echo strtolower($list['controller']) .'-'. $list['action']?>" data-title="<?php echo $list['title']?>" title="<?php echo $list['contents']?>" style="font-size: 14px;display:inline-block;vertical-align:middle;height:28px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;cursor:pointer;"><?php echo $list['contents']?></a>
                     <span style="float:right;font-size:13px;line-height:28px;"><?php echo date('Y-m-d H:i:s', $list['time'])?></span>
                 </li>
                 <?php }?>
@@ -14,6 +14,7 @@
     <?php if($admin['dp_id'] == 1) {?>
     <?php }?>
 </div>
+<!--
 <div style="float:right;width:50%;border-left:1px #c3ced5 solid;">
     <div style="margin:10px 10px 10px 20px;">
         <div class="panel-heading" style="background-color: #d1e1ed;border-color: #faebcc;"><h3 class="panel-title"><span class="glyphicon glyphicon-envelope h4" style="vertical-align:bottom;margin-right:6px;"></span>消息提醒</h3></div>
@@ -50,4 +51,4 @@
             </fieldset>
         </div>
     </div>
-</div>
+</div>-->

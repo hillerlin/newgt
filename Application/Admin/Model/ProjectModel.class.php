@@ -332,6 +332,18 @@ class ProjectModel extends BaseModel
     //获取项目和绑定公司的信息
     public function projectinfo($page = 1, $pageSize = 30, $map = '', $order = '')
     {
+        $Model = M();
+        $sql="SELECT COUNT(*) AS tp_count
+FROM
+	(SELECT p.role_id from gt_project AS p
+LEFT JOIN gt_workflow_log w ON w.pj_id = p.pro_id
+WHERE(
+		$map[_string]
+	)
+GROUP BY
+	p.pro_id
+) c ";
+       $total= $Model->query($sql)[0]['tp_count'];
         $total = $this
             ->table($this->trueTableName . ' AS p')
             ->join('LEFT JOIN __WORKFLOW_LOG__ w ON w.pj_id=p.pro_id')
